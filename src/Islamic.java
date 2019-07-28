@@ -1,9 +1,9 @@
-import applet.CustomPApplet;
+import applet.Sketch;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class Islamic extends CustomPApplet {
+public class Islamic extends Sketch {
     PGraphics tex;
     PImage src;
     PVector offset;
@@ -22,7 +22,7 @@ public class Islamic extends CustomPApplet {
     int recordingDuration = 3000;
 
     public static void main(String[] args) {
-        CustomPApplet.main("Islamic");
+        Sketch.main("Islamic");
     }
 
     public void settings() {

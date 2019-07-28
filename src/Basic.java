@@ -1,8 +1,8 @@
-import applet.CustomPApplet;
+import applet.Sketch;
 
-public class Basic extends CustomPApplet {
+public class Basic extends Sketch {
     public static void main(String[] args) {
-        CustomPApplet.main("Basic");
+        Sketch.main("Basic");
     }
 
     public void settings() {

@@ -1,8 +1,8 @@
-import applet.CustomPApplet;
+import applet.Sketch;
 import processing.core.PGraphics;
 import processing.opengl.PShader;
 
-public class NormalSea extends CustomPApplet {
+public class NormalSea extends Sketch {
     PShader shade;
     PShader sobel;
     PShader blur;
@@ -17,7 +17,7 @@ public class NormalSea extends CustomPApplet {
     float shininess, scl, sobelStrength, sobelLevel, blurSize, r;
 
     public static void main(String[] args) {
-        CustomPApplet.main("NormalSea");
+        Sketch.main("NormalSea");
     }
 
     public void settings() {
