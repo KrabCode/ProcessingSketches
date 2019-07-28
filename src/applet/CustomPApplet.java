@@ -5,14 +5,18 @@ import processing.core.PApplet;
 import java.util.ArrayList;
 
 public class CustomPApplet extends PApplet {
-    protected String name = this.toString().split("@")[0];
+    protected String name = this.getClass().getSimpleName();
     protected String id = name + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
-
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
 
+    public void setup(){
+        surface.setLocation(1920-width-20, 20);
+    }
+
     public void draw() {
-        surface.setTitle(name + " " + floor(frameRate));
+        float nonFlickeringFrameRate = frameRate>58&&frameRate<62?60:frameRate;
+        surface.setTitle(name + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
 
     public float slider(String name, float min, float max) {

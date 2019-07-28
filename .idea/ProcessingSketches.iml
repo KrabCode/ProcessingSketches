@@ -10,5 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="processing-3.5.3" level="project" />
+    <orderEntry type="library" name="peasycam" level="project" />
+    <orderEntry type="library" name="postFX" level="project" />
   </component>
 </module>
