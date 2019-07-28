@@ -29,19 +29,21 @@ uniform vec3 lightDiffuse[8];
 uniform vec3 lightSpecular[8];      
 uniform vec3 lightFalloff[8];
 uniform vec2 lightSpot[8];
-
-
-uniform float distance;
+uniform sampler2D texture;
 
 in vec4 vAmbient;
 in vec4 vSpecular;
 in vec4 vEmissive;
+in vec4 vDiffuse;
 in float vShininess;
+
+in vec4 vertTexCoord;
 
 in vec4 vColor;
 
 in vec3 ecVertex;
-in vec3 vEcNormal;
+in vec3 vNormal;
+in vec3 vTangent;
 
 const float zero_float = 0.0;
 const float one_float = 1.0;
@@ -73,14 +75,22 @@ float blinnPhongFactor(vec3 lightDir, vec3 vertPos, vec3 vecNormal, float shine)
 }
 
 void main() {
-	vec3 ecNormal = normalize(vEcNormal);
-  vec3 ecNormalInv = ecNormal * -one_float;
+	vec3 ecNormal = normalize(vNormal);
+  vec3 tangent = normalize(vTangent);
+  vec3 binormal = cross(ecNormal, tangent);
+
+  mat3 objLocal = transpose(mat3(tangent, binormal, ecNormal));
 	
 	vec4 color = vColor;
+  vec3 normal = vec3(2.0 * texture2D(texture, vertTexCoord.st) - 1.0);
+  vec3 normalInv = -normal;
+
+  vec3 viewDir = objLocal * ecVertex;
 	
 	vec4 ambient = vAmbient;
 	vec4 specular = vSpecular;
 	vec4 emissive = vEmissive;
+  vec4 diffuse = vDiffuse;
 	float shininess = vShininess;
 	
 	// Light calculations
@@ -111,6 +121,8 @@ void main() {
       falloff = falloffFactor(lightPos, ecVertex, lightFalloff[i]);  
       lightDir = normalize(lightPos - ecVertex);
     }
+
+    lightDir = objLocal * lightDir;
   
     spotf = spotExp > zero_float ? spotFactor(lightPos, ecVertex, lightNormal[i], 
                                               spotCos, spotExp) 
@@ -122,30 +134,30 @@ void main() {
     
     if (any(greaterThan(lightDiffuse[i], zero_vec3))) {
       totalFrontDiffuse  += lightDiffuse[i] * falloff * spotf * 
-                            lambertFactor(lightDir, ecNormal);
+                            lambertFactor(lightDir, normal);
       totalBackDiffuse   += lightDiffuse[i] * falloff * spotf * 
-                            lambertFactor(lightDir, ecNormalInv);
+                            lambertFactor(lightDir, normalInv);
     }
     
     if (any(greaterThan(lightSpecular[i], zero_vec3))) {
       totalFrontSpecular += lightSpecular[i] * falloff * spotf * 
-                            blinnPhongFactor(lightDir, ecVertex, ecNormal, shininess);
+                            blinnPhongFactor(lightDir, viewDir, normal, shininess);
       totalBackSpecular  += lightSpecular[i] * falloff * spotf * 
-                            blinnPhongFactor(lightDir, ecVertex, ecNormalInv, shininess);
+                            blinnPhongFactor(lightDir, viewDir, normalInv, shininess);
     }     
   }    
 
   // Calculating final color as result of all lights (plus emissive term).
   // Transparency is determined exclusively by the diffuse component.
-  vec4 vertColor =			vec4(totalAmbient, 0) * ambient + 
-												vec4(totalFrontDiffuse, 1) * color + 
+  vec4 vertColor =			vec4(totalAmbient, 0) * ambient+ 
+												vec4(totalFrontDiffuse, 1) * diffuse + 
 												vec4(totalFrontSpecular, 0) * specular + 
 												vec4(emissive.rgb, 0);
               
   vec4 backVertColor = 	vec4(totalAmbient, 0) * ambient + 
-												vec4(totalBackDiffuse, 1) * color + 
+												vec4(totalBackDiffuse, 1) * diffuse + 
 												vec4(totalBackSpecular, 0) * specular + 
 												vec4(emissive.rgb, 0);
-
-  gl_FragColor = gl_FrontFacing ? vertColor : backVertColor;
+	
+  gl_FragColor = color * (gl_FrontFacing ? vertColor : backVertColor);
 }

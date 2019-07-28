@@ -1,8 +1,8 @@
-import processing.core.PApplet;
+import applet.CustomPApplet;
 
-public class Basic extends PApplet {
+public class Basic extends CustomPApplet {
     public static void main(String[] args) {
-        PApplet.main("Basic");
+        CustomPApplet.main("Basic");
     }
 
     public void settings() {

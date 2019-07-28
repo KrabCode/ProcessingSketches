@@ -10,12 +10,12 @@ public class CustomPApplet extends PApplet {
     protected String captureDir = "out/capture/" + id + "/";
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
 
-    public void setup(){
-        surface.setLocation(1920-width-20, 20);
+    public void setup() {
+        surface.setLocation(1920 - width - 20, 20);
     }
 
     public void draw() {
-        float nonFlickeringFrameRate = frameRate>58&&frameRate<62?60:frameRate;
+        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
         surface.setTitle(name + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
 
@@ -28,7 +28,7 @@ public class CustomPApplet extends PApplet {
         hint(DISABLE_DEPTH_TEST);
         pushMatrix();
         pushStyle();
-        colorMode(RGB, 255, 255, 255, 255);
+        float gray = 255;
         Slider slider = null;
         /*try to find slider with this name in known sliders*/
         for (Slider s : sliders) {
@@ -48,10 +48,21 @@ public class CustomPApplet extends PApplet {
             slider = s;
         }
 
+        int index = sliders.indexOf(slider);
+        int sliderHeight = height / 12;
+        int sliderWidth = width / 4;
+        int sliderLeftX = 40;
+        int sliderTopY = 40 + index * floor(sliderHeight + sliderHeight * .2f);
+        float extraSensitivity = 20;
+        pushMatrix();
+
+        colorMode(RGB, 255, 255, 255, 255);
+        blendMode(INVERT);
+
         /* find the alpha for automatic fadeout */
         int lastInteractedWithAny = -1;
         int fadeoutDuration = 60;
-        int fadeoutDelay = 60 * 2;
+        int fadeoutDelay = 120;
         for (Slider s : sliders) {
             if (s.lastInteractedWith > lastInteractedWithAny) {
                 lastInteractedWithAny = s.lastInteractedWith;
@@ -61,15 +72,10 @@ public class CustomPApplet extends PApplet {
         alpha = constrain(alpha, 0, 255);
 
         /* draw slider */
-        int index = sliders.indexOf(slider);
-        int sliderHeight = height / 12;
-        int sliderWidth = width / 4;
-        int sliderLeftX = 40;
-        int sliderTopY = 40 + index * floor(sliderHeight + sliderHeight * .2f);
         noFill();
         strokeCap(PROJECT);
         strokeWeight(1);
-        stroke(150, alpha);
+        stroke(gray, alpha);
         rectMode(CORNER);
         float sliderY = sliderTopY + sliderHeight * .5f;
         line(sliderLeftX, sliderY, sliderLeftX + sliderWidth, sliderY);
@@ -77,15 +83,12 @@ public class CustomPApplet extends PApplet {
 
         /* draw selection bar */
         strokeWeight(5);
-        stroke(150, alpha);
-        float extraSensitivity = 20;
-        if (mousePressed) {
-            slider.lastInteractedWith = frameCount;
-        }
+        stroke(gray, alpha);
+
         if (isPointInRect(mouseX, mouseY, sliderLeftX - extraSensitivity, sliderTopY, sliderWidth + extraSensitivity * 2, sliderHeight)) {
             slider.lastInteractedWith = frameCount;
             if (mousePressed) {
-                stroke(150, alpha);
+                stroke(gray, alpha);
                 slider.value = map(mouseX, sliderLeftX, sliderLeftX + sliderWidth, slider.min, slider.max);
                 slider.value = constrain(slider.value, slider.min, slider.max);
             }
@@ -101,7 +104,7 @@ public class CustomPApplet extends PApplet {
             textSize(textSize -= .5);
             textWidth = textWidth(name);
         }
-        fill(150, alpha);
+        fill(gray, alpha);
         textAlign(LEFT, CENTER);
         int textOffset = 5;
 
@@ -111,13 +114,15 @@ public class CustomPApplet extends PApplet {
 
         /* disregard values after floating point if value > floorBoundary */
         int floorBoundary = 10;
-        String humanReadableValue = "";
+        String humanReadableValue;
         if (abs(slider.value) < floorBoundary) {
             humanReadableValue = nf(slider.value, 0, 0);
         } else {
             humanReadableValue = String.valueOf(round(slider.value));
         }
         text(humanReadableValue, sliderLeftX + sliderWidth - textOffset, sliderTopY + sliderHeight * .25f);
+
+        popMatrix();
         popStyle();
         popMatrix();
         hint(ENABLE_DEPTH_TEST);

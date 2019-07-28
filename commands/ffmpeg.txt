@@ -1,1 +1,3 @@
 ffmpeg -framerate 60 -start_number 0 -i %04d.jpg 0.mp4
+
+ffplay -framerate 60 -start_number 0 -i %04d.jpg -loop 0
