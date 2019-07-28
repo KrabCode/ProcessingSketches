@@ -5,11 +5,11 @@ import processing.core.PApplet;
 import java.util.ArrayList;
 
 public class Sketch extends PApplet {
-    protected String name = this.getClass().getSimpleName();
-    protected String id = name + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+    private String name = this.getClass().getSimpleName();
+    private String id = name + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
-    private ArrayList<Slider> sliders = new ArrayList<Slider>();
 
+    private ArrayList<Slider> sliders = new ArrayList<Slider>();
     public void setup() {
         surface.setLocation(1920 - width - 20, 20);
     }
@@ -19,12 +19,12 @@ public class Sketch extends PApplet {
         surface.setTitle(name + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
 
-    public float slider(String name, float min, float max) {
+    protected float slider(String name, float min, float max) {
         float range = max - min;
         return slider(name, min, max, min + range / 2);
     }
 
-    public float slider(String name, float min, float max, float defaultValue) {
+    protected float slider(String name, float min, float max, float defaultValue) {
         hint(DISABLE_DEPTH_TEST);
         pushMatrix();
         pushStyle();
