@@ -10,8 +10,11 @@ public class Sketch extends PApplet {
     protected String captureDir = "out/capture/" + id + "/";
 
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
+
     public void setup() {
-        surface.setLocation(1920 - width - 20, 20);
+        if (width < 1000) {
+            surface.setLocation(1920 - width - 20, 20);
+        }
     }
 
     public void draw() {

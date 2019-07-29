@@ -4,30 +4,30 @@ import processing.core.PImage;
 import processing.core.PVector;
 
 public class Islamic extends Sketch {
-    PGraphics tex;
-    PImage src;
-    PVector offset;
-    float t;
-    float size = 1920 / 10;
-    float w = size * 2;
-    float h = sqrt(3) * size;
-    float xstep = w * (3 / 4f);
-    float ystep = h;
-    int hexCountX;
-    int hexCountY;
-    float equilateralTriangleHeight = sqrt(3) / 2;
-    int doubleClickInterval = 30;
-    int lastPressed = -doubleClickInterval * 2;
-    int frameStartedRec = -1;
-    int recordingDuration = 3000;
+    private PGraphics tex;
+    private PImage src;
+    private PVector offset;
+    private float t;
+    private float size = 1920 / 10;
+    private float w = size * 2;
+    private float h = sqrt(3) * size;
+    private float xstep = w * (3 / 4f);
+    private float ystep = h;
+    private int hexCountX;
+    private int hexCountY;
+    private float equilateralTriangleHeight = sqrt(3) / 2;
+    private int doubleClickInterval = 30;
+    private int lastPressed = -doubleClickInterval * 2;
+    private int frameStartedRec = -1;
+    private int recordingDuration = 3000;
 
     public static void main(String[] args) {
         Sketch.main("Islamic");
     }
 
     public void settings() {
-//        size(600, 600, P2D);
-        fullScreen(P2D);
+        size(600, 600, P2D);
+//        fullScreen(P2D);
     }
 
     public void setup() {
