@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="postFX">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/PostFX/library/PostFX.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
