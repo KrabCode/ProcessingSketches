@@ -1,5 +1,6 @@
 package applet;
 
+import javafx.scene.control.Slider;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ public class Sketch extends PApplet {
     private String name = this.getClass().getSimpleName();
     private String id = name + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
+
+    protected float t = 0;
 
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
 
@@ -18,6 +21,7 @@ public class Sketch extends PApplet {
     }
 
     public void draw() {
+        t += 0.017453292f; // == radians(1)
         float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
         surface.setTitle(name + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
@@ -33,7 +37,7 @@ public class Sketch extends PApplet {
         pushStyle();
         float gray = 255;
         Slider slider = null;
-        /*try to find slider with this name in known sliders*/
+        //try to find slider with this name in known sliders
         for (Slider s : sliders) {
             if (s.name.equals(name)) {
                 slider = s;
@@ -41,7 +45,7 @@ public class Sketch extends PApplet {
             }
         }
         if (slider == null) {
-            /*slider with this name does not exist yet, let's create it*/
+            //slider with this name does not exist yet, let's create it
             Slider s = new Slider();
             s.name = name;
             s.min = min;
@@ -62,7 +66,7 @@ public class Sketch extends PApplet {
         colorMode(RGB, 255, 255, 255, 255);
         blendMode(INVERT);
 
-        /* find the alpha for automatic fadeout */
+        // find the alpha for automatic fadeout
         int lastInteractedWithAny = -1;
         int fadeoutDuration = 60;
         int fadeoutDelay = 120;
@@ -74,7 +78,7 @@ public class Sketch extends PApplet {
         float alpha = 255 - map(frameCount, lastInteractedWithAny + fadeoutDelay, lastInteractedWithAny + fadeoutDelay + fadeoutDuration, 0, 255);
         alpha = constrain(alpha, 0, 255);
 
-        /* draw slider */
+        // draw slider
         noFill();
         strokeCap(PROJECT);
         strokeWeight(1);
@@ -84,7 +88,7 @@ public class Sketch extends PApplet {
         line(sliderLeftX, sliderY, sliderLeftX + sliderWidth, sliderY);
         float valueX = map(slider.value, slider.min, slider.max, sliderLeftX, sliderLeftX + sliderWidth);
 
-        /* draw selection bar */
+        // draw selection bar
         strokeWeight(5);
         stroke(gray, alpha);
 
@@ -98,8 +102,8 @@ public class Sketch extends PApplet {
         }
         line(valueX, sliderTopY, valueX, sliderTopY + sliderHeight * .6f);
 
-        /* text info */
-        /* resize name to fit slider */
+        // text info
+        // resize name to fit slider
         float defaultTextSize = sliderHeight * .3f;
         float textWidth = sliderWidth * 2;
         float textSize = defaultTextSize;
@@ -115,7 +119,7 @@ public class Sketch extends PApplet {
         textAlign(RIGHT, CENTER);
         textSize(defaultTextSize);
 
-        /* disregard values after floating point if value > floorBoundary */
+        // disregard values after floating point if value > floorBoundary
         int floorBoundary = 10;
         String humanReadableValue;
         if (abs(slider.value) < floorBoundary) {
