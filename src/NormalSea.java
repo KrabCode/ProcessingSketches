@@ -50,6 +50,7 @@ public class NormalSea extends Sketch {
         image(main, 0, 0);
         sliders();
         capture();
+        gui();
     }
 
     private void sliders() {

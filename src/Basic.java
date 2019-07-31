@@ -16,5 +16,6 @@ public class Basic extends Sketch {
     public void draw() {
         super.draw();
         background(0);
+        gui();
     }
 }

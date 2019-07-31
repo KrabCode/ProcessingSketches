@@ -1,7 +1,6 @@
-import applet.GuiPApplet;
 import applet.Sketch;
 
-public class SliderTest extends GuiPApplet {
+public class SliderTest extends Sketch {
 
     public static void main(String[] args) {
         Sketch.main("SliderTest");
