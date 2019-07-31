@@ -2,6 +2,7 @@ import applet.GuiPApplet;
 import applet.Sketch;
 
 public class SliderTest extends GuiPApplet {
+
     public static void main(String[] args) {
         Sketch.main("SliderTest");
     }
@@ -12,38 +13,49 @@ public class SliderTest extends GuiPApplet {
 
     public void setup() {
         super.setup();
+        surface.setResizable(true);
     }
 
-    int bgColor = 0;
+    float t = 0;
 
     public void draw() {
         super.draw();
-        background(bgColor);
-        bgColor = floor(slider("background", 0, 255, 0));
-        translate(width * .5f, height * .5f);
-
-        if (button("test 1")) {
-            println("test 1");
+        colorMode(HSB, 1, 1, 1, 1);
+        if(toggle("black", true)){
+            background(0);
+            stroke(1);
+        }else{
+            background(1);
+            stroke(0);
         }
-        if (button("test 2")) {
-            println("test 2");
+        if(button("test")){
+            println("test");
         }
-        if (button("test 3")) {
-            println("test 3");
-        }
-        rectMode(CENTER);
-        for (int xi = 0; xi < 5; xi++) {
-            for (int yi = 0; yi < 5; yi++) {
-                stroke(slider("stroke", 0, 255, 100));
-                strokeWeight(slider("weight", 0, 20));
-                fill(slider("fill", 0, 255, 200));
-                if (toggle("noFill", false)) {
-                    noFill();
-                }
-                rect(0, 0, 50, 50);
+        t += slider("time", -10, 10);
+        strokeWeight(1);
+        noFill();
+        if(toggle("fbm")){
+            beginShape();
+            for (int x = 0; x < width; x++) {
+                float y = height * .5f + fbm(x - t);
+                vertex(x, y);
             }
+            endShape();
         }
-        line(-width, 0, width, 0);
-        line(0, -height, 0, height);
+        gui();
     }
+
+    float fbm(float x) {
+        float sum = 0;
+        float amp = slider("amp", 0, 100, 5);
+        float freq = slider("freq");
+        for (int i = 0; i < floor(slider("octaves", 8)); i++) {
+            sum += amp * sin(freq * x);
+            amp *= slider("ampMod",1);
+            freq *= slider("freqMod", 4);
+        }
+        return sum;
+    }
+
+
 }
