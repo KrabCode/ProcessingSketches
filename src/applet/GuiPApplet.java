@@ -12,6 +12,19 @@ public class GuiPApplet extends PApplet {
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
 
+    //Optionally call these with super.setup() and super.draw() from the extending class constructor
+    public void setup() {
+        if (width < 1000) {
+            surface.setLocation(1920 - width - 20, 20);
+        }
+    }
+
+    public void draw() {
+        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
+        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
+    }
+
+
     // gui grid variables
     private float rowWidthWindowFraction = 1 / 3f;
     private float rowHeightWindowFraction = 1 / 14f;
@@ -46,18 +59,6 @@ public class GuiPApplet extends PApplet {
     private int extensionToggleFadeoutDuration = 60;
     private int extensionToggleFadeoutDelay = 0;
     private int lastInteractedWithExtensionToggle = -extensionToggleFadeoutDelay - extensionToggleFadeoutDuration;
-
-    //Optionally call these with super.setup() and super.draw() from the extending class constructor
-    public void setup() {
-        if (width < 1000) {
-            surface.setLocation(1920 - width - 20, 20);
-        }
-    }
-
-    public void draw() {
-        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
-        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
-    }
 
     protected void gui() {
         gui(true);
@@ -170,7 +171,7 @@ public class GuiPApplet extends PApplet {
         if (button.pressed) {
             fill(pressedFill);
         }
-        stroke(mouseOver ? mouseOverStroke : mouseOutsideStroke);
+        stroke(button.pressed ? mouseOverStroke : mouseOutsideStroke);
         strokeWeight(1);
         rectMode(CORNER);
         rect(pos.x, pos.y, w, h);
@@ -193,12 +194,12 @@ public class GuiPApplet extends PApplet {
         if (toggle.value) {
             fill(pressedFill);
         }
-        stroke(mouseOver ? mouseOverStroke : mouseOutsideStroke);
+        stroke(toggle.pressed ? mouseOverStroke : mouseOutsideStroke);
         strokeWeight(1);
         rectMode(CORNER);
         rect(pos.x, pos.y, w, h);
         fill(toggle.value ? textActive : textPassive);
-        if (mouseOver) {
+        if (toggle.pressed) {
             fill(mouseOverStroke);
         }
         textSize(h * .5f);

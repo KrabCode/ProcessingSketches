@@ -26,6 +26,12 @@ public class SliderTest extends GuiPApplet {
             background(1);
             stroke(0);
         }
+        if(button("a")){
+            println("a");
+        }
+        if(button("b")){
+            println("b");
+        }
         t += slider("time", -10, 10);
         strokeWeight(1);
         noFill();
