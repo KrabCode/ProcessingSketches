@@ -7,19 +7,6 @@ import java.util.ArrayList;
 
 @SuppressWarnings("DuplicatedCode")
 public class GuiPApplet extends PApplet {
-
-    //Optionally call these with super.setup() and super.draw() from the extending class constructor
-    public void setup() {
-        if (width < 1000) {
-            surface.setLocation(1920 - width - 20, 20);
-        }
-    }
-
-    public void draw() {
-        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
-        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
-    }
-
     //utility quick sketching variables
     private String sketchName = this.getClass().getSimpleName();
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
@@ -55,12 +42,22 @@ public class GuiPApplet extends PApplet {
     private float offsetXextended = (1 / 24f);
     private float offsetXretracted = -rowWidthWindowFraction;
     private float offsetYWindowFraction = (1 / 24f);
-
     private float backgroundAlpha = .3f;
-
     private int extensionToggleFadeoutDuration = 60;
     private int extensionToggleFadeoutDelay = 0;
     private int lastInteractedWithExtensionToggle = -extensionToggleFadeoutDelay - extensionToggleFadeoutDuration;
+
+    //Optionally call these with super.setup() and super.draw() from the extending class constructor
+    public void setup() {
+        if (width < 1000) {
+            surface.setLocation(1920 - width - 20, 20);
+        }
+    }
+
+    public void draw() {
+        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
+        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
+    }
 
     protected void gui() {
         gui(true);
@@ -245,10 +242,10 @@ public class GuiPApplet extends PApplet {
         textAlign(LEFT, CENTER);
         float textOffsetX = w * .05f;
         float textOffsetY = h * .75f;
-        float defaultTextSize = h*.5f;
+        float defaultTextSize = h * .5f;
         float textWidth = w * 2;
         float textSize = defaultTextSize;
-        while (textWidth > w*.5f) {
+        while (textWidth > w * .5f) {
             textSize(textSize -= .5);
             textWidth = textWidth(slider.name);
         }
@@ -270,9 +267,10 @@ public class GuiPApplet extends PApplet {
         float rowHeight = height * rowHeightWindowFraction;
         float rowWidth = width * rowWidthWindowFraction;
         PVector offset = getOffset();
-
-        int buttonRows = ceil(buttons.size() / buttonsPerRow);
-        int toggleRows = ceil(toggles.size() / togglesPerRow);
+        int activeButtonsCount = getActiveButtonCount();
+        int activeTogglesount = getActiveToggleCount();
+        int buttonRows = ceil(activeButtonsCount / buttonsPerRow);
+        int toggleRows = ceil(activeTogglesount / togglesPerRow);
         int row = 0;
         int column = 0;
         int itemsPerRow = 1;
@@ -294,6 +292,26 @@ public class GuiPApplet extends PApplet {
             column = floor(index % slidersPerRow);
         }
         return new PVector(offset.x + column * (rowWidth / itemsPerRow), offset.y + row * rowHeight);
+    }
+
+    private int getActiveButtonCount() {
+        int result = 0;
+        for (Button b : buttons) {
+            if (b.lastQueried == frameCount) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    private int getActiveToggleCount() {
+        int result = 0;
+        for (Toggle t : toggles) {
+            if (t.lastQueried == frameCount) {
+                result++;
+            }
+        }
+        return result;
     }
 
     private PVector getPositionOfLastItem() {
@@ -350,12 +368,12 @@ public class GuiPApplet extends PApplet {
         for (int i = 0; i < vertexCount; i++) {
             float iN = map(i, 0, vertexCount - 1, 0, 2);
             if (iN < 1) {
-                float x = baseR * abs(.5f - iN)*2  - baseR * .15f;
+                float x = baseR * abs(.5f - iN) * 2 - baseR * .15f;
                 float y = lerp(-baseR, baseR, iN);
                 arrow.add(new PVector(x, y));
             } else {
                 iN = 2 - iN;
-                float x = baseR * abs(.5f - iN)*2  + baseR * .15f;
+                float x = baseR * abs(.5f - iN) * 2 + baseR * .15f;
                 float y = lerp(-baseR, baseR, iN);
                 arrow.add(new PVector(x, y));
             }
@@ -385,7 +403,7 @@ public class GuiPApplet extends PApplet {
         float alpha = 1 - constrain(map(frameCount,
                 lastInteractedWithExtensionToggle + extensionToggleFadeoutDelay,
                 lastInteractedWithExtensionToggle + extensionToggleFadeoutDelay + extensionToggleFadeoutDuration,
-                0, 1),0, 1);
+                0, 1), 0, 1);
         stroke(mouseOutsideStroke, alpha);
         noFill();
         strokeWeight(2);
