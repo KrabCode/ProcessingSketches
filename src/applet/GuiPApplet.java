@@ -7,6 +7,19 @@ import java.util.ArrayList;
 
 @SuppressWarnings("DuplicatedCode")
 public class GuiPApplet extends PApplet {
+
+    //Optionally call these with super.setup() and super.draw() from the extending class constructor
+    public void setup() {
+        if (width < 1000) {
+            surface.setLocation(1920 - width - 20, 20);
+        }
+    }
+
+    public void draw() {
+        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
+        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
+    }
+
     //utility quick sketching variables
     private String sketchName = this.getClass().getSimpleName();
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
@@ -45,21 +58,9 @@ public class GuiPApplet extends PApplet {
 
     private float backgroundAlpha = .3f;
 
-    private int lastInteractedWithExtensionToggle = -1;
-    private int extensionToggleFadeoutDuration = 30;
-    private int extensionToggleFadeoutDelay = 180;
-
-    //Optionally call these with super.setup() and super.draw() from the extending class constructor
-    public void setup() {
-        if (width < 1000) {
-            surface.setLocation(1920 - width - 20, 20);
-        }
-    }
-
-    public void draw() {
-        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
-        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
-    }
+    private int extensionToggleFadeoutDuration = 60;
+    private int extensionToggleFadeoutDelay = 0;
+    private int lastInteractedWithExtensionToggle = -extensionToggleFadeoutDelay - extensionToggleFadeoutDuration;
 
     protected void gui() {
         gui(true);
@@ -78,17 +79,17 @@ public class GuiPApplet extends PApplet {
         drawExtensionToggle();
         for (Toggle t : toggles) {
             if (t.lastQueried == frameCount) {
-                updateElement(t);
+                updateDrawToggle(t, getPosition(t));
             }
         }
         for (Button b : buttons) {
             if (b.lastQueried == frameCount) {
-                updateElement(b);
+                updateDrawButton(b, getPosition(b));
             }
         }
         for (Slider s : sliders) {
             if (s.lastQueried == frameCount) {
-                updateElement(s);
+                updateDrawSlider(s, getPosition(s));
             }
         }
         popStyle();
@@ -153,18 +154,6 @@ public class GuiPApplet extends PApplet {
         return slider.value;
     }
 
-    private void updateElement(GuiElement element) {
-        PVector pos = getPosition(element);
-        String simpleName = element.getClass().getSimpleName();
-        if ("Slider".equals(simpleName)) {
-            updateSlider((Slider) element, pos);
-        } else if ("Button".equals(simpleName)) {
-            updateButton((Button) element, pos);
-        } else if ("Toggle".equals(simpleName)) {
-            updateToggle((Toggle) element, pos);
-        }
-    }
-
     private void resetMatrixInAnyRenderer() {
         if (sketchRenderer().equals(P3D)) {
             camera();
@@ -173,7 +162,7 @@ public class GuiPApplet extends PApplet {
         }
     }
 
-    private void updateButton(Button button, PVector pos) {
+    private void updateDrawButton(Button button, PVector pos) {
         float w = ((width * rowWidthWindowFraction) / buttonsPerRow) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         boolean wasPressedLastFrame = button.pressed;
@@ -194,7 +183,7 @@ public class GuiPApplet extends PApplet {
         text(button.name, pos.x, pos.y, w, h);
     }
 
-    private void updateToggle(Toggle toggle, PVector pos) {
+    private void updateDrawToggle(Toggle toggle, PVector pos) {
         float w = ((width * rowWidthWindowFraction) / togglesPerRow) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         boolean wasPressedLastFrame = toggle.pressed;
@@ -220,7 +209,7 @@ public class GuiPApplet extends PApplet {
         text(toggle.name, pos.x, pos.y, w, h);
     }
 
-    private void updateSlider(Slider slider, PVector pos) {
+    private void updateDrawSlider(Slider slider, PVector pos) {
         float w = ((width * rowWidthWindowFraction) / slidersPerRow) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         float extraSensitivity = 5;
@@ -255,8 +244,14 @@ public class GuiPApplet extends PApplet {
         fill(gray, alpha);
         textAlign(LEFT, CENTER);
         float textOffsetX = w * .05f;
-        float textOffsetY = h * .25f;
-        textSize(h * .5f);
+        float textOffsetY = h * .75f;
+        float defaultTextSize = h*.5f;
+        float textWidth = w * 2;
+        float textSize = defaultTextSize;
+        while (textWidth > w*.5f) {
+            textSize(textSize -= .5);
+            textWidth = textWidth(slider.name);
+        }
         text(slider.name, pos.x + textOffsetX, pos.y + textOffsetY);
         textAlign(RIGHT, CENTER);
 
@@ -355,12 +350,12 @@ public class GuiPApplet extends PApplet {
         for (int i = 0; i < vertexCount; i++) {
             float iN = map(i, 0, vertexCount - 1, 0, 2);
             if (iN < 1) {
-                float x = baseR * abs(.5f - iN) * 2;
+                float x = baseR * abs(.5f - iN)*2  - baseR * .15f;
                 float y = lerp(-baseR, baseR, iN);
                 arrow.add(new PVector(x, y));
             } else {
                 iN = 2 - iN;
-                float x = baseR * abs(.5f - iN) * 2 + baseR * .3f;
+                float x = baseR * abs(.5f - iN)*2  + baseR * .15f;
                 float y = lerp(-baseR, baseR, iN);
                 arrow.add(new PVector(x, y));
             }
@@ -384,18 +379,19 @@ public class GuiPApplet extends PApplet {
         PVector offset = getOffset();
         extensionTogglePos.x = offset.x + width * rowWidthWindowFraction + baseR * 1.5f;
         extensionTogglePos.y = offset.y + baseR * .5f;
+        if (extensionEasing > 0) {
+            lastInteractedWithExtensionToggle = frameCount;
+        }
         float alpha = 1 - constrain(map(frameCount,
                 lastInteractedWithExtensionToggle + extensionToggleFadeoutDelay,
                 lastInteractedWithExtensionToggle + extensionToggleFadeoutDelay + extensionToggleFadeoutDuration,
-                0, 1),
-                0, 1);
+                0, 1),0, 1);
         stroke(mouseOutsideStroke, alpha);
         noFill();
         strokeWeight(2);
         boolean atEitherEnd = extensionEasing == 0 || extensionEasing == 1;
         boolean justReleasedMouse = extensionTogglePressedLastFrame && !mousePressed;
-        if (isPointInRect(mouseX, mouseY, extensionTogglePos.x - baseR, extensionTogglePos.y - baseR, baseR * 2, baseR * 2)) {
-            stroke(mouseOverStroke);
+        if (isPointInRect(mouseX, mouseY, extensionTogglePos.x - baseR, extensionTogglePos.y - baseR, baseR * 3, baseR * 3)) {
             lastInteractedWithExtensionToggle = frameCount;
             if (atEitherEnd && justReleasedMouse) {
                 startExtensionAnimation();
@@ -407,11 +403,13 @@ public class GuiPApplet extends PApplet {
         if (!mousePressed) {
             extensionTogglePressedLastFrame = false;
         }
+
         beginShape();
         for (int i = 0; i < vertexCount; i++) {
             PVector cogVertex = cogShape.get(i);
             PVector arrowVertex = arrowShape.get(i);
-            vertex(extensionTogglePos.x + lerp(cogVertex.x, arrowVertex.x, extensionEasing), extensionTogglePos.y + lerp(cogVertex.y, arrowVertex.y, extensionEasing));
+            PVector shapeVector = new PVector(lerp(cogVertex.x, arrowVertex.x, extensionEasing), lerp(cogVertex.y, arrowVertex.y, extensionEasing));
+            vertex(extensionTogglePos.x + shapeVector.x, extensionTogglePos.y + shapeVector.y);
         }
         endShape(CLOSE);
     }
@@ -427,10 +425,10 @@ public class GuiPApplet extends PApplet {
     }
 
     private PVector getOffset() {
-        float xOffsetWindowFraction = map(extensionEasing, 0, 1, offsetXretracted, offsetXextended);
-        float xOffset = width * xOffsetWindowFraction;
-        float yOffset = height * offsetYWindowFraction;
-        return new PVector(xOffset, yOffset);
+        float offsetXWindowFraction = map(extensionEasing, 0, 1, offsetXretracted, offsetXextended);
+        float offsetX = width * offsetXWindowFraction;
+        float offsetY = height * offsetYWindowFraction;
+        return new PVector(offsetX, offsetY);
     }
 
     protected float ease(float p, float g) {
