@@ -31,7 +31,6 @@ public class Sketch extends PApplet {
     private float elementPaddingFractionX = .9f;
     private float elementPaddingFractionY = .8f;
     private float buttonsOrTogglesPerRow = 2;
-    private float togglesPerRow = 2;
     private float slidersPerRow = 1;
     private float textActive = 0;
     private float textPassive = .7f;
@@ -185,7 +184,7 @@ public class Sketch extends PApplet {
     }
 
     private void updateDrawToggle(Button toggle, PVector pos) {
-        float w = ((width * rowWidthWindowFraction) / togglesPerRow) * elementPaddingFractionX;
+        float w = ((width * rowWidthWindowFraction) / buttonsOrTogglesPerRow) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         boolean wasPressedLastFrame = toggle.pressed;
         boolean mouseOver = isPointInRect(mouseX, mouseY, pos.x, pos.y, w, h);
@@ -422,7 +421,7 @@ public class Sketch extends PApplet {
     private PVector getOffset() {
         float offsetXWindowFraction = map(extensionEasing, 0, 1, offsetXretractedWindowFraction, offsetXextendedWindowFraction);
         float offsetX = width * offsetXWindowFraction;
-        float offsetY = height * offsetYWindowFraction + baseR * 2;
+        float offsetY = height * offsetYWindowFraction + baseR*1.5f;
         return new PVector(offsetX, offsetY);
     }
 
@@ -483,7 +482,10 @@ public class Sketch extends PApplet {
         Button(String name, boolean isToggle, boolean initial) {
             super(name);
             this.isToggle = isToggle;
-            this.initial = initial;
+            if (isToggle) {
+                this.initial = initial;
+                this.value = initial;
+            }
             buttons.add(this);
         }
     }

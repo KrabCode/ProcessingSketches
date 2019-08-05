@@ -5,11 +5,11 @@ public class Knots extends Sketch {
         Sketch.main("Knots");
     }
 
+    float t = 0;
+
     public void settings() {
         size(800, 800, P3D);
     }
-
-    float t = 0;
 
     public void setup(){
 
