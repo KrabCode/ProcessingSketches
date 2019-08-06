@@ -19,51 +19,63 @@
 uniform mat4 modelviewMatrix;
 uniform mat4 transformMatrix;
 uniform mat3 normalMatrix;
+uniform mat4 texMatrix;
 
 uniform int lightCount;
 uniform vec4 lightPosition[8];
 uniform vec3 lightNormal[8];
 uniform vec3 lightAmbient[8];
 uniform vec3 lightDiffuse[8];
-uniform vec3 lightSpecular[8];
+uniform vec3 lightSpecular[8];      
 uniform vec3 lightFalloff[8];
 uniform vec2 lightSpot[8];
 
 attribute vec4 position;
 attribute vec4 color;
 attribute vec3 normal;
+attribute vec3 tangent;
+attribute vec2 texCoord;
 
 out vec4 vColor;
 
 attribute vec4 ambient;
 attribute vec4 specular;
+attribute vec4 diffuse;
 attribute vec4 emissive;
 attribute float shininess;
 
 out vec4 vAmbient;
 out vec4 vSpecular;
 out vec4 vEmissive;
+out vec4 vDiffuse;
 out float vShininess;
 
+out vec4 vertTexCoord;
+
 out vec3 ecVertex;
-out vec3 vEcNormal;
+out vec3 vNormal;
+out vec3 vTangent;
 
 const float zero_float = 0.0;
 const float one_float = 1.0;
 const vec3 zero_vec3 = vec3(0);
 
 void main() {
-    // Vertex in clip coordinates
-    gl_Position = transformMatrix * position;
+  // Vertex in clip coordinates
+  gl_Position = transformMatrix * position;
+    
+  // Vertex in eye coordinates
+  ecVertex = vec3(modelviewMatrix * position);
+  
+  // Normal vector in eye coordinates
+  vNormal = normalize(normal);
+  vTangent = normalize(tangent);
 
-    // Vertex in eye coordinates
-    ecVertex = vec3(modelviewMatrix * position);
-
-    // Normal vector in eye coordinates
-    vEcNormal = normalize(normalMatrix * normal);
-
-    vColor = color;
-    vAmbient = ambient;
-    vSpecular = specular;
-    vShininess = shininess;
+  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);        
+	
+	vColor = color;
+	vAmbient = ambient;
+  vDiffuse = diffuse;
+	vSpecular = specular;
+	vShininess = shininess;
 }

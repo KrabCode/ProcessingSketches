@@ -6,108 +6,56 @@ import processing.core.PVector;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 
-@SuppressWarnings("DuplicatedCode")
-public class MountainSunset extends Sketch {
+// copied from here:
+// https://forum.processing.org/two/discussion/12775/simple-shadow-mapping
+
+public class Shadows extends Sketch {
     public static void main(String[] args) {
-        Sketch.main("MountainSunset");
+        Sketch.main("Shadows");
     }
 
-    float t;
-    PeasyCam cam;
     PVector lightDir = new PVector();
     PShader defaultShader;
     PGraphics shadowMap;
-
-    float baseWidth;
-    float baseDepth;
-    float maxAltitude;
+    int landscape = 1;
 
     public void settings() {
         size(800, 800, P3D);
     }
 
     public void setup() {
-        super.setup();
-        cam = new PeasyCam(this, 150);
-        initDefaultPass();
+        new PeasyCam(this, 300).rotateX(4.0);
         initShadowPass();
-        baseWidth = 200;
-        baseDepth = 200;
-        maxAltitude = 100;
+        initDefaultPass();
     }
 
     public void draw() {
-        super.draw();
-        t = radians(frameCount);
-        if (button("reset gui")) {
-            resetGui();
-        }
-        if (button("reset seed")) {
-            noiseSeed(millis());
-        }
+        // Calculate the light direction (actually scaled by negative distance)
+        float lightAngle = frameCount * 0.002f;
+        lightDir.set(sin(lightAngle) * 160, 160, cos(lightAngle) * 160);
 
-        float lightAngle = slider("light angle", 0, TWO_PI, HALF_PI);
-        lightDir.set(sin(lightAngle) * baseWidth, -maxAltitude/2, cos(lightAngle) * baseDepth);
+        // Render shadow pass
         shadowMap.beginDraw();
         shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
-        shadowMap.background(0xffffffff);
-        landscape(shadowMap);
+        shadowMap.background(0xffffffff); // Will set the depth to 1.0 (maximum depth)
+        renderLandscape(shadowMap);
         shadowMap.endDraw();
         shadowMap.updatePixels();
+
+        // Update the shadow transformation matrix and send it, the light
+        // direction normal and the shadow map to the default shader.
         updateDefaultShader();
 
-        background(35, 57, 109);
-        landscape(g);
+        // Render default pass
+        background(0xff222222);
+        renderLandscape(g);
 
-        resetShader();
-        noLights();
-        gui();
-    }
-
-    void landscape(PGraphics canvas) {
-        float detail = 60;
-        float logicalCenter = (detail - 1) / 2f;
-        float maxDistFromLogicalCenter = detail * .5f;
-        canvas.pushMatrix();
-        canvas.translate(0, maxAltitude/2);
-        canvas.noStroke();
-        canvas.fill(0);
-        for (int zIndex = 0; zIndex < detail; zIndex++) {
-            canvas.beginShape(TRIANGLE_STRIP);
-            for (int xIndex = 0; xIndex < detail; xIndex++) {
-                float x = map(xIndex, 0, detail - 1, -baseWidth * .5f, baseWidth * .5f);
-                float z0 = map(zIndex, 0, detail - 1, -baseDepth * .5f, baseDepth * .5f);
-                float z1 = map(zIndex + 1, 0, detail - 1, -baseDepth * .5f, baseDepth * .5f);
-                float d0 = 1 - constrain(map((dist(xIndex, zIndex, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
-                float d1 = 1 - constrain(map((dist(xIndex, zIndex + 1, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
-                float n0 = fbm(xIndex, zIndex);
-                float n1 = fbm(xIndex, zIndex + 1);
-                float y0 = -d0 * maxAltitude + maxAltitude * n0;
-                float y1 = -d1 * maxAltitude + maxAltitude * n1;
-                canvas.fill(y0 < -maxAltitude/2 ? 255 : 255*d0);
-                canvas.normal(x, y0, z0);
-                canvas.vertex(x, y0, z0);
-                canvas.fill(y1 < -maxAltitude/2 ? 255 : 255*d1);
-                canvas.normal(x, y1, z1);
-                canvas.vertex(x, y1, z1);
-            }
-            canvas.endShape(TRIANGLE_STRIP);
-        }
-        canvas.popMatrix();
-    }
-
-    float fbm(float x, float y) {
-        float sum = 0;
-        float frq = slider("freq", 0, 1, .07f);
-        float amp = slider("amp", 1);
-        for (int i = 0; i < 6; i++) {
-            sum += amp * (-1 + 2 * noise(x * frq, y * frq));
-            frq *= slider("frq mod", 0, 5, 1.64f);
-            amp *= slider("amp mod", .5f);
-            x += 50;
-            y += 50;
-        }
-        return abs(sum);
+        // Render light source
+        pushMatrix();
+        fill(0xffffffff);
+        translate(lightDir.x, lightDir.y, lightDir.z);
+        box(5);
+        popMatrix();
     }
 
     public void initShadowPass() {
@@ -136,7 +84,7 @@ public class MountainSunset extends Sketch {
                 "}"
         };
         shadowMap.noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
-//        shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
+        //shadowMap.loadPixels(); // Will interfere with noSmooth() (probably a bug in Processing)
         shadowMap.beginDraw();
         shadowMap.noStroke();
         shadowMap.shader(new PShader(this, vertSource, fragSource));
@@ -209,12 +157,13 @@ public class MountainSunset extends Sketch {
 
                 "}"
         };
+        shader(defaultShader = new PShader(this, vertSource, fragSource));
         noStroke();
-        defaultShader = new PShader(this, vertSource, fragSource);
         perspective(60 * DEG_TO_RAD, (float) width / height, 10, 1000);
     }
 
     void updateDefaultShader() {
+
         // Bias matrix to move homogeneous shadowCoords into the UV texture space
         PMatrix3D shadowTransform = new PMatrix3D(
                 0.5f, 0.0f, 0.0f, 0.5f,
@@ -252,6 +201,65 @@ public class MountainSunset extends Sketch {
         // Send the shadowmap to the default shader
         defaultShader.set("shadowMap", shadowMap);
 
-        shader(defaultShader);
+    }
+
+    public void keyPressed() {
+        if (key != CODED) {
+            if (key >= '1' && key <= '3')
+                landscape = key - '0';
+            else if (key == 'd') {
+                shadowMap.beginDraw();
+                shadowMap.ortho(-200, 200, -200, 200, 10, 400);
+                shadowMap.endDraw();
+            } else if (key == 's') {
+                shadowMap.beginDraw();
+                shadowMap.perspective(60 * DEG_TO_RAD, 1, 10, 1000);
+                shadowMap.endDraw();
+            }
+        }
+    }
+
+    public void renderLandscape(PGraphics canvas) {
+        switch (landscape) {
+            case 1: {
+                float offset = -frameCount * 0.01f;
+                canvas.fill(0xffff5500);
+                for (int z = -5; z < 6; ++z)
+                    for (int x = -5; x < 6; ++x) {
+                        canvas.pushMatrix();
+                        canvas.translate(x * 12, sin(offset + x) * 20 + cos(offset + z) * 20, z * 12);
+                        canvas.box(10, 100, 10);
+                        canvas.popMatrix();
+                    }
+            }
+            break;
+            case 2: {
+                float angle = -frameCount * 0.0015f, rotation = TWO_PI / 20;
+                canvas.fill(0xffff5500);
+                for (int n = 0; n < 20; ++n, angle += rotation) {
+                    canvas.pushMatrix();
+                    canvas.translate(sin(angle) * 70, cos(angle * 4) * 10, cos(angle) * 70);
+                    canvas.box(10, 100, 10);
+                    canvas.popMatrix();
+                }
+                canvas.fill(0xff0055ff);
+                canvas.sphere(50);
+            }
+            break;
+            case 3: {
+                float angle = -frameCount * 0.0015f, rotation = TWO_PI / 20;
+                canvas.fill(0xffff5500);
+                for (int n = 0; n < 20; ++n, angle += rotation) {
+                    canvas.pushMatrix();
+                    canvas.translate(sin(angle) * 70, cos(angle) * 70, 0);
+                    canvas.box(10, 10, 100);
+                    canvas.popMatrix();
+                }
+                canvas.fill(0xff00ff55);
+                canvas.sphere(50);
+            }
+        }
+        canvas.fill(0xff222222);
+        canvas.box(360, 5, 360);
     }
 }

@@ -27,7 +27,7 @@ public class NormalSea extends Sketch {
 
     public void setup() {
         main = createGraphics(width, height, P3D);
-        shade = loadShader("PhongFrag.glsl", "PhongVert.glsl");
+        shade = loadShader("NkingPhongFrag.glsl", "NkingPhongVert.glsl");
         sobel = loadShader("sobel.glsl");
         blur = loadShader("blur.glsl");
         hmap = loadShader("hmap.glsl");
