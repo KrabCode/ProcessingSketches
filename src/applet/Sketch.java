@@ -321,7 +321,7 @@ public class Sketch extends PApplet {
 
     private void updateExtension(boolean extendedByDefault) {
         float previousBaseR = baseR;
-        baseR = min(width, height) * rowHeightWindowFraction * .5f;
+        baseR = min(width, height) * rowHeightWindowFraction * .4f;
         if (cogShape == null || previousBaseR != baseR) {
             cogShape = createCog();
             arrowShape = createArrow();

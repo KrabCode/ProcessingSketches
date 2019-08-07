@@ -22,6 +22,10 @@ public class MountainSunset extends Sketch {
     float baseDepth;
     float maxAltitude;
 
+    float detail = 60;
+    float[][] fbmGrid = new float[floor(detail)][floor(detail)];
+
+
     public void settings() {
         size(800, 800, P3D);
     }
@@ -45,9 +49,12 @@ public class MountainSunset extends Sketch {
         if (button("reset seed")) {
             noiseSeed(millis());
         }
-
-        float lightAngle = slider("light angle", 0, TWO_PI, HALF_PI);
-        lightDir.set(sin(lightAngle) * baseWidth, -maxAltitude/2, cos(lightAngle) * baseDepth);
+        float oldDetail = detail;
+        detail = slider("detail", 300);
+        if(detail != oldDetail){
+            resetFbmGrid();
+        }
+        lightDir.set(maxAltitude*sin(t),-maxAltitude*.2f,maxAltitude*cos(t));
         shadowMap.beginDraw();
         shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
         shadowMap.background(0xffffffff);
@@ -65,7 +72,6 @@ public class MountainSunset extends Sketch {
     }
 
     void landscape(PGraphics canvas) {
-        float detail = 60;
         float logicalCenter = (detail - 1) / 2f;
         float maxDistFromLogicalCenter = detail * .5f;
         canvas.pushMatrix();
@@ -80,8 +86,14 @@ public class MountainSunset extends Sketch {
                 float z1 = map(zIndex + 1, 0, detail - 1, -baseDepth * .5f, baseDepth * .5f);
                 float d0 = 1 - constrain(map((dist(xIndex, zIndex, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
                 float d1 = 1 - constrain(map((dist(xIndex, zIndex + 1, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
-                float n0 = fbm(xIndex, zIndex);
-                float n1 = fbm(xIndex, zIndex + 1);
+                float n0, n1;
+                if(toggle("lockFbm", true)){
+                    n0 = getFbmAt(xIndex, zIndex);
+                    n1 = getFbmAt(xIndex, zIndex + 1);
+                }else{
+                    n0 = fbm(xIndex, zIndex);
+                    n1 = fbm(xIndex, zIndex + 1);
+                }
                 float y0 = -d0 * maxAltitude + maxAltitude * n0;
                 float y1 = -d1 * maxAltitude + maxAltitude * n1;
                 canvas.fill(y0 < -maxAltitude/2 ? 255 : 255*d0);
@@ -93,16 +105,42 @@ public class MountainSunset extends Sketch {
             }
             canvas.endShape(TRIANGLE_STRIP);
         }
+        canvas.translate(lightDir.x, lightDir.y, lightDir.z);
+        canvas.fill(255);
+        canvas.sphere(5);
         canvas.popMatrix();
+
     }
+
+    void resetFbmGrid(){
+        fbmGrid = new float[ceil(detail)][ceil(detail)];
+        for(int i = 0; i < detail; i++){
+            for(int j = 0; j < detail; j++){
+                fbmGrid[i][j] = -1;
+            }
+        }
+    }
+
+    float getFbmAt(int x, int y){
+        if(x < 0 || x >= detail || y < 0 || y >= detail){
+            return 0;
+        }
+        float val = fbmGrid[x][y];
+        if(val == -1){
+            val = fbm(x,y);
+            fbmGrid[x][y] = val;
+        }
+        return val;
+    }
+
 
     float fbm(float x, float y) {
         float sum = 0;
-        float frq = slider("freq", 0, 1, .07f);
-        float amp = slider("amp", 1);
+        float frq = slider("freq", 0, 1, .05f);
+        float amp = slider("amp", 0,1,.4f);
         for (int i = 0; i < 6; i++) {
             sum += amp * (-1 + 2 * noise(x * frq, y * frq));
-            frq *= slider("frq mod", 0, 5, 1.64f);
+            frq *= slider("frq mod", 0, 5, 1.4f);
             amp *= slider("amp mod", .5f);
             x += 50;
             y += 50;
