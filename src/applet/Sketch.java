@@ -7,12 +7,10 @@ import java.util.ArrayList;
 
 @SuppressWarnings("DuplicatedCode")
 public class Sketch extends PApplet {
-    //utility quick sketching variables
     private String sketchName = this.getClass().getSimpleName();
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
 
-    //Optionally call these with super.setup() and super.draw() from the extending class constructor
     public void setup() {
         if (width < 1000) {
             surface.setLocation(1920 - width - 20, 20);
@@ -24,22 +22,20 @@ public class Sketch extends PApplet {
         surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
 
-
-    // gui grid variables
     private float rowWidthWindowFraction = 1 / 3f;
     private float rowHeightWindowFraction = 1 / 14f;
     private float elementPaddingFractionX = .9f;
     private float elementPaddingFractionY = .8f;
-    private float buttonsOrTogglesPerRow = 2;
     private float slidersPerRow = 1;
     private float textActive = 0;
     private float textPassive = .7f;
     private float pressedFill = .7f;
     private float mouseOutsideStroke = .5f;
     private float mouseOverStroke = 1f;
-    private ArrayList<Slider> sliders = new ArrayList<Slider>();
-    private ArrayList<Button> buttons = new ArrayList<Button>();
-    private float baseR;
+    private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
+    private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
+
+    private float cogR;
     private float vertexCount = 50;
     private ArrayList<PVector> cogShape;
     private ArrayList<PVector> arrowShape;
@@ -50,15 +46,14 @@ public class Sketch extends PApplet {
     private float extensionAnimationDuration = 60;
     private float extensionAnimationStarted = -extensionAnimationDuration;
     private float extensionEasing = -1;
-    private float extensionAnimationTarget = 1;
+    private float extensionAnimationTarget = -1;
     private float offsetXextendedWindowFraction = (1 / 24f);
     private float offsetXretractedWindowFraction = -rowWidthWindowFraction;
     private float offsetYWindowFraction = (1 / 24f);
     private float backgroundAlpha = .8f;
 
     protected void resetGui() {
-        sliders.clear();
-        buttons.clear();
+        allElements.clear();
     }
 
     protected void gui() {
@@ -77,27 +72,19 @@ public class Sketch extends PApplet {
         drawBackground();
         updateExtension(extendedByDefault);
         drawExtensionToggle();
-        for (Button b : buttons) {
-            if (b.lastQueried == frameCount) {
-                if (b.isToggle) {
-                    updateDrawToggle(b, getPosition(b));
-                } else {
-                    updateDrawButton(b, getPosition(b));
-                }
+        for (GuiElement ge : allElements) {
+            if (ge.lastQueried == frameCount) {
+                updateDrawElement(ge);
             }
         }
-        for (Slider s : sliders) {
-            if (s.lastQueried == frameCount) {
-                updateDrawSlider(s, getPosition(s));
-            }
-        }
+        activeElements.clear();
         hint(ENABLE_DEPTH_TEST);
         popStyle();
         popMatrix();
     }
 
     private boolean isGuiEmpty() {
-        return buttons.size() == 0 && sliders.size() == 0;
+        return activeElements.isEmpty();
     }
 
     private void resetMatrixInAnyRenderer() {
@@ -113,17 +100,23 @@ public class Sketch extends PApplet {
         fill(0, backgroundAlpha);
         PVector offset = getOffset();
         float w = width * rowWidthWindowFraction + offset.x;
-        float h = height * rowHeightWindowFraction + getPositionOfLastItem().y;
+        float h = height * rowHeightWindowFraction * activeElements.size() + offset.y + cogR;
         rectMode(CORNER);
         rect(0, 0, w, h);
     }
 
     protected boolean button(String name) {
-        Button button = findButtonByName(name);
+        Button button = (Button) findElement(name);
         if (button == null) {
             button = new Button(name, false, false);
         }
         button.lastQueried = frameCount;
+        if (!allElements.contains(button)) {
+            allElements.add(button);
+        }
+        if (!activeElements.contains(button)) {
+            activeElements.add(button);
+        }
         return button.value;
     }
 
@@ -132,11 +125,17 @@ public class Sketch extends PApplet {
     }
 
     protected boolean toggle(String name, boolean initial) {
-        Button toggle = findButtonByName(name);
+        Button toggle = (Button) findElement(name);
         if (toggle == null) {
             toggle = new Button(name, true, initial);
         }
         toggle.lastQueried = frameCount;
+        if (!allElements.contains(toggle)) {
+            allElements.add(toggle);
+        }
+        if (!activeElements.contains(toggle)) {
+            activeElements.add(toggle);
+        }
         return toggle.value;
     }
 
@@ -154,16 +153,36 @@ public class Sketch extends PApplet {
     }
 
     protected float slider(String name, float min, float max, float initial) {
-        Slider slider = findSliderByName(name);
+        Slider slider = (Slider) findElement(name);
         if (slider == null) {
             slider = new Slider(name, min, max, initial);
         }
         slider.lastQueried = frameCount;
+        if (!allElements.contains(slider)) {
+            allElements.add(slider);
+        }
+        if (!activeElements.contains(slider)) {
+            activeElements.add(slider);
+        }
         return slider.value;
     }
 
-    private void updateDrawButton(Button button, PVector pos) {
-        float w = ((width * rowWidthWindowFraction) / buttonsOrTogglesPerRow) * elementPaddingFractionX;
+    private void updateDrawElement(GuiElement ge) {
+        if (ge.getClass().getSimpleName().equals("Button")) {
+            Button b = (Button) ge;
+            if (b.isToggle) {
+                updateDrawToggle(b);
+            } else {
+                updateDrawButton(b);
+            }
+        } else {
+            updateDrawSlider((Slider) ge);
+        }
+    }
+
+    private void updateDrawButton(Button button) {
+        PVector pos = getPosition(button);
+        float w = (width * rowWidthWindowFraction) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         boolean wasPressedLastFrame = button.pressed;
         boolean mouseOver = isPointInRect(mouseX, mouseY, pos.x, pos.y, w, h);
@@ -183,8 +202,9 @@ public class Sketch extends PApplet {
         text(button.name, pos.x, pos.y, w, h);
     }
 
-    private void updateDrawToggle(Button toggle, PVector pos) {
-        float w = ((width * rowWidthWindowFraction) / buttonsOrTogglesPerRow) * elementPaddingFractionX;
+    private void updateDrawToggle(Button toggle) {
+        PVector pos = getPosition(toggle);
+        float w = (width * rowWidthWindowFraction) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         boolean wasPressedLastFrame = toggle.pressed;
         boolean mouseOver = isPointInRect(mouseX, mouseY, pos.x, pos.y, w, h);
@@ -209,14 +229,14 @@ public class Sketch extends PApplet {
         text(toggle.name, pos.x, pos.y, w, h);
     }
 
-    private void updateDrawSlider(Slider slider, PVector pos) {
+    private void updateDrawSlider(Slider slider) {
+        PVector pos = getPosition(slider);
         float w = ((width * rowWidthWindowFraction) / slidersPerRow) * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         float extraSensitivity = 20;
         float gray = mouseOutsideStroke;
         float alpha = 1;
 
-        // update values
         if (isPointInRect(mouseX, mouseY, pos.x - extraSensitivity, pos.y, w + extraSensitivity * 2, h)) {
             gray = mouseOverStroke;
             stroke(gray, alpha);
@@ -226,7 +246,6 @@ public class Sketch extends PApplet {
             }
         }
 
-        // draw slider
         strokeCap(PROJECT);
         strokeWeight(1);
         stroke(gray, alpha);
@@ -235,12 +254,10 @@ public class Sketch extends PApplet {
         line(pos.x, sliderY, pos.x + w, sliderY);
         float valueX = map(slider.value, slider.min, slider.max, pos.x, pos.x + w);
 
-        // draw selection bar
         strokeWeight(2);
         stroke(gray, alpha);
         line(valueX, pos.y, valueX, pos.y + h * .6f);
 
-        // draw text
         fill(gray, alpha);
         textAlign(LEFT, CENTER);
         float textOffsetX = w * .05f;
@@ -255,7 +272,6 @@ public class Sketch extends PApplet {
         text(slider.name, pos.x + textOffsetX, pos.y + textOffsetY);
         textAlign(RIGHT, CENTER);
 
-        // disregard values after floating point if value > floorBoundary
         int floorBoundary = 10;
         String humanReadableValue;
         if (abs(slider.value) < floorBoundary) {
@@ -270,59 +286,16 @@ public class Sketch extends PApplet {
         float rowHeight = height * rowHeightWindowFraction;
         float rowWidth = width * rowWidthWindowFraction;
         PVector offset = getOffset();
-        int nonSliderRows = ceil(getActiveButtonCount() / buttonsOrTogglesPerRow);
-        int row = 0;
+        int index = activeElements.indexOf(element);
+        int row = floor(index);
         int column = 0;
-        int itemsPerRow = 1;
-        String simpleName = element.getClass().getSimpleName();
-        if ("Button".equals(simpleName)) {
-            int index = buttons.indexOf(element);
-            itemsPerRow = floor(buttonsOrTogglesPerRow);
-            row = floor(index / buttonsOrTogglesPerRow);
-            column = floor(index % buttonsOrTogglesPerRow);
-        } else if ("Slider".equals(simpleName)) {
-            int index = sliders.indexOf(element);
-            itemsPerRow = floor(slidersPerRow);
-            row = nonSliderRows + floor(index / slidersPerRow);
-            column = floor(index % slidersPerRow);
-        }
-        return new PVector(offset.x + column * (rowWidth / itemsPerRow), offset.y + row * rowHeight);
-    }
-
-    private int getActiveButtonCount() {
-        int result = 0;
-        for (Button b : buttons) {
-            if (b.lastQueried == frameCount) {
-                result++;
-            }
-        }
-        return result;
-    }
-
-    private PVector getPositionOfLastItem() {
-        if (sliders.size() > 0) {
-            for (int i = sliders.size() - 1; i >= 0; i--) {
-                Slider s = sliders.get(i);
-                if (s.lastQueried == frameCount) {
-                    return getPosition(s);
-                }
-            }
-        }
-        if (buttons.size() > 0) {
-            for (int i = buttons.size() - 1; i >= 0; i--) {
-                Button b = buttons.get(i);
-                if (b.lastQueried == frameCount) {
-                    return getPosition(b);
-                }
-            }
-        }
-        return new PVector();
+        return new PVector(offset.x + column * (rowWidth), offset.y + row * rowHeight);
     }
 
     private void updateExtension(boolean extendedByDefault) {
-        float previousBaseR = baseR;
-        baseR = min(width, height) * rowHeightWindowFraction * .4f;
-        if (cogShape == null || previousBaseR != baseR) {
+        float previousBaseR = cogR;
+        cogR = min(width, height) * rowHeightWindowFraction * .4f;
+        if (cogShape == null || previousBaseR != cogR) {
             cogShape = createCog();
             arrowShape = createArrow();
         }
@@ -345,13 +318,13 @@ public class Sketch extends PApplet {
         for (int i = 0; i < vertexCount; i++) {
             float iN = map(i, 0, vertexCount - 1, 0, 2);
             if (iN < 1) {
-                float x = baseR * abs(.5f - iN) * 2 - baseR * .5f - baseR * .15f;
-                float y = lerp(-baseR, baseR, iN);
+                float x = cogR * abs(.5f - iN) * 2 - cogR * .5f - cogR * .15f;
+                float y = lerp(-cogR, cogR, iN);
                 arrow.add(new PVector(x, y));
             } else {
                 iN = 2 - iN;
-                float x = baseR * abs(.5f - iN) * 2 - baseR * .5f + baseR * .15f;
-                float y = lerp(-baseR, baseR, iN);
+                float x = cogR * abs(.5f - iN) * 2 - cogR * .5f + cogR * .15f;
+                float y = lerp(-cogR, cogR, iN);
                 arrow.add(new PVector(x, y));
             }
         }
@@ -360,19 +333,19 @@ public class Sketch extends PApplet {
 
     private ArrayList<PVector> createCog() {
         ArrayList<PVector> cog = new ArrayList<PVector>();
-        float toothR = baseR * .2f;
+        float toothR = cogR * .2f;
         for (int i = 0; i < vertexCount; i++) {
             float iNormalized = map(i, 0, vertexCount - 1, 0, 1);
             float a = iNormalized * TWO_PI;
-            float r = baseR + toothR * (sin(iNormalized * 50) > 0 ? 0 : 1);
+            float r = cogR + toothR * (sin(iNormalized * 50) > 0 ? 0 : 1);
             cog.add(new PVector(r * cos(a), r * sin(a)));
         }
         return cog;
     }
 
     private void drawExtensionToggle() {
-        float x = width * offsetXextendedWindowFraction + baseR;
-        float y = baseR * 1.5f;
+        float x = width * offsetXextendedWindowFraction + cogR;
+        float y = cogR * 1.5f;
         if (extensionEasing > 0) {
             lastInteractedWithExtensionToggle = frameCount;
         }
@@ -385,7 +358,7 @@ public class Sketch extends PApplet {
         strokeWeight(2);
         boolean atEitherEnd = extensionEasing == 0 || extensionEasing == 1;
         boolean justReleasedMouse = extensionTogglePressedLastFrame && !mousePressed;
-        if (isPointInRect(mouseX, mouseY, x - baseR * 3, y - baseR, baseR * 6, baseR * 2)) {
+        if (isPointInRect(mouseX, mouseY, x - cogR * 3, y - cogR, cogR * 6, cogR * 2)) {
             lastInteractedWithExtensionToggle = frameCount;
             if (atEitherEnd && justReleasedMouse) {
                 startExtensionAnimation();
@@ -397,7 +370,6 @@ public class Sketch extends PApplet {
         if (!mousePressed) {
             extensionTogglePressedLastFrame = false;
         }
-
         beginShape();
         for (int i = 0; i < vertexCount; i++) {
             PVector cogVertex = cogShape.get(i);
@@ -406,6 +378,10 @@ public class Sketch extends PApplet {
             vertex(x + shapeVector.x, y + shapeVector.y);
         }
         endShape(CLOSE);
+        fill(mouseOutsideStroke, alpha);
+        textSize(20);
+        textAlign(LEFT,CENTER);
+        text(sketchName, x+cogR*1.5f, y);
     }
 
     private void startExtensionAnimation() {
@@ -421,7 +397,7 @@ public class Sketch extends PApplet {
     private PVector getOffset() {
         float offsetXWindowFraction = map(extensionEasing, 0, 1, offsetXretractedWindowFraction, offsetXextendedWindowFraction);
         float offsetX = width * offsetXWindowFraction;
-        float offsetY = height * offsetYWindowFraction + baseR*1.5f;
+        float offsetY = height * offsetYWindowFraction + cogR * 1.5f;
         return new PVector(offsetX, offsetY);
     }
 
@@ -436,19 +412,10 @@ public class Sketch extends PApplet {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 
-    private Slider findSliderByName(String query) {
-        for (Slider s : sliders) {
-            if (s.name.equals(query)) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    private Button findButtonByName(String query) {
-        for (Button b : buttons) {
-            if (b.name.equals(query)) {
-                return b;
+    private GuiElement findElement(String query) {
+        for (GuiElement ge : allElements) {
+            if (ge.name.equals(query)) {
+                return ge;
             }
         }
         return null;
@@ -472,7 +439,7 @@ public class Sketch extends PApplet {
             this.max = max;
             this.initial = initial;
             this.value = initial;
-            sliders.add(this);
+            allElements.add(this);
         }
     }
 
@@ -486,7 +453,7 @@ public class Sketch extends PApplet {
                 this.initial = initial;
                 this.value = initial;
             }
-            buttons.add(this);
+            allElements.add(this);
         }
     }
 }

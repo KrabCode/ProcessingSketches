@@ -6,10 +6,12 @@ import processing.core.PVector;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("DuplicatedCode")
-public class MountainSunset extends Sketch {
+public class Mountain extends Sketch {
     public static void main(String[] args) {
-        Sketch.main("MountainSunset");
+        Sketch.main("Mountain");
     }
 
     float t;
@@ -17,14 +19,29 @@ public class MountainSunset extends Sketch {
     PVector lightDir = new PVector();
     PShader defaultShader;
     PGraphics shadowMap;
+    ArrayList<Star> stars = new ArrayList<Star>();
 
     float baseWidth;
     float baseDepth;
     float maxAltitude;
-
+    float sunDist;
     float detail = 60;
-    float[][] fbmGrid = new float[floor(detail)][floor(detail)];
 
+    float[][] fbmGrid = new float[floor(detail)][floor(detail)];
+    float[][] noiseGrid = new float[floor(detail)][floor(detail)];
+
+    int dayColor = color(85, 97, 150);
+    int nightColor = color(0);
+    private float nightBlackout;
+    private float rockFrq;
+
+    float tRecStart = -1;
+    float tRecFinish = -1;
+
+    public void keyPressed(){
+        tRecStart = frameCount;
+        tRecFinish = frameCount + 360*2;
+    }
 
     public void settings() {
         size(800, 800, P3D);
@@ -38,44 +55,77 @@ public class MountainSunset extends Sketch {
         baseWidth = 200;
         baseDepth = 200;
         maxAltitude = 100;
+        sunDist = maxAltitude * 1.2f;
     }
 
     public void draw() {
         super.draw();
-        t = radians(frameCount);
+        t = HALF_PI+radians(frameCount * .5f);
+
+
         if (button("reset gui")) {
             resetGui();
         }
         if (button("reset seed")) {
+            resetFbmGrid();
+            resetNoiseGrid();
             noiseSeed(millis());
         }
-        float oldDetail = detail;
-        detail = slider("detail", 300);
-        if(detail != oldDetail){
-            resetFbmGrid();
-        }
-        lightDir.set(maxAltitude*sin(t),-maxAltitude*.2f,maxAltitude*cos(t));
-        shadowMap.beginDraw();
-        shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
-        shadowMap.background(0xffffffff);
-        landscape(shadowMap);
-        shadowMap.endDraw();
-        shadowMap.updatePixels();
-        updateDefaultShader();
+        invalidateGrids();
 
-        background(35, 57, 109);
+        translate(0, maxAltitude * .5f);
+        lightDir.set(sunDist * sin(t), maxAltitude * .25f * cos(t), -sunDist * cos(t));
+        beginShadows();
+        landscape(shadowMap);
+        endShadows();
+        background(lerpColor(dayColor, nightColor, .5f + .5f * cos(t)));
+        stars();
         landscape(g);
+
+        if(tRecStart > 0 && frameCount <= tRecFinish){
+            saveFrame(captureDir+"####.jpg");
+        }
 
         resetShader();
         noLights();
         gui();
+
+        noStroke();
+        fill(255);
+        rect(0, 0, 50 * nightBlackout, 5);
+    }
+
+    private void beginShadows() {
+        shadowMap.beginDraw();
+        shadowMap.camera(lightDir.x, lightDir.y, lightDir.z, 0, 0, 0, 0, 1, 0);
+        shadowMap.background(0);
+    }
+
+    private void endShadows() {
+        shadowMap.endDraw();
+        shadowMap.updatePixels();
+        updateDefaultShader();
+    }
+
+    private void invalidateGrids() {
+        float oldDetail = detail;
+        detail = slider("detail", 300);
+        if (detail != oldDetail) {
+            resetFbmGrid();
+        }
+
+        float oldRockFrq = rockFrq;
+        rockFrq = slider("rock frq", 0, 1, .1f);
+        if (oldRockFrq != rockFrq) {
+            resetNoiseGrid();
+        }
     }
 
     void landscape(PGraphics canvas) {
         float logicalCenter = (detail - 1) / 2f;
         float maxDistFromLogicalCenter = detail * .5f;
+        nightBlackout = constrain(1 - cos(t), 0, 1);
         canvas.pushMatrix();
-        canvas.translate(0, maxAltitude/2);
         canvas.noStroke();
         canvas.fill(0);
         for (int zIndex = 0; zIndex < detail; zIndex++) {
@@ -87,57 +137,83 @@ public class MountainSunset extends Sketch {
                 float d0 = 1 - constrain(map((dist(xIndex, zIndex, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
                 float d1 = 1 - constrain(map((dist(xIndex, zIndex + 1, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
                 float n0, n1;
-                if(toggle("lockFbm", true)){
+                if (toggle("lock fbm", true)) {
                     n0 = getFbmAt(xIndex, zIndex);
                     n1 = getFbmAt(xIndex, zIndex + 1);
-                }else{
+                } else {
                     n0 = fbm(xIndex, zIndex);
                     n1 = fbm(xIndex, zIndex + 1);
                 }
                 float y0 = -d0 * maxAltitude + maxAltitude * n0;
                 float y1 = -d1 * maxAltitude + maxAltitude * n1;
-                canvas.fill(y0 < -maxAltitude/2 ? 255 : 255*d0);
+
+                float rock0 = 150 * getNoiseAt(xIndex, zIndex);
+                float gray0 = nightBlackout * (isSnow(y0, n0) ? 255 : rock0);
+                canvas.fill(gray0);
                 canvas.normal(x, y0, z0);
                 canvas.vertex(x, y0, z0);
-                canvas.fill(y1 < -maxAltitude/2 ? 255 : 255*d1);
+
+                float rock1 = 150 * getNoiseAt(xIndex, zIndex + 1);
+                float gray1 = nightBlackout * (isSnow(y1, n1) ? 255 : rock1);
+                canvas.fill(gray1);
                 canvas.normal(x, y1, z1);
                 canvas.vertex(x, y1, z1);
             }
             canvas.endShape(TRIANGLE_STRIP);
         }
-        canvas.translate(lightDir.x, lightDir.y, lightDir.z);
-        canvas.fill(255);
-        canvas.sphere(5);
         canvas.popMatrix();
-
     }
 
-    void resetFbmGrid(){
+    private boolean isSnow(float y, float n) {
+        return y < -maxAltitude / 2 + 2.5f * maxAltitude * n;
+    }
+
+    private void resetNoiseGrid() {
+        noiseGrid = new float[ceil(detail)][ceil(detail)];
+        for (int i = 0; i < detail; i++) {
+            for (int j = 0; j < detail; j++) {
+                noiseGrid[i][j] = -1;
+            }
+        }
+    }
+
+    private float getNoiseAt(int x, int y) {
+        if (x < 0 || x >= noiseGrid.length || y < 0 || y >= noiseGrid.length) {
+            return 0;
+        }
+        float val = noiseGrid[x][y];
+        if (val == -1) {
+            val = noise(x * rockFrq, y * rockFrq);
+            noiseGrid[x][y] = val;
+        }
+        return val;
+    }
+
+    void resetFbmGrid() {
         fbmGrid = new float[ceil(detail)][ceil(detail)];
-        for(int i = 0; i < detail; i++){
-            for(int j = 0; j < detail; j++){
+        for (int i = 0; i < detail; i++) {
+            for (int j = 0; j < detail; j++) {
                 fbmGrid[i][j] = -1;
             }
         }
     }
 
-    float getFbmAt(int x, int y){
-        if(x < 0 || x >= detail || y < 0 || y >= detail){
+    float getFbmAt(int x, int y) {
+        if (x < 0 || x >= fbmGrid.length || y < 0 || y >= fbmGrid.length) {
             return 0;
         }
         float val = fbmGrid[x][y];
-        if(val == -1){
-            val = fbm(x,y);
+        if (val == -1) {
+            val = fbm(x, y);
             fbmGrid[x][y] = val;
         }
         return val;
     }
 
-
     float fbm(float x, float y) {
         float sum = 0;
         float frq = slider("freq", 0, 1, .05f);
-        float amp = slider("amp", 0,1,.4f);
+        float amp = slider("amp", 0, 1, .4f);
         for (int i = 0; i < 6; i++) {
             sum += amp * (-1 + 2 * noise(x * frq, y * frq));
             frq *= slider("frq mod", 0, 5, 1.4f);
@@ -148,8 +224,36 @@ public class MountainSunset extends Sketch {
         return abs(sum);
     }
 
+    private void stars() {
+        if (stars.isEmpty()) {
+            for (int i = 0; i < 1000; i++) {
+                stars.add(new Star());
+            }
+        }
+        pushMatrix();
+        rotateY(-t);
+        for (Star s : stars) {
+            s.update();
+        }
+        popMatrix();
+    }
+
+    class Star {
+        PVector pos = PVector.random3D().setMag(maxAltitude * 2);
+        float weight = random(1, 3);
+
+        void update() {
+            strokeWeight(weight);
+            stroke(255, 255 * (.3f + .7f * cos(t)));
+            noFill();
+            point(pos.x, pos.y, pos.z);
+        }
+    }
+
+    //all shadows are from here: https://forum.processing.org/two/discussion/12775/simple-shadow-mapping
+
     public void initShadowPass() {
-        shadowMap = createGraphics(2048, 2048, P3D);
+        shadowMap = createGraphics(1024 * 4, 1024 * 4, P3D);
         String[] vertSource = {
                 "uniform mat4 transform;",
 
