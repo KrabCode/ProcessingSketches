@@ -15,7 +15,7 @@ public class Basic extends GuiSketch {
 
     public void draw() {
         super.draw();
-        background(0);
+        background(slider("background", 255));
         gui();
     }
 }

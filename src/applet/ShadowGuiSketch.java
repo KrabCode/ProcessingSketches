@@ -12,7 +12,7 @@ public abstract class ShadowGuiSketch extends GuiSketch {
     PShader defaultShader;
     PGraphics shadowMap;
 
-    public void setup(){
+    public void setup() {
         setup(2048);
     }
 
@@ -22,7 +22,7 @@ public abstract class ShadowGuiSketch extends GuiSketch {
         initDefaultPass();
     }
 
-    public void draw(){
+    public void draw() {
         super.draw();
         setLightDir();
         beginShadows();
@@ -31,6 +31,12 @@ public abstract class ShadowGuiSketch extends GuiSketch {
         background();
         animate(g);
     }
+
+    abstract protected void setLightDir();
+
+    abstract protected void background();
+
+    abstract protected void animate(PGraphics canvas);
 
     private void beginShadows() {
         shader(defaultShader);
@@ -189,10 +195,4 @@ public abstract class ShadowGuiSketch extends GuiSketch {
         defaultShader.set("shadowMap", shadowMap);
 
     }
-
-    abstract protected void setLightDir();
-
-    abstract protected void background();
-
-    abstract protected void animate(PGraphics canvas);
 }

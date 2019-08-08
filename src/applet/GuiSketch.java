@@ -5,8 +5,7 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public class GuiSketch extends PApplet {
-    // pc only code
+public abstract class GuiSketch extends PApplet {
     private String sketchName = this.getClass().getSimpleName();
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";
@@ -22,7 +21,7 @@ public class GuiSketch extends PApplet {
         surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
     }
 
-    // copy freely for android from here on out to add as a separate tab
+
 
     private float rowWidthWindowFraction = 1 / 3f;
     private float rowHeightWindowFraction = 1 / 14f;

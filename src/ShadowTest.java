@@ -12,7 +12,7 @@ public class ShadowTest extends ShadowGuiSketch {
     PeasyCam cam;
 
     public void settings() {
-        size(600, 600, P3D);
+        size(800, 800, P3D);
     }
 
     public void setup() {
