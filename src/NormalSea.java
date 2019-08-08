@@ -1,8 +1,8 @@
-import applet.Sketch;
+import applet.GuiSketch;
 import processing.core.PGraphics;
 import processing.opengl.PShader;
 
-public class NormalSea extends Sketch {
+public class NormalSea extends GuiSketch {
     PShader shade;
     PShader sobel;
     PShader blur;
@@ -17,7 +17,7 @@ public class NormalSea extends Sketch {
     float shininess, scl, sobelStrength, sobelLevel, blurSize, r;
 
     public static void main(String[] args) {
-        Sketch.main("NormalSea");
+        GuiSketch.main("NormalSea");
     }
 
     public void settings() {

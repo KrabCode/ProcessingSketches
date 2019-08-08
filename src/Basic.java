@@ -1,8 +1,8 @@
-import applet.Sketch;
+import applet.GuiSketch;
 
-public class Basic extends Sketch {
+public class Basic extends GuiSketch {
     public static void main(String[] args) {
-        Sketch.main("Basic");
+        GuiSketch.main("Basic");
     }
 
     public void settings() {

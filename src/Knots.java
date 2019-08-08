@@ -1,8 +1,8 @@
-import applet.Sketch;
+import applet.GuiSketch;
 
-public class Knots extends Sketch {
+public class Knots extends GuiSketch {
     public static void main(String[] args) {
-        Sketch.main("Knots");
+        GuiSketch.main("Knots");
     }
 
     float t = 0;

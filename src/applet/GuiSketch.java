@@ -6,7 +6,7 @@ import processing.core.PVector;
 import java.util.ArrayList;
 
 @SuppressWarnings("DuplicatedCode")
-public class Sketch extends PApplet {
+public class GuiSketch extends PApplet {
     private String sketchName = this.getClass().getSimpleName();
     private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     protected String captureDir = "out/capture/" + id + "/";

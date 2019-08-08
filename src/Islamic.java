@@ -1,9 +1,9 @@
-import applet.Sketch;
+import applet.GuiSketch;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class Islamic extends Sketch {
+public class Islamic extends GuiSketch {
     private PGraphics tex;
     private PImage src;
     private PVector offset;
@@ -22,7 +22,7 @@ public class Islamic extends Sketch {
     private int recordingDuration = 3000;
 
     public static void main(String[] args) {
-        Sketch.main("Islamic");
+        GuiSketch.main("Islamic");
     }
 
     public void settings() {

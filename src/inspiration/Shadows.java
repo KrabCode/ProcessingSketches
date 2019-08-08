@@ -1,4 +1,6 @@
-import applet.Sketch;
+package inspiration;
+
+import applet.GuiSketch;
 import peasy.PeasyCam;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
@@ -9,9 +11,9 @@ import processing.opengl.PShader;
 // copied from here:
 // https://forum.processing.org/two/discussion/12775/simple-shadow-mapping
 
-public class Shadows extends Sketch {
+public class Shadows extends GuiSketch {
     public static void main(String[] args) {
-        Sketch.main("Shadows");
+        GuiSketch.main("inspiration.Shadows");
     }
 
     PVector lightDir = new PVector();
