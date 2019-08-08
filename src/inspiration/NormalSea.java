@@ -1,7 +1,10 @@
+package inspiration;
+
 import applet.GuiSketch;
 import processing.core.PGraphics;
 import processing.opengl.PShader;
 
+//normals and lighting by the glorious Nking
 public class NormalSea extends GuiSketch {
     PShader shade;
     PShader sobel;
@@ -17,7 +20,7 @@ public class NormalSea extends GuiSketch {
     float shininess, scl, sobelStrength, sobelLevel, blurSize, r;
 
     public static void main(String[] args) {
-        GuiSketch.main("NormalSea");
+        GuiSketch.main("inspiration.NormalSea");
     }
 
     public void settings() {
@@ -64,7 +67,7 @@ public class NormalSea extends GuiSketch {
 
     private void capture() {
         if (frameStart != 0 && frameCount <= frameStart + gifDurationInFrames) {
-            saveFrame(captureDir+"/####.jpg");
+            saveFrame(captureDir+"####.jpg");
         }
     }
 

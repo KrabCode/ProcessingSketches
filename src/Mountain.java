@@ -6,7 +6,9 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("DuplicatedCode")
+// Do not rename class Mountain
+// for it has been shared online
+// and people would not find it
 public class Mountain extends ShadowGuiSketch {
     public static void main(String[] args) {
         GuiSketch.main("Mountain");
