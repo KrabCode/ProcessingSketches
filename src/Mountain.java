@@ -1,5 +1,5 @@
-import applet.ShadowGuiSketch;
 import applet.GuiSketch;
+import applet.ShadowGuiSketch;
 import peasy.PeasyCam;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -10,34 +10,34 @@ import java.util.ArrayList;
 // for it has been shared online
 // and people would not find it
 public class Mountain extends ShadowGuiSketch {
-    public static void main(String[] args) {
-        GuiSketch.main("Mountain");
-    }
-
     float t;
     PeasyCam cam;
     ArrayList<Star> stars = new ArrayList<Star>();
-
     float baseWidth;
     float baseDepth;
     float maxAltitude;
     float sunDist;
     float detail = 60;
-
     float[][] fbmGrid = new float[floor(detail)][floor(detail)];
     float[][] noiseGrid = new float[floor(detail)][floor(detail)];
-
     int dayColor = color(85, 97, 150);
     int nightColor = color(0);
+    float tRecStart = -1;
+    float tRecFinish = -1;
+    float freq = 0;
+    float amp = 0;
+    float freqMod = 0;
+    float ampMod = 0;
     private float nightBlackout;
     private float rockFrq;
 
-    float tRecStart = -1;
-    float tRecFinish = -1;
+    public static void main(String[] args) {
+        GuiSketch.main("Mountain");
+    }
 
-    public void keyPressed(){
+    public void keyPressed() {
         tRecStart = frameCount;
-        tRecFinish = frameCount + 360*2;
+        tRecFinish = frameCount + 360 * 2;
     }
 
     public void settings() {
@@ -54,7 +54,7 @@ public class Mountain extends ShadowGuiSketch {
     }
 
     public void draw() {
-        t = HALF_PI+radians(frameCount * .5f);
+        t = HALF_PI + radians(frameCount * .5f);
 
         if (button("reset gui")) {
             resetGui();
@@ -70,8 +70,8 @@ public class Mountain extends ShadowGuiSketch {
         super.draw();
         stars();
 
-        if(tRecStart > 0 && frameCount <= tRecFinish){
-            saveFrame(captureDir+"####.jpg");
+        if (tRecStart > 0 && frameCount <= tRecFinish) {
+            saveFrame(captureDir + "####.jpg");
         }
 
         noLights();
@@ -94,13 +94,26 @@ public class Mountain extends ShadowGuiSketch {
         if (oldRockFrq != rockFrq) {
             resetNoiseGrid();
         }
+
+        float oldFreq = freq;
+        float oldAmp = amp;
+        float oldFreqMod = freqMod;
+        float oldAmpMod = ampMod;
+        freq = slider("freq", 0, .3f, .05f);
+        amp = slider("amp", 0, 1, .4f);
+        freqMod = slider("frq mod", 0, 5, 1.4f);
+        ampMod = slider("amp mod", .5f);
+
+        if (oldFreq != freq || oldAmp != amp || oldFreqMod != freqMod || oldAmpMod != ampMod) {
+            resetFbmGrid();
+        }
     }
 
-    public void setLightDir(){
+    public void setLightDir() {
         lightDir.set(sunDist * sin(t), maxAltitude * .25f * cos(t), -sunDist * cos(t));
     }
 
-    public void background(){
+    public void background() {
         background(lerpColor(dayColor, nightColor, .5f + .5f * cos(t)));
     }
 
@@ -119,14 +132,8 @@ public class Mountain extends ShadowGuiSketch {
                 float z1 = map(zIndex + 1, 0, detail - 1, -baseDepth * .5f, baseDepth * .5f);
                 float d0 = 1 - constrain(map((dist(xIndex, zIndex, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
                 float d1 = 1 - constrain(map((dist(xIndex, zIndex + 1, logicalCenter, logicalCenter)), 0, maxDistFromLogicalCenter, 0, 1), 0, 1);
-                float n0, n1;
-                if (toggle("lock fbm", true)) {
-                    n0 = getFbmAt(xIndex, zIndex);
-                    n1 = getFbmAt(xIndex, zIndex + 1);
-                } else {
-                    n0 = fbm(xIndex, zIndex);
-                    n1 = fbm(xIndex, zIndex + 1);
-                }
+                float n0 = getFbmAt(xIndex, zIndex);
+                float n1 = getFbmAt(xIndex, zIndex + 1);
                 float y0 = -d0 * maxAltitude + maxAltitude * n0;
                 float y1 = -d1 * maxAltitude + maxAltitude * n1;
 
@@ -195,12 +202,12 @@ public class Mountain extends ShadowGuiSketch {
 
     float fbm(float x, float y) {
         float sum = 0;
-        float frq = slider("freq", 0, .3f, .05f);
-        float amp = slider("amp", 0, 1, .4f);
+        float amp = this.amp;
+        float freq = this.freq;
         for (int i = 0; i < 6; i++) {
-            sum += amp * (-1 + 2 * noise(x * frq, y * frq));
-            frq *= slider("frq mod", 0, 5, 1.4f);
-            amp *= slider("amp mod", .5f);
+            sum += amp * (-1 + 2 * noise(x * freq, y * freq));
+            freq *= freqMod;
+            amp *= ampMod;
             x += 50;
             y += 50;
         }
