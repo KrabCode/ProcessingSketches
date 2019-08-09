@@ -64,7 +64,7 @@ public class Mountain extends ShadowGuiSketch {
             resetNoiseGrid();
             noiseSeed(millis());
         }
-        invalidateGrids();
+        updateSlidersAndInvalidateCache();
 
         translate(0, maxAltitude * .5f);
         super.draw();
@@ -82,7 +82,7 @@ public class Mountain extends ShadowGuiSketch {
         rect(0, 0, 50 * nightBlackout, 5);
     }
 
-    private void invalidateGrids() {
+    private void updateSlidersAndInvalidateCache() {
         float oldDetail = detail;
         detail = slider("detail", 300);
         if (detail != oldDetail) {
@@ -103,7 +103,6 @@ public class Mountain extends ShadowGuiSketch {
         amp = slider("amp", 0, 1, .4f);
         freqMod = slider("frq mod", 0, 5, 1.4f);
         ampMod = slider("amp mod", .5f);
-
         if (oldFreq != freq || oldAmp != amp || oldFreqMod != freqMod || oldAmpMod != ampMod) {
             resetFbmGrid();
         }
