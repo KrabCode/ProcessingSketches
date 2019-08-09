@@ -38,6 +38,9 @@ public abstract class GuiSketch extends BasicSketch {
         allElements.clear();
     }
 
+    /**
+     * gui() needs to be called at the end of draw() so that everything renders nicely
+     */
     protected void gui() {
         gui(true);
     }
@@ -139,6 +142,11 @@ public abstract class GuiSketch extends BasicSketch {
         Slider slider = (Slider) findElement(name);
         if (slider == null) {
             slider = new Slider(name, min, max, initial);
+        }else{
+            slider.min = min;
+            slider.max = max;
+            slider.initial = initial;
+            slider.value = constrain(slider.value, slider.min, slider.max);
         }
         slider.lastQueried = frameCount;
         if (!allElements.contains(slider)) {
