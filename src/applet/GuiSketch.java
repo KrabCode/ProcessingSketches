@@ -1,40 +1,26 @@
 package applet;
 
-import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public abstract class GuiSketch extends PApplet {
-    private String sketchName = this.getClass().getSimpleName();
-    private String id = sketchName + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
-    protected String captureDir = "out/capture/" + id + "/";
-
-    public void setup() {
-        if (width < 1000) {
-            surface.setLocation(1920 - width - 20, 20);
-        }
-    }
-
-    public void draw() {
-        float nonFlickeringFrameRate = frameRate > 58 && frameRate < 62 ? 60 : frameRate;
-        surface.setTitle(sketchName + " (" + floor(nonFlickeringFrameRate) + " fps)");
-    }
-
-
-
+public abstract class GuiSketch extends BasicSketch {
+    private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
+    private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
     private float rowWidthWindowFraction = 1 / 3f;
     private float rowHeightWindowFraction = 1 / 14f;
     private float elementPaddingFractionX = .9f;
     private float elementPaddingFractionY = .8f;
-    private float slidersPerRow = 1;
-    private float textActive = 0;
-    private float textPassive = .7f;
+    private float offsetXextendedWindowFraction = (1 / 24f);
+    private float offsetXretractedWindowFraction = -rowWidthWindowFraction;
+    private float backgroundAlpha = .8f;
+
+    private float textActiveFill = 0;
+    private float textPassiveFill = .7f;
     private float pressedFill = .7f;
     private float mouseOutsideStroke = .5f;
     private float mouseOverStroke = 1f;
-    private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
-    private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
+
     private float cogR;
     private float vertexCount = 50;
     private ArrayList<PVector> cogShape;
@@ -47,10 +33,6 @@ public abstract class GuiSketch extends PApplet {
     private float extensionAnimationStarted = -extensionAnimationDuration;
     private float extensionEasing = -1;
     private float extensionAnimationTarget = -1;
-    private float offsetXextendedWindowFraction = (1 / 24f);
-    private float offsetXretractedWindowFraction = -rowWidthWindowFraction;
-    private float offsetYWindowFraction = (1 / 24f);
-    private float backgroundAlpha = .8f;
 
     protected void resetGui() {
         allElements.clear();
@@ -66,6 +48,7 @@ public abstract class GuiSketch extends PApplet {
         }
         pushMatrix();
         pushStyle();
+        resetShader();
         hint(DISABLE_DEPTH_TEST);
         resetMatrixInAnyRenderer();
         colorMode(HSB, 1, 1, 1, 1);
@@ -196,7 +179,7 @@ public abstract class GuiSketch extends PApplet {
         strokeWeight(1);
         rectMode(CORNER);
         rect(pos.x, pos.y, w, h);
-        fill(button.pressed ? textActive : textPassive);
+        fill(button.pressed ? textActiveFill : textPassiveFill);
         textSize(h * .5f);
         textAlign(CENTER, CENTER);
         text(button.name, pos.x, pos.y, w, h);
@@ -220,7 +203,7 @@ public abstract class GuiSketch extends PApplet {
         strokeWeight(1);
         rectMode(CORNER);
         rect(pos.x, pos.y, w, h);
-        fill(toggle.value ? textActive : textPassive);
+        fill(toggle.value ? textActiveFill : textPassiveFill);
         if (toggle.pressed) {
             fill(mouseOverStroke);
         }
@@ -231,7 +214,7 @@ public abstract class GuiSketch extends PApplet {
 
     private void updateDrawSlider(Slider slider) {
         PVector pos = getPosition(slider);
-        float w = ((width * rowWidthWindowFraction) / slidersPerRow) * elementPaddingFractionX;
+        float w = width * rowWidthWindowFraction * elementPaddingFractionX;
         float h = height * rowHeightWindowFraction * elementPaddingFractionY;
         float extraSensitivity = 20;
         float gray = mouseOutsideStroke;
@@ -397,6 +380,7 @@ public abstract class GuiSketch extends PApplet {
     private PVector getOffset() {
         float offsetXWindowFraction = map(extensionEasing, 0, 1, offsetXretractedWindowFraction, offsetXextendedWindowFraction);
         float offsetX = width * offsetXWindowFraction;
+        float offsetYWindowFraction = (1 / 24f);
         float offsetY = height * offsetYWindowFraction + cogR * 1.5f;
         return new PVector(offsetX, offsetY);
     }

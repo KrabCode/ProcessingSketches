@@ -26,7 +26,6 @@ public class ShadowTest extends ShadowGuiSketch {
         super.draw();
         popMatrix();
         t += radians(.5f);
-        resetShader();
         gui();
     }
 

@@ -74,7 +74,6 @@ public class Mountain extends ShadowGuiSketch {
             saveFrame(captureDir+"####.jpg");
         }
 
-        resetShader();
         noLights();
         gui();
 
@@ -196,7 +195,7 @@ public class Mountain extends ShadowGuiSketch {
 
     float fbm(float x, float y) {
         float sum = 0;
-        float frq = slider("freq", 0, 1, .05f);
+        float frq = slider("freq", 0, .3f, .05f);
         float amp = slider("amp", 0, 1, .4f);
         for (int i = 0; i < 6; i++) {
             sum += amp * (-1 + 2 * noise(x * frq, y * frq));
