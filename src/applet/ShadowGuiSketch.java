@@ -17,13 +17,11 @@ public abstract class ShadowGuiSketch extends GuiSketch {
     }
 
     public void setup(int shadowMapSize) {
-        super.setup();
         initShadowPass(shadowMapSize);
         initDefaultPass();
     }
 
     public void draw() {
-        super.draw();
         setLightDir();
         beginShadows();
         animate(shadowMap);

@@ -35,7 +35,7 @@ public class Knots extends GuiSketch {
             for(int j = 0; j < slider("detail",100); j++){
                 float jN = map(j,0,slider("detail")-1,0,1);
                 float a = jN*slider("a max",0,TWO_PI,TWO_PI);
-                float r = slider("radius",0,1000,150)
+                float r = slider("radius",0,500,150)
                         +slider("amp",0,200,30)
                         *sin(floor(slider("freq",0,12,3))*a);
                 a += t+map(i,1,floor(slider("knots")),0,TWO_PI);

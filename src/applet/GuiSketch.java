@@ -1,10 +1,23 @@
 package applet;
 
+import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public abstract class GuiSketch extends BasicSketch {
+public abstract class GuiSketch extends PApplet {
+
+    public void setup(){
+
+    }
+
+    public void draw(){
+
+    }
+
+    private String id = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+    protected String captureDir = "out/capture/" + id + "/";
+
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
     private float rowWidthWindowFraction = 1 / 3f;
@@ -39,7 +52,7 @@ public abstract class GuiSketch extends BasicSketch {
     }
 
     /**
-     * gui() needs to be called at the end of draw() so that everything renders nicely
+     * gui() needs to be called at the end of draw()
      */
     protected void gui() {
         gui(true);
@@ -280,7 +293,7 @@ public abstract class GuiSketch extends BasicSketch {
 
     private void updateExtension(boolean extendedByDefault) {
         float previousBaseR = cogR;
-        cogR = min(width, height) * rowHeightWindowFraction * .4f;
+        cogR = min(width, height) * rowHeightWindowFraction * .5f;
         if (cogShape == null || previousBaseR != cogR) {
             cogShape = createCog();
             arrowShape = createArrow();
@@ -365,9 +378,10 @@ public abstract class GuiSketch extends BasicSketch {
         }
         endShape(CLOSE);
         fill(mouseOutsideStroke, alpha);
-        textSize(20);
-        textAlign(LEFT, CENTER);
-        text(sketchName, x + cogR * 1.5f, y);
+//        textSize(cogR);
+//        textAlign(LEFT, CENTER);
+//        int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
+//        text(nonFlickeringFrameRate + " fps", x + cogR * 1.5f, y);
     }
 
     private void startExtensionAnimation() {
