@@ -41,7 +41,7 @@ public class Mountain extends ShadowGuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P3D);
+        size(1920, 1080, P3D);
     }
 
     public void setup() {

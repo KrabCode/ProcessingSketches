@@ -15,8 +15,12 @@ public abstract class GuiSketch extends PApplet {
 
     }
 
-    private String id = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+    protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
+
+    protected String regenId() {
+        return this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+    }
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
@@ -377,7 +381,7 @@ public abstract class GuiSketch extends PApplet {
             vertex(x + shapeVector.x, y + shapeVector.y);
         }
         endShape(CLOSE);
-        fill(mouseOutsideStroke, alpha);
+//        fill(mouseOutsideStroke, alpha);
 //        textSize(cogR);
 //        textAlign(LEFT, CENTER);
 //        int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
