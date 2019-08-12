@@ -2,12 +2,10 @@ import applet.GuiSketch;
 import utils.OpenSimplexNoise;
 
 public class GridOfDiagonals extends GuiSketch {
-    OpenSimplexNoise noise = new OpenSimplexNoise();
 
     float t = 0;
     float tRecStart = -1;
     float tRecFinish = -1;
-
 
     public static void main(String[] args) {
         GuiSketch.main("GridOfDiagonals");
@@ -35,7 +33,6 @@ public class GridOfDiagonals extends GuiSketch {
         record();
         gui();
     }
-
 
     private void record() {
         if (tRecStart > 0 && frameCount <= tRecFinish) {
