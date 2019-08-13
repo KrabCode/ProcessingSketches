@@ -15,12 +15,12 @@ public class Stars extends GuiSketch {
     }
 
     public void settings() {
-        size(960, 800, P3D);
+        size(1920, 800, P3D);
     }
 
     public void setup() {
         super.setup();
-        bgDark = color(62, 68,70);
+        bgDark = color(0, 0);
 
         cam = new PeasyCam(this, depth);
     }
@@ -30,7 +30,7 @@ public class Stars extends GuiSketch {
         background(bgDark);
         float t = radians(frameCount);
         updateDrawStars(t);
-        if (frameCount > 5 && frameCount <= 365) {
+        if (frameCount >= 60*8 && frameCount <= 60*14) {
             saveFrame(captureDir + "####.jpg");
         }
         gui();
@@ -55,8 +55,8 @@ public class Stars extends GuiSketch {
         private float lastZ;
 
         Star() {
-            float x = randomGaussian() * width;
-            float y = randomGaussian() * width;
+            float x = randomGaussian() * width*.5f;
+            float y = randomGaussian() * width*.5f;
             pos = new PVector(x, y, random(depth));
             lastZ = pos.z;
         }

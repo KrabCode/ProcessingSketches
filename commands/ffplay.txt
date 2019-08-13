@@ -1,0 +1,1 @@
+C:\ffmpeg\bin\ffplay.exe -framerate 60 -i %04d.jpg -loop 0 -start_number 0
