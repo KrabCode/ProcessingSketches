@@ -381,11 +381,11 @@ public abstract class GuiSketch extends PApplet {
             vertex(x + shapeVector.x, y + shapeVector.y);
         }
         endShape(CLOSE);
-//        fill(mouseOutsideStroke, alpha);
-//        textSize(cogR);
-//        textAlign(LEFT, CENTER);
-//        int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
-//        text(nonFlickeringFrameRate + " fps", x + cogR * 1.5f, y);
+        fill(mouseOutsideStroke, alpha);
+        textSize(cogR);
+        textAlign(LEFT, CENTER);
+        int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
+        text(nonFlickeringFrameRate + " fps", x + cogR * 1.5f, y);
     }
 
     private void startExtensionAnimation() {

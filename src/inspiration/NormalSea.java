@@ -43,7 +43,6 @@ public class NormalSea extends GuiSketch {
     }
 
     public void draw() {
-        super.draw();
         t = map(frameCount, frameStart, frameStart + gifDurationInFrames, 0, TWO_PI);
         sobel.set("strength", sobelStrength);
         sobel.set("level", sobelLevel);

@@ -16,13 +16,11 @@ public class GridOfDiagonals extends GuiSketch {
     }
 
     public void setup() {
-        super.setup();
         colorMode(HSB, 1, 1, 1, 1);
 
     }
 
     public void draw() {
-        super.draw();
         t += radians(1);
         background(slider("bg"));
         stroke(slider("fg"));

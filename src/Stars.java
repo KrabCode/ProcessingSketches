@@ -26,7 +26,6 @@ public class Stars extends GuiSketch {
     }
 
     public void draw() {
-        super.draw();
         background(bgDark);
         float t = radians(frameCount);
         updateDrawStars(t);

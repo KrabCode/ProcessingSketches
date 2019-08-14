@@ -27,13 +27,11 @@ public class DotPlane extends GuiSketch {
     }
 
     public void setup() {
-        super.setup();
         cam = new PeasyCam(this, 200);
         fx = new PostFX(this);
     }
 
     public void draw() {
-        super.draw();
         t += radians(1);
         background(0);
         updateWeights();

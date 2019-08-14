@@ -10,11 +10,9 @@ public class Basic extends GuiSketch {
     }
 
     public void setup() {
-        super.setup();
     }
 
     public void draw() {
-        super.draw();
         background(slider("background", 255));
         gui();
     }

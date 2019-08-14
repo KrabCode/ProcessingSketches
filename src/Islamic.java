@@ -35,7 +35,6 @@ public class Islamic extends GuiSketch {
     }
 
     public void setup() {
-        super.draw();
         hexCountX = floor(width / xstep + 2);
         hexCountY = floor(height / ystep + 2);
         tex = createGraphics(floor(size), floor(size), P2D);
@@ -43,7 +42,6 @@ public class Islamic extends GuiSketch {
     }
 
     public void draw() {
-        super.draw();
         t += radians(1 / 4f);
         background(0);
         updateTexture();
