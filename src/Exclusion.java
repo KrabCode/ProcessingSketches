@@ -1,6 +1,5 @@
 import applet.GuiSketch;
 import processing.opengl.PShader;
-import sun.management.counter.ByteArrayCounter;
 
 public class Exclusion extends GuiSketch {
     private float t;
@@ -17,7 +16,7 @@ public class Exclusion extends GuiSketch {
 
     public void setup() {
         initFXAA();
-        colorMode(HSB,1,1,1,1);
+        colorMode(HSB, 1, 1, 1, 1);
     }
 
     public void draw() {
@@ -26,15 +25,15 @@ public class Exclusion extends GuiSketch {
         blendMode(EXCLUSION);
         noStroke();
         int count = floor(slider("count", 32));
-        translate(width*.5f, height*.5f);
-        float r = 100+t;
+        translate(width * .5f, height * .5f);
+        float r = 100 + t;
         for (int xIndex = 0; xIndex < count; xIndex++) {
             for (int yIndex = 0; yIndex < count; yIndex++) {
-                float x = map(xIndex, 0, count-1, -width,  width);
-                float y = map(yIndex, 0, count-1, -height, height);
-                float d = .5f+.5f*abs(sin(x)*sin(y));
-                fill(d%1, .5f, 1);
-                ellipse(x,y, r, r);
+                float x = map(xIndex, 0, count - 1, -width, width);
+                float y = map(yIndex, 0, count - 1, -height, height);
+                float d = .5f + .5f * abs(sin(x * slider("freq")) * sin(y * slider("freq")));
+                fill(d % 1, .5f, 1);
+                ellipse(x, y, r, r);
             }
         }
 
@@ -42,13 +41,12 @@ public class Exclusion extends GuiSketch {
 
         filter(fxaa);
 
-        resetShader();
         gui();
     }
 
     @Override
     public void keyPressed() {
-        saveFrame("####.jpg");
+        saveFrame(captureDir + "####.jpg");
     }
 
     void initFXAA() {
