@@ -29,14 +29,14 @@ public class Stars extends GuiSketch {
         background(bgDark);
         float t = radians(frameCount);
         updateDrawStars(t);
-        if (frameCount >= 60*8 && frameCount <= 60*14) {
+        if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
             saveFrame(captureDir + "####.jpg");
         }
         gui();
     }
 
     private void updateDrawStars(float t) {
-        int starCount = 5000;
+        int starCount = 3000;
         while (stars.size() < starCount) {
             stars.add(new Star());
         }
@@ -54,8 +54,8 @@ public class Stars extends GuiSketch {
         private float lastZ;
 
         Star() {
-            float x = randomGaussian() * width*.5f;
-            float y = randomGaussian() * width*.5f;
+            float x = randomGaussian() * width * .5f;
+            float y = randomGaussian() * width * .5f;
             pos = new PVector(x, y, random(depth));
             lastZ = pos.z;
         }
