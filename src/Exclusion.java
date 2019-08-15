@@ -2,10 +2,10 @@ import applet.GuiSketch;
 import processing.opengl.PShader;
 
 public class Exclusion extends GuiSketch {
-    private float t;
-    private PShader fxaa;
     float tRecStart = -1;
     float tRecFinish = -1;
+    private float t;
+    private PShader fxaa;
 
     public static void main(String[] args) {
         GuiSketch.main("Exclusion");
@@ -32,20 +32,29 @@ public class Exclusion extends GuiSketch {
             float r = map(rIndex, 0, rings - 1, 0, width);
             int aCount = floor(slider("a count", 50));
             for (int aIndex = 0; aIndex < aCount; aIndex++) {
-                if(rIndex%2==0){
-                    blendMode(ADD);
-                }
-                else{
-                    blendMode(SUBTRACT);
+                if (toggle("ADD/SUB")) {
+                    if (rIndex % 2 == 0) {
+                        blendMode(ADD);
+                    } else {
+                        blendMode(SUBTRACT);
+                    }
+                } else {
+                    blendMode(EXCLUSION);
                 }
                 float a = map(aIndex, 0, aCount, 0, TWO_PI);
-                float x = r*cos(a);
-                float y = r*sin(a);
-                float d = (r/width)*slider("hue dist", 20);
-                fill(d%1, slider("s",0,1,1), slider("b",0,1,.1f));
-                float timeRadius = slider("time radius", 360);
-                float size = slider("timeBase",1000)+timeRadius*sin(t);
-                ellipse(x,y, size,size);
+                float x = r * cos(a);
+                float y = r * sin(a);
+                float d = (r / width) * slider("hue", 20);
+
+                fill(d % 1, slider("saturation", 0, 1, 1), slider("brightness", 0, 1, .1f));
+
+                float size = slider("radius", 1000);
+                if (toggle("cycle")) {
+                    size += slider("cycle start", 1000) + slider("cycle speed", 360) * sin(t);
+                } else {
+                    size += slider("linear speed", 20) * t;
+                }
+                ellipse(x, y, size, size);
             }
         }
 
