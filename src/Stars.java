@@ -15,7 +15,7 @@ public class Stars extends GuiSketch {
     }
 
     public void settings() {
-        size(1920, 800, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -47,7 +47,7 @@ public class Stars extends GuiSketch {
 
     class Star {
         PVector pos;
-        float weight = 1 + abs(randomGaussian());
+        float weight = 1.5f + abs(randomGaussian());
 
         private float fadeInDuration = 30;
         float fadeInStarted = -fadeInDuration * 2;
