@@ -1,6 +1,7 @@
 import applet.GuiSketch;
 
 public class Eye extends GuiSketch {
+
     public static void main(String[] args) {
         GuiSketch.main("Eye");
     }
@@ -10,14 +11,15 @@ public class Eye extends GuiSketch {
     }
 
     public void setup() {
-
+        colorMode(HSB, 1, 1, 1, 1);
     }
+
     float t;
     float tMod;
     float frameStartedRec = -1;
     float frameRecordingEnds = -1;
 
-    public void keyPressed(){
+    public void keyPressed() {
         frameStartedRec = frameCount;
         frameRecordingEnds = frameStartedRec + 360 / tMod;
     }
@@ -25,43 +27,34 @@ public class Eye extends GuiSketch {
     public void draw() {
         tMod = slider("t", 5);
         t += radians(tMod);
-        background(0);
+        background(.2f);
 
-        float aCount = slider("a count", 800);
-        float aStep = slider("a step", 6);
-        stroke(255);
-        strokeWeight(1);
-        noFill();
-        beginShape();
-        for(int i = 0; i < aCount; i++){
-            float a = i*aStep+t;
-            float r = slider("r", 500);
-            vertex(width*.5f+r*cos(a), height*.5f+ r*sin(a));
-        }
-        endShape();
+        translate(width*.5f, height*.5f);
 
         noStroke();
-        int yCount = floor(slider("yCount", 80));
-        float barHeight = width/(float)yCount;
-        for(int yIndex = 0; yIndex < yCount; yIndex++){
-            float y = map(yIndex, 0, yCount-1, 0, height);
+        fill(1);
+        int borderCount = 1000;
+        float w = slider("w", 20);
+        for(int lidIndex = 0; lidIndex < 2; lidIndex++){
             beginShape(TRIANGLE_STRIP);
-            for(int x = -10; x < width+10; x+=5){
-                float yDist = 1 - abs(width*.5f-x)*2 / width;
-                yDist = ease(yDist, slider("dist ease", 0, 6, 2));
-                if(y < height*.5f){
-                    yDist = -yDist;
+            for (int borderIndex = 0; borderIndex < borderCount; borderIndex++) {
+                float n = map(borderIndex, 0, borderCount, 0, 1);
+                float d = 1-abs(.5f-n)*2;
+                float x = map(borderIndex, 0, borderCount-1, -300,300);
+                float y = ease(d, slider("shape ease", 5))
+                        * slider("d", 200)
+                        * ease(constrain(abs(2*sin(t)), 0, 1), slider("open ease", 10));
+
+                if(lidIndex == 0){
+                    y = -y;
                 }
-                float finalY = y + yDist * ease(.5f+.5f*sin(t), slider("open ease", 10) )*slider("yDist range", 200);
-                float centerDist = 1-map(dist(x,finalY, width*.5f, height*.5f), 0, width*.5f, 0, 1);
-                fill(abs(yCount/2-yIndex)%2==0?255*centerDist:0);
-                vertex(x,finalY);
-                vertex(x,finalY+barHeight+5);
+                vertex(x,y-w/2);
+                vertex(x,y+w/2);
             }
             endShape();
         }
 
-        if(frameCount > frameStartedRec && frameCount <= frameRecordingEnds){
+        if (frameCount > frameStartedRec && frameCount <= frameRecordingEnds) {
             saveFrame(captureDir + "####.jpg");
         }
 
