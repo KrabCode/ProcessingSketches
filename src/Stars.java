@@ -1,14 +1,16 @@
 import applet.GuiSketch;
 import peasy.PeasyCam;
 import processing.core.PVector;
+import processing.opengl.PShader;
 
 import java.util.ArrayList;
 
 public class Stars extends GuiSketch {
-    ArrayList<Star> stars = new ArrayList<Star>();
-    PeasyCam cam;
-    int bgDark;
-    private final float depth = 2000;
+    private ArrayList<Star> stars = new ArrayList<Star>();
+    private PeasyCam cam;
+    private int bgDark;
+    private PShader rgbSplit;
+    private float depth;
 
     public static void main(String[] args) {
         GuiSketch.main("Stars");
@@ -19,9 +21,9 @@ public class Stars extends GuiSketch {
     }
 
     public void setup() {
-        super.setup();
         bgDark = color(0, 0);
-
+        rgbSplit = loadShader("rgbSplit.glsl");
+        depth = width;
         cam = new PeasyCam(this, depth);
     }
 
@@ -30,8 +32,11 @@ public class Stars extends GuiSketch {
         float t = radians(frameCount);
         updateDrawStars(t);
         if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
-            saveFrame(captureDir + "####.jpg");
+            //  saveFrame(captureDir + "####.jpg");
         }
+        rgbSplit.set("strength", slider("strength", .005f));
+        rgbSplit.set("easing", slider("easing", 2));
+        filter(rgbSplit);
         gui();
     }
 
@@ -43,6 +48,10 @@ public class Stars extends GuiSketch {
         for (Star s : stars) {
             s.update(t);
         }
+    }
+
+    public void keyPressed() {
+        saveFrame(captureDir + "####.jpg");
     }
 
     class Star {
