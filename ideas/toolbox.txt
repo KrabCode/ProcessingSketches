@@ -26,3 +26,6 @@
 - Shaders
     - Tiling
     - FBM landscapes
+- Shader filters
+    - RGB split
+    - Blur

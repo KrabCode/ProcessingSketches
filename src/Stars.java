@@ -31,12 +31,12 @@ public class Stars extends GuiSketch {
         background(bgDark);
         float t = radians(frameCount);
         updateDrawStars(t);
-        if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
-            //  saveFrame(captureDir + "####.jpg");
-        }
         rgbSplit.set("strength", slider("strength", .005f));
         rgbSplit.set("easing", slider("easing", 2));
         filter(rgbSplit);
+        if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
+//            saveFrame(captureDir + "####.jpg");
+        }
         gui();
     }
 
