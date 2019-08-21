@@ -11,10 +11,9 @@ public class Islamic extends GuiSketch {
     private ArrayList<PImage> images = new ArrayList<PImage>();
     private ArrayList<PImage> imagesToReset = new ArrayList<>();
     private int imageCount = 6;
-
     private PVector off;
     private float t;
-    private float size = 1920 / 10;
+    private float size = 1920 / 15;
     private float w = size * 2;
     private float h = sqrt(3) * size;
     private float xstep = w * (3 / 4f);
@@ -22,7 +21,11 @@ public class Islamic extends GuiSketch {
     private int hexCountX;
     private int hexCountY;
     private float equilateralTriangleHeight = sqrt(3) / 2;
-    private int frameStartedRec = -1;
+
+    private float frameRecStart = -1;
+    private float frameRecFinish;
+    private float timeMultiplier = 3;
+
     private String randomImageUrl;
 
     public static void main(String[] args) {
@@ -42,15 +45,15 @@ public class Islamic extends GuiSketch {
     }
 
     public void draw() {
-        t += radians(1 / 4f);
+        t += radians(1/timeMultiplier);
         background(0);
         updateTexture();
         drawHexagonGrid();
 
-        int recordingDuration = 360 * 4;
-        if (frameStartedRec > 0 && frameCount < frameStartedRec + recordingDuration) {
+        if (frameRecStart > 0 && frameCount <= frameRecFinish) {
             saveFrame(captureDir + "####.jpg");
         }
+
         float w = (width / (float) imageCount);
         for (PImage img : images) {
             int i = images.indexOf(img);
@@ -72,7 +75,8 @@ public class Islamic extends GuiSketch {
 
 
         stroke(255, 0, 0);
-        float lineX = map(t % imageCount, 0, imageCount - 1, 0, width);
+        float lineX = t % TWO_PI;
+        lineX = map(lineX, 0, TWO_PI, 0, width);
         line(lineX, 0, lineX, w);
 
         drawTextureForDebugging();
@@ -86,7 +90,8 @@ public class Islamic extends GuiSketch {
 
     public void keyPressed() {
         if (key == 'k') {
-            frameStartedRec = frameCount;
+            frameRecStart = frameCount;
+            frameRecFinish = frameRecStart + 360 * timeMultiplier;
         }
         if (key == 'r') {
             reset();
@@ -94,7 +99,7 @@ public class Islamic extends GuiSketch {
     }
 
 
-    void reset() {
+    private void reset() {
         randomImageUrl = "https://picsum.photos/" + floor(size * 2) + ".jpg";
         images.clear();
         for (int i = 0; i < imageCount; i++) {
@@ -104,7 +109,7 @@ public class Islamic extends GuiSketch {
         off = new PVector();
     }
 
-    void drawHexagonGrid() {
+    private void drawHexagonGrid() {
         for (float xi = -hexCountX / 2; xi <= hexCountX / 2f; xi++) {
             for (float yi = -hexCountY / 2; yi <= hexCountY / 2f; yi++) {
                 float x = width / 2f + xi * xstep;
@@ -120,7 +125,7 @@ public class Islamic extends GuiSketch {
         }
     }
 
-    void drawHexagon() {
+    private void drawHexagon() {
         int cornerCount = 6;
         for (int triangleIndex = 0; triangleIndex <= cornerCount; triangleIndex++) {
             float angle0 = map(triangleIndex, 0, cornerCount, 0, TWO_PI);
@@ -147,10 +152,11 @@ public class Islamic extends GuiSketch {
         }
     }
 
-    void updateTexture() {
-        float srcPos = (t) % imageCount;
-        int srcIndex = floor(srcPos) % imageCount;
-        int srcNext = ceil(srcPos) % imageCount;
+    private void updateTexture() {
+        float srcPos = t % TWO_PI;
+        srcPos = map(srcPos, 0, TWO_PI, 0, imageCount);
+        int srcIndex = floor(srcPos)%imageCount;
+        int srcNext = ceil(srcPos)%imageCount;
         float srcFract = srcPos % 1;
         float w = tex.width;
         float h = tex.height;
@@ -167,7 +173,7 @@ public class Islamic extends GuiSketch {
         tex.endDraw();
     }
 
-    void drawTextureForDebugging() {
+    private void drawTextureForDebugging() {
         pushMatrix();
         translate(width - tex.width * .6f, width - tex.height * .6f);
         rectMode(CENTER);
