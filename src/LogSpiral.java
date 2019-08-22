@@ -6,8 +6,9 @@ public class LogSpiral extends GuiSketch {
     private float t;
 
     private float e = 2.71828182845904523536028747135266249775724709369995f;
-    int framesToCapture = 360;
-    int saveEnds = -1;
+    float framesToCapture = 360;
+    float saveEnds = -1;
+    float armCount;
     private PShader rgbSplit;
 
     public static void main(String[] args) {
@@ -33,7 +34,7 @@ public class LogSpiral extends GuiSketch {
         noFill();
         stroke(255);
         strokeWeight(slider("weight", 0, 3));
-        int armCount = floor(slider("arm count", 1, 10));
+        armCount = floor(slider("arm count", 1, 10));
         int count = floor(slider("point count", 500));
         float maxAngle = slider("max angle", 6);
         beginShape(LINES);
@@ -66,7 +67,7 @@ public class LogSpiral extends GuiSketch {
     }
 
     public void keyPressed() {
-        saveEnds = frameCount + framesToCapture + 1;
+        saveEnds = frameCount + framesToCapture/(armCount-1);
     }
 
     private PVector getPosOnLogSpiral(float ni, float armi, float a, float b, float maxAngle) {
