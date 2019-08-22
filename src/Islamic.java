@@ -166,7 +166,7 @@ public class Islamic extends GuiSketch {
         tex.imageMode(CENTER);
         tex.translate(w / 2, h / 2);
         tex.rotate(t);
-        tex.tint(1, 1 - srcFract);
+        tex.tint(1, 1);
         tex.image(images.get(srcIndex), off.x, off.y);
         tex.tint(1, srcFract);
         tex.image(images.get(srcNext), off.x, off.y);
