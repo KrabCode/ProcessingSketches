@@ -3,13 +3,14 @@ import processing.core.PVector;
 import processing.opengl.PShader;
 
 public class LogSpiral extends GuiSketch {
-    private float t;
-
-    private float e = 2.71828182845904523536028747135266249775724709369995f;
-    float framesToCapture = 360;
+    float framesPerRevolution = 360;
+    float saveStarts = -1;
     float saveEnds = -1;
     float armCount;
+    private float t;
+    private float e = 2.71828182845904523536028747135266249775724709369995f;
     private PShader rgbSplit;
+    private boolean keyWasPressed;
 
     public static void main(String[] args) {
         GuiSketch.main("LogSpiral");
@@ -20,14 +21,18 @@ public class LogSpiral extends GuiSketch {
     }
 
     public void setup() {
-
         rgbSplit = loadShader("rgbSplit.glsl");
     }
 
     public void draw() {
-        framesToCapture = floor(slider("frames", 600));
-        t = (toggle("forward")?-1:1)  * map(frameCount, 0, framesToCapture, 0, TWO_PI);
-        t %= TWO_PI;
+        boolean keyJustReleased = keyWasPressed && !keyPressed;
+        keyWasPressed = keyPressed;
+        if (keyJustReleased) {
+            saveStarts = frameCount;
+            saveEnds = frameCount + framesPerRevolution / (armCount - 1);
+        }
+        framesPerRevolution = floor(slider("frames", 600));
+        t = (toggle("forward") ? -1 : 1) * map(frameCount, 0, framesPerRevolution / (armCount - 1), 0, TWO_PI / (armCount - 1));
 
         background(0);
         translate(width * .5f, height * .5f);
@@ -39,15 +44,15 @@ public class LogSpiral extends GuiSketch {
         float maxAngle = slider("max angle", 6);
         beginShape(LINES);
         for (int arm = 0; arm < armCount; arm++) {
-            float normalArm = norm(arm, 0, armCount - 1);
-            float normalArmNext = norm(arm - 1, 0, armCount - 1);
+            float normArm = norm(arm, 0, armCount - 1);
+            float normArmNext = norm(arm - 1, 0, armCount - 1);
             pushMatrix();
             for (int i = 0; i < count; i++) {
                 float a = slider("a");
                 float b = slider("b", 2);
-                float ni = norm(i, 0, count - 1);
-                PVector v0 = getPosOnLogSpiral(ni, normalArm, a, b, maxAngle);
-                PVector v1 = getPosOnLogSpiral(ni, normalArmNext, a, b, maxAngle);
+                float normIndex = norm(i, 0, count - 1);
+                PVector v0 = getPosOnLogSpiral(normIndex, normArm, a, b, maxAngle);
+                PVector v1 = getPosOnLogSpiral(normIndex, normArmNext, a, b, maxAngle);
                 vertex(v0.x, v0.y);
                 vertex(v1.x, v1.y);
             }
@@ -61,19 +66,16 @@ public class LogSpiral extends GuiSketch {
 
         if (frameCount <= saveEnds) {
             saveFrame(captureDir + "####.jpg");
+            println(t);
         }
 
         gui();
     }
 
-    public void keyPressed() {
-        saveEnds = frameCount + framesToCapture/(armCount-1);
-    }
-
-    private PVector getPosOnLogSpiral(float ni, float armi, float a, float b, float maxAngle) {
-        float angle = ni * TWO_PI * maxAngle;
+    private PVector getPosOnLogSpiral(float normIndex, float normArm, float a, float b, float maxAngle) {
+        float angle = normIndex * TWO_PI * maxAngle;
         float r = pow(a * e, b * angle);
-        angle += armi * TWO_PI;
+        angle += normArm * TWO_PI;
         angle += t;
         return new PVector(r * cos(angle), r * sin(angle));
     }
