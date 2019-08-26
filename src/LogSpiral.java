@@ -4,14 +4,14 @@ import processing.opengl.PShader;
 
 public class LogSpiral extends GuiSketch {
 
-    private float saveStarts = -1;
-    private float saveDuration = 120;
-
+    float t = 0;
+    private float saveStarts = 0;
+    private float saveDuration = 0;
     private float armCount;
-    private float pct;
     private float e = 2.71828182845904523536028747135266249775724709369995f;
     private PShader rgbSplit;
     private boolean keyWasPressed;
+
 
     public static void main(String[] args) {
         GuiSketch.main("LogSpiral");
@@ -26,20 +26,21 @@ public class LogSpiral extends GuiSketch {
     }
 
     public void draw() {
-        saveDuration = slider("frames", 240);
         boolean keyJustReleased = keyWasPressed && !keyPressed;
         keyWasPressed = keyPressed;
         if (keyJustReleased) {
             saveStarts = frameCount;
+            saveDuration = 360;
         }
-        pct = map(frameCount, 0, saveDuration, 0, 1);
+
+        t += radians(1);
 
         background(0);
         translate(width * .5f, height * .5f);
         noFill();
         stroke(255);
-        strokeWeight(slider("weight", 0, 3));
-        armCount = floor(slider("arm count", 1, 10));
+        strokeWeight(slider("weight", 0, 2));
+        armCount = floor(slider("arm count", 5, 10));
         int count = floor(slider("point count", 500));
         float maxAngle = slider("max angle", 6);
         beginShape(LINES);
@@ -75,7 +76,7 @@ public class LogSpiral extends GuiSketch {
         float angle = normIndex * TWO_PI * maxAngle;
         float r = pow(a * e, b * angle);
         angle += normArm * TWO_PI;
-        angle += pct*TWO_PI/(armCount-1);
+        angle -= t;
         return new PVector(r * cos(angle), r * sin(angle));
     }
 }

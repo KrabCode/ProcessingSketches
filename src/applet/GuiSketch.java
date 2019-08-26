@@ -17,10 +17,13 @@ public abstract class GuiSketch extends PApplet {
 
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
-
     protected String regenId() {
         return this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     }
+
+    //TODO improve the user experience
+    //  - lock sliders that are not being dragged
+    //  - do not let mouse affect the sketch while over gui
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();

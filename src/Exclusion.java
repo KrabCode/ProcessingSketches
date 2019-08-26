@@ -12,8 +12,8 @@ public class Exclusion extends GuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P2D);
-//        fullScreen(P2D);
+//        size(800, 800, P2D);
+        fullScreen(P2D);
     }
 
     public void setup() {

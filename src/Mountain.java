@@ -6,28 +6,28 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-// Do not rename class Mountain
+// Do not rename or move class Mountain
 // for it has been shared online
 // and people would not find it
 public class Mountain extends ShadowGuiSketch {
-    float t;
-    PeasyCam cam;
-    ArrayList<Star> stars = new ArrayList<Star>();
-    float baseWidth;
-    float baseDepth;
-    float maxAltitude;
-    float sunDist;
-    float detail = 60;
-    float[][] fbmGrid = new float[floor(detail)][floor(detail)];
-    float[][] noiseGrid = new float[floor(detail)][floor(detail)];
-    int dayColor = color(85, 97, 150);
-    int nightColor = color(0);
-    float tRecStart = -1;
-    float tRecFinish = -1;
-    float freq = 0;
-    float amp = 0;
-    float freqMod = 0;
-    float ampMod = 0;
+    private float t;
+    private PeasyCam cam;
+    private ArrayList<Star> stars = new ArrayList<Star>();
+    private float baseWidth;
+    private float baseDepth;
+    private float maxAltitude;
+    private float sunDist;
+    private float detail = 60;
+    private float[][] fbmGrid = new float[floor(detail)][floor(detail)];
+    private float[][] noiseGrid = new float[floor(detail)][floor(detail)];
+    private int dayColor = color(85, 97, 150);
+    private int nightColor = color(0);
+    private float tRecStart = -1;
+    private float tRecFinish = -1;
+    private float freq = 0;
+    private float amp = 0;
+    private float freqMod = 0;
+    private float ampMod = 0;
     private float nightBlackout;
     private float rockFrq;
 
@@ -178,7 +178,7 @@ public class Mountain extends ShadowGuiSketch {
         return val;
     }
 
-    void resetFbmGrid() {
+    private void resetFbmGrid() {
         fbmGrid = new float[ceil(detail)][ceil(detail)];
         for (int i = 0; i < detail; i++) {
             for (int j = 0; j < detail; j++) {
@@ -187,7 +187,7 @@ public class Mountain extends ShadowGuiSketch {
         }
     }
 
-    float getFbmAt(int x, int y) {
+    private float getFbmAt(int x, int y) {
         if (x < 0 || x >= fbmGrid.length || y < 0 || y >= fbmGrid.length) {
             return 0;
         }
@@ -199,7 +199,7 @@ public class Mountain extends ShadowGuiSketch {
         return val;
     }
 
-    float fbm(float x, float y) {
+    private float fbm(float x, float y) {
         float sum = 0;
         float amp = this.amp;
         float freq = this.freq;

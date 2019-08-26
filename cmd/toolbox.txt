@@ -1,26 +1,27 @@
+
+
+
 - Fractal Brownian Motion
-    - Caching results to improve fps
+    - Cache static stuff to improve fps
 - Acceleration
     - Flocking
 - Fading
 - Noise
     - 4D noise
     - Simplex noise
-- Post FX
-    - Bloom
-    - Chromatic Aberration
 - Rectangular grids
     - Planes from triangle strips
-- Hexagonal grids
+    - Hexagonal grids
 - Primitive 3D shapes
 - Image tiling
 - Landscape generation
     - Mountain
     - Island
-- Shadows (mobile only)
-- Pixel sorting
+
+- Shadows (desktop only)
+- Audio input (desktop only)
+
 - Collisions between objects
-- Audio input
 - Perfect loop
 - ffmpeg
 - Shaders
@@ -28,4 +29,8 @@
     - FBM landscapes
 - Shader filters
     - RGB split
-    - Blur
+- Backbuffer
+    - Pixel sorting
+- Post FX
+    - Bloom
+    - Chromatic Aberration
