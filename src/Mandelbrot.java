@@ -11,7 +11,6 @@ public class Mandelbrot extends GuiSketch {
     // TODO also try motion blur maybe
 
     private PShader mandelbrot;
-    private PShader blur;
     private PVector cameraPos;
 
     private float scale = 1;
@@ -36,7 +35,6 @@ public class Mandelbrot extends GuiSketch {
     public void setup() {
         canvas = createGraphics(width * 2, height * 2, P2D);
         mandelbrot = loadShader("mandelbrot.glsl");
-        blur = loadShader("blur.glsl");
         cameraPos = new PVector();
     }
 
