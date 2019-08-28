@@ -7,15 +7,10 @@ import processing.opengl.PShader;
 
 public class Mandelbrot extends GuiSketch {
 
-    // TODO record higher resolution, blur and then render smaller video
-    // TODO also try motion blur maybe
-
     private PShader mandelbrot;
     private PVector cameraPos;
-
     private float scale = 1;
     private float scaleTarget = 1;
-
     float t;
     private boolean recording;
     private float recStart;
