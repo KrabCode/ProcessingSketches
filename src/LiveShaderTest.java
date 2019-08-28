@@ -1,5 +1,4 @@
 import applet.GuiSketch;
-import peasy.PeasyCam;
 import processing.opengl.PShader;
 
 import java.io.File;
@@ -8,46 +7,53 @@ import java.util.ArrayList;
 import static java.lang.System.currentTimeMillis;
 
 public class LiveShaderTest extends GuiSketch {
+    ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
+    int refreshRateInMillis = 100;
+
     public static void main(String[] args) {
-        GuiSketch.main("ShaderTest");
+        GuiSketch.main("LiveShaderTest");
     }
 
     public void settings() {
-        size(800, 800, P3D);
+        size(800, 800, P2D);
     }
 
+/* the following code can hotswap the shader as you edit it as long as you change the lastModified timestamp of the file in your editor (try CTRL+S)
+//
+// USAGE: call hotFilter or hotShader once in the draw function to
+//    - a) apply the current filter/shader and
+//    - b) obtain a current reference to the shader and set your uniforms to it
+*/
+
     public void setup() {
-        new PeasyCam(this, 600);
 
     }
 
     public void draw() {
-        background(0);
-        noFill();
-        strokeWeight(10);
-        stroke(255);
-        box(200);
-        liveShader("rgbSplit.glsl").set("strength", slider("strength", .005f));
-        liveShader("rgbSplit.glsl").set("easing", slider("easing", 2));
-        filter(liveShader("rgbSplit.glsl"));
-        gui();
+        //TODO why can't I set the uniform?
+        hotFilter("frag.glsl").set("time", radians(frameCount));
+        hotFilter("frag.glsl");
     }
 
-    ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 1000;
+    public PShader hotFilter(String path) {
+        return hotShader(path, true);
+    }
 
-    private PShader liveShader(String path) {
-        ShaderSnapshot shader = findShaderByPath(path);
-        if (shader == null) {
-            shader = new ShaderSnapshot(path);
-            snapshots.add(shader);
-            println("new shader");
+    public PShader hotShader(String path) {
+        return hotShader(path, false);
+    }
+
+    private PShader hotShader(String path, boolean filter) {
+        ShaderSnapshot snapshot = findSnapshotByPath(path);
+        if (snapshot == null) {
+            snapshot = new ShaderSnapshot(path);
+            snapshots.add(snapshot);
         }
-        shader.update();
-        return shader.compiledShader;
+        snapshot.update(filter);
+        return snapshot.compiledShader;
     }
 
-    private ShaderSnapshot findShaderByPath(String path) {
+    private ShaderSnapshot findSnapshotByPath(String path) {
         for (ShaderSnapshot snapshot : snapshots) {
             if (snapshot.path.equals(path)) {
                 return snapshot;
@@ -61,36 +67,42 @@ public class LiveShaderTest extends GuiSketch {
         PShader compiledShader;
         File shaderFile;
         long lastKnownModified = -refreshRateInMillis;
+        long lastKnownUncompilable = -refreshRateInMillis;
         long lastChecked = -refreshRateInMillis;
 
         ShaderSnapshot(String filename) {
             compiledShader = loadShader(filename);
-            shaderFile = new File(dataPath(filename));
-            if (!shaderFile.exists()) {
-                shaderFile = sketchFile(filename);
-            }
-
-            if (!shaderFile.exists()) {
-                //TODO make file exist
-                println("file does not exist");
+            shaderFile = dataFile(filename);
+            String filePath = shaderFile.getPath();
+            lastChecked = currentTimeMillis();
+            if (shaderFile.isFile()) {
+                //println(filePath + " was found and is now being checked for changes every " + refreshRateInMillis + " ms.");
+            } else {
+                println("Could not find shader at " + filePath + ", please adjust the actual file path");
             }
             this.path = filename;
         }
 
-        void update() {
+        void update(boolean filter) {
             long currentTimeMillis = currentTimeMillis();
             if (currentTimeMillis < lastChecked + refreshRateInMillis) {
                 return;
             }
             lastChecked = currentTimeMillis;
             long lastModified = shaderFile.lastModified();
-            println("checked " + lastModified + " > " + lastKnownModified);
-            if (lastModified > lastKnownModified) {
+            if (lastModified > lastKnownModified && lastModified > lastKnownUncompilable) {
                 try {
-                    compiledShader = loadShader(path);
+                    PShader recentCandidate = loadShader(path);
+                    // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
+                    if (filter) {
+                        filter(recentCandidate);
+                    } else {
+                        shader(recentCandidate);
+                    }
+                    compiledShader = recentCandidate;
                     lastKnownModified = lastModified;
-                    println("reloaded");
                 } catch (Exception ex) {
+                    lastKnownUncompilable = lastModified;
                     println(ex.getMessage());
                 }
             }
