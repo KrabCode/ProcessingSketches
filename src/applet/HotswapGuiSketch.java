@@ -1,5 +1,6 @@
 package applet;
 
+import processing.core.PGraphics;
 import processing.opengl.PShader;
 
 import java.io.File;
@@ -7,18 +8,31 @@ import java.util.ArrayList;
 
 import static java.lang.System.currentTimeMillis;
 
-public class HotswapGuiSketch extends GuiSketch {
-
-    public void setup(){
-
-    }
-
-    public void draw(){
-
-    }
+/**
+ * A sketch extending this class can apply changes to shaders as you edit the shader file
+ * <p>
+ * - use uniform() to get a reference to the shader file in order to pass uniforms to it
+ * - use hotFilter() and hotShader() to apply your last compilable shader as filter or shader respectively
+ * - no need to call loadShader() manually at all
+ * <p>
+ * - you have to actually change the last modified timestamp of the file, (try CTRL+S)
+ * - the results of any compilation errors will be printed to standard processing console
+ * - only supports fragment shaders
+ * <p>
+ * TODO support vertex shaders too, refresh when either file gets updated
+ */
+public abstract class HotswapGuiSketch extends GuiSketch {
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 20;
+
+    public void setup() {
+
+    }
+
+    public void draw() {
+
+    }
 
     public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
@@ -26,18 +40,27 @@ public class HotswapGuiSketch extends GuiSketch {
         return snapshot.compiledShader;
     }
 
+
+    public void hotFilter(String path, PGraphics canvas) {
+        hotShader(path, true, canvas);
+    }
+
+    public void hotShader(String path, PGraphics canvas) {
+        hotShader(path, false, canvas);
+    }
+
     public void hotFilter(String path) {
-        hotShader(path, true);
+        hotShader(path, true, g);
     }
 
     public void hotShader(String path) {
-        hotShader(path, false);
+        hotShader(path, false, g);
     }
 
-    private void hotShader(String path, boolean filter) {
+    private void hotShader(String path, boolean filter, PGraphics canvas) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
         snapshot = initIfNull(snapshot, path);
-        snapshot.update(filter);
+        snapshot.update(filter, canvas);
     }
 
     private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String path) {
@@ -79,10 +102,10 @@ public class HotswapGuiSketch extends GuiSketch {
             this.path = filename;
         }
 
-        void update(boolean filter) {
+        void update(boolean filter, PGraphics pg) {
             long currentTimeMillis = currentTimeMillis();
             if (currentTimeMillis < lastChecked + refreshRateInMillis) {
-                applyShader(compiledShader, filter);
+                applyShader(compiledShader, filter, pg);
                 return;
             }
             lastChecked = currentTimeMillis;
@@ -91,24 +114,23 @@ public class HotswapGuiSketch extends GuiSketch {
                 try {
                     PShader recentCandidate = loadShader(path);
                     // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
-                    applyShader(recentCandidate, filter);
+                    applyShader(recentCandidate, filter, pg);
                     compiledShader = recentCandidate;
                     lastKnownModified = lastModified;
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     lastKnownUncompilable = lastModified;
                     println(ex.getMessage());
                 }
-            } else{
-                applyShader(compiledShader, filter);
+            } else {
+                applyShader(compiledShader, filter, pg);
             }
         }
 
-        private void applyShader(PShader shader, boolean filter) {
+        private void applyShader(PShader shader, boolean filter, PGraphics pg) {
             if (filter) {
-                filter(shader);
+                pg.filter(shader);
             } else {
-                shader(shader);
+                pg.shader(shader);
             }
         }
 

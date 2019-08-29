@@ -29,7 +29,7 @@ float mandelbrot(vec2 c){
     while (i++ < iter){
         float x = (z.x * z.x - z.y * z.y) + c.x;
         float y = (z.y * z.x + z.x * z.y) + c.y;
-        if (pow(x+y, 2.) > 4.){
+        if (pow(x+y, 2.) > 10.){
             break;
         }
         z = vec2(x, y);

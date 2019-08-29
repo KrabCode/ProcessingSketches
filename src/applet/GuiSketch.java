@@ -5,6 +5,21 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
+/**
+ * A sketch extending this class can use concise to invoke, easy to use control elements in a collapsible tray
+ *
+ *  - use slider(), toggle() or button() anywhere in draw() any number of times (yes, even inside loops) to
+ *      - register a single uniquely named control element
+ *      - get its current value
+ *
+ *  - call gui() at the end of draw() to display all of the gui elements called in that draw() in a tray
+ *      - click on the left arrow "<" to hide it, click the cog to show it
+ *      - the cog fades away but it's still there, you can click on it
+ *
+ *  TODO improve the user experience
+ *     - lock sliders that are not being dragged
+ *     - do not let mouse affect the sketch while over gui
+ */
 public abstract class GuiSketch extends PApplet {
 
     public void setup(){
@@ -22,10 +37,6 @@ public abstract class GuiSketch extends PApplet {
         id = newId;
         return newId;
     }
-
-    //TODO improve the user experience
-    //  - lock sliders that are not being dragged
-    //  - do not let mouse affect the sketch while over gui
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
@@ -60,9 +71,6 @@ public abstract class GuiSketch extends PApplet {
         allElements.clear();
     }
 
-    /**
-     * gui() needs to be called at the end of draw()
-     */
     protected void gui() {
         gui(true);
     }
