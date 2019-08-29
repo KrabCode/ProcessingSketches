@@ -51,7 +51,7 @@ public class Lorenz extends GuiSketch {
 
         beginShape();
         noFill();
-        strokeWeight(slider("weight", 1, 5));
+        strokeWeight(slider("weight", 0, 3));
         for(Point p : path){
             stroke(p.color);
             vertex(p.pos.x, p.pos.y, p.pos.z);
