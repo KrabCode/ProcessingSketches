@@ -18,7 +18,9 @@ public abstract class GuiSketch extends PApplet {
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
     protected String regenId() {
-        return this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+        String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
+        id = newId;
+        return newId;
     }
 
     //TODO improve the user experience
@@ -375,6 +377,9 @@ public abstract class GuiSketch extends PApplet {
         }
         if (!mousePressed) {
             extensionTogglePressedLastFrame = false;
+        }
+        if(alpha < .01f){
+            return;
         }
         beginShape();
         for (int i = 0; i < vertexCount; i++) {

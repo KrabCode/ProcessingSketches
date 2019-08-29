@@ -18,7 +18,7 @@ public class HotswapGuiSketch extends GuiSketch {
     }
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 100;
+    int refreshRateInMillis = 20;
 
     public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
