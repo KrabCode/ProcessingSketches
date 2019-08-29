@@ -1,4 +1,5 @@
-import applet.GuiSketch;
+package applet;
+
 import processing.opengl.PShader;
 
 import java.io.File;
@@ -6,51 +7,45 @@ import java.util.ArrayList;
 
 import static java.lang.System.currentTimeMillis;
 
-public class LiveShaderTest extends GuiSketch {
+public class HotswapGuiSketch extends GuiSketch {
+
+    public void setup(){
+
+    }
+
+    public void draw(){
+
+    }
+
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 100;
 
-    public static void main(String[] args) {
-        GuiSketch.main("LiveShaderTest");
-    }
-
-    public void settings() {
-        size(800, 800, P2D);
-    }
-
-/* the following code can hotswap the shader as you edit it as long as you change the lastModified timestamp of the file in your editor (try CTRL+S)
-//
-// USAGE: call hotFilter or hotShader once in the draw function to
-//    - a) apply the current filter/shader and
-//    - b) obtain a current reference to the shader and set your uniforms to it
-*/
-
-    public void setup() {
-
-    }
-
-    public void draw() {
-        //TODO why can't I set the uniform?
-        hotFilter("frag.glsl").set("time", radians(frameCount));
-        hotFilter("frag.glsl");
-    }
-
-    public PShader hotFilter(String path) {
-        return hotShader(path, true);
-    }
-
-    public PShader hotShader(String path) {
-        return hotShader(path, false);
-    }
-
-    private PShader hotShader(String path, boolean filter) {
+    public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
+        snapshot = initIfNull(snapshot, path);
+        return snapshot.compiledShader;
+    }
+
+    public void hotFilter(String path) {
+        hotShader(path, true);
+    }
+
+    public void hotShader(String path) {
+        hotShader(path, false);
+    }
+
+    private void hotShader(String path, boolean filter) {
+        ShaderSnapshot snapshot = findSnapshotByPath(path);
+        snapshot = initIfNull(snapshot, path);
+        snapshot.update(filter);
+    }
+
+    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String path) {
         if (snapshot == null) {
             snapshot = new ShaderSnapshot(path);
             snapshots.add(snapshot);
         }
-        snapshot.update(filter);
-        return snapshot.compiledShader;
+        return snapshot;
     }
 
     private ShaderSnapshot findSnapshotByPath(String path) {
@@ -62,7 +57,7 @@ public class LiveShaderTest extends GuiSketch {
         return null;
     }
 
-    class ShaderSnapshot {
+    private class ShaderSnapshot {
         String path;
         PShader compiledShader;
         File shaderFile;
@@ -73,6 +68,7 @@ public class LiveShaderTest extends GuiSketch {
         ShaderSnapshot(String filename) {
             compiledShader = loadShader(filename);
             shaderFile = dataFile(filename);
+            lastKnownModified = shaderFile.lastModified();
             String filePath = shaderFile.getPath();
             lastChecked = currentTimeMillis();
             if (shaderFile.isFile()) {
@@ -86,6 +82,7 @@ public class LiveShaderTest extends GuiSketch {
         void update(boolean filter) {
             long currentTimeMillis = currentTimeMillis();
             if (currentTimeMillis < lastChecked + refreshRateInMillis) {
+                applyShader(compiledShader, filter);
                 return;
             }
             lastChecked = currentTimeMillis;
@@ -94,18 +91,26 @@ public class LiveShaderTest extends GuiSketch {
                 try {
                     PShader recentCandidate = loadShader(path);
                     // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
-                    if (filter) {
-                        filter(recentCandidate);
-                    } else {
-                        shader(recentCandidate);
-                    }
+                    applyShader(recentCandidate, filter);
                     compiledShader = recentCandidate;
                     lastKnownModified = lastModified;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     lastKnownUncompilable = lastModified;
                     println(ex.getMessage());
                 }
+            } else{
+                applyShader(compiledShader, filter);
             }
         }
+
+        private void applyShader(PShader shader, boolean filter) {
+            if (filter) {
+                filter(shader);
+            } else {
+                shader(shader);
+            }
+        }
+
     }
 }

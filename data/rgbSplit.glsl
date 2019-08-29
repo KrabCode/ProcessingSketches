@@ -21,7 +21,7 @@ void main() {
 	vec2 cv = (gl_FragCoord.xy-.5*resolution.xy)/resolution.y;
 	vec2 pixel = vec2(1./resolution.x, 1./resolution.y);
 	float a = atan(cv.y, cv.x);
-	float d = distance(cv, vec2(0.))*2.;
+	float d = distance(cv, vec2(0.));
 	vec2 off = vec2(ease(d,easing)*strength*cos(a), ease(d,easing)*strength*sin(a));
 	float r = texture2D(texture, uv-off).r;
 	float g = texture2D(texture, uv).g;

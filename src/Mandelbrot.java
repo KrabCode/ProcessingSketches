@@ -12,8 +12,6 @@ public class Mandelbrot extends GuiSketch {
     private float scale = 1;
     private float scaleTarget = 1;
     float t;
-    private boolean recording;
-    private float recStart;
     private float recEnd;
     private float recLength;
     private PGraphics canvas;
@@ -23,8 +21,8 @@ public class Mandelbrot extends GuiSketch {
     }
 
     public void settings() {
-//        fullScreen(P2D);
-        size(800, 800, P2D);
+        fullScreen(P2D);
+//        size(800, 800, P2D);
     }
 
     public void setup() {
@@ -64,7 +62,6 @@ public class Mandelbrot extends GuiSketch {
     }
 
     public void keyPressed() {
-        recStart = frameCount;
         recEnd = frameCount + recLength;
     }
 

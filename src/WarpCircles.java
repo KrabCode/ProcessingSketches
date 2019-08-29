@@ -16,7 +16,6 @@ public class WarpCircles extends GuiSketch {
     }
 
     public void setup() {
-        surface.setLocation(1920 + 20, 20);
         cam = new PeasyCam(this, 600);
     }
 

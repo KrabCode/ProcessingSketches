@@ -8,7 +8,7 @@ public class DotPlane extends GuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P3D);
+        fullScreen(P3D);
     }
 
     float t = 0;
