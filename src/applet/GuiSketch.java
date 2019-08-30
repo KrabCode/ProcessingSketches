@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *      - register a single uniquely named control element
  *      - get its current value
  *
- *  - call gui() at the end of draw() to display all of the gui elements called in that draw() in a tray
+ *  - call gui() at the end of draw() to display all of the control elements registered in that draw() in a tray
  *      - click on the left arrow "<" to hide it, click the cog to show it
  *      - the cog fades away but it's still there, you can click on it
  *
