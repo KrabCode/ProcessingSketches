@@ -1,11 +1,10 @@
 import applet.GuiSketch;
-import utils.OpenSimplexNoise;
 
 public class GridOfDiagonals extends GuiSketch {
 
-    float t = 0;
-    float tRecStart = -1;
-    float tRecFinish = -1;
+    private float t = 0;
+    private float tRecStart = -1;
+    private float tRecFinish = -1;
 
     public static void main(String[] args) {
         GuiSketch.main("GridOfDiagonals");
@@ -22,8 +21,8 @@ public class GridOfDiagonals extends GuiSketch {
 
     public void draw() {
         t += radians(1);
-        background(slider("bg"));
-        stroke(slider("fg"));
+        background(slider("bg", 0, 1, 0));
+        stroke(slider("fg", 0, 1, 1));
         strokeCap(ROUND);
         strokeWeight(slider("weight", 5));
         noFill();

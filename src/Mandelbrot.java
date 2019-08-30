@@ -12,18 +12,18 @@ public class Mandelbrot extends HotswapGuiSketch {
     private PVector cameraPos;
     private float scale = 1;
     private float scaleTarget = 1;
-    float t;
+    private float t;
     private float recEnd;
     private float recLength;
     private PGraphics canvas;
-    String mandelbrotPath = "mandelbrot.glsl";
+    private String mandelbrotPath = "mandelbrot.glsl";
 
     public static void main(String[] args) {
         GuiSketch.main("Mandelbrot");
     }
 
     public void settings() {
-        fullScreen(P2D, 2);
+        fullScreen(P2D);
 //        size(800, 800, P2D);
     }
 
@@ -44,9 +44,10 @@ public class Mandelbrot extends HotswapGuiSketch {
         uniform(mandelbrotPath).set("hueRange", slider("hueRange", 0, 5, .1f));
         uniform(mandelbrotPath).set("distortMag", slider("distort", 0, .1f, 0));
         if(toggle("time")){
-            uniform(mandelbrotPath).set("iter", map(2*abs(recLength/2-(frameCount%recLength)), 0, recLength, 0, slider("maxIter", 1000)));
+            float yoyo = norm(2*abs(recLength/2-(frameCount%recLength)), 0, recLength);
+            uniform(mandelbrotPath).set("iter", yoyo * slider("maxDetail", 0, 1000, 200));
         }else{
-            uniform(mandelbrotPath).set("iter", slider("iter", 1000));
+            uniform(mandelbrotPath).set("iter", slider("detail", 0, 1000, 200));
         }
         uniform(mandelbrotPath).set("brLimit", slider("brLimit", 0, 2, 0.2f));
         if (mousePressed) {
