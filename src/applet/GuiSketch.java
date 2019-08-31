@@ -30,6 +30,8 @@ public abstract class GuiSketch extends PApplet {
 
     }
 
+//  UTILS
+
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
     protected String regenId() {
@@ -37,6 +39,12 @@ public abstract class GuiSketch extends PApplet {
         id = newId;
         return newId;
     }
+
+    protected String picsum(float size){
+        return "https://picsum.photos/" + floor(size * 2) + ".jpg";
+    }
+
+// GUI
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();

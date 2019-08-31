@@ -3,10 +3,11 @@ precision mediump float;
 precision mediump int;
 #endif
 
+#define pi 3.1415
+
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
-
 
 
 //	Simplex 4D Noise
@@ -128,35 +129,19 @@ float cubicPulse( float c, float w, float x ){
 }
 
 void main(){
-    float t = time;
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 col = 0.5 + 0.5*cos(time+uv.xyx+vec3(0,2,4));
-    float freq = 15.;
-    float r = .17;
-    float d = length(uv);
-    float w = .04;
+//    vec3 col = vec3(.166,.12,1);
+    vec3 col = vec3(0);
+    uv *= 6.;
 
-    vec3 glyph = vec3(0.);
-
-    float centralRing = cubicPulse(r, w, d);
-    glyph += centralRing;
-
-    uv.y -= r*2;
-    d = length(uv);
-    float upperArc = cubicPulse(r, w, d) * smoothstep(r*.1, 0., uv.y);
-    glyph = max(glyph, upperArc);
-
-    uv.y += r*4;
-    float verticalLine = cubicPulse(uv.x, w, 0.) * smoothstep(r, r*.95, uv.y) * smoothstep(-r*.7, -r*.5, uv.y);
-    float horizontalLine = cubicPulse(uv.y, w, 0.) * smoothstep(-r*.7, -r*.5, uv.x) * smoothstep(-r*.7, -r*.5, -uv.x);
-    float cross = max(verticalLine, horizontalLine);
-    glyph = max(glyph, cross);
+    float d = 1.-length(uv);
+    float wave = cubicPulse(.0, 1.+d, sin(d+time));
+    wave += d*.01; //fade with distance
 
 
-    col += fbm(uv.x*freq, uv.y*freq-t, cos(t), sin(t));
-    col *= glyph;
+    wave += .5*fbm(uv.x, uv.y, cos(time), sin(time));
 
-    col *= smoothstep(0., .99, col);
+    col = max(col, wave);
 
     gl_FragColor = vec4(col, 1.);
 }

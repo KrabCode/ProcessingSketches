@@ -100,7 +100,7 @@ public class Islamic extends GuiSketch {
 
 
     private void reset() {
-        randomImageUrl = "https://picsum.photos/" + floor(size * 2) + ".jpg";
+        randomImageUrl = picsum(size*2);
         images.clear();
         for (int i = 0; i < imageCount; i++) {
             images.add(loadImage(randomImageUrl));

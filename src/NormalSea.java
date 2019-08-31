@@ -1,5 +1,3 @@
-package inspiration;
-
 import applet.GuiSketch;
 import processing.core.PGraphics;
 import processing.opengl.PShader;
@@ -20,7 +18,7 @@ public class NormalSea extends GuiSketch {
     float shininess, scl, sobelStrength, sobelLevel, blurSize, r;
 
     public static void main(String[] args) {
-        GuiSketch.main("inspiration.NormalSea");
+        GuiSketch.main("NormalSea");
     }
 
     public void settings() {
@@ -30,10 +28,10 @@ public class NormalSea extends GuiSketch {
 
     public void setup() {
         main = createGraphics(width, height, P3D);
-        shade = loadShader("NkingPhongFrag.glsl", "NkingPhongVert.glsl");
-        sobel = loadShader("sobel.glsl");
-        blur = loadShader("blur.glsl");
-        hmap = loadShader("hmap.glsl");
+        shade = loadShader("normalSea/NkingPhongFrag.glsl", "normalSea/NkingPhongVert.glsl");
+        sobel = loadShader("normalSea/sobel.glsl");
+        blur = loadShader("normalSea/blur.glsl");
+        hmap = loadShader("normalSea/hmap.glsl");
         heightMap = createGraphics(width, height, P2D);
         heightMap.beginDraw();
         heightMap.background(0);

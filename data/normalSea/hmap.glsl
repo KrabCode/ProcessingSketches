@@ -22,6 +22,7 @@ vec3 random3(vec3 c) {
     r.y = fract(512.0*j);
     return r-0.5;
 }
+
 //	Simplex 4D Noise 
 //	by Ian McEwan, Ashima Arts
 //
