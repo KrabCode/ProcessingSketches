@@ -6,7 +6,6 @@ precision mediump float;
 precision mediump int;
 #endif
 
-uniform sampler2D palette;
 uniform sampler2D texture;
 uniform float t;
 uniform float distortMag;
@@ -35,7 +34,6 @@ float mandelbrot(vec2 c){
         z = vec2(x, y);
     }
     return i >= iter ? 0. : clamp(i / iter, 0., 1.);
-    //	return texture(palette, vec2(i == iter? 0.5 : i/100.), 0.).xyz;
 }
 
 void main() {

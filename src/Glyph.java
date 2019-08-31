@@ -1,13 +1,13 @@
 import applet.GuiSketch;
 import applet.HotswapGuiSketch;
 
-public class ShaderStudio extends HotswapGuiSketch {
+public class Glyph extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
 
     public static void main(String[] args) {
-        GuiSketch.main("ShaderStudio");
+        GuiSketch.main("Glyph");
     }
 
     public void settings() {
@@ -21,7 +21,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     public void draw() {
         background(0);
         t += radians(slider("t", 0,1,1));
-        String shaderPath = "templates/frag.glsl";
+        String shaderPath = "glyph.glsl";
         uniform(shaderPath).set("time", t);
         hotFilter(shaderPath);
         if (frameCount < frameRecordingEnds) {
