@@ -24,7 +24,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     public void draw() {
         background(0);
         t += radians(slider("t", 0,1,1));
-        String shaderPath = "glyph.glsl";
+        String shaderPath = "wave.glsl";
         uniform(shaderPath).set("time", t);
         hotFilter(shaderPath);
         if (frameCount < frameRecordingEnds) {

@@ -9,10 +9,15 @@ uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
 
+vec3 rgb(vec3 c ){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
+    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
+}
 
-//	Simplex 4D Noise
-//	by Ian McEwan, Ashima Arts
-//
+mat2 rotate2d(float angle){
+    return mat2(cos(angle),-sin(angle), sin(angle),cos(angle));
+}
+
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -102,7 +107,7 @@ float snoise(vec4 v){
 
 }
 
-    #define OCTAVES 8
+
 
 float fbm (float x, float y, float z, float w) {
     vec4 st = vec4(x,y,z,w);
@@ -110,16 +115,28 @@ float fbm (float x, float y, float z, float w) {
     float amplitude = 1.;
     float frequency = 1.;
     // Loop of octaves
-    for (int i = 0; i < OCTAVES; i++) {
+    for (int i = 0; i < 6; i++) {
         float n = snoise(vec4(st.x*frequency, st.y*frequency, st.z, st.w));
         value += amplitude * n;
-        st += 20.;
-        frequency *= 2.;
-        amplitude *= .5;
+        st += 100.;
+//        st.xy *= rotate2d(amplitude*frequency+5.);
+        frequency *= 2.3;
+        amplitude *= .75;
     }
-    return value;
+    return .5+.5*value;
 }
 
+float fbm(float x, float y, float z){
+    return fbm(x,y,z,0.);
+}
+
+float fbm(float x, float y){
+    return fbm(x,y,0.,0.);
+}
+
+float fbm(float x){
+    return fbm(x,0.,0.,0.);
+}
 
 float cubicPulse( float c, float w, float x ){
     x = abs(x - c);
@@ -130,18 +147,20 @@ float cubicPulse( float c, float w, float x ){
 
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-//    vec3 col = vec3(.166,.12,1);
-    vec3 col = vec3(0);
-    uv *= 6.;
-
+    float t = time*.1;
+    uv += vec2(0., -0.);
+    uv *= 0.125;
     float d = 1.-length(uv);
-    float wave = cubicPulse(.0, 1.+d, sin(d+time));
-    wave += d*.01; //fade with distance
 
+    float n = fbm(
+        fbm(uv.y, uv.x, uv.x+uv.y),
+        fbm(5.5*sin(d*1.+t*.1), uv.x, uv.y, sin(t)),
+        fbm(uv.y, uv.x)
+    );
 
-    wave += .5*fbm(uv.x, uv.y, cos(time), sin(time));
-
-    col = max(col, wave);
-
-    gl_FragColor = vec4(col, 1.);
+    n = smoothstep(.0,1.,n);
+    float hue = .575;
+    float br = pow(n, .99);
+    vec3 rgb = rgb(vec3(hue, 1., br));
+    gl_FragColor = vec4(rgb, 1.);
 }
