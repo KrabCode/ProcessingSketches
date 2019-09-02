@@ -88,7 +88,7 @@ public class Attractor extends GuiSketch {
             z += dz * dt;
 
             path.add(new Point(new PVector(x, y, z), newHue));
-            while (path.size() > slider("count", 300)) {
+            while (path.size() > slider("path length", 0, 300, 40)) {
                 path.remove(0);
             }
 
