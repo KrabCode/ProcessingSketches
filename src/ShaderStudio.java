@@ -13,7 +13,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void settings() {
-        size(400, 400, P2D);
+        size(800, 800, P2D);
     }
 
     public void setup() {
@@ -34,6 +34,6 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void keyPressed() {
-        frameRecordingEnds = frameCount + 361;
+        frameRecordingEnds = frameCount + 600;
     }
 }
