@@ -13,7 +13,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        size(400, 400, P2D);
     }
 
     public void setup() {
@@ -24,7 +24,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     public void draw() {
         background(0);
         t += radians(slider("t", 0,1,1));
-        String shaderPath = "wave.glsl";
+        String shaderPath = "shaderStudio/wave.glsl";
         uniform(shaderPath).set("time", t);
         hotFilter(shaderPath);
         if (frameCount < frameRecordingEnds) {

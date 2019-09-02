@@ -153,14 +153,14 @@ void main(){
     float d = 1.-length(uv);
 
     float n = fbm(
-        fbm(uv.y, uv.x, uv.x+uv.y),
-        fbm(5.5*sin(d*1.+t*.1), uv.x, uv.y, sin(t)),
-        fbm(uv.y, uv.x)
+        .2*fbm(uv.y, uv.x, fbm(uv.y, uv.x)),
+        fbm(5.5*sin(d*1.+t*.1), uv.x, uv.y, sin(t))
     );
 
     n = smoothstep(.0,1.,n);
     float hue = .575;
-    float br = pow(n, .99);
-    vec3 rgb = rgb(vec3(hue, 1., br));
+    float br = clamp(pow(n, .99), 0., 1.);
+    float sat = clamp(1.-pow(n, 100.), 0., 1.);
+    vec3 rgb = rgb(vec3(hue, sat, br));
     gl_FragColor = vec4(rgb, 1.);
 }
