@@ -1,23 +1,16 @@
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
+/*{
+    "pixelRatio": 2
+}*/
 
-#define pi 3.1415
-
-uniform sampler2D texture;
-uniform vec2 resolution;
+precision highp float;
 uniform float time;
+uniform vec2 resolution;
+uniform sampler2D texture;
 
-vec3 rgb(vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
-    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
-}
 
-mat2 rotate2d(float angle){
-    return mat2(cos(angle),-sin(angle), sin(angle),cos(angle));
-}
-
+//	Simplex 4D Noise
+//	by Ian McEwan, Ashima Arts
+//
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -107,35 +100,11 @@ float snoise(vec4 v){
 
 }
 
-
-
-float fbm (float x, float y, float z, float w) {
-    vec4 st = vec4(x,y,z,w);
-    float value = 0.0;
-    float amplitude = 1.;
-    float frequency = 1.;
-    // Loop of octaves
-    for (int i = 0; i < 6; i++) {
-        float n = snoise(vec4(st.x*frequency, st.y*frequency, st.z, st.w));
-        value += amplitude * n;
-        st.xy *= rotate2d(amplitude*frequency*pi);
-        st += 7.;
-        frequency *= 2.;
-        amplitude *= .68;
-    }
-    return .5+.5*value;
-}
-
-float fbm(float x, float y, float z){
-    return fbm(x,y,z,0.);
-}
-
-float fbm(float x, float y){
-    return fbm(x,y,0.,0.);
-}
-
-float fbm(float x){
-    return fbm(x,0.,0.,0.);
+vec3 rgb( in vec3 hsb){
+    vec3 rgb = clamp(abs(mod(hsb.x*6.0+vec3(0.0,4.0,2.0),
+    6.0)-3.0)-1.0,0.0,1.0);
+    rgb = rgb*rgb*(3.0-2.0*rgb);
+    return hsb.z * mix(vec3(1.0), rgb, hsb.y);
 }
 
 float cubicPulse( float c, float w, float x ){
@@ -145,25 +114,21 @@ float cubicPulse( float c, float w, float x ){
     return 1.0 - x*x*(3.0-2.0*x);
 }
 
+vec4 get(vec2 uv, vec2 offset){
+    return texture2D(texture, uv+offset);
+}
+
 void main(){
-    vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float t = time*.01;
-    uv += vec2(0., -0.);
-    uv *= 0.15;
-    float d = 1.-distance(uv, vec2(0));
+    float t = (.5+.5*sin(time*.15));
+    vec2 cc = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
 
-    uv.x += 52.154;
-    uv.y += 50.0154;
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    float pixelSizeX = 1. / resolution.x;
+    float pixelSizeY = 1. / resolution.y;
 
-    float n = fbm(
-        0.1*fbm(uv.y, uv.x, fbm(uv.y, uv.x, t)),
-        fbm(5.5*sin(d+t), uv.x, uv.y)
-    );
-
-    n = smoothstep(.5,.85,n);
-    float hue = .575;
-    float br = clamp(pow(n, .99), 0., 1.);
-    float sat = clamp(1.-pow(n, 25.), 0., 1.);
-    vec3 rgb = rgb(vec3(hue, sat, br));
-    gl_FragColor = vec4(rgb, 1.);
+    float n = snoise(vec4(uv.xy, time, 0.));
+//    vec2 swapCoord = vec2(0);
+//TODO make it swap pixels
+    vec3 c = get(uv, vec2(0.0)).xyz;
+    gl_FragColor = vec4(c,1.);
 }

@@ -8,43 +8,59 @@ public class ShaderStudio extends HotswapGuiSketch {
     private int frameRecordingEnds = 0;
     private boolean keyWasPressed = false;
 
-    String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
-    String rgbSplit = "postFX/rgbSplitFrag.glsl";
-    String noise = "postFX/noiseFrag.glsl";
-    String wave = "shaderStudio/wave.glsl";
-
-    PImage img;
+    private String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
+    private String rgbSplit = "postFX/rgbSplitFrag.glsl";
+    private String noise = "postFX/noiseFrag.glsl";
+    private String wave = "shaderStudio/wave.glsl";
+    private String noiseDirectedPixelSort = "shaderStudio/noiseDirectedPixelSort.glsl";
+    private PImage img;
 
     public static void main(String[] args) {
         GuiSketch.main("ShaderStudio");
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        fullScreen(P2D, 2);
+//        size(800, 800, P2D);
     }
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        img = loadImage("images/0.jpg");
+        regenImage();
+    }
+
+
+    private void regenImage() {
+        img = loadImage(randomImageUrl(1920,1080));
     }
 
     public void draw() {
         image(img, 0, 0, width, height);
-        t += radians(slider("t", 0,1,1));
+        t += radians(slider("t", 0, 1, 1));
 
+//        wave();
         noisePass();
         saturationVibrancePass();
         rgbSplitPass();
+        if(button("reset image")){
+            regenImage();
+        }
+//        noiseDirectedPixelSort();
 
         screenshot();
         rec();
         gui(false);
     }
 
+    private void noiseDirectedPixelSort() {
+        uniform(noiseDirectedPixelSort).set("time", t);
+        hotFilter(noiseDirectedPixelSort);
+    }
+
     private void noisePass() {
         uniform(noise).set("time", t);
         uniform(noise).set("amount", slider("noise amt", 1));
-        uniform(noise).set("speed",  slider("noise spd", 10));
+        uniform(noise).set("speed", slider("noise spd", 10));
         hotFilter(noise);
     }
 
@@ -67,8 +83,8 @@ public class ShaderStudio extends HotswapGuiSketch {
     private void screenshot() {
         boolean keyJustReleased = keyWasPressed && !keyPressed;
         keyWasPressed = keyPressed;
-        if(keyJustReleased && key == 's'){
-            saveFrame(captureDir +"####.jpg");
+        if (keyJustReleased && key == 's') {
+            saveFrame(captureDir + "####.jpg");
         }
     }
 
@@ -82,6 +98,5 @@ public class ShaderStudio extends HotswapGuiSketch {
         if (key == 'k') {
             frameRecordingEnds = frameCount + 300;
         }
-
     }
 }
