@@ -118,10 +118,10 @@ float fbm (float x, float y, float z, float w) {
     for (int i = 0; i < 6; i++) {
         float n = snoise(vec4(st.x*frequency, st.y*frequency, st.z, st.w));
         value += amplitude * n;
-        st += 100.;
-//        st.xy *= rotate2d(amplitude*frequency+5.);
-        frequency *= 2.3;
-        amplitude *= .75;
+        st.xy *= rotate2d(amplitude*frequency+5.);
+        st += 3.;
+        frequency *= 2.;
+        amplitude *= .68;
     }
     return .5+.5*value;
 }
@@ -147,20 +147,23 @@ float cubicPulse( float c, float w, float x ){
 
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float t = time*.1;
+    float t = time*.01;
     uv += vec2(0., -0.);
-    uv *= 0.125;
-    float d = 1.-length(uv);
+    uv *= 0.15;
+    float d = 1.-distance(uv, vec2(0));
+
+    uv.x += 52.154;
+    uv.y += 50.0154;
 
     float n = fbm(
-        fbm(uv.y, uv.x, uv.x+uv.y),
-        fbm(5.5*sin(d*1.+t*.1), uv.x, uv.y, sin(t)),
-        fbm(uv.y, uv.x)
+        0.1*fbm(uv.y, uv.x, fbm(uv.y, uv.x, t)),
+        fbm(5.5*sin(d+t), uv.x, uv.y)
     );
 
     n = smoothstep(.0,1.,n);
     float hue = .575;
-    float br = pow(n, .99);
-    vec3 rgb = rgb(vec3(hue, 1., br));
+    float br = clamp(pow(n, .99), 0., 1.);
+    float sat = clamp(1.-pow(n, 25.), 0., 1.);
+    vec3 rgb = rgb(vec3(hue, sat, br));
     gl_FragColor = vec4(rgb, 1.);
 }

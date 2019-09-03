@@ -24,7 +24,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     public void draw() {
         background(0);
         t += radians(slider("t", 0,1,1));
-        String shaderPath = "wave.glsl";
+        String shaderPath = "shaderStudio/wave.glsl";
         uniform(shaderPath).set("time", t);
         hotFilter(shaderPath);
         if (frameCount < frameRecordingEnds) {
@@ -34,6 +34,6 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void keyPressed() {
-        frameRecordingEnds = frameCount + 361;
+        frameRecordingEnds = frameCount + 600;
     }
 }
