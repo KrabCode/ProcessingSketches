@@ -10,29 +10,21 @@ import static java.lang.System.currentTimeMillis;
 
 /**
  * A sketch extending this class can apply changes to shaders as you edit the shader file
- * <p>
+ *
  * - use uniform() to get a reference to the shader file in order to pass uniforms to it
  * - use hotFilter() and hotShader() to apply your last compilable shader as filter or shader respectively
  * - no need to call loadShader() manually at all
- * <p>
+ *
  * - you have to actually change the last modified timestamp of the file, (try CTRL+S)
  * - the results of any compilation errors will be printed to standard processing console
  * - only supports fragment shaders
- * <p>
+ *
  * TODO support vertex shaders too, refresh when either file gets updated
  */
 public abstract class HotswapGuiSketch extends GuiSketch {
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 20;
-
-    public void setup() {
-
-    }
-
-    public void draw() {
-
-    }
 
     public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);

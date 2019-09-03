@@ -8,41 +8,42 @@ import java.util.ArrayList;
 /**
  * A sketch extending this class can use concise to invoke, easy to use control elements in a collapsible tray
  *
- *  - use slider(), toggle() or button() anywhere in draw() any number of times (yes, even inside loops) to
- *      - register a single uniquely named control element
- *      - get its current value
+ * - use slider(), toggle() or button() anywhere in draw() any number of times (yes, even inside loops) to
+ * - register a single uniquely named control element
+ * - get its current value
  *
- *  - call gui() at the end of draw() to display all of the control elements registered in that draw() in a tray
- *      - click on the left arrow "<" to hide it, click the cog to show it
- *      - the cog fades away but it's still there, you can click on it
+ * - call gui() at the end of draw() to display all of the control elements registered in that draw() in a tray
+ * - click on the left arrow "<" to hide it, click the cog to show it
+ * - the cog fades away but it's still there, you can click on it
  *
- *  TODO improve the user experience
- *     - lock sliders that are not being dragged
- *     - do not let mouse affect the sketch while over gui
+ *
+ * TODO improve the user experience
+ * - lock sliders that are not being dragged
+ * - do not let mouse affect the sketch while over gui
+ * - add a scrollbar to allow unlimited number of elements
  */
 public abstract class GuiSketch extends PApplet {
-
-    public void setup(){
-
-    }
-
-    public void draw(){
-
-    }
 
 //  UTILS
 
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
+
     protected String regenId() {
         String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
         id = newId;
         return newId;
     }
 
-    protected String picsum(float size){
-        return "https://picsum.photos/" + floor(size * 2) + ".jpg";
+
+    protected String randomImageUrl(float width, float height) {
+        return "https://picsum.photos/" + floor(width) + "/" + floor(height) + ".jpg";
     }
+
+    protected String randomImageUrl(float size) {
+        return "https://picsum.photos/" + floor(size) + ".jpg";
+    }
+
 
 // GUI
 
@@ -394,7 +395,7 @@ public abstract class GuiSketch extends PApplet {
         if (!mousePressed) {
             extensionTogglePressedLastFrame = false;
         }
-        if(alpha < .01f){
+        if (alpha < .01f) {
             return;
         }
         beginShape();

@@ -6,7 +6,8 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
-    PImage tex;
+    String shaderPath = "postFX/rgbSplitFrag.glsl";
+    PImage img;
 
     public static void main(String[] args) {
         GuiSketch.main("ShaderStudio");
@@ -18,19 +19,23 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        tex = loadImage(picsum(800));
+        img = loadImage("images/0.jpg");
     }
 
     public void draw() {
-        background(0);
-        t += radians(slider("t", 0,1,1));
-        String shaderPath = "shaderStudio/wave.glsl";
-        uniform(shaderPath).set("time", t);
+        image(img, 0, 0, width, height);
+//        t += radians(slider("t", 0,1,1));
+//        uniform(shaderPath).set("time", t);
+        uniform(shaderPath).set("delta", slider("delta", 100));
         hotFilter(shaderPath);
+
+        gui(false);
+    }
+
+    public void rec() {
         if (frameCount < frameRecordingEnds) {
             saveFrame(captureDir + "####.jpg");
         }
-        gui(false);
     }
 
     public void keyPressed() {
