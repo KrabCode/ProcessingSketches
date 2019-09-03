@@ -35,7 +35,7 @@ public class Stars extends GuiSketch {
         rgbSplit.set("easing", slider("easing", 2));
         filter(rgbSplit);
         if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
-//            saveFrame(captureDir + "####.jpg");
+//            saveFrame(captureDir);
         }
         gui();
     }
@@ -51,7 +51,7 @@ public class Stars extends GuiSketch {
     }
 
     public void keyPressed() {
-        saveFrame(captureDir + "####.jpg");
+        saveFrame(captureDir);
     }
 
     class Star {

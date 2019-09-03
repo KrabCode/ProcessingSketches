@@ -6,7 +6,13 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
-    String shaderPath = "postFX/rgbSplitFrag.glsl";
+    private boolean keyWasPressed = false;
+
+    String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
+    String rgbSplit = "postFX/rgbSplitFrag.glsl";
+    String noise = "postFX/noiseFrag.glsl";
+    String wave = "shaderStudio/wave.glsl";
+
     PImage img;
 
     public static void main(String[] args) {
@@ -24,21 +30,58 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     public void draw() {
         image(img, 0, 0, width, height);
-//        t += radians(slider("t", 0,1,1));
-//        uniform(shaderPath).set("time", t);
-        uniform(shaderPath).set("delta", slider("delta", 100));
-        hotFilter(shaderPath);
+        t += radians(slider("t", 0,1,1));
 
+        noisePass();
+        saturationVibrancePass();
+        rgbSplitPass();
+
+        screenshot();
+        rec();
         gui(false);
     }
 
-    public void rec() {
+    private void noisePass() {
+        uniform(noise).set("time", t);
+        uniform(noise).set("amount", slider("noise amt", 1));
+        uniform(noise).set("speed",  slider("noise spd", 10));
+        hotFilter(noise);
+    }
+
+    private void wave() {
+        uniform(wave).set("time", t);
+        hotFilter(wave);
+    }
+
+    private void rgbSplitPass() {
+        uniform(rgbSplit).set("delta", slider("delta", 100));
+        hotFilter(rgbSplit);
+    }
+
+    private void saturationVibrancePass() {
+        uniform(saturationVibrance).set("saturation", slider("saturation", 5));
+        uniform(saturationVibrance).set("vibrance", slider("vibrance", 2));
+        hotFilter(saturationVibrance);
+    }
+
+    private void screenshot() {
+        boolean keyJustReleased = keyWasPressed && !keyPressed;
+        keyWasPressed = keyPressed;
+        if(keyJustReleased && key == 's'){
+            saveFrame(captureDir +"####.jpg");
+        }
+    }
+
+    private void rec() {
         if (frameCount < frameRecordingEnds) {
-            saveFrame(captureDir + "####.jpg");
+            saveFrame(captureDir);
         }
     }
 
     public void keyPressed() {
-        frameRecordingEnds = frameCount + 600;
+        if (key == 'k') {
+            frameRecordingEnds = frameCount + 300;
+        }
+
     }
 }

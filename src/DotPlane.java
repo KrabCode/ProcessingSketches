@@ -42,7 +42,7 @@ public class DotPlane extends GuiSketch {
         }
         cam.endHUD();
         if (recStarted > 0 && frameCount <= recStarted + recDuration) {
-            saveFrame(captureDir + "####.jpg");
+            saveFrame(captureDir);
         }
         gui();
     }

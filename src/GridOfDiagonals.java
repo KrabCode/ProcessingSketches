@@ -34,7 +34,7 @@ public class GridOfDiagonals extends GuiSketch {
     private void record() {
         if (tRecStart > 0 && frameCount <= tRecFinish) {
             regenId();
-            saveFrame(captureDir + "####.jpg");
+            saveFrame(captureDir);
         }
     }
 
