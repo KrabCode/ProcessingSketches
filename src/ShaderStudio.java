@@ -20,8 +20,8 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void settings() {
-        fullScreen(P2D, 2);
-//        size(800, 800, P2D);
+//        fullScreen(P2D, 2);
+        size(800, 800, P2D);
     }
 
     public void setup() {
@@ -31,7 +31,7 @@ public class ShaderStudio extends HotswapGuiSketch {
 
 
     private void regenImage() {
-        img = loadImage(randomImageUrl(1920,1080));
+        img = loadImage(randomImageUrl(width,height));
     }
 
     public void draw() {
@@ -39,13 +39,14 @@ public class ShaderStudio extends HotswapGuiSketch {
         t += radians(slider("t", 0, 1, 1));
 
 //        wave();
-        noisePass();
-        saturationVibrancePass();
+//        noisePass();
         rgbSplitPass();
+        saturationVibrancePass();
+        noiseDirectedPixelSort();
+
         if(button("reset image")){
             regenImage();
         }
-//        noiseDirectedPixelSort();
 
         screenshot();
         rec();

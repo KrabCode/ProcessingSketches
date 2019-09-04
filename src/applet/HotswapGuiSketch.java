@@ -76,9 +76,10 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         String path;
         PShader compiledShader;
         File shaderFile;
-        long lastKnownModified = -refreshRateInMillis;
+        boolean compiledAtLeastOnce = false;
+        long lastKnownModified, lastChecked;
         long lastKnownUncompilable = -refreshRateInMillis;
-        long lastChecked = -refreshRateInMillis;
+
 
         ShaderSnapshot(String filename) {
             compiledShader = loadShader(filename);
@@ -87,7 +88,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             String filePath = shaderFile.getPath();
             lastChecked = currentTimeMillis();
             if (shaderFile.isFile()) {
-                //println(filePath + " was found and is now being checked for changes every " + refreshRateInMillis + " ms.");
+//                println(shaderFile.getName() + " registered successfully");
             } else {
                 println("Could not find shader at " + filePath + ", please adjust the actual file path");
             }
@@ -96,24 +97,19 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
         void update(boolean filter, PGraphics pg) {
             long currentTimeMillis = currentTimeMillis();
-            if (currentTimeMillis < lastChecked + refreshRateInMillis) {
+            long lastModified = shaderFile.lastModified();
+            if (compiledAtLeastOnce && currentTimeMillis < lastChecked + refreshRateInMillis) {
                 applyShader(compiledShader, filter, pg);
                 return;
             }
+            if(!compiledAtLeastOnce && lastModified > lastKnownUncompilable){
+                tryCompileNewVersion(filter, pg, lastModified);
+                return;
+            }
             lastChecked = currentTimeMillis;
-            long lastModified = shaderFile.lastModified();
             if (lastModified > lastKnownModified && lastModified > lastKnownUncompilable) {
-                try {
-                    PShader recentCandidate = loadShader(path);
-                    // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
-                    applyShader(recentCandidate, filter, pg);
-                    compiledShader = recentCandidate;
-                    lastKnownModified = lastModified;
-                } catch (Exception ex) {
-                    lastKnownUncompilable = lastModified;
-                    println(ex.getMessage());
-                }
-            } else {
+                tryCompileNewVersion(filter, pg, lastModified);
+            } else if(compiledAtLeastOnce) {
                 applyShader(compiledShader, filter, pg);
             }
         }
@@ -126,5 +122,19 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             }
         }
 
+        private void tryCompileNewVersion(boolean filter, PGraphics pg, long lastModified){
+            try {
+                PShader recentCandidate = loadShader(path);
+                // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
+                applyShader(recentCandidate, filter, pg);
+                compiledShader = recentCandidate;
+                lastKnownModified = lastModified;
+                compiledAtLeastOnce = true;
+                println("Compiled " + shaderFile.getName());
+            } catch (Exception ex) {
+                lastKnownUncompilable = lastModified;
+                println("\n" + shaderFile.getName() + ": " + ex.getMessage());
+            }
+        }
     }
 }

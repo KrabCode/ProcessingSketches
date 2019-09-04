@@ -127,8 +127,8 @@ void main(){
     float pixelSizeY = 1. / resolution.y;
 
     float n = snoise(vec4(uv.xy, time, 0.));
-//    vec2 swapCoord = vec2(0);
-//TODO make it swap pixels
+    int dir = int(floor(n*7.));
+
     vec3 c = get(uv, vec2(0.0)).xyz;
     gl_FragColor = vec4(c,1.);
 }
