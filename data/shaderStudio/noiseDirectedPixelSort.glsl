@@ -5,6 +5,7 @@ uniform vec2 resolution;
 uniform sampler2D texture;
 uniform float mag;
 uniform float frq;
+uniform float timeRadius;
 
 #define pi 3.1415926535
 
@@ -125,8 +126,8 @@ void main(){
     float pixelSizeY = 1. / resolution.y;
     float d = distance(uv, vec2(.5));
 
-    float n = snoise(vec4(uv.xy*frq, 0., time)); // [-1,1]
-    float dir = n*pi;                            // [-pi,pi]
+    float n = snoise(vec4(uv.xy*frq, timeRadius*cos(time), timeRadius*sin(time)));
+    float dir = n*pi*2;
 
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
 

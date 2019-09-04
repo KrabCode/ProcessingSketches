@@ -6,6 +6,7 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
+    private int recordingFrames = 360;
     private boolean keyWasPressed = false;
 
     private String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
@@ -40,26 +41,39 @@ public class ShaderStudio extends HotswapGuiSketch {
             if(button("reset image") || img == null){
                 regenImage();
             }
+            if(isRecording()){
+                tint(255, constrain(255-recordingTimeNormalized()*frameRecordingEnds, 0, 255));
+            }else{
+                tint(255,slider("opacity", 255));
+            }
             image(img, 0, 0, width, height);
         }
         t += radians(slider("t", 0, 1, 1));
 
 //        wave();
-        noisePass();
+//        noisePass();
+//        rgbSplitPass();
 //        saturationVibrancePass();
-        rgbSplitPass();
         noiseDirectedPixelSort();
-
 
         screenshot();
         rec();
         gui(false);
     }
 
+    private boolean isRecording() {
+        return frameCount < frameRecordingEnds;
+    }
+
+    private float recordingTimeNormalized(){
+        return norm(frameCount, frameRecordingEnds-recordingFrames,frameRecordingEnds);
+    }
+
     private void noiseDirectedPixelSort() {
         uniform(noiseDirectedPixelSort).set("time", t);
-        uniform(noiseDirectedPixelSort).set("mag", slider("mag", .05f));
-        uniform(noiseDirectedPixelSort).set("frq", slider("frq", 100));
+        uniform(noiseDirectedPixelSort).set("timeRadius", slider("time radius", 1));
+        uniform(noiseDirectedPixelSort).set("mag", slider("mag", .005f));
+        uniform(noiseDirectedPixelSort).set("frq", slider("frq", 10));
         hotFilter(noiseDirectedPixelSort);
     }
 
@@ -102,7 +116,7 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     public void keyPressed() {
         if (key == 'k') {
-            frameRecordingEnds = frameCount + 300;
+            frameRecordingEnds = frameCount + recordingFrames;
         }
     }
 }
