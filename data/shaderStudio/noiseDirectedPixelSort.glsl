@@ -1,11 +1,12 @@
-/*{
-    "pixelRatio": 2
-}*/
 
 precision highp float;
 uniform float time;
 uniform vec2 resolution;
 uniform sampler2D texture;
+uniform float mag;
+uniform float frq;
+
+#define pi 3.1415926535
 
 
 //	Simplex 4D Noise
@@ -99,14 +100,12 @@ float snoise(vec4 v){
     + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
 }
-
 vec3 rgb( in vec3 hsb){
     vec3 rgb = clamp(abs(mod(hsb.x*6.0+vec3(0.0,4.0,2.0),
     6.0)-3.0)-1.0,0.0,1.0);
     rgb = rgb*rgb*(3.0-2.0*rgb);
     return hsb.z * mix(vec3(1.0), rgb, hsb.y);
 }
-
 float cubicPulse( float c, float w, float x ){
     x = abs(x - c);
     if( x>w ) return 0.0;
@@ -114,21 +113,26 @@ float cubicPulse( float c, float w, float x ){
     return 1.0 - x*x*(3.0-2.0*x);
 }
 
-vec4 get(vec2 uv, vec2 offset){
-    return texture2D(texture, uv+offset);
+vec3 get(vec2 uv, vec2 offset){
+    return texture2D(texture, uv+offset).rgb;
 }
 
 void main(){
-    float t = (.5+.5*sin(time*.15));
     vec2 cc = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
 
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     float pixelSizeX = 1. / resolution.x;
     float pixelSizeY = 1. / resolution.y;
+    float d = distance(uv, vec2(.5));
 
-    float n = snoise(vec4(uv.xy, time, 0.));
-    int dir = int(floor(n*7.));
+    float n = snoise(vec4(uv.xy*frq, 0., time)); // [-1,1]
+    float dir = n*pi;                            // [-pi,pi]
 
-    vec3 c = get(uv, vec2(0.0)).xyz;
+    vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
+
+    vec3 me = get(uv, vec2(0.));
+    vec3 swap = get(uv, swapCoord);
+
+    vec3 c = mix(me, swap, .9);
     gl_FragColor = vec4(c,1.);
 }

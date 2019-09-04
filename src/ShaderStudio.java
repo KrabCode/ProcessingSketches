@@ -26,7 +26,8 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        regenImage();
+        background(0);
+
     }
 
 
@@ -35,18 +36,20 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     public void draw() {
-        image(img, 0, 0, width, height);
+        if(toggle("image", true)){
+            if(button("reset image") || img == null){
+                regenImage();
+            }
+            image(img, 0, 0, width, height);
+        }
         t += radians(slider("t", 0, 1, 1));
 
 //        wave();
-//        noisePass();
+        noisePass();
+//        saturationVibrancePass();
         rgbSplitPass();
-        saturationVibrancePass();
         noiseDirectedPixelSort();
 
-        if(button("reset image")){
-            regenImage();
-        }
 
         screenshot();
         rec();
@@ -55,6 +58,8 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private void noiseDirectedPixelSort() {
         uniform(noiseDirectedPixelSort).set("time", t);
+        uniform(noiseDirectedPixelSort).set("mag", slider("mag", .05f));
+        uniform(noiseDirectedPixelSort).set("frq", slider("frq", 100));
         hotFilter(noiseDirectedPixelSort);
     }
 

@@ -128,9 +128,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
                 // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
                 applyShader(recentCandidate, filter, pg);
                 compiledShader = recentCandidate;
-                lastKnownModified = lastModified;
                 compiledAtLeastOnce = true;
-                println("Compiled " + shaderFile.getName());
+                lastKnownModified = lastModified;
             } catch (Exception ex) {
                 lastKnownUncompilable = lastModified;
                 println("\n" + shaderFile.getName() + ": " + ex.getMessage());
