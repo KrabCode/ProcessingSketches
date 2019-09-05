@@ -1,122 +1,143 @@
 import applet.GuiSketch;
 import applet.HotswapGuiSketch;
+import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
-    private int recordingFrames = 360;
+    private int recordingFrames = 720;
     private boolean keyWasPressed = false;
 
     private String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
     private String rgbSplit = "postFX/rgbSplitFrag.glsl";
     private String noise = "postFX/noiseFrag.glsl";
     private String wave = "shaderStudio/wave.glsl";
-    private String noiseDirectedPixelSort = "shaderStudio/noiseDirectedPixelSort.glsl";
+    private String noiseOffset = "shaderStudio/noiseOffset.glsl";
+
     private PImage img;
+    private PGraphics pg;
 
     public static void main(String[] args) {
         GuiSketch.main("ShaderStudio");
     }
 
     public void settings() {
-//        fullScreen(P2D, 2);
+//        fullScreen(P2D, 1);
         size(800, 800, P2D);
     }
 
     public void setup() {
         surface.setAlwaysOnTop(true);
         background(0);
-
+        pg = createGraphics(width, height, P2D);
+        img = loadImage("images/parallel.jpg");
     }
 
-
-    private void regenImage() {
-        img = loadImage(randomImageUrl(width,height));
-    }
 
     public void draw() {
-        if(toggle("image", true)){
-            if(button("reset image") || img == null){
-                regenImage();
-            }
-            if(isRecording()){
-                tint(255, constrain(255-recordingTimeNormalized()*frameRecordingEnds, 0, 255));
-            }else{
-                tint(255,slider("opacity", 255));
-            }
-            image(img, 0, 0, width, height);
-        }
-        t += radians(slider("t", 0, 1, 1));
-
+        t += radians(1 / 2f);
+        pg.beginDraw();
 //        wave();
 //        noisePass();
 //        rgbSplitPass();
-//        saturationVibrancePass();
-        noiseDirectedPixelSort();
 
+        image();
+
+        if (toggle("sat/vib", false)) {
+            saturationVibrancePass();
+        }
+        if (toggle("ndps", true)) {
+            noiseOffsetPass();
+        }
+        pg.endDraw();
+        image(pg, 0, 0, width, height);
         screenshot();
         rec();
         gui(false);
+    }
+
+    private void image() {
+        if (button("reset image") || img == null) {
+            regenImage();
+        }
+        pg.resetShader();
+        float recordingMultiplier = 1;
+        if (isRecording()) {
+            recordingMultiplier = constrain(1 - recordingTimeNormalized() * 2, 0, 1);
+        }
+        pg.tint(255, 255 * slider("opacity") * recordingMultiplier);
+        pg.image(img, 0, 0, width, height);
+    }
+
+    private void regenImage() {
+        img = loadImage(randomImageUrl(width, height));
     }
 
     private boolean isRecording() {
         return frameCount < frameRecordingEnds;
     }
 
-    private float recordingTimeNormalized(){
-        return norm(frameCount, frameRecordingEnds-recordingFrames,frameRecordingEnds);
+    private float recordingTimeNormalized() {
+        return norm(frameCount, frameRecordingEnds - recordingFrames, frameRecordingEnds);
     }
 
-    private void noiseDirectedPixelSort() {
-        uniform(noiseDirectedPixelSort).set("time", t);
-        uniform(noiseDirectedPixelSort).set("timeRadius", slider("time radius", 1));
-        uniform(noiseDirectedPixelSort).set("mag", slider("mag", .005f));
-        uniform(noiseDirectedPixelSort).set("frq", slider("frq", 10));
-        hotFilter(noiseDirectedPixelSort);
+    private void noiseOffsetPass() {
+        uniform(noiseOffset).set("time", t);
+        uniform(noiseOffset).set("mix", slider("mix", 1));
+        uniform(noiseOffset).set("mag", slider("mag", .005f));
+        uniform(noiseOffset).set("frq", slider("frq", 0, 10, 2.5f));
+        hotFilter(noiseOffset, pg);
     }
 
     private void noisePass() {
         uniform(noise).set("time", t);
         uniform(noise).set("amount", slider("noise amt", 1));
         uniform(noise).set("speed", slider("noise spd", 10));
-        hotFilter(noise);
+        hotFilter(noise, pg);
     }
 
     private void wave() {
         uniform(wave).set("time", t);
-        hotFilter(wave);
+        hotFilter(wave, pg);
     }
 
     private void rgbSplitPass() {
         uniform(rgbSplit).set("delta", slider("delta", 100));
-        hotFilter(rgbSplit);
+        hotFilter(rgbSplit, pg);
     }
 
     private void saturationVibrancePass() {
-        uniform(saturationVibrance).set("saturation", slider("saturation", 5));
-        uniform(saturationVibrance).set("vibrance", slider("vibrance", 2));
-        hotFilter(saturationVibrance);
+        uniform(saturationVibrance).set("saturation", slider("saturation", 0, 5, 0));
+        uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 5, 0));
+        hotFilter(saturationVibrance, pg);
     }
 
     private void screenshot() {
         boolean keyJustReleased = keyWasPressed && !keyPressed;
         keyWasPressed = keyPressed;
         if (keyJustReleased && key == 's') {
-            saveFrame(captureDir + "####.jpg");
+            pg.save(captureDir + frameCount + ".jpg");
         }
     }
 
     private void rec() {
         if (frameCount < frameRecordingEnds) {
-            saveFrame(captureDir);
+            println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
+            pg.save(captureDir + frameCount + ".jpg");
         }
     }
 
     public void keyPressed() {
         if (key == 'k') {
-            frameRecordingEnds = frameCount + recordingFrames;
+            frameRecordingEnds = frameCount + recordingFrames + 1;
+        }
+        if (key == 'i') {
+            img.save(captureDir + frameCount + ".jpg");
+        }
+        if (key == 'r') {
+            frameRecordingEnds = frameCount - 1;
         }
     }
 }

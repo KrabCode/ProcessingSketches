@@ -62,7 +62,7 @@ public class Mandelbrot extends HotswapGuiSketch {
         image(canvas, 0, 0, width, height);
 
         if (recEnd > frameCount) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         gui();

@@ -55,7 +55,7 @@ public class Eye extends GuiSketch {
         }
 
         if (frameCount > frameStartedRec && frameCount <= frameRecordingEnds) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         gui();

@@ -99,17 +99,21 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             long currentTimeMillis = currentTimeMillis();
             long lastModified = shaderFile.lastModified();
             if (compiledAtLeastOnce && currentTimeMillis < lastChecked + refreshRateInMillis) {
+//                println("compiled at least once, not checking, standard apply");
                 applyShader(compiledShader, filter, pg);
                 return;
             }
             if(!compiledAtLeastOnce && lastModified > lastKnownUncompilable){
+//                println("first try");
                 tryCompileNewVersion(filter, pg, lastModified);
                 return;
             }
             lastChecked = currentTimeMillis;
             if (lastModified > lastKnownModified && lastModified > lastKnownUncompilable) {
+//                println("file changed, repeat try");
                 tryCompileNewVersion(filter, pg, lastModified);
             } else if(compiledAtLeastOnce) {
+//                println("file didn't change, standard apply");
                 applyShader(compiledShader, filter, pg);
             }
         }

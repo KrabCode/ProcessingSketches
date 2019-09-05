@@ -27,7 +27,8 @@ public abstract class GuiSketch extends PApplet {
 //  UTILS
 
     protected String id = regenId();
-    protected String captureDir = "out/capture/" + id + "/####.jpg";
+    protected String captureDir = "out/capture/" + id + "/";
+    protected String captureFilename = captureDir + "####.jpg";
 
     protected String regenId() {
         String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);

@@ -51,7 +51,7 @@ public class Islamic extends GuiSketch {
         drawHexagonGrid();
 
         if (frameRecStart > 0 && frameCount <= frameRecFinish) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         float w = (width / (float) imageCount);

@@ -64,7 +64,7 @@ public class NormalSea extends GuiSketch {
 
     private void capture() {
         if (frameStart != 0 && frameCount <= frameStart + gifDurationInFrames) {
-            saveFrame(captureDir +"####.jpg");
+            saveFrame(captureFilename +"####.jpg");
         }
     }
 

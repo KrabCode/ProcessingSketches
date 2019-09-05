@@ -66,7 +66,7 @@ public class LogSpiral extends GuiSketch {
         filter(rgbSplit);
 
         if (saveStarts > 0 && frameCount < saveStarts + saveDuration) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         gui();

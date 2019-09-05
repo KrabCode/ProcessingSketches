@@ -69,7 +69,7 @@ public class Exclusion extends GuiSketch {
         }
 
         if (tRecStart > 0 && frameCount <= tRecFinish) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         gui();

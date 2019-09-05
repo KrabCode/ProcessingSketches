@@ -1,18 +1,16 @@
 
 precision highp float;
+
 uniform float time;
 uniform vec2 resolution;
 uniform sampler2D texture;
 uniform float mag;
 uniform float frq;
-uniform float timeRadius;
+uniform float mix;
 
 #define pi 3.1415926535
 
 
-//	Simplex 4D Noise
-//	by Ian McEwan, Ashima Arts
-//
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -101,39 +99,46 @@ float snoise(vec4 v){
     + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
 }
+
+float fbm(vec4 p){
+    float amp = 1.;
+    float frq = 1.;
+    float sum = 0.;
+
+    for(int i = 0; i < 6; i++){
+        sum += amp*snoise(p*frq);
+        amp *= .5;
+        frq *= 2.;
+    }
+    return sum;
+}
+
 vec3 rgb( in vec3 hsb){
     vec3 rgb = clamp(abs(mod(hsb.x*6.0+vec3(0.0,4.0,2.0),
     6.0)-3.0)-1.0,0.0,1.0);
     rgb = rgb*rgb*(3.0-2.0*rgb);
     return hsb.z * mix(vec3(1.0), rgb, hsb.y);
 }
-float cubicPulse( float c, float w, float x ){
-    x = abs(x - c);
-    if( x>w ) return 0.0;
-    x /= w;
-    return 1.0 - x*x*(3.0-2.0*x);
-}
+
 
 vec3 get(vec2 uv, vec2 offset){
     return texture2D(texture, uv+offset).rgb;
 }
 
 void main(){
+    float t = time*.1;
     vec2 cc = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
-
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     float pixelSizeX = 1. / resolution.x;
     float pixelSizeY = 1. / resolution.y;
     float d = distance(uv, vec2(.5));
-
-    float n = snoise(vec4(uv.xy*frq, timeRadius*cos(time), timeRadius*sin(time)));
-    float dir = n*pi*2;
-
+    float r = 2.;
+    float n = fbm(vec4(uv.xy*frq, r*cos(t), r*sin(t)));
+    float dir  = n*pi*2.;
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
-
     vec3 me = get(uv, vec2(0.));
     vec3 swap = get(uv, swapCoord);
-
-    vec3 c = mix(me, swap, .9);
+    vec3 c = mix(me, swap, mix);
+//        c = vec3(n);
     gl_FragColor = vec4(c,1.);
 }

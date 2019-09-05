@@ -51,7 +51,7 @@ public class Stars extends GuiSketch {
     }
 
     public void keyPressed() {
-        saveFrame(captureDir);
+        saveFrame(captureFilename);
     }
 
     class Star {

@@ -71,7 +71,7 @@ public class Mountain extends ShadowGuiSketch {
         stars();
 
         if (tRecStart > 0 && frameCount <= tRecFinish) {
-            saveFrame(captureDir);
+            saveFrame(captureFilename);
         }
 
         noLights();
