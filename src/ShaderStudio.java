@@ -7,7 +7,7 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
-    private int recordingFrames = 720;
+    private int recordingFrames = 60*30;
     private boolean keyWasPressed = false;
 
     private String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
@@ -32,7 +32,7 @@ public class ShaderStudio extends HotswapGuiSketch {
         surface.setAlwaysOnTop(true);
         background(0);
         pg = createGraphics(width, height, P2D);
-        img = loadImage("images/parallel.jpg");
+        img = loadImage("images/lukasz-lada-q7z-AUlHPaw-unsplash.jpg");  // Photo by Łukasz Łada on Unsplash
     }
 
 
@@ -45,11 +45,12 @@ public class ShaderStudio extends HotswapGuiSketch {
 
         image();
 
-        if (toggle("sat/vib", false)) {
-            saturationVibrancePass();
-        }
         if (toggle("ndps", true)) {
             noiseOffsetPass();
+        }
+
+        if (toggle("sat/vib", false)) {
+            saturationVibrancePass();
         }
         pg.endDraw();
         image(pg, 0, 0, width, height);
@@ -67,7 +68,7 @@ public class ShaderStudio extends HotswapGuiSketch {
         if (isRecording()) {
             recordingMultiplier = constrain(1 - recordingTimeNormalized() * 2, 0, 1);
         }
-        pg.tint(255, 255 * slider("opacity") * recordingMultiplier);
+        pg.tint(255, constrain(255 * slider("opacity") * recordingMultiplier, 5, 255));
         pg.image(img, 0, 0, width, height);
     }
 
@@ -109,8 +110,8 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     private void saturationVibrancePass() {
-        uniform(saturationVibrance).set("saturation", slider("saturation", 0, 5, 0));
-        uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 5, 0));
+        uniform(saturationVibrance).set("saturation", slider("saturation", 0, 0.5f, 0));
+        uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
         hotFilter(saturationVibrance, pg);
     }
 

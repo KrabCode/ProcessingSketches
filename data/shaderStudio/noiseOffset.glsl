@@ -10,7 +10,6 @@ uniform float mix;
 
 #define pi 3.1415926535
 
-
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -139,6 +138,8 @@ void main(){
     vec3 me = get(uv, vec2(0.));
     vec3 swap = get(uv, swapCoord);
     vec3 c = mix(me, swap, mix);
+//    c += .00001;
+//    c += .00003; //as things mix they get darker, this allows them to instead get brighter
 //        c = vec3(n);
     gl_FragColor = vec4(c,1.);
 }
