@@ -1,4 +1,5 @@
 
+If you or a loved one are experiencing a constant need to melt your face off, consider the following techniques:
 
 
 - Fractal Brownian Motion
@@ -29,8 +30,10 @@
     - FBM landscapes
 - Shader filters
     - RGB split
+    - noise offset
 - Backbuffer
     - Pixel sorting
 - Post FX
     - Bloom
     - Chromatic Aberration
+    - Saturation / Vibrance

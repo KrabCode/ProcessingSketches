@@ -10,12 +10,6 @@ public class ShaderStudio extends HotswapGuiSketch {
     private int recordingFrames = 60*30;
     private boolean keyWasPressed = false;
 
-    private String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
-    private String rgbSplit = "postFX/rgbSplitFrag.glsl";
-    private String noise = "postFX/noiseFrag.glsl";
-    private String wave = "shaderStudio/wave.glsl";
-    private String noiseOffset = "shaderStudio/noiseOffset.glsl";
-
     private PImage img;
     private PGraphics pg;
 
@@ -41,7 +35,7 @@ public class ShaderStudio extends HotswapGuiSketch {
         pg.beginDraw();
 //        wave();
 //        noisePass();
-//        rgbSplitPass();
+//        sobelPass();
 
         image();
 
@@ -49,14 +43,22 @@ public class ShaderStudio extends HotswapGuiSketch {
             noiseOffsetPass();
         }
 
+        rgbSplitPass();
+
         if (toggle("sat/vib", false)) {
             saturationVibrancePass();
         }
+
         pg.endDraw();
         image(pg, 0, 0, width, height);
         screenshot();
         rec();
         gui(false);
+    }
+
+    private void sobelPass() {
+        String sobel = "postFX/sobelFrag.glsl";
+        hotFilter(sobel, pg);
     }
 
     private void image() {
@@ -85,6 +87,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     private void noiseOffsetPass() {
+        String noiseOffset = "shaderStudio/noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
         uniform(noiseOffset).set("mix", slider("mix", 1));
         uniform(noiseOffset).set("mag", slider("mag", .005f));
@@ -93,6 +96,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     private void noisePass() {
+        String noise = "postFX/noiseFrag.glsl";
         uniform(noise).set("time", t);
         uniform(noise).set("amount", slider("noise amt", 1));
         uniform(noise).set("speed", slider("noise spd", 10));
@@ -100,16 +104,19 @@ public class ShaderStudio extends HotswapGuiSketch {
     }
 
     private void wave() {
+        String wave = "shaderStudio/wave.glsl";
         uniform(wave).set("time", t);
         hotFilter(wave, pg);
     }
 
     private void rgbSplitPass() {
+        String rgbSplit = "postFX/rgbSplitFrag.glsl";
         uniform(rgbSplit).set("delta", slider("delta", 100));
         hotFilter(rgbSplit, pg);
     }
 
     private void saturationVibrancePass() {
+        String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
         uniform(saturationVibrance).set("saturation", slider("saturation", 0, 0.5f, 0));
         uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
         hotFilter(saturationVibrance, pg);
