@@ -24,7 +24,7 @@ import static java.lang.System.currentTimeMillis;
 public abstract class HotswapGuiSketch extends GuiSketch {
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 20;
+    int refreshRateInMillis = 60;
 
     public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
