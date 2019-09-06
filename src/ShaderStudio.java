@@ -89,7 +89,7 @@ public class ShaderStudio extends HotswapGuiSketch {
     private void noiseOffsetPass() {
         String noiseOffset = "shaderStudio/noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
-        uniform(noiseOffset).set("mix", slider("mix", 1));
+        uniform(noiseOffset).set("mixAmt", slider("mix", 1));
         uniform(noiseOffset).set("mag", slider("mag", .005f));
         uniform(noiseOffset).set("frq", slider("frq", 0, 10, 2.5f));
         hotFilter(noiseOffset, pg);

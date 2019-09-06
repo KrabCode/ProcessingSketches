@@ -6,7 +6,7 @@ uniform vec2 resolution;
 uniform sampler2D texture;
 uniform float mag;
 uniform float frq;
-uniform float mix;
+uniform float mixAmt;
 
 #define pi 3.1415926535
 
@@ -112,18 +112,6 @@ float fbm(vec4 p){
     return sum;
 }
 
-vec3 rgb( in vec3 hsb){
-    vec3 rgb = clamp(abs(mod(hsb.x*6.0+vec3(0.0,4.0,2.0),
-    6.0)-3.0)-1.0,0.0,1.0);
-    rgb = rgb*rgb*(3.0-2.0*rgb);
-    return hsb.z * mix(vec3(1.0), rgb, hsb.y);
-}
-
-
-vec3 get(vec2 uv, vec2 offset){
-    return texture2D(texture, uv+offset).rgb;
-}
-
 void main(){
     float t = time*.1;
     vec2 cc = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
@@ -135,11 +123,8 @@ void main(){
     float n = fbm(vec4(uv.xy*frq, r*cos(t), r*sin(t)));
     float dir  = n*pi*2.;
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
-    vec3 me = get(uv, vec2(0.));
-    vec3 swap = get(uv, swapCoord);
-    vec3 c = mix(me, swap, mix);
-//    c += .00001;
-//    c += .00003; //as things mix they get darker, this allows them to instead get brighter
-//        c = vec3(n);
+    vec3 me = texture2D(texture, uv).rgb;
+    vec3 swap = texture2D(texture, uv+swapCoord).rgb;
+    vec3 c = mix(me, swap, mixAmt);
     gl_FragColor = vec4(c,1.);
 }
