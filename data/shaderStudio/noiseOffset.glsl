@@ -119,7 +119,7 @@ void main(){
     float pixelSizeY = 1. / resolution.y;
     float d = distance(uv, vec2(.5));
     float r = .8;
-    float n = fbm(vec4(uv.x*frq, uv.y*frq-t*2., r*cos(t), r*sin(t)));
+    float n = fbm(vec4(uv.x*frq, uv.y*frq-t*3., r*cos(t), r*sin(t)));
     float dir  = n*pi*2.;
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
     vec3 me = texture2D(texture, uv).rgb;

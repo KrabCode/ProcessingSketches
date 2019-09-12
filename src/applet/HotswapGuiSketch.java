@@ -15,7 +15,7 @@ import static java.lang.System.currentTimeMillis;
  * - use hotFilter() and hotShader() to apply your last compilable shader as filter or shader respectively
  * - no need to call loadShader() manually at all
  *
- * - you have to actually change the last modified timestamp of the file, (try CTRL+S)
+ * - to see the effects you have to actually change the last modified timestamp of the file, (try CTRL+S)
  * - the results of any compilation errors will be printed to standard processing console
  * - only supports fragment shaders
  *

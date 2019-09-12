@@ -3,6 +3,7 @@ precision mediump float;
 precision mediump int;
 #endif
 
+uniform float alpha;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
@@ -27,9 +28,9 @@ void main(){
     vec3 col = rgb(vec3(.58, .75, 1.));
     float d = length(uv)*1.5;
     float core = smoothstep(0.6, .0, d);
-	float triangle = cubicPulse(.0, 1.-pow(ov.y,.75), uv.x);
+	float triangle = cubicPulse(.0, 1.-pow(ov.y,ov.y-uv.y), uv.x);
 	col *= core*triangle;
     vec3 tex = texture(texture, ov).rgb;
-    col = mix(tex, col, .1);
+    col = mix(tex, col, alpha);
     gl_FragColor = vec4(col, 1.);
 }
