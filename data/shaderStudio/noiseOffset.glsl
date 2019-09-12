@@ -103,7 +103,6 @@ float fbm(vec4 p){
     float amp = 1.;
     float frq = 1.;
     float sum = 0.;
-
     for(int i = 0; i < 6; i++){
         sum += amp*snoise(p*frq);
         amp *= .5;
@@ -119,8 +118,8 @@ void main(){
     float pixelSizeX = 1. / resolution.x;
     float pixelSizeY = 1. / resolution.y;
     float d = distance(uv, vec2(.5));
-    float r = 2.;
-    float n = fbm(vec4(uv.xy*frq, r*cos(t), r*sin(t)));
+    float r = .8;
+    float n = fbm(vec4(uv.x*frq, uv.y*frq-t*2., r*cos(t), r*sin(t)));
     float dir  = n*pi*2.;
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
     vec3 me = texture2D(texture, uv).rgb;

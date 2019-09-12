@@ -40,13 +40,13 @@ public class ShaderStudio extends HotswapGuiSketch {
         image();
 
         if (toggle("ndps", true)) {
-            noiseOffsetPass();
+            noiseOffsetPass(t, pg);
         }
 
-        rgbSplitPass();
+        rgbSplitPass(pg);
 
         if (toggle("sat/vib", false)) {
-            saturationVibrancePass();
+            saturationVibrancePass(pg);
         }
 
         pg.endDraw();
@@ -84,42 +84,6 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float recordingTimeNormalized() {
         return norm(frameCount, frameRecordingEnds - recordingFrames, frameRecordingEnds);
-    }
-
-    private void noiseOffsetPass() {
-        String noiseOffset = "shaderStudio/noiseOffset.glsl";
-        uniform(noiseOffset).set("time", t);
-        uniform(noiseOffset).set("mixAmt", slider("mix", 1));
-        uniform(noiseOffset).set("mag", slider("mag", .005f));
-        uniform(noiseOffset).set("frq", slider("frq", 0, 10, 2.5f));
-        hotFilter(noiseOffset, pg);
-    }
-
-    private void noisePass() {
-        String noise = "postFX/noiseFrag.glsl";
-        uniform(noise).set("time", t);
-        uniform(noise).set("amount", slider("noise amt", 1));
-        uniform(noise).set("speed", slider("noise spd", 10));
-        hotFilter(noise, pg);
-    }
-
-    private void wave() {
-        String wave = "shaderStudio/wave.glsl";
-        uniform(wave).set("time", t);
-        hotFilter(wave, pg);
-    }
-
-    private void rgbSplitPass() {
-        String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 100));
-        hotFilter(rgbSplit, pg);
-    }
-
-    private void saturationVibrancePass() {
-        String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
-        uniform(saturationVibrance).set("saturation", slider("saturation", 0, 0.5f, 0));
-        uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
-        hotFilter(saturationVibrance, pg);
     }
 
     private void screenshot() {

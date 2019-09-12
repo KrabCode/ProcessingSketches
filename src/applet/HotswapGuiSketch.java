@@ -23,6 +23,44 @@ import static java.lang.System.currentTimeMillis;
  */
 public abstract class HotswapGuiSketch extends GuiSketch {
 
+    protected void noiseOffsetPass(float t, PGraphics pg) {
+        String noiseOffset = "shaderStudio/noiseOffset.glsl";
+        uniform(noiseOffset).set("time", t);
+        uniform(noiseOffset).set("mixAmt", slider("mix", 1));
+        uniform(noiseOffset).set("mag", slider("mag", .01f));
+        uniform(noiseOffset).set("frq", slider("frq", 0, 15, 2.5f));
+        hotFilter(noiseOffset, pg);
+    }
+
+    protected void noisePass(float t, PGraphics pg) {
+        String noise = "postFX/noiseFrag.glsl";
+        uniform(noise).set("time", t);
+        uniform(noise).set("amount", slider("noise amt", 1));
+        uniform(noise).set("speed", slider("noise spd", 10));
+        hotFilter(noise, pg);
+    }
+
+    protected void wave(float t, PGraphics pg) {
+        String wave = "shaderStudio/wave.glsl";
+        uniform(wave).set("time", t);
+        hotFilter(wave, pg);
+    }
+
+    protected void rgbSplitPass(PGraphics pg) {
+        String rgbSplit = "postFX/rgbSplitFrag.glsl";
+        uniform(rgbSplit).set("delta", slider("delta", 100));
+        hotFilter(rgbSplit, pg);
+    }
+
+    protected void saturationVibrancePass(PGraphics pg) {
+        String saturationVibrance = "postFX/saturationVibranceFrag.glsl";
+        uniform(saturationVibrance).set("saturation", slider("saturation", 0, 0.5f, 0));
+        uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
+        hotFilter(saturationVibrance, pg);
+    }
+
+
+
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 60;
 
@@ -31,7 +69,6 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         snapshot = initIfNull(snapshot, path);
         return snapshot.compiledShader;
     }
-
 
     public void hotFilter(String path, PGraphics canvas) {
         hotShader(path, true, canvas);
