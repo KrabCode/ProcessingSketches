@@ -28,7 +28,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         uniform(noiseOffset).set("time", t);
         uniform(noiseOffset).set("mixAmt", slider("mix", 1));
         uniform(noiseOffset).set("mag", slider("mag", .01f));
-        uniform(noiseOffset).set("frq", slider("frq", 0, 15, 2.5f));
+        uniform(noiseOffset).set("frq", slider("frq", 0, 50, 2.5f));
         hotFilter(noiseOffset, pg);
     }
 

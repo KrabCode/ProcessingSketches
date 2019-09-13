@@ -1,10 +1,11 @@
 import applet.GuiSketch;
 import applet.HotswapGuiSketch;
+import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Ultrasound extends HotswapGuiSketch {
     private float t = 0;
-    PGraphics pg;
+    private PGraphics pg;
     private int frameRecordingEnds;
     private boolean keyWasPressed;
     private int recordingFrames = 720;
@@ -14,12 +15,16 @@ public class Ultrasound extends HotswapGuiSketch {
     }
 
     public void settings() {
+//        fullScreen(P2D);
         size(800, 800, P2D);
     }
+
+    PFont font;
 
     public void setup() {
         surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
+        font = createFont("C:\\Windows\\Fonts\\CharlemagneStd-Bold.otf", 42);
     }
 
     public void draw() {
@@ -27,8 +32,16 @@ public class Ultrasound extends HotswapGuiSketch {
         pg.beginDraw();
         backgroundPass(t, pg);
         noiseOffsetPass(t, pg);
+/*
+        pg.textAlign(CENTER,CENTER);
+        pg.textFont(font);
+        pg.textSize(slider("text size", 800));
+        pg.text("ayy\nlmao",width*.5f, height*.5f);
+*/
         pg.endDraw();
         image(pg, 0,0, width, height);
+        pg.fill(255);
+        screenshot();
         rec();
         gui();
     }
@@ -66,9 +79,6 @@ public class Ultrasound extends HotswapGuiSketch {
     public void keyPressed() {
         if (key == 'k') {
             frameRecordingEnds = frameCount + recordingFrames + 1;
-        }
-        if (key == 'r') {
-            frameRecordingEnds = frameCount - 1;
         }
     }
 }

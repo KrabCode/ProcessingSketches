@@ -9,6 +9,7 @@ uniform float frq;
 uniform float mixAmt;
 
 #define pi 3.1415926535
+#define two_pi 6.283185
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
@@ -118,12 +119,14 @@ void main(){
     float pixelSizeX = 1. / resolution.x;
     float pixelSizeY = 1. / resolution.y;
     float d = distance(uv, vec2(.5));
-    float r = .8;
-    float n = fbm(vec4(uv.x*frq, uv.y*frq-t*3., r*cos(t), r*sin(t)));
-    float dir  = n*pi*2.;
+    float r = 1.;
+    float n = snoise(vec4(uv.x*frq, uv.y*frq, r*cos(t), r*sin(t)));
+    float dir = n*two_pi;
+
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
-    vec3 me = texture2D(texture, uv).rgb;
-    vec3 swap = texture2D(texture, uv+swapCoord).rgb;
+
+    vec3 me = texture(texture, uv).rgb;
+    vec3 swap = texture(texture, uv+swapCoord).rgb;
     vec3 c = mix(me, swap, mixAmt);
     gl_FragColor = vec4(c,1.);
 }
