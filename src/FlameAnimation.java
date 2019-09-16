@@ -8,12 +8,10 @@ import processing.core.PVector;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Flame extends HotswapGuiSketch {
+public class FlameAnimation extends HotswapGuiSketch {
     int currentAnimationFrame = 0;
     private PGraphics bg;
     private PGraphics fg;
-
-    private File animationFolder = new File("C:\\Projects\\ProcessingSketches\\data\\animationDance");
     private ControllerManager controllers = new ControllerManager();
     private float t;
     private int captureEndFrame;
@@ -24,7 +22,7 @@ public class Flame extends HotswapGuiSketch {
     private PVector animationPos;
 
     public static void main(String[] args) {
-        GuiSketch.main("Flame");
+        GuiSketch.main("FlameAnimation");
     }
 
     public void settings() {
@@ -41,18 +39,19 @@ public class Flame extends HotswapGuiSketch {
     }
 
     private void loadAnimationImages() {
+        File animationFolder = new File("C:\\Projects\\ProcessingSketches\\data\\flameAnimation\\frames");
         for (final File file : animationFolder.listFiles()) {
             if (file.isDirectory()) {
                 continue;
             }
-            PImage frame = loadImage("animationDance\\" + file.getName());
+            PImage frame = loadImage("flameAnimation\\frames\\" + file.getName());
             animation.add(frame);
         }
     }
 
     public void draw() {
         t += radians(slider("time", 0, 1, 1));
-        String flame = "flame.glsl";
+        String flame = "flameAnimation\\flame.glsl";
         uniform(flame).set("time", t);
         bg.beginDraw();
         hotFilter(flame, bg);
@@ -83,7 +82,7 @@ public class Flame extends HotswapGuiSketch {
         fg.imageMode(CENTER);
         fg.tint(0);
         fg.image(animation.get(currentAnimationFrame), 0,0);
-        hotFilter("whiteOnly.glsl",fg);
+        hotFilter("flameAnimation\\blackToWhite.glsl",fg);
         bg.image(fg,0,0);
         fg.endDraw();
     }
