@@ -1,10 +1,8 @@
-/*{ "audio": true,
-    "pixelRatio": 2
-}*/
 
 precision highp float;
 
 uniform vec2 resolution;
+uniform sampler2D texture;
 uniform float z;
 uniform float w;
 uniform float scl;

@@ -1,11 +1,8 @@
-precision highp float;
+#version 120
 
-uniform float time;
-uniform vec2 resolution;
 uniform sampler2D texture;
-uniform float mag;
-uniform float frq;
-uniform float mixAmt;
+uniform vec2 resolution;
+uniform float time;
 
 #define pi 3.1415926535
 #define two_pi 6.283185
@@ -98,31 +95,57 @@ float snoise(vec4 v){
     + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
 }
-
 float fbm(vec4 p){
     float amp = 1.;
     float frq = 1.;
     float sum = 0.;
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 12; i++){
         sum += amp*snoise(p*frq);
         amp *= .5;
         frq *= 2.;
+        p += 8.;
     }
     return sum;
 }
+float ease(float p, float g) {
+    if (p < 0.5){
+        return 0.5f * pow(2 * p, g);
+    }
+    return 1 - 0.5f * pow(2 * (1 - p), g);
+}
 
-void main(){
-    float t = time*.1;
-    vec2 cc = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
+vec3 rgb( in vec3 c ){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
+    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
+}
+
+
+void main() {
+    float t = time * .05;
     vec2 uv = gl_FragCoord.xy / resolution.xy;
-    float d = distance(uv, vec2(.5));
-    float r = 1.;
-    float n = snoise(vec4(uv.x*frq, uv.y*frq-t*50., r*cos(t), r*sin(t)));
-    float dir = n*pi-pi*.5;
-    vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
-    vec3 me = texture(texture, uv).rgb;
-    vec3 swap = texture(texture, uv+swapCoord).rgb;
-    vec3 c = mix(me, swap, mixAmt);
-//    c = vec3(step(swap.x+swap.y+swap.z, 2.5));
-    gl_FragColor = vec4(c,1.);
+    vec2 cc = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+
+    vec3 color = vec3(-smoothstep(0.,1.,length(cc))); //vignette
+//    color *= 0.;
+    float phase = smoothstep(0.,1.,uv.y);
+
+    float hueStart = 0.55;
+    float hueRange = 0.20;
+    color += rgb(vec3(
+        hueStart+hueRange*(1.-phase),
+        .7,
+        clamp(1.-abs(.5-phase), .0,1.)
+    ));
+
+    vec2 nuv = vec2(uv.x, uv.y*(.5+phase));
+
+    float noise = fbm(vec4(nuv.x, nuv.y-t*2., pow(phase,10.), t));
+    float direction = noise * pi * 4.;
+    float magnitude = .015*sin(cc.y);
+    vec2 offset = vec2(magnitude*cos(direction), magnitude*sin(direction));
+    vec3 backbuffer = texture2D(texture, uv+offset).xyz;
+    float alpha = .05;
+    color = mix(backbuffer, color, alpha);
+//    color.g -= .1;
+    gl_FragColor = vec4(color, 1.);
 }

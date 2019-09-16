@@ -46,7 +46,7 @@ public class NormalSea extends GuiSketch {
         sobel.set("level", sobelLevel);
         drawHeight();
         updateNormal();
-        drawMain(0,0,90,255,242,213);
+        drawMain(0,0,0,255,255,255); //colors
         image(main, 0, 0);
         sliders();
         capture();

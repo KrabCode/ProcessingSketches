@@ -117,7 +117,7 @@ void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     float d = distance(uv, vec2(.5));
     float r = 1.;
-    float n = snoise(vec4(uv.x*frq, uv.y*frq-t*50., r*cos(t), r*sin(t)));
+    float n = snoise(vec4(uv.x*frq, uv.y*frq-t*5., r*cos(t), r*sin(t)));
     float dir = n*pi-pi*.5;
     vec2 swapCoord = vec2(mag*cos(dir), mag*sin(dir));
     vec3 me = texture(texture, uv).rgb;
