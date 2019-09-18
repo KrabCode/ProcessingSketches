@@ -1,9 +1,17 @@
 package applet;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PVector;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A sketch extending this class can use concise to invoke, easy to use control elements in a collapsible tray
@@ -25,6 +33,27 @@ import java.util.ArrayList;
 public abstract class GuiSketch extends PApplet {
 
 //  UTILS
+
+    protected ArrayList<PImage> loadImages(String path) {
+        ArrayList<PImage> images = new ArrayList<PImage>();
+        try {
+            List<File> filesInFolder = Files.walk(Paths.get(path))
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .collect(Collectors.toList());
+            for (File file : filesInFolder) {
+                if (file.isDirectory() || (!file.getName().contains(".jpg") && !file.getName().contains(".png"))){
+                    continue;
+                }
+                PImage frame = loadImage(Paths.get(path).toAbsolutePath()+"\\"+file.getName());
+                images.add(frame);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return images;
+    }
 
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";

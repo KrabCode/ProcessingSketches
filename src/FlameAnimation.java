@@ -1,18 +1,15 @@
 import applet.GuiSketch;
 import applet.HotswapGuiSketch;
-import com.studiohartman.jamepad.ControllerManager;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PVector;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class FlameAnimation extends HotswapGuiSketch {
     int currentAnimationFrame = 0;
     private PGraphics bg;
     private PGraphics fg;
-    private ControllerManager controllers = new ControllerManager();
     private float t;
     private int captureEndFrame;
     private int recordingFrames = 60 * 15;
@@ -33,20 +30,8 @@ public class FlameAnimation extends HotswapGuiSketch {
         surface.setAlwaysOnTop(true);
         bg = createGraphics(800, 800, P2D);
         fg = createGraphics(800, 800, P2D);
-        controllers.initSDLGamepad();
         animationPos = new PVector(width * .5f, height * .5f);
-        loadAnimationImages();
-    }
-
-    private void loadAnimationImages() {
-        File animationFolder = new File("C:\\Projects\\ProcessingSketches\\data\\flameAnimation\\frames");
-        for (final File file : animationFolder.listFiles()) {
-            if (file.isDirectory()) {
-                continue;
-            }
-            PImage frame = loadImage("flameAnimation\\frames\\" + file.getName());
-            animation.add(frame);
-        }
+        animation = loadImages("C:\\Projects\\ProcessingSketches\\data\\flameAnimation\\frames");
     }
 
     public void draw() {
@@ -63,14 +48,6 @@ public class FlameAnimation extends HotswapGuiSketch {
     }
 
     private void drawAnimation() {
-        if (5 * abs(controllers.getState(0).leftStickX) > 1 ||
-            5 * abs(controllers.getState(0).leftStickY) > 1) {
-            animationPos.x += 5 * controllers.getState(0).leftStickX;
-            animationPos.y -= 5 * controllers.getState(0).leftStickY;
-        }
-        if (controllers.getState(0).aJustPressed) {
-            animationPos = new PVector();
-        }
         if (frameCount % floor(slider("animate speed", 1, 20)) == 0) {
             currentAnimationFrame++;
         }

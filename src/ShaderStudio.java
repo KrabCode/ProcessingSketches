@@ -7,7 +7,7 @@ public class ShaderStudio extends HotswapGuiSketch {
 
     private float t = 0;
     private int frameRecordingEnds = 0;
-    private int recordingFrames = 60*30;
+    private int recordingFrames = 360/12;
     private boolean keyWasPressed = false;
 
     private PImage img;
@@ -26,29 +26,15 @@ public class ShaderStudio extends HotswapGuiSketch {
         surface.setAlwaysOnTop(true);
         background(0);
         pg = createGraphics(width, height, P2D);
-        img = loadImage("images/lukasz-lada-q7z-AUlHPaw-unsplash.jpg");  // Photo by Łukasz Łada on Unsplash
     }
 
 
     public void draw() {
-        t += radians(1 / 2f);
+        t += radians(1);
         pg.beginDraw();
-//        wave();
-//        noisePass();
-//        sobelPass();
-
-        image();
-
-        if (toggle("ndps", true)) {
-            noiseOffsetPass(t, pg);
-        }
-
-        rgbSplitPass(pg);
-
-        if (toggle("sat/vib", false)) {
-            saturationVibrancePass(pg);
-        }
-
+        String shader = "alpha.glsl";
+        uniform(shader).set("time", t);
+        hotFilter(shader, pg);
         pg.endDraw();
         image(pg, 0, 0, width, height);
         screenshot();
