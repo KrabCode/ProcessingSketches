@@ -87,6 +87,8 @@ public class Glow extends HotswapGuiSketch {
         int dirSign = random(1) > .5f ? -1 : 1;
         float sizeMult = 1.f+randomGaussian();
         float spdMult = 1.f+randomGaussian();
+        int fadeInStarted = 0;
+        int fadeInDuration = 60;
 
         P() {
             float x = random(-worldRadius, worldRadius);
@@ -116,8 +118,12 @@ public class Glow extends HotswapGuiSketch {
             pg.stroke(255);
             pg.noFill();
             pg.pushMatrix();
+            pg.pushStyle();
             pg.translate(pos.x, pos.y, pos.z);
+            float fadeInNormalized = constrain(norm(frameCount, fadeInStarted, fadeInStarted+fadeInDuration), 0,1);
+            pg.stroke(fadeInNormalized*255);
             pg.box(slider("size", 20)*sizeMult);
+            pg.popStyle();
             pg.popMatrix();
         }
 
@@ -133,6 +139,9 @@ public class Glow extends HotswapGuiSketch {
         }
 
         private void checkLeaveBounds() {
+            float x = pos.x;
+            float y = pos.y;
+            float z = pos.z;
             if(pos.x < -worldRadius){
                 pos.x += worldRadius*2;
             }
@@ -150,6 +159,9 @@ public class Glow extends HotswapGuiSketch {
             }
             if(pos.z > worldRadius){
                 pos.z -= worldRadius*2;
+            }
+            if(pos.x != x || pos.y != y || pos.z != z){
+                fadeInStarted = frameCount;
             }
         }
     }
