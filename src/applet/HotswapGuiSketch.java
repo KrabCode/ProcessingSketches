@@ -36,8 +36,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     protected void noisePass(float t, PGraphics pg) {
         String noise = "postFX/noiseFrag.glsl";
         uniform(noise).set("time", t);
-        uniform(noise).set("amount", slider("noise amt", 1));
-        uniform(noise).set("speed", slider("noise spd", 10));
+        uniform(noise).set("amount", slider("noise amt", .2f));
+        uniform(noise).set("speed", slider("noise spd", 1));
         hotFilter(noise, pg);
     }
 

@@ -34,10 +34,14 @@ public abstract class GuiSketch extends PApplet {
 
 //  UTILS
 
-    protected ArrayList<PImage> loadImages(String path) {
+    protected String id = regenId();
+    protected String captureDir = "out/capture/" + id + "/";
+    protected String captureFilename = captureDir + "####.jpg";
+
+    protected ArrayList<PImage> loadImages(String folderPath) {
         ArrayList<PImage> images = new ArrayList<PImage>();
         try {
-            List<File> filesInFolder = Files.walk(Paths.get(path))
+            List<File> filesInFolder = Files.walk(Paths.get(folderPath))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
@@ -45,7 +49,7 @@ public abstract class GuiSketch extends PApplet {
                 if (file.isDirectory() || (!file.getName().contains(".jpg") && !file.getName().contains(".png"))){
                     continue;
                 }
-                PImage frame = loadImage(Paths.get(path).toAbsolutePath()+"\\"+file.getName());
+                PImage frame = loadImage(Paths.get(folderPath).toAbsolutePath()+"\\"+file.getName());
                 images.add(frame);
             }
         } catch (IOException e) {
@@ -55,16 +59,11 @@ public abstract class GuiSketch extends PApplet {
         return images;
     }
 
-    protected String id = regenId();
-    protected String captureDir = "out/capture/" + id + "/";
-    protected String captureFilename = captureDir + "####.jpg";
-
     protected String regenId() {
         String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
         id = newId;
         return newId;
     }
-
 
     protected String randomImageUrl(float width, float height) {
         return "https://picsum.photos/" + floor(width) + "/" + floor(height) + ".jpg";
