@@ -32,7 +32,7 @@ public class Glow extends HotswapGuiSketch {
     public void draw() {
         t += radians(1);
         pg.beginDraw();
-        subtractBackground();
+        fadeToBlack(g);
         pg.translate(pg.width*.5f,pg.height*.5f);
         updateParticles();
         noiseOffsetPass(t, pg);
@@ -58,13 +58,6 @@ public class Glow extends HotswapGuiSketch {
         }
     }
 
-    private void subtractBackground() {
-        pg.blendMode(SUBTRACT);
-        pg.noStroke();
-        pg.fill(255,slider("alpha", 255));
-        pg.rect(0,0,width, height);
-        pg.blendMode(BLEND);
-    }
 
     private void updateParticles() {
         worldRadius = slider("world radius", 2000);
@@ -81,7 +74,6 @@ public class Glow extends HotswapGuiSketch {
     }
 
     class P {
-
         PVector pos;
         String axis = randomAxis();
         int dirSign = random(1) > .5f ? -1 : 1;
@@ -96,7 +88,6 @@ public class Glow extends HotswapGuiSketch {
             float z = random(-worldRadius, worldRadius);
             pos = new PVector(x, y, z);
         }
-
 
         private String randomAxis() {
             float n = random(1);
@@ -121,7 +112,7 @@ public class Glow extends HotswapGuiSketch {
             pg.pushStyle();
             pg.translate(pos.x, pos.y, pos.z);
             float fadeInNormalized = constrain(norm(frameCount, fadeInStarted, fadeInStarted+fadeInDuration), 0,1);
-            pg.stroke(fadeInNormalized*255);
+            pg.stroke(255,fadeInNormalized*255);
             pg.box(slider("size", 20)*sizeMult);
             pg.popStyle();
             pg.popMatrix();

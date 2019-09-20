@@ -30,7 +30,8 @@ If you or a loved one are experiencing a constant need to melt your face off, co
     - FBM landscapes
 - Shader filters
     - RGB split
-    - noise offset
+    - noise offset (works wonders with redrawing background with small opacity)
+
 - Backbuffer
     - Pixel sorting
 - Post FX
