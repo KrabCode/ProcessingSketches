@@ -1,5 +1,6 @@
 package applet;
 
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.opengl.PShader;
 
@@ -17,9 +18,6 @@ import static java.lang.System.currentTimeMillis;
  *
  * - to see the effects you have to actually change the last modified timestamp of the file, (try CTRL+S)
  * - the results of any compilation errors will be printed to standard processing console
- * - only supports fragment shaders
- *
- * TODO support vertex shaders too, refresh when either file gets updated
  */
 public abstract class HotswapGuiSketch extends GuiSketch {
 
@@ -28,11 +26,13 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void transparentWhitePass(PGraphics pg) {
         pg.noStroke();
+        pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
         pg.fill(255,slider("alpha", 0, 20,10));
         pg.rectMode(CENTER);
         pg.rect(0,0,width*2, height*2);
+        pg.hint(PConstants.ENABLE_DEPTH_TEST);
         pg.popStyle();
     }
 
@@ -80,38 +80,51 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
 
 
+    public PShader uniform(String fragPath) {
+        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        snapshot = initIfNull(snapshot, fragPath, null);
+        return snapshot.compiledShader;
+    }
 
-    public PShader uniform(String path) {
-        ShaderSnapshot snapshot = findSnapshotByPath(path);
-        snapshot = initIfNull(snapshot, path);
+    public PShader uniform(String fragPath, String vertPath) {
+        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        snapshot = initIfNull(snapshot, fragPath, vertPath);
         return snapshot.compiledShader;
     }
 
     public void hotFilter(String path, PGraphics canvas) {
-        hotShader(path, true, canvas);
-    }
-
-    public void hotShader(String path, PGraphics canvas) {
-        hotShader(path, false, canvas);
+        hotShader(path, null, true, canvas);
     }
 
     public void hotFilter(String path) {
-        hotShader(path, true, g);
+        hotShader(path, null, true, g);
     }
 
-    public void hotShader(String path) {
-        hotShader(path, false, g);
+    public void hotShader(String fragPath, String vertPath, PGraphics canvas) {
+        hotShader(fragPath, vertPath, false, canvas);
     }
 
-    private void hotShader(String path, boolean filter, PGraphics canvas) {
-        ShaderSnapshot snapshot = findSnapshotByPath(path);
-        snapshot = initIfNull(snapshot, path);
+    public void hotShader(String fragPath, String vertPath) {
+        hotShader(fragPath, vertPath, false, g);
+    }
+
+    public void hotShader(String fragPath, PGraphics canvas) {
+        hotShader(fragPath,null, false, canvas);
+    }
+
+    public void hotShader(String fragPath) {
+        hotShader(fragPath,null, false, g);
+    }
+
+    private void hotShader(String fragPath, String vertPath, boolean filter, PGraphics canvas) {
+        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        snapshot = initIfNull(snapshot, fragPath, vertPath);
         snapshot.update(filter, canvas);
     }
 
-    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String path) {
+    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String fragPath, String vertPath) {
         if (snapshot == null) {
-            snapshot = new ShaderSnapshot(path);
+            snapshot = new ShaderSnapshot(fragPath, vertPath);
             snapshots.add(snapshot);
         }
         return snapshot;
@@ -119,7 +132,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     private ShaderSnapshot findSnapshotByPath(String path) {
         for (ShaderSnapshot snapshot : snapshots) {
-            if (snapshot.path.equals(path)) {
+            if (snapshot.fragPath.equals(path)) {
                 return snapshot;
             }
         }
@@ -127,31 +140,44 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     }
 
     private class ShaderSnapshot {
-        String path;
+        String fragPath;
+        String vertPath;
+        File fragFile;
+        File vertFile;
         PShader compiledShader;
-        File shaderFile;
+        long fragLastKnownModified, vertLastKnownModified, lastChecked;
         boolean compiledAtLeastOnce = false;
-        long lastKnownModified, lastChecked;
         long lastKnownUncompilable = -refreshRateInMillis;
 
 
-        ShaderSnapshot(String filename) {
-            compiledShader = loadShader(filename);
-            shaderFile = dataFile(filename);
-            lastKnownModified = shaderFile.lastModified();
-            String filePath = shaderFile.getPath();
-            lastChecked = currentTimeMillis();
-            if (shaderFile.isFile()) {
-//                println(shaderFile.getName() + " registered successfully");
-            } else {
-                println("Could not find shader at " + filePath + ", please adjust the actual file path");
+        ShaderSnapshot(String fragPath, String vertPath) {
+            if(vertPath != null){
+                compiledShader = loadShader(fragPath, vertPath);
+                vertFile = dataFile(vertPath);
+                vertLastKnownModified = vertFile.lastModified();
+                if (!vertFile.isFile()) {
+                    println("Could not find shader at " + vertFile.getPath());
+                }
+            }else{
+                compiledShader = loadShader(fragPath);
             }
-            this.path = filename;
+            fragFile = dataFile(fragPath);
+            fragLastKnownModified = fragFile.lastModified();
+            lastChecked = currentTimeMillis();
+            if (!fragFile.isFile()) {
+                println("Could not find shader at " + fragFile.getPath());
+            }
+            this.fragPath = fragPath;
+            this.vertPath = vertPath;
+        }
+
+        long max(long a, long b){
+            return Math.max(a, b);
         }
 
         void update(boolean filter, PGraphics pg) {
             long currentTimeMillis = currentTimeMillis();
-            long lastModified = shaderFile.lastModified();
+            long lastModified = max(fragFile.lastModified(), vertFile.lastModified());
             if (compiledAtLeastOnce && currentTimeMillis < lastChecked + refreshRateInMillis) {
 //                println("compiled at least once, not checking, standard apply");
                 applyShader(compiledShader, filter, pg);
@@ -163,7 +189,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
                 return;
             }
             lastChecked = currentTimeMillis;
-            if (lastModified > lastKnownModified && lastModified > lastKnownUncompilable) {
+            if (lastModified > fragLastKnownModified && lastModified > lastKnownUncompilable) {
 //                println("file changed, repeat try");
                 tryCompileNewVersion(filter, pg, lastModified);
             } else if(compiledAtLeastOnce) {
@@ -182,15 +208,20 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
         private void tryCompileNewVersion(boolean filter, PGraphics pg, long lastModified){
             try {
-                PShader recentCandidate = loadShader(path);
+                PShader candidate;
+                if(vertFile == null){
+                    candidate = loadShader(fragPath);
+                }else{
+                    candidate = loadShader(fragPath, vertPath);
+                }
                 // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
-                applyShader(recentCandidate, filter, pg);
-                compiledShader = recentCandidate;
+                applyShader(candidate, filter, pg);
+                compiledShader = candidate;
                 compiledAtLeastOnce = true;
-                lastKnownModified = lastModified;
+                fragLastKnownModified = lastModified;
             } catch (Exception ex) {
                 lastKnownUncompilable = lastModified;
-                println("\n" + shaderFile.getName() + ": " + ex.getMessage());
+                println("\n" + fragFile.getName() + ": " + ex.getMessage());
             }
         }
     }
