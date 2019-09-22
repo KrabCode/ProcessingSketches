@@ -12,7 +12,7 @@ uniform vec2 resolution;
 uniform float delta;
 
 void main() {
-    vec2 dir = vec2(1,0);
+    vec2 dir = vec2(1.,0.1);
     normalize(dir);
     vec2 value = dir * delta;
 

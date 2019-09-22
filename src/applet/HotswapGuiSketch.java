@@ -29,7 +29,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
-        pg.fill(255,slider("alpha", 0, 20,10));
+        pg.fill(255,slider("alpha", 0, 100,10));
         pg.rectMode(CENTER);
         pg.rect(0,0,width*2, height*2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
@@ -61,7 +61,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitUniformPass(PGraphics pg) {
         String rgbSplit = "rgbSplitUniform.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 15));
+        uniform(rgbSplit).set("delta", slider("delta", 5));
         hotFilter(rgbSplit, pg);
     }
 
@@ -172,12 +172,18 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         }
 
         long max(long a, long b){
-            return Math.max(a, b);
+            if(a > b){
+                return a;
+            }
+            return b;
         }
 
         void update(boolean filter, PGraphics pg) {
             long currentTimeMillis = currentTimeMillis();
-            long lastModified = max(fragFile.lastModified(), vertFile.lastModified());
+            long lastModified = fragFile.lastModified();
+            if(vertFile != null){
+                lastModified = max(lastModified, vertFile.lastModified());
+            }
             if (compiledAtLeastOnce && currentTimeMillis < lastChecked + refreshRateInMillis) {
 //                println("compiled at least once, not checking, standard apply");
                 applyShader(compiledShader, filter, pg);
