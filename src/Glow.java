@@ -10,16 +10,14 @@ public class Glow extends HotswapGuiSketch {
     float t;
     int intendedParticleCount;
     PGraphics pg;
-    private int frameRecordingEnds;
-    private int recordingFrames = 360*2;
 
     public static void main(String[] args) {
         HotswapGuiSketch.main("Glow");
     }
 
     public void settings() {
-        size(800, 800, P3D);
-//        fullScreen(P3D, 2);
+//        size(800, 800, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -32,31 +30,18 @@ public class Glow extends HotswapGuiSketch {
     public void draw() {
         t += radians(1);
         pg.beginDraw();
-        fadeToBlack(g);
+        transparentWhitePass(g);
         pg.translate(pg.width*.5f,pg.height*.5f);
         updateParticles();
         noiseOffsetPass(t, pg);
-        rgbSplitPass(pg);
+        rgbSplitUniformPass(pg);
         noisePass(t, pg);
         pg.endDraw();
-        rec();
+        rec(pg);
         image(pg, 0, 0, width, height);
         gui();
     }
 
-
-    private void rec() {
-        if (frameCount < frameRecordingEnds) {
-            println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
-            pg.save(captureDir + frameCount + ".jpg");
-        }
-    }
-
-    public void keyPressed() {
-        if (key == 'k') {
-            frameRecordingEnds = frameCount + recordingFrames + 1;
-        }
-    }
 
 
     private void updateParticles() {

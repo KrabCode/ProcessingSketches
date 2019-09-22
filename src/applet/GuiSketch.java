@@ -38,15 +38,22 @@ public abstract class GuiSketch extends PApplet {
     protected String id = regenId();
     protected String captureDir = "out/capture/" + id + "/";
     protected String captureFilename = captureDir + "####.jpg";
+    protected int frameRecordingEnds;
+    protected int recordingFrames = 360;
 
-    protected void fadeToBlack(PGraphics pg) {
-        pg.pushStyle();
-        pg.blendMode(SUBTRACT);
-        pg.noStroke();
-        pg.fill(255,slider("alpha", 0, 255, 20));
-        pg.rect(0,0,width, height);
-        pg.popStyle();
+    protected void rec(PGraphics pg) {
+        if (frameCount < frameRecordingEnds) {
+            println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
+            pg.save(captureDir + frameCount + ".jpg");
+        }
     }
+
+    public void keyPressed() {
+        if (key == 'k') {
+            frameRecordingEnds = frameCount + recordingFrames + 1;
+        }
+    }
+
 
     protected ArrayList<PImage> loadImages(String folderPath) {
         ArrayList<PImage> images = new ArrayList<PImage>();
@@ -400,7 +407,7 @@ public abstract class GuiSketch extends PApplet {
         float toothR = cogR * .2f;
         for (int i = 0; i < vertexCount; i++) {
             float iNormalized = map(i, 0, vertexCount - 1, 0, 1);
-            float a = iNormalized * TWO_PI;
+            float a = iNormalized * TWO_PI + HALF_PI;
             float r = cogR + toothR * (sin(iNormalized * 50) > 0 ? 0 : 1);
             cog.add(new PVector(r * cos(a), r * sin(a)));
         }

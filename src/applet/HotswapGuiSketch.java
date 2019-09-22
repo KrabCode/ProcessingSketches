@@ -23,11 +23,23 @@ import static java.lang.System.currentTimeMillis;
  */
 public abstract class HotswapGuiSketch extends GuiSketch {
 
+    ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
+    int refreshRateInMillis = 60;
+
+    protected void transparentWhitePass(PGraphics pg) {
+        pg.noStroke();
+        pg.pushStyle();
+        pg.blendMode(SUBTRACT);
+        pg.fill(255,slider("alpha", 0, 20,10));
+        pg.rectMode(CENTER);
+        pg.rect(0,0,width*2, height*2);
+        pg.popStyle();
+    }
 
     protected void noiseOffsetPass(float t, PGraphics pg) {
-        String noiseOffset = "shaderStudio/noiseOffset.glsl";
+        String noiseOffset = "noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
-        uniform(noiseOffset).set("mixAmt", slider("mix", 0,1,1));
+        uniform(noiseOffset).set("mixAmt", slider("mix", 0,1,.1f));
         uniform(noiseOffset).set("mag", slider("mag", 0,.1f, .01f));
         uniform(noiseOffset).set("frq", slider("frq", 0, 50, 2.5f));
         hotFilter(noiseOffset, pg);
@@ -42,14 +54,20 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     }
 
     protected void wave(float t, PGraphics pg) {
-        String wave = "shaderStudio/wave.glsl";
+        String wave = "wave.glsl";
         uniform(wave).set("time", t);
         hotFilter(wave, pg);
     }
 
+    protected void rgbSplitUniformPass(PGraphics pg) {
+        String rgbSplit = "rgbSplitUniform.glsl";
+        uniform(rgbSplit).set("delta", slider("delta", 15));
+        hotFilter(rgbSplit, pg);
+    }
+
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 100));
+        uniform(rgbSplit).set("delta", slider("delta", 15));
         hotFilter(rgbSplit, pg);
     }
 
@@ -62,8 +80,6 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
 
 
-    ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 60;
 
     public PShader uniform(String path) {
         ShaderSnapshot snapshot = findSnapshotByPath(path);
