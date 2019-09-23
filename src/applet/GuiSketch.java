@@ -488,7 +488,7 @@ public abstract class GuiSketch extends PApplet {
             return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
-    float angularDiameter(float r, float size) {
+    protected float angularDiameter(float r, float size) {
         return atan(2 * (size / (2 * r)));
     }
 
