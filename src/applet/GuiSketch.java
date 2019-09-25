@@ -41,6 +41,10 @@ public abstract class GuiSketch extends PApplet {
     protected int frameRecordingEnds;
     protected int recordingFrames = 360;
 
+    protected void rec() {
+        rec(g);
+    }
+
     protected void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
             println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);

@@ -64,7 +64,7 @@ public class FlameAnimation extends HotswapGuiSketch {
         fg.endDraw();
     }
 
-    private void rec() {
+    public void rec() {
         if (isRecording()) {
             println(frameCount - captureEndFrame + recordingFrames + " / " + recordingFrames);
             bg.save(captureDir + frameCount + ".jpg");

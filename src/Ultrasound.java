@@ -58,7 +58,7 @@ public class Ultrasound extends HotswapGuiSketch {
     }
 
 
-    private void rec() {
+    public void rec() {
         if (isRecording()) {
             println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
             pg.save(captureDir + frameCount + ".jpg");

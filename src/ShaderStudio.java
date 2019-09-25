@@ -80,7 +80,7 @@ public class ShaderStudio extends HotswapGuiSketch {
         }
     }
 
-    private void rec() {
+    public void rec() {
         if (frameCount < frameRecordingEnds) {
             println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
             pg.save(captureDir + frameCount + ".jpg");
