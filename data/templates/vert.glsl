@@ -1,5 +1,3 @@
-#define pi 3.1415
-
 
 uniform mat4 transform;
 
