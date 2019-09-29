@@ -1,0 +1,1 @@
+C:\ffmpeg\bin\ffmpeg.exe -framerate 60 -an -start_number_range 1000000 -i %04d.jpg -b:v 2M 1.webm

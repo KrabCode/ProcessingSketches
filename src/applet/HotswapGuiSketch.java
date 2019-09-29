@@ -18,6 +18,9 @@ import static java.lang.System.currentTimeMillis;
  *
  * - to see the effects you have to actually change the last modified timestamp of the file, (try CTRL+S)
  * - the results of any compilation errors will be printed to standard processing console
+ * - only really supports fragment shaders, vert shader support will be shaky at best
+ *
+ * //TODO delve into vertex shaders and fix the prototype with shader-school
  */
 public abstract class HotswapGuiSketch extends GuiSketch {
 
