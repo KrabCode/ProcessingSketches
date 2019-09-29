@@ -30,7 +30,7 @@ public class Glow extends HotswapGuiSketch {
     public void draw() {
         t += radians(1);
         pg.beginDraw();
-        transparentWhitePass(g);
+        alphaFade(g);
         pg.translate(pg.width*.5f,pg.height*.5f);
         updateParticles();
         noiseOffsetPass(t, pg);

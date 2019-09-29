@@ -27,7 +27,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 60;
 
-    protected void transparentWhitePass(PGraphics pg) {
+    protected void alphaFade(PGraphics pg) {
         pg.noStroke();
         pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
@@ -36,6 +36,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         pg.rectMode(CENTER);
         pg.rect(0,0,width*2, height*2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
+        pg.blendMode(BLEND);
         pg.popStyle();
     }
 

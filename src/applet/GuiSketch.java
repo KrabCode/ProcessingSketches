@@ -55,6 +55,11 @@ public abstract class GuiSketch extends PApplet {
     public void keyPressed() {
         if (key == 'k') {
             frameRecordingEnds = frameCount + recordingFrames + 1;
+            id = regenId();
+        }
+        if(key == 'i'){
+            frameRecordingEnds = frameCount + 2;
+            id = regenId();
         }
     }
 
@@ -96,6 +101,7 @@ public abstract class GuiSketch extends PApplet {
 
 
 // GUI
+    public boolean guiInteraction;
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
@@ -146,6 +152,7 @@ public abstract class GuiSketch extends PApplet {
         colorMode(HSB, 1, 1, 1, 1);
         drawBackground();
         updateExtension(extendedByDefault);
+        guiInteraction = false;
         drawExtensionToggle();
         for (GuiElement ge : allElements) {
             if (ge.lastQueried == frameCount) {
@@ -266,6 +273,7 @@ public abstract class GuiSketch extends PApplet {
         noFill();
         if (button.pressed) {
             fill(pressedFill);
+            guiInteraction = true;
         }
         stroke(button.pressed ? mouseOverStroke : mouseOutsideStroke);
         strokeWeight(1);
@@ -286,6 +294,7 @@ public abstract class GuiSketch extends PApplet {
         toggle.pressed = mousePressed && mouseOver;
         if (wasPressedLastFrame && !toggle.pressed && !mousePressed) {
             toggle.value = !toggle.value;
+            guiInteraction = true;
         }
         noFill();
         if (toggle.value) {
@@ -318,6 +327,7 @@ public abstract class GuiSketch extends PApplet {
             if (mousePressed) {
                 slider.value = map(mouseX, pos.x, pos.x + w, slider.min, slider.max);
                 slider.value = constrain(slider.value, slider.min, slider.max);
+                guiInteraction = true;
             }
         }
 
@@ -440,6 +450,7 @@ public abstract class GuiSketch extends PApplet {
             }
             if (mousePressed) {
                 extensionTogglePressedLastFrame = true;
+                guiInteraction = true;
             }
         }
         if (!mousePressed) {

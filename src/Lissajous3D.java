@@ -27,7 +27,7 @@ public class Lissajous3D extends HotswapGuiSketch {
         t += radians(slider("t", 0,1,1));
         lMax = slider("lmax", 10);
         pg.beginDraw();
-        transparentWhitePass(pg);
+        alphaFade(pg);
         pg.translate(width*.5f,height*.5f);
         updateParticles();
         rgbSplitUniformPass(pg);

@@ -48,7 +48,7 @@ public class GameSnake extends HotswapGuiSketch {
     public void draw() {
         t += radians(slider("t"));
         pg.beginDraw();
-        transparentWhitePass(pg);
+        alphaFade(pg);
         updateAnimations();
         updateSnakes();
         updateFruits();
