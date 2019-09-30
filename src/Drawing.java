@@ -5,10 +5,10 @@ import utils.OpenSimplexNoise;
 import java.util.ArrayList;
 
 public class Drawing extends HotswapGuiSketch {
-    Tablet tablet;
+    private Tablet tablet;
 
-    ArrayList<Line> lines = new ArrayList<Line>();
-    boolean wasMousePressed = false;
+    private ArrayList<Line> lines = new ArrayList<Line>();
+    private boolean wasMousePressed = false;
     private float t;
     private OpenSimplexNoise osn = new OpenSimplexNoise();
 
@@ -88,11 +88,11 @@ public class Drawing extends HotswapGuiSketch {
         gui();
     }
 
-    class Line {
+    static class Line {
         ArrayList<Point> points = new ArrayList<Point>();
     }
 
-    class Point {
+    static class Point {
         float x, y, pressure, tiltX, tiltY;
 
         Point(float x, float y, float pressure, float tiltX, float tiltY) {

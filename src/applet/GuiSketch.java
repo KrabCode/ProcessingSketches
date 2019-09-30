@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
  * - lock sliders that are not being dragged
  * - add a scrollbar to allow unlimited number of elements
  */
+
+@SuppressWarnings("WeakerAccess")
 public abstract class GuiSketch extends PApplet {
 
 //  UTILS
@@ -523,7 +525,6 @@ public abstract class GuiSketch extends PApplet {
     private class GuiElement {
         String name;
         int lastQueried = 0;
-
         GuiElement(String name) {
             this.name = name;
         }

@@ -2,8 +2,8 @@ import applet.GuiSketch;
 import processing.opengl.PShader;
 
 public class Exclusion extends GuiSketch {
-    float tRecStart = -1;
-    float tRecFinish = -1;
+    private float tRecStart = -1;
+    private float tRecFinish = -1;
     private float t;
     private PShader fxaa;
 
