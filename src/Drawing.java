@@ -36,7 +36,7 @@ public class Drawing extends HotswapGuiSketch {
             lines.add(new Line());
         }
 
-        if (!guiInteraction && mousePressed && mouseX != 0 && mouseY != 0) {
+        if (mousePressedOutsideGui && mouseX != 0 && mouseY != 0) {
             lines.get(lines.size() - 1).points.add(new Point(mouseX, mouseY, tablet.getPressure(), tablet.getTiltX(), tablet.getTiltY()));
         }
         wasMousePressed = mousePressed;
@@ -48,9 +48,9 @@ public class Drawing extends HotswapGuiSketch {
         float range = slider("range", 10);
         float pow = slider("pow", 1);
         for (Line l : lines) {
-            if(toggle("triangles")){
+            if (toggle("triangles")) {
                 beginShape(TRIANGLE_STRIP);
-            }else{
+            } else {
                 beginShape();
             }
             for (Point p : l.points) {
@@ -68,17 +68,19 @@ public class Drawing extends HotswapGuiSketch {
             lines.clear();
         }
 
-        if(toggle("eraser") && mousePressed){
-            float strength = slider("eraser distance", 50);
-            for(Line l : lines){
-                ArrayList<Point> psToRemove = new ArrayList<>();
-                for(Point p : l.points){
-                    float d = dist(p.x, p.y, mouseX, mouseY);
-                    if(d < strength){
-                        psToRemove.add(p);
+        if (toggle("eraser")) {
+            float strength = slider("eraser strength", 50);
+            if (mousePressed) {
+                for (Line l : lines) {
+                    ArrayList<Point> psToRemove = new ArrayList<>();
+                    for (Point p : l.points) {
+                        float d = dist(p.x, p.y, mouseX, mouseY);
+                        if (d < strength) {
+                            psToRemove.add(p);
+                        }
                     }
+                    l.points.removeAll(psToRemove);
                 }
-                l.points.removeAll(psToRemove);
             }
         }
 

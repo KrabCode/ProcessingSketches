@@ -15,20 +15,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A sketch extending this class can use concise to invoke, easy to use control elements in a collapsible tray
+ * A sketch extending this class can use easy to query, easy to use GUI elements in a collapsible tray
  *
- * - use slider(), toggle() or button() anywhere in draw() any number of times (yes, even inside loops) to
- * - register a single uniquely named control element
+ * - use slider(), toggle() or button() anywhere in draw() to:
+ * - register a uniquely named singleton control element
  * - get its current value
+ * - subsequent uses with the same name do not create another copy so you can call the elements inside loops many times
  *
- * - call gui() at the end of draw() to display all of the control elements registered in that draw() in a tray
+ * - don't forget to call gui() at the end of draw() to:
+ * - display all of the used control elements and let the user interact with them
  * - click on the left arrow "<" to hide it, click the cog to show it
- * - the cog fades away but it's still there, you can click on it
- *
+ * - the cog fades away when not in use but it's still there, you can click on it
  *
  * TODO improve the user experience
  * - lock sliders that are not being dragged
- * - do not let mouse affect the sketch while over gui
  * - add a scrollbar to allow unlimited number of elements
  */
 public abstract class GuiSketch extends PApplet {
@@ -57,7 +57,7 @@ public abstract class GuiSketch extends PApplet {
             frameRecordingEnds = frameCount + recordingFrames + 1;
             id = regenId();
         }
-        if(key == 'i'){
+        if (key == 'i') {
             frameRecordingEnds = frameCount + 2;
             id = regenId();
         }
@@ -72,10 +72,10 @@ public abstract class GuiSketch extends PApplet {
                     .map(Path::toFile)
                     .collect(Collectors.toList());
             for (File file : filesInFolder) {
-                if (file.isDirectory() || (!file.getName().contains(".jpg") && !file.getName().contains(".png"))){
+                if (file.isDirectory() || (!file.getName().contains(".jpg") && !file.getName().contains(".png"))) {
                     continue;
                 }
-                PImage frame = loadImage(Paths.get(folderPath).toAbsolutePath()+"\\"+file.getName());
+                PImage frame = loadImage(Paths.get(folderPath).toAbsolutePath() + "\\" + file.getName());
                 images.add(frame);
             }
         } catch (IOException e) {
@@ -101,7 +101,9 @@ public abstract class GuiSketch extends PApplet {
 
 
 // GUI
-    public boolean guiInteraction;
+
+    protected boolean mousePressedOutsideGui = false; //use this instead of mousePressed to ignore mouse press when over gui
+    protected boolean mouseOverGui = false;
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
@@ -131,6 +133,7 @@ public abstract class GuiSketch extends PApplet {
     private float extensionAnimationStarted = -extensionAnimationDuration;
     private float extensionEasing = -1;
     private float extensionAnimationTarget = -1;
+    private float backgroundTrayWidth, backgroundTrayHeight;
 
     protected void resetGui() {
         allElements.clear();
@@ -150,9 +153,9 @@ public abstract class GuiSketch extends PApplet {
         hint(DISABLE_DEPTH_TEST);
         resetMatrixInAnyRenderer();
         colorMode(HSB, 1, 1, 1, 1);
-        drawBackground();
+        drawBackgroundTray();
+        updateMouseState();
         updateExtension(extendedByDefault);
-        guiInteraction = false;
         drawExtensionToggle();
         for (GuiElement ge : allElements) {
             if (ge.lastQueried == frameCount) {
@@ -177,14 +180,19 @@ public abstract class GuiSketch extends PApplet {
         }
     }
 
-    private void drawBackground() {
+    private void drawBackgroundTray() {
         noStroke();
         fill(0, backgroundAlpha);
         PVector offset = getOffset();
-        float w = width * rowWidthWindowFraction + offset.x;
-        float h = height * rowHeightWindowFraction * activeElements.size() + offset.y + cogR;
+        backgroundTrayWidth = width * rowWidthWindowFraction + offset.x;
+        backgroundTrayHeight = height * rowHeightWindowFraction * activeElements.size() + offset.y + cogR;
         rectMode(CORNER);
-        rect(0, 0, w, h);
+        rect(0, 0, backgroundTrayWidth, backgroundTrayHeight);
+    }
+
+    private void updateMouseState(){
+        mouseOverGui = isPointInRect(mouseX, mouseY, 0, 0, backgroundTrayWidth, backgroundTrayHeight);
+        mousePressedOutsideGui = mousePressed && !mouseOverGui;
     }
 
     protected boolean button(String name) {
@@ -273,7 +281,6 @@ public abstract class GuiSketch extends PApplet {
         noFill();
         if (button.pressed) {
             fill(pressedFill);
-            guiInteraction = true;
         }
         stroke(button.pressed ? mouseOverStroke : mouseOutsideStroke);
         strokeWeight(1);
@@ -294,7 +301,6 @@ public abstract class GuiSketch extends PApplet {
         toggle.pressed = mousePressed && mouseOver;
         if (wasPressedLastFrame && !toggle.pressed && !mousePressed) {
             toggle.value = !toggle.value;
-            guiInteraction = true;
         }
         noFill();
         if (toggle.value) {
@@ -327,7 +333,6 @@ public abstract class GuiSketch extends PApplet {
             if (mousePressed) {
                 slider.value = map(mouseX, pos.x, pos.x + w, slider.min, slider.max);
                 slider.value = constrain(slider.value, slider.min, slider.max);
-                guiInteraction = true;
             }
         }
 
@@ -450,7 +455,6 @@ public abstract class GuiSketch extends PApplet {
             }
             if (mousePressed) {
                 extensionTogglePressedLastFrame = true;
-                guiInteraction = true;
             }
         }
         if (!mousePressed) {

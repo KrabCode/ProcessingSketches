@@ -7,6 +7,7 @@ import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 
 // shadows are from here: https://forum.processing.org/two/discussion/12775/simple-shadow-mapping
+// If you extend this class make sure to call super.draw() and implement animate() as seen in the shadow test sketch.
 public abstract class ShadowGuiSketch extends GuiSketch {
     protected PVector lightDir = new PVector();
     PShader defaultShader;
