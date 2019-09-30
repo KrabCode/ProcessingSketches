@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * - add a scrollbar to allow unlimited number of elements
  */
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal", "unused", "DuplicatedCode"})
 public abstract class GuiSketch extends PApplet {
 
 //  UTILS
@@ -522,7 +522,7 @@ public abstract class GuiSketch extends PApplet {
         return null;
     }
 
-    private class GuiElement {
+    private static class GuiElement {
         String name;
         int lastQueried = 0;
         GuiElement(String name) {
