@@ -41,7 +41,7 @@ public abstract class GuiSketch extends PApplet {
     protected String captureDir = "out/capture/" + id + "/";
     protected String captureFilename = captureDir + "####.jpg";
     protected int frameRecordingEnds;
-    protected int recordingFrames = 360;
+    protected int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
 
     protected void rec() {
         rec(g);
@@ -49,7 +49,7 @@ public abstract class GuiSketch extends PApplet {
 
     protected void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
-            println(frameCount - frameRecordingEnds + recordingFrames + " / " + recordingFrames);
+            println(frameCount - frameRecordingEnds + recordingFrames + " / " + (recordingFrames-1));
             pg.save(captureDir + frameCount + ".jpg");
         }
     }

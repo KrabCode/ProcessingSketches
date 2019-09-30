@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class Stars extends GuiSketch {
     private ArrayList<Star> stars = new ArrayList<Star>();
-    private PeasyCam cam;
     private int bgDark;
     private PShader rgbSplit;
     private float depth;
@@ -24,7 +23,7 @@ public class Stars extends GuiSketch {
         bgDark = color(0, 0);
         rgbSplit = loadShader("rgbSplit.glsl");
         depth = width;
-        cam = new PeasyCam(this, depth);
+        new PeasyCam(this, depth);
     }
 
     public void draw() {
@@ -34,9 +33,7 @@ public class Stars extends GuiSketch {
         rgbSplit.set("strength", slider("strength", .005f));
         rgbSplit.set("easing", slider("easing", 2));
         filter(rgbSplit);
-        if (frameCount >= 60 * 8 && frameCount <= 60 * 14) {
-//            saveFrame(captureDir);
-        }
+        rec();
         gui();
     }
 
