@@ -14,4 +14,4 @@ All of the libraries you'll need to compile these sketches are found in [libs.ra
 
 
 ## Discord
-You can usually find me on the Creative Coding discord channel under the username Krab. Use this [invite](https://discord.gg/KatY9nm) to get in.
+You can usually find me on the Creative Coding discord server under the username Krab. Use this [invite](https://discord.gg/KatY9nm) to get in.
