@@ -109,7 +109,7 @@ public abstract class GuiSketch extends PApplet {
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
-    private float rowWidthWindowFraction = 1 / 3f;
+    private float rowWidthWindowFraction = 1 / 4f;
     private float rowHeightWindowFraction = 1 / 14f;
     private float elementPaddingFractionX = .9f;
     private float elementPaddingFractionY = .8f;
@@ -164,10 +164,19 @@ public abstract class GuiSketch extends PApplet {
                 updateDrawElement(ge);
             }
         }
+        adjustrowHeight();
         activeElements.clear();
         hint(ENABLE_DEPTH_TEST);
         popStyle();
         popMatrix();
+    }
+
+    private void adjustrowHeight() {
+        if(activeElements.size() < 12){
+            rowHeightWindowFraction = 1/14f;
+        }else{
+            rowHeightWindowFraction = 1/((float)activeElements.size()+2);
+        }
     }
 
     private boolean isGuiEmpty() {

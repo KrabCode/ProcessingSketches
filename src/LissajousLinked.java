@@ -23,15 +23,20 @@ public class LissajousLinked extends HotswapGuiSketch {
     public void draw() {
         t += radians(.5f);
         bg();
-        int res = floor(slider("res", 6));
+        int res = floor(slider("res", 0, 6, 1));
+        float cx = width * .5f;
+        float cy = height * .5f;
         for (int ix = 0; ix < res; ix++) {
             for (int iy = 0; iy < res; iy++) {
                 float xNorm = norm(ix, 0, res - 1);
                 float yNorm = norm(iy, 0, res - 1);
+                if (res == 1) {
+                    xNorm = .5f;
+                    yNorm = .5f;
+                }
                 float r = slider("r", 300);
-                float margin = r * 1.2f;
-                float xPos = map(xNorm, 0, 1, margin, width - margin);
-                float yPos = map(yNorm, 0, 1, margin, height - margin);
+                float xPos = map(xNorm, 0, 1, cx - width * .5f, cx + width * .5f);
+                float yPos = map(yNorm, 0, 1, cy - height * .5f, cx + width * .5f);
                 float xFreq = slider("x frq start", 5);
                 float yFreq = slider("y frq start", 5);
                 xFreq += xNorm * slider("frq range", 5);
@@ -43,7 +48,7 @@ public class LissajousLinked extends HotswapGuiSketch {
                     strokeWeight(3);
                     point(0, 0);
                 }
-                updatePs(r, xFreq, yFreq);
+                updateLissajous(r, xFreq, yFreq);
                 popMatrix();
             }
         }
@@ -51,19 +56,28 @@ public class LissajousLinked extends HotswapGuiSketch {
         gui();
     }
 
-    void updatePs(float r, float xFreq, float yFreq) {
-        ArrayList<PVector> ps = new ArrayList<PVector>();
-        float count = slider("count", 100);
+    void updateLissajous(float r, float xFreq, float yFreq) {
+        ArrayList<PVector> points = new ArrayList<PVector>();
+        float count = slider("count", 300);
         for (int i = 0; i < count; i++) {
-            float in = norm(i, 0, count - 1);
-            float ix = r * cos(in * TWO_PI * xFreq + t);
-            float iy = r * sin(in * TWO_PI * yFreq + t);
-            ps.add(new PVector(ix, iy, in));
+            float inorm = norm(i, 0, count - 1);
+            float x = r * cos(inorm * TWO_PI * xFreq + t);
+            float y = r * sin(inorm * TWO_PI * yFreq + t);
+            if (toggle("modulated")) {
+                float modFrq = slider("modFrq", .1f);
+                float modMag = slider("modMag", 1f);
+                points.add(new PVector(
+                        x * (1.f + modMag * sin(y * modFrq)),
+                        y * (1.f + modMag * cos(x * modFrq)),
+                        inorm));
+            } else {
+                points.add(new PVector(x, y, inorm));
+            }
         }
         beginShape(LINES);
         strokeWeight(1);
-        for (PVector a : ps) {
-            for (PVector b : ps) {
+        for (PVector a : points) {
+            for (PVector b : points) {
                 if (a.equals(b)) {
                     continue;
                 }
