@@ -23,7 +23,6 @@ public class Boids extends HotswapGuiSketch {
     float avoidRange, avoidMag, centerRange, centerMag, alignRange, alignMag, perpendicularAvoidRange, perpendicularAvoidMag;
     float farAway, centerToCornerDistance;
     private PVector cameraOffset, playerTarget;
-    private float alignLerp;
 
     public static void main(String[] args) {
         HotswapGuiSketch.main("Boids");
@@ -80,12 +79,11 @@ public class Boids extends HotswapGuiSketch {
         Boid player = getPlayer();
         updateBoidCount(player);
         avoidRange = slider("avoid r", 40);
-        avoidMag = slider("avoid mag", .5f);
+        avoidMag = slider("avoid mag", 1);
         centerRange = slider("center r", 200);
         centerMag = slider("center mag", .5f);
-        alignRange = slider("align r", 200);
-        alignMag = slider("align mag", 1);
-        alignLerp = slider("align lerp");
+        alignRange = slider("align r", 100);
+        alignMag = slider("align mag", .25f);
         perpendicularAvoidRange = slider("perp avoid r", 200);
         perpendicularAvoidMag = slider("perp avoid mag", 1);
         for (Boid boid : boids) {
@@ -109,7 +107,7 @@ public class Boids extends HotswapGuiSketch {
                 boid.spd.setMag(minMag);
             }
             boid.acc.mult(0);
-            boid.spd.mult(slider("drag", 1));
+            boid.spd.mult(slider("drag", .5f,1));
             boid.pos.add(boid.spd);
         }
     }
@@ -158,13 +156,7 @@ public class Boids extends HotswapGuiSketch {
                         alignAvgSpd.add(other.spd);
                         alignSpdCount++;
                         stroke(100, 100, 255);
-                        ellipse(me.pos.x, me.pos.y, centerRange * 2, centerRange * 2);
-                        pushMatrix();
-                        translate(me.pos.x, me.pos.y);
-                        rotate(me.spd.heading());
-                        stroke(0, 0, 255);
-                        line(0, 0, 30, 0);
-                        popMatrix();
+                        ellipse(me.pos.x, me.pos.y, alignRange * 2, alignRange * 2);
                     }
                 }
 
@@ -202,6 +194,16 @@ public class Boids extends HotswapGuiSketch {
         stroke(255);
         strokeWeight(1);
         ellipse(player.pos.x, player.pos.y, avoidRange * 2, avoidRange * 2);
+
+        pushMatrix();
+        translate(player.pos.x, player.pos.y);
+        rotate(player.spd.heading());
+        float r = norm(player.spd.heading(), -PI, PI);
+        float b = 1-r;
+        stroke(255*r, 0, 255*b);
+        line(0, 0, 50*player.spd.mag(), 0);
+        popMatrix();
+
         float mouseTightness = slider("mouse tight", 6);
         if (targetActive) {
             PVector towardsTarget = PVector.sub(playerTarget, player.pos);
