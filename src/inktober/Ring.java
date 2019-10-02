@@ -1,6 +1,5 @@
 package inktober;
 
-import applet.GuiSketch;
 import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 
@@ -9,7 +8,7 @@ public class Ring extends HotswapGuiSketch {
     PGraphics pg;
 
     public static void main(String[] args) {
-        GuiSketch.main("inktober.Ring");
+        HotswapGuiSketch.main("inktober.Ring");
     }
 
     public void settings() {

@@ -39,7 +39,7 @@ public class LissajousLinked extends HotswapGuiSketch {
                 float yPos = map(yNorm, 0, 1, cy - height * .5f, cx + width * .5f);
                 float xFreq = slider("x frq start", 5);
                 float yFreq = slider("y frq start", 5);
-                xFreq += xNorm * slider("frq range", 5);
+                xFreq += xNorm * slider("frq range", 0,5, 0);
                 yFreq += yNorm * slider("frq range");
                 pushMatrix();
                 translate(xPos, yPos);
@@ -64,11 +64,12 @@ public class LissajousLinked extends HotswapGuiSketch {
             float x = r * cos(inorm * TWO_PI * xFreq + t);
             float y = r * sin(inorm * TWO_PI * yFreq + t);
             if (toggle("modulated")) {
-                float modFrq = slider("modFrq", .1f);
+                float d = dist(x,y,0,0);
+                float modFrq = slider("modFrq", 2.1f);
                 float modMag = slider("modMag", 1f);
                 points.add(new PVector(
-                        x * (1.f + modMag * sin(y * modFrq)),
-                        y * (1.f + modMag * cos(x * modFrq)),
+                        x * (1.f+modMag*sin(d*modFrq)),
+                        y * (1.f+modMag*sin(d*modFrq)),
                         inorm));
             } else {
                 points.add(new PVector(x, y, inorm));

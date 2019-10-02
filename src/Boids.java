@@ -204,7 +204,7 @@ public class Boids extends HotswapGuiSketch {
         line(0, 0, 50*player.spd.mag(), 0);
         popMatrix();
 
-        float mouseTightness = slider("mouse tight", 6);
+        float mouseTightness = slider("mouse tight", 3);
         if (targetActive) {
             PVector towardsTarget = PVector.sub(playerTarget, player.pos);
             player.acc.add(towardsTarget.normalize().mult(mouseTightness));
