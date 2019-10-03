@@ -80,10 +80,10 @@ public class Boids extends HotswapGuiSketch {
         updateBoidCount(player);
         avoidRange = slider("avoid r", 40);
         avoidMag = slider("avoid mag", 1);
-        centerRange = slider("center r", 0, 200, 0);
+        centerRange = slider("center r", 200);
         centerMag = slider("center mag", .5f);
         alignRange = slider("align r", 100);
-        alignMag = slider("align mag", .05f);
+        alignMag = slider("align mag", .5f);
 //        perpendicularAvoidRange = slider("perp avoid r", 200);
 //        perpendicularAvoidMag = slider("perp avoid mag", 1);
         for (Boid boid : boids) {
@@ -106,16 +106,20 @@ public class Boids extends HotswapGuiSketch {
     }
 
     private void displayBoid(Boid boid) {
+        pushMatrix();
+        translate(boid.pos.x, boid.pos.y);
+        rotate(boid.spd.heading());
         noFill();
         strokeWeight(1);
-        ellipse(boid.pos.x, boid.pos.y, 10, 10);
+        ellipse(0,0, 10, 5);
+        popMatrix();
     }
 
     private void moveBoid(Boid boid) {
         boid.spd.add(boid.acc);
         float minMag = slider("minMag", 5);
         if (boid.spd.mag() < minMag) {
-            if(boid.spd.mag() == 0){
+            if (boid.spd.mag() == 0) {
                 boid.spd.add(PVector.random2D());
             }
             boid.spd.setMag(minMag);
@@ -125,19 +129,12 @@ public class Boids extends HotswapGuiSketch {
         boid.acc.mult(0);
     }
 
-    private void displayDebugDirection(Boid boid, float dir) {
-        pushMatrix();
-        translate(boid.pos.x, boid.pos.y);
-        rotate(dir);
-        line(0, 0, 50 * boid.spd.mag(), 0);
-        popMatrix();
-    }
 
     private void reactToOtherBoids(Boid me) {
         PVector towardsCenterSum = new PVector();
+        PVector alignHeadingSum = new PVector();
         int towardsCenterCount = 0;
-        float alignDifferenceSum = 0;
-        int alignSpdCount = 0;
+        int alignHeadingCount = 0;
 
         for (Boid other : boids) {
             if (me.equals(other)) {
@@ -152,37 +149,37 @@ public class Boids extends HotswapGuiSketch {
                     PVector thisAvoidance = PVector.sub(me.pos, other.pos);
                     avoid.add(thisAvoidance.normalize().mult(1 / thisAvoidance.mag()).mult(avoidMag));
                     stroke(255, 100, 100);
-                    ellipse(me.pos.x, me.pos.y, 10, 10);
+                    displayDebugCircle(me, avoidRange);
                 }
             }
             me.acc.add(avoid);
 
-            // the a boid is not avoiding so it can do something else
+            // the boid is not avoiding so it can do something else
             if (avoid.mag() < .01f) {
                 stroke(255);
-                // boid a moves towards others inside center range
+                // the boid moves towards others inside center range
                 if (isBoidInRectangle(me, other, centerRange)) {
                     d = lazyDistanceCalc(me, other, d);
                     if (d < centerRange) {
                         towardsCenterSum.add(PVector.sub(other.pos, me.pos));
                         towardsCenterCount++;
                         stroke(100, 255, 100);
-                        ellipse(me.pos.x, me.pos.y, centerRange * 2, centerRange * 2);
+                        displayDebugCircle(me, centerRange);
                     }
                 }
-                // align
+                // the boid aligns its direction with others within align range
                 if (isBoidInRectangle(me, other, alignRange)) {
                     d = lazyDistanceCalc(me, other, d);
                     if (d < alignRange) {
-                        alignDifferenceSum += angularDifference(me.spd.heading(), other.spd.heading());
-                        alignSpdCount++;
-                        stroke(255, 0, 255);
-                        ellipse(me.pos.x, me.pos.y, alignRange * 2, alignRange * 2);
+                        alignHeadingSum.add(other.spd);
+                        alignHeadingCount++;
+                        stroke(255, 100, 255);
+                        displayDebugCircle(me, alignRange);
                     }
                 }
 
 //                if (isBoidInRectangle(me, other, perpendicularAvoidRange)) {
-                    //TODO perpendicular avoidance
+                //TODO perpendicular avoidance
 //                }
             }
         }
@@ -190,16 +187,31 @@ public class Boids extends HotswapGuiSketch {
         if (towardsCenterCount > 0) {
             me.acc.add(towardsCenterSum.div(towardsCenterCount).normalize().mult(centerMag));
         }
-        if (alignSpdCount > 0) {
-
+        if (alignHeadingCount > 0) {
+            float desiredAngle = alignHeadingSum.div(alignHeadingCount).heading();
             stroke(255);
-            displayDebugDirection(me, me.spd.heading()+alignDifferenceSum);
-
-            float difference = angularDifference(me.spd.heading(), me.spd.heading()+alignDifferenceSum);
-
-            me.rotationSpd += difference * alignMag;
-            me.spd.rotate(me.rotationSpd);
+            displayDebugDirection(me, desiredAngle);
+            float towardsDesiredAngle = angularDifference(me.spd.heading(), desiredAngle);
+            me.spd.rotate(constrain(towardsDesiredAngle,radians(-1), radians(1)));
         }
+    }
+
+    private void displayDebugDirection(Boid boid, float dir) {
+        if(!toggle("debug", false)){
+            return;
+        }
+        pushMatrix();
+        translate(boid.pos.x, boid.pos.y);
+        rotate(dir);
+        line(0, 0, 50 * boid.spd.mag(), 0);
+        popMatrix();
+    }
+
+    private void displayDebugCircle(Boid boid, float range) {
+        if(!toggle("debug", false)){
+            return;
+        }
+        ellipse(boid.pos.x, boid.pos.y, range * 2, range * 2);
     }
 
     float lazyDistanceCalc(Boid a, Boid b, float d) {
@@ -210,11 +222,6 @@ public class Boids extends HotswapGuiSketch {
     }
 
     private void updatePlayer(Boid player) {
-        stroke(255);
-        strokeWeight(1);
-        ellipse(player.pos.x, player.pos.y, avoidRange * 2, avoidRange * 2);
-
-
         float mouseTightness = slider("mouse tight", 3);
         if (targetActive) {
             PVector towardsTarget = PVector.sub(playerTarget, player.pos);
@@ -275,10 +282,10 @@ public class Boids extends HotswapGuiSketch {
 
     float angularDifference(float angleStart, float angleTarget) {
         float d = angleTarget - angleStart;
-        if (d > PI) {
+        while (d > PI) {
             d -= TWO_PI;
         }
-        if (d < -PI) {
+        while (d < -PI) {
             d += TWO_PI;
         }
         return d;
@@ -294,7 +301,6 @@ public class Boids extends HotswapGuiSketch {
         PVector pos;
         PVector spd = new PVector();
         PVector acc = new PVector();
-        float rotationSpd;
         boolean dead = false;
         boolean isPlayer = false;
 
