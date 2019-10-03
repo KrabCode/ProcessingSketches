@@ -80,16 +80,15 @@ public class Boids extends HotswapGuiSketch {
         updateBoidCount(player);
         avoidRange = slider("avoid r", 40);
         avoidMag = slider("avoid mag", 1);
-        centerRange = slider("center r", 200);
+        centerRange = slider("center r", 0, 200, 0);
         centerMag = slider("center mag", .5f);
         alignRange = slider("align r", 100);
-        alignMag = slider("align mag", .25f);
-        perpendicularAvoidRange = slider("perp avoid r", 200);
-        perpendicularAvoidMag = slider("perp avoid mag", 1);
+        alignMag = slider("align mag", .05f);
+//        perpendicularAvoidRange = slider("perp avoid r", 200);
+//        perpendicularAvoidMag = slider("perp avoid mag", 1);
         for (Boid boid : boids) {
             reactToOtherBoids(boid);
             if (boid.isPlayer) {
-                stroke(255);
                 updatePlayerTarget(player);
                 updatePlayer(boid);
             } else {
@@ -97,25 +96,47 @@ public class Boids extends HotswapGuiSketch {
                     boid.dead = true;
                 }
             }
-            noFill();
-            strokeWeight(1);
-            ellipse(boid.pos.x, boid.pos.y, 10, 10);
+            displayBoid(boid);
 
-            boid.spd.add(boid.acc);
-            float minMag = slider("minMag");
-            if (boid.spd.mag() < minMag) {
-                boid.spd.setMag(minMag);
-            }
-            boid.acc.mult(0);
-            boid.spd.mult(slider("drag", .5f,1));
-            boid.pos.add(boid.spd);
+            stroke(255, 0, 255);
+            displayDebugDirection(boid, boid.spd.heading());
+            moveBoid(boid);
+
         }
+    }
+
+    private void displayBoid(Boid boid) {
+        noFill();
+        strokeWeight(1);
+        ellipse(boid.pos.x, boid.pos.y, 10, 10);
+    }
+
+    private void moveBoid(Boid boid) {
+        boid.spd.add(boid.acc);
+        float minMag = slider("minMag", 5);
+        if (boid.spd.mag() < minMag) {
+            if(boid.spd.mag() == 0){
+                boid.spd.add(PVector.random2D());
+            }
+            boid.spd.setMag(minMag);
+        }
+        boid.spd.mult(slider("drag", .5f, 1));
+        boid.pos.add(boid.spd);
+        boid.acc.mult(0);
+    }
+
+    private void displayDebugDirection(Boid boid, float dir) {
+        pushMatrix();
+        translate(boid.pos.x, boid.pos.y);
+        rotate(dir);
+        line(0, 0, 50 * boid.spd.mag(), 0);
+        popMatrix();
     }
 
     private void reactToOtherBoids(Boid me) {
         PVector towardsCenterSum = new PVector();
         int towardsCenterCount = 0;
-        PVector alignAvgSpd = new PVector();
+        float alignDifferenceSum = 0;
         int alignSpdCount = 0;
 
         for (Boid other : boids) {
@@ -153,16 +174,16 @@ public class Boids extends HotswapGuiSketch {
                 if (isBoidInRectangle(me, other, alignRange)) {
                     d = lazyDistanceCalc(me, other, d);
                     if (d < alignRange) {
-                        alignAvgSpd.add(other.spd);
+                        alignDifferenceSum += angularDifference(me.spd.heading(), other.spd.heading());
                         alignSpdCount++;
-                        stroke(100, 100, 255);
+                        stroke(255, 0, 255);
                         ellipse(me.pos.x, me.pos.y, alignRange * 2, alignRange * 2);
                     }
                 }
 
-                if (isBoidInRectangle(me, other, perpendicularAvoidRange)) {
+//                if (isBoidInRectangle(me, other, perpendicularAvoidRange)) {
                     //TODO perpendicular avoidance
-                }
+//                }
             }
         }
 
@@ -170,24 +191,22 @@ public class Boids extends HotswapGuiSketch {
             me.acc.add(towardsCenterSum.div(towardsCenterCount).normalize().mult(centerMag));
         }
         if (alignSpdCount > 0) {
-            PVector avgSpd = alignAvgSpd.div(alignSpdCount);
-            me.acc.add(avgSpd.normalize().mult(alignMag));
+
+            stroke(255);
+            displayDebugDirection(me, me.spd.heading()+alignDifferenceSum);
+
+            float difference = angularDifference(me.spd.heading(), me.spd.heading()+alignDifferenceSum);
+
+            me.rotationSpd += difference * alignMag;
+            me.spd.rotate(me.rotationSpd);
         }
     }
 
-    float lazyDistanceCalc(Boid a, Boid b, float d){
+    float lazyDistanceCalc(Boid a, Boid b, float d) {
         if (d == INITIAL_DISTANCE_VALUE) {
             d = dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
         }
         return d;
-    }
-
-    private boolean isBehindPlayer(Boid who, Boid player) {
-        float angleToPlayer = atan2(player.pos.y - who.pos.y, player.pos.x - who.pos.x);
-        float normalizedAngleToPlayer = normalizeAngle(angleToPlayer, PI);
-        float normalizedPlayerHeading = normalizeAngle(player.spd.heading(), PI);
-        float angleToPlayerVsHeading = normalizeAngle(normalizedAngleToPlayer - normalizedPlayerHeading, 0);
-        return abs(angleToPlayerVsHeading) < HALF_PI;
     }
 
     private void updatePlayer(Boid player) {
@@ -195,14 +214,6 @@ public class Boids extends HotswapGuiSketch {
         strokeWeight(1);
         ellipse(player.pos.x, player.pos.y, avoidRange * 2, avoidRange * 2);
 
-        pushMatrix();
-        translate(player.pos.x, player.pos.y);
-        rotate(player.spd.heading());
-        float r = norm(player.spd.heading(), -PI, PI);
-        float b = 1-r;
-        stroke(255*r, 0, 255*b);
-        line(0, 0, 50*player.spd.mag(), 0);
-        popMatrix();
 
         float mouseTightness = slider("mouse tight", 6);
         if (targetActive) {
@@ -250,8 +261,27 @@ public class Boids extends HotswapGuiSketch {
                 range * 2);
     }
 
+    private boolean isBehindPlayer(Boid who, Boid player) {
+        float angleToPlayer = atan2(player.pos.y - who.pos.y, player.pos.x - who.pos.x);
+        float normalizedAngleToPlayer = normalizeAngle(angleToPlayer, PI);
+        float normalizedPlayerHeading = normalizeAngle(player.spd.heading(), PI);
+        float angleToPlayerVsHeading = normalizeAngle(normalizedAngleToPlayer - normalizedPlayerHeading, 0);
+        return abs(angleToPlayerVsHeading) < HALF_PI;
+    }
+
     public float normalizeAngle(float a, float center) {
         return a - TWO_PI * floor((a + PI - center) / TWO_PI);
+    }
+
+    float angularDifference(float angleStart, float angleTarget) {
+        float d = angleTarget - angleStart;
+        if (d > PI) {
+            d -= TWO_PI;
+        }
+        if (d < -PI) {
+            d += TWO_PI;
+        }
+        return d;
     }
 
     private PVector randomPositionOffscreenInFrontOfPlayer(Boid player) {
@@ -264,7 +294,7 @@ public class Boids extends HotswapGuiSketch {
         PVector pos;
         PVector spd = new PVector();
         PVector acc = new PVector();
-        float dir = random(TWO_PI);
+        float rotationSpd;
         boolean dead = false;
         boolean isPlayer = false;
 
