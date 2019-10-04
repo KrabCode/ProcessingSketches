@@ -19,7 +19,7 @@ public class Boids extends HotswapGuiSketch {
     ArrayList<Boid> boids = new ArrayList<Boid>();
     ArrayList<Boid> toRemove = new ArrayList<Boid>();
     boolean targetActive;
-    float avoidRadius, avoidMag, centerRadius, centerMag, alignRadius, obstructionRadius, obstructionMag, obstructionViewportAngle;
+    float avoidRadius, avoidMag, centerRadius, centerMag, alignRadius, alignMag, obstructionRadius, obstructionMag, obstructionViewportAngle;
     float farAway, centerToCornerDistance;
     private Boid player;
     private PVector cameraOffset, playerTarget;
@@ -71,7 +71,7 @@ public class Boids extends HotswapGuiSketch {
         centerMag = slider("center mag", .5f);
 
         alignRadius = slider("align r", 100);
-//        alignMag = slider("align mag", .5f);
+        alignMag = slider("align mag", .5f);
 
     }
 
@@ -239,20 +239,16 @@ public class Boids extends HotswapGuiSketch {
             PVector avg = alignHeadingSum.div(alignHeadingCount);
             float desiredAngle = avg.heading();
             float towardsDesiredAngle = angleDifference(me.spd.heading(), desiredAngle);
-            me.spd.rotate(constrain(towardsDesiredAngle, radians(-.5f), radians(.5f)));
+            //TODO only allow  a little bit of rotation at a time
+            me.spd.rotate(constrain(towardsDesiredAngle, radians(-alignMag), radians(alignMag)));
         }
         if (obstructionCount > 0) {
             PVector avg = obstructionSum.div(obstructionCount);
             float angleBetween = angleDifferenceToMyHeading(me, avg);
             boolean obstructedFromTheRight = angleBetween < PI - obstructionViewportAngle * .5f;
-            float angle = angleBetween + (obstructedFromTheRight ? -HALF_PI : HALF_PI);
-
-            if (angle > 0) {
-                avg.rotate(HALF_PI);
-            } else {
-                avg.rotate(-HALF_PI);
-            }
-            me.acc.add(avg.normalize().mult(obstructionMag));
+//            float angle = angleBetween + (obstructedFromTheRight ? -HALF_PI : HALF_PI);
+            float adjustment = obstructedFromTheRight?HALF_PI:-HALF_PI;
+            me.acc.add(new PVector(me.spd.x, me.spd.y).rotate(adjustment).normalize().mult(obstructionMag));
 
         }
     }
