@@ -3,24 +3,21 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
+@SuppressWarnings({"DuplicatedCode", "unused"})
 public class Boids extends HotswapGuiSketch {
 
     //TODO
-    // - pretty birds
-    // - pretty fish
-
     // - efficient division, compute shaders?
-    // - camera moving with player
     // - food chain
     // - player takes control of eater when eaten
     // - player gets bigger as he eats
 
     private static final float INITIAL_DISTANCE_VALUE = -1;
-    ArrayList<Boid> boids = new ArrayList<Boid>();
-    ArrayList<Boid> toRemove = new ArrayList<Boid>();
-    boolean targetActive;
-    float avoidRadius, avoidMag, centerRadius, centerMag, alignRadius, alignMag, obstructionRadius, obstructionMag, obstructionViewportAngle;
-    float farAway, centerToCornerDistance;
+    private ArrayList<Boid> boids = new ArrayList<Boid>();
+    private ArrayList<Boid> toRemove = new ArrayList<Boid>();
+    private boolean targetActive;
+    private float avoidRadius, avoidMag, centerRadius, centerMag, alignRadius, alignMag, obstacleRadius, obstacleMag, obstacleAngle;
+    private float farAway, centerToCornerDistance;
     private Boid player;
     private PVector cameraOffset, playerTarget;
     private boolean debug;
@@ -32,6 +29,8 @@ public class Boids extends HotswapGuiSketch {
 
     public void settings() {
         size(800, 800, P2D);
+//        fullScreen(P2D);
+        recordingFrames *= 4;
     }
 
     public void setup() {
@@ -49,7 +48,7 @@ public class Boids extends HotswapGuiSketch {
     }
 
     public void draw() {
-        t += radians(slider("t", 10));
+        t += radians(slider("t", 4));
         sliders();
         bg();
         updateCamera();
@@ -59,20 +58,16 @@ public class Boids extends HotswapGuiSketch {
     }
 
     private void sliders() {
-        debug = toggle("debug", true);
+        debug = toggle("debug", false);
         avoidRadius = slider("avoid r", 40);
-        avoidMag = slider("avoid mag", 0, 1, .8f);
-
-        obstructionRadius = slider("obst r", 80);
-        obstructionMag = slider("obst mag", 0, 1, .6f);
-        obstructionViewportAngle = slider("obst angle", TWO_PI);
-
+        avoidMag = slider("avoid mag", .4f);
+        obstacleRadius = slider("obst r", 80);
+        obstacleMag = slider("obst mag", 0, .3f);
+        obstacleAngle = slider("obst angle", PI);
         centerRadius = slider("center r", 180);
-        centerMag = slider("center mag", .5f);
-
-        alignRadius = slider("align r", 100);
-        alignMag = slider("align mag", .5f);
-
+        centerMag = slider("center mag", .01f);
+        alignRadius = slider("align r", 160);
+        alignMag = slider("align mag", .24f);
     }
 
     private void bg() {
@@ -108,7 +103,7 @@ public class Boids extends HotswapGuiSketch {
             } else {
                 float distanceToPlayer = dist(player.pos.x, player.pos.y, boid.pos.x, boid.pos.y);
                 if (isBehindPlayer(boid) && distanceToPlayer > farAway) {
-//                    println("boid died because ", boid.pos, " - ", player.pos);
+//                    println("boid died because he was far behind the player: ", boid.pos, " - ", player.pos);
                     boid.dead = true;
                 }
             }
@@ -117,36 +112,19 @@ public class Boids extends HotswapGuiSketch {
         }
     }
 
-    private void displayBoid(Boid boid) {
-        if (boid.equals(player)) {
-            stroke(40, 40, 200);
-            displayDebugArc(boid, obstructionRadius, obstructionViewportAngle);
-        }
-        pushMatrix();
-        translate(boid.pos.x, boid.pos.y);
-        rotate(boid.spd.heading());
-        fill(255);
-        stroke(255);
-        strokeWeight(1);
-        ellipseMode(CENTER);
-        ellipse(0, 0, boid.bodyLength, boid.bodyWidth);
-        line(0, 0, boid.bodyLength * .5f + boid.beakLength, 0);
-        ellipse(-boid.bodyLength * .5f, 0, boid.tailSize, boid.tailSize);
-        beginShape(TRIANGLE_STRIP);
-        int i = 0;
-        for (float y = -boid.wingWidth; y < boid.wingWidth; y ++) {
-            i++;
-            float sign = i % 2 == 0 ? -1 : 1;
-            float x = sign * boid.wingHeight * .5f + .5f *  abs(boid.wingHeight*sin(abs(y)*slider("wing freq")-t));
-            vertex(x, y);
-        }
-        endShape();
-        popMatrix();
-    }
-
     private void moveBoid(Boid boid) {
         boid.spd.add(boid.acc);
-        float minMag = slider("minMag", 5);
+        float angularDifferenceFromLastSpd = angleDifference(boid.lastSpd.heading(), boid.spd.heading());
+        float maximumAllowedAngularDifference = radians(slider("max rotation", 6));
+        if(abs(angularDifferenceFromLastSpd) > maximumAllowedAngularDifference){
+            boid.spd.rotate(-angularDifferenceFromLastSpd);
+            if(angularDifferenceFromLastSpd > 0){
+                boid.spd.rotate(maximumAllowedAngularDifference);
+            }else{
+                boid.spd.rotate(-maximumAllowedAngularDifference);
+            }
+        }
+        float minMag = slider("minimum speed", 5);
         if (boid.spd.mag() < minMag) {
             if (boid.spd.mag() == 0) {
                 boid.spd.add(PVector.random2D());
@@ -156,6 +134,9 @@ public class Boids extends HotswapGuiSketch {
         boid.spd.mult(slider("drag", .5f, 1));
         boid.pos.add(boid.spd);
         boid.acc.mult(0);
+
+        boid.lastSpd.x = boid.spd.x;
+        boid.lastSpd.y = boid.spd.y;
     }
 
 
@@ -163,8 +144,8 @@ public class Boids extends HotswapGuiSketch {
         //first we find the average location of the birds affecting every behavior
         PVector towardsCenterSum = new PVector();
         PVector alignHeadingSum = new PVector();
-        PVector obstructionSum = new PVector();
-        int towardsCenterCount = 0, alignHeadingCount = 0, obstructionCount = 0;
+        PVector obstacleSum = new PVector();
+        int towardsCenterCount = 0, alignHeadingCount = 0, obstacleCount = 0;
 
         for (Boid other : boids) {
             if (me.equals(other)) {
@@ -186,46 +167,44 @@ public class Boids extends HotswapGuiSketch {
             }
             me.acc.add(avoid);
 
-            // the boid is not avoiding so it can do something else
-            if (avoid.mag() < .01f) {
-                stroke(255);
-                // the boid moves towards others inside center radius
-                if (isBoidInRectangle(me, other, centerRadius)) {
-                    d = lazyDistanceEval(me, other, d);
-                    if (d < centerRadius) {
-                        towardsCenterSum.add(PVector.sub(other.pos, me.pos));
-                        towardsCenterCount++;
-                        if (me.equals(player)) {
-                            stroke(100, 255, 100);
-                            displayDebugCircle(me, centerRadius);
-                        }
+            stroke(255);
+            // the boid moves towards others inside center radius
+            if (isBoidInRectangle(me, other, centerRadius)) {
+                d = lazyDistanceEval(me, other, d);
+                if (d < centerRadius) {
+                    towardsCenterSum.add(PVector.sub(other.pos, me.pos));
+                    towardsCenterCount++;
+                    if (me.equals(player)) {
+                        stroke(100, 255, 100);
+                        displayDebugCircle(me, centerRadius);
+                    }
+                }
+            }
+
+            // the boid aligns its direction with others within align range
+            if (isBoidInRectangle(me, other, alignRadius)) {
+                d = lazyDistanceEval(me, other, d);
+                if (d < alignRadius) {
+                    alignHeadingSum.add(other.spd);
+                    alignHeadingCount++;
+                    if (me.equals(player)) {
+                        stroke(255, 100, 255);
+                        displayDebugCircle(me, alignRadius);
+                    }
+                }
+            }
+
+            // find obstructing boids in a pie shaped perimeter in front of the bird
+            if (isBoidInRectangle(me, other, obstacleRadius)) {
+                d = lazyDistanceEval(me, other, d);
+                if (d < obstacleRadius) {
+                    float angleDifference = angleDifferenceToMyHeading(me, other.pos);
+                    if (abs(angleDifference) > PI - obstacleAngle * .5f) {
+                        obstacleSum.add(other.pos);
+                        obstacleCount++;
                     }
                 }
 
-                // the boid aligns its direction with others within align range
-                if (isBoidInRectangle(me, other, alignRadius)) {
-                    d = lazyDistanceEval(me, other, d);
-                    if (d < alignRadius) {
-                        alignHeadingSum.add(other.spd);
-                        alignHeadingCount++;
-                        if (me.equals(player)) {
-                            stroke(255, 100, 255);
-                            displayDebugCircle(me, alignRadius);
-                        }
-                    }
-                }
-
-                // find obstructing boids in a pie shaped perimeter in front of the bird
-                if (isBoidInRectangle(me, other, obstructionRadius)) {
-                    d = lazyDistanceEval(me, other, d);
-                    if (d < obstructionRadius) {
-                        float angleDifference = angleDifferenceToMyHeading(me, other.pos);
-                        if (abs(angleDifference) > PI - obstructionViewportAngle * .5f) {
-                            obstructionSum.add(other.pos);
-                            obstructionCount++;
-                        }
-                    }
-                }
             }
         }
 
@@ -239,17 +218,21 @@ public class Boids extends HotswapGuiSketch {
             PVector avg = alignHeadingSum.div(alignHeadingCount);
             float desiredAngle = avg.heading();
             float towardsDesiredAngle = angleDifference(me.spd.heading(), desiredAngle);
-            //TODO only allow  a little bit of rotation at a time
-            me.spd.rotate(constrain(towardsDesiredAngle, radians(-alignMag), radians(alignMag)));
+            float myRotation = lerp(0, towardsDesiredAngle, radians(alignMag));
+            me.spd.rotate(myRotation);
         }
-        if (obstructionCount > 0) {
-            PVector avg = obstructionSum.div(obstructionCount);
-            float angleBetween = angleDifferenceToMyHeading(me, avg);
-            boolean obstructedFromTheRight = angleBetween < PI - obstructionViewportAngle * .5f;
-//            float angle = angleBetween + (obstructedFromTheRight ? -HALF_PI : HALF_PI);
-            float adjustment = obstructedFromTheRight?HALF_PI:-HALF_PI;
-            me.acc.add(new PVector(me.spd.x, me.spd.y).rotate(adjustment).normalize().mult(obstructionMag));
+        if (obstacleCount > 0) {
+            PVector avg = obstacleSum.div(obstacleCount);
+            float differenceToMyHeading = angleDifferenceToMyHeading(me, avg);
+            float differenceToMyHeadingAbsNorm = norm(abs(differenceToMyHeading), 0, HALF_PI);
+            float towardsDesiredAngle = differenceToMyHeading > 0 ? - QUARTER_PI : QUARTER_PI;
+            float myRotation = lerp(0, towardsDesiredAngle, (1/differenceToMyHeadingAbsNorm)*obstacleMag);
+            me.spd.rotate(myRotation);
 
+            if(me.isPlayer){
+                stroke(255, 0, 0);
+                displayDebugDirection(me.pos, me.spd.heading()+towardsDesiredAngle);
+            }
         }
     }
 
@@ -266,14 +249,14 @@ public class Boids extends HotswapGuiSketch {
         line(a.x, a.y, b.x, b.y);
     }
 
-    private void displayDebugDirection(Boid boid, float dir) {
+    private void displayDebugDirection(PVector origin, float dir) {
         if (!debug) {
             return;
         }
         pushMatrix();
-        translate(boid.pos.x, boid.pos.y);
+        translate(origin.x, origin.y);
         rotate(dir);
-        line(0, 0, 50 * boid.spd.mag(), 0);
+        line(0, 0, 20, 0);
         popMatrix();
     }
 
@@ -301,7 +284,7 @@ public class Boids extends HotswapGuiSketch {
         popMatrix();
     }
 
-    float lazyDistanceEval(Boid a, Boid b, float d) {
+    private float lazyDistanceEval(Boid a, Boid b, float d) {
         if (d == INITIAL_DISTANCE_VALUE) {
             d = dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
         }
@@ -348,7 +331,7 @@ public class Boids extends HotswapGuiSketch {
         boids.removeAll(toRemove);
     }
 
-    boolean isBoidInRectangle(Boid a, Boid b, float range) {
+    private boolean isBoidInRectangle(Boid a, Boid b, float range) {
         return isPointInRect(a.pos.x, a.pos.y,
                 b.pos.x - range,
                 b.pos.y - range,
@@ -361,14 +344,14 @@ public class Boids extends HotswapGuiSketch {
     }
 
 
-    public float normalizedAngleToPlayerHeading(Boid who) {
+    private float normalizedAngleToPlayerHeading(Boid who) {
         float angleToPlayer = angleToPlayer(who);
         float normalizedAngleToPlayer = normalizeAngle(angleToPlayer, PI);
         float normalizedPlayerHeading = normalizeAngle(player.spd.heading(), PI);
         return normalizeAngle(normalizedAngleToPlayer - normalizedPlayerHeading, 0);
     }
 
-    public float angleToPlayer(Boid who) {
+    private float angleToPlayer(Boid who) {
         return angleToB(who, player);
     }
 
@@ -380,11 +363,11 @@ public class Boids extends HotswapGuiSketch {
         return atan2(b.y - a.y, b.x - a.x);
     }
 
-    public float normalizeAngle(float a, float center) {
+    private float normalizeAngle(float a, float center) {
         return a - TWO_PI * floor((a + PI - center) / TWO_PI);
     }
 
-    float angleDifference(float angleStart, float angleTarget) {
+    private float angleDifference(float angleStart, float angleTarget) {
         float d = angleTarget - angleStart;
         while (d > PI) {
             d -= TWO_PI;
@@ -402,19 +385,22 @@ public class Boids extends HotswapGuiSketch {
     }
 
     private class Boid {
-        public float beakLength = 2 + abs(randomGaussian());
-        public float bodyLength = 10 + abs(randomGaussian());
-        public float bodyWidth = 3 + abs(randomGaussian());
-        public float tailSize = 2 + abs(randomGaussian());
-        public float wingWidth = 10 + abs(randomGaussian());
-        public float wingHeight = 2 + abs(randomGaussian());
-        PVector pos;
+        float bodyLength = 10 + randomGaussian();
+        float bodyWidth = bodyLength * .15f;
+        float wingWidth = bodyLength * 2.5f;
+        float wingHeight = bodyLength * .35f;
+        float tailRadius = bodyLength * .5f;
+        float tailAngle = .8f;
+
+        PVector pos = new PVector();
         PVector spd = new PVector();
         PVector acc = new PVector();
+        PVector lastSpd = new PVector();
         boolean dead = false;
         boolean isPlayer = false;
 
         Boid() {
+
         }
 
         Boid(PVector spawnPos) {
@@ -423,4 +409,71 @@ public class Boids extends HotswapGuiSketch {
     }
 
 
+    private void displayBoid(Boid boid) {
+        if (boid.equals(player)) {
+            stroke(40, 40, 200);
+            displayDebugArc(boid, obstacleRadius, obstacleAngle);
+        }
+        pushMatrix();
+        translate(boid.pos.x, boid.pos.y);
+        scale(slider("scl", 3.2f));
+        rotate(boid.spd.heading());
+        fill(255);
+        noStroke();
+        strokeWeight(1);
+        ellipseMode(CENTER);
+        fill(255);
+        body(boid.bodyLength, boid.bodyWidth);
+        translate(-boid.bodyLength * .05f, 0);
+        tail(boid.tailRadius, boid.tailAngle);
+        wing(boid.wingWidth, boid.wingHeight, false);
+        wing(boid.wingWidth, boid.wingHeight, true);
+        popMatrix();
+    }
+
+
+    private void body(float bodyLength, float bodyWidth) {
+        ellipse(0, 0, bodyLength, bodyWidth);
+    }
+
+    private void tail(float tailRadius, float tailAngle) {
+        int res = 7;
+        beginShape(TRIANGLE_STRIP);
+        for (int i = 0; i < res; i++) {
+            float inorm = norm(i, 0, res - 1);
+            float angle = map(inorm, 0, 1, PI - tailAngle * .5f, PI + tailAngle * .5f);
+            float x = tailRadius * cos(angle);
+            float y = tailRadius * sin(angle);
+            fill(255);
+            vertex(0, 0);
+            fill(100);
+            vertex(x, y);
+        }
+        endShape();
+    }
+
+    private void wing(float wingSpan, float wingHeight, boolean right) {
+        float wingSign = right ? -1 : 1;
+        beginShape(TRIANGLE_STRIP);
+        int res = 7;
+        for (int i = 0; i < res; i++) {
+            float inorm = norm(i, 0, res - 1);
+            float oddSign = i % 2 == 0 ? -1 : 1;
+            float taper = constrain(inorm > .5f ? 2 - inorm * 1.8f : 1, 0, 1);
+            float flap = inorm * sin(inorm * 5 - t * 5);
+            noStroke();
+            if (i == 0) {
+                fill(255);
+                vertex(wingHeight * .5f * taper, wingSign * wingSpan * .5f * inorm);
+            }
+            if (oddSign > 0) {
+                fill(255);
+            } else {
+                fill(0);
+            }
+            vertex(oddSign * wingHeight * .5f * taper + flap * wingHeight * .5f,
+                    wingSign * wingSpan * .5f * inorm);
+        }
+        endShape();
+    }
 }
