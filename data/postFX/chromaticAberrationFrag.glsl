@@ -3,11 +3,12 @@ precision mediump float;
 precision mediump int;
 #endif
 
-uniform sampler2D texture;
+uniform sampler2D 	texture;
 
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
 
+uniform float maxDistort;
 uniform vec2 resolution;
 
 vec2 barrelDistortion(vec2 coord, float amt)
@@ -40,7 +41,6 @@ vec4 spectrum_offset(float t) {
 	return pow( ret, vec4(1.0/2.2) );
 }
 
-const float max_distort = 2.2;
 const int num_iter = 12;
 const float reci_num_iter_f = 1.0 / float(num_iter);
 
@@ -55,7 +55,7 @@ void main()
 		float t = float(i) * reci_num_iter_f;
 		vec4 w = spectrum_offset( t );
 		sumw += w;
-		sumcol += w * texture2D(texture, barrelDistortion(uv, .6 * max_distort*t ) );
+		sumcol += w * texture2D(texture, barrelDistortion(uv, .6 * maxDistort*t ) );
 	}
 
 	gl_FragColor = sumcol / sumw;

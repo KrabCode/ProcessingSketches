@@ -507,7 +507,7 @@ public abstract class GuiSketch extends PApplet {
         return new PVector(offsetX, offsetY);
     }
 
-    protected static boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
+    public static boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 

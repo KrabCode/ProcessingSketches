@@ -27,6 +27,12 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     int refreshRateInMillis = 60;
 
+    protected void chromaticAberrationPass(PGraphics pg) {
+        String chromatic = "postFX\\chromaticAberrationFrag.glsl";
+        uniform(chromatic).set("maxDistort", slider("chromatic", 5f));
+        hotFilter(chromatic, pg);
+    }
+
     protected void alphaFade(PGraphics pg) {
         pg.noStroke();
         pg.hint(PConstants.DISABLE_DEPTH_TEST);
