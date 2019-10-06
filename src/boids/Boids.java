@@ -96,7 +96,7 @@ public class Boids extends HotswapGuiSketch {
         main.endDraw();
 
         image(main, 0, 0);
-        rec(main);
+        rec();
         gui(false);
     }
 
@@ -120,7 +120,7 @@ public class Boids extends HotswapGuiSketch {
         maxRot = slider("max rotation", 6);
         scl = slider("scl", 3.2f);
         minSpd = slider("minimum speed", 5);
-        intendedBoidCount = floor(slider("count", 2, 501, 60));
+        intendedBoidCount = floor(slider("count", 2, 300, 150));
         particleBurstCount = floor(slider("blood res", 50));
         if (frameCount == 1 || toggle("rules")) {
             avoidRadius = slider("avoid r", 40);
