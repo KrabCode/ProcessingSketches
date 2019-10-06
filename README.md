@@ -1,8 +1,6 @@
 # Processing Sketches
 Collection of some of my latest Processing sketches published often to [krabcode.eu](http://www.krabcode.eu), my [instagram](https://www.instagram.com/krabcode/) and reddit at [/r/processing](https://www.reddit.com/r/processing) under the username [/u/Simplyfire](https://www.reddit.com/user/Simplyfire).
 
-https://i.imgur.com/5C7unVx.gifv
-
 ## Project structure
 The sketches are found as standalone classes in the [src](https://github.com/KrabCode/ProcessingSketches/tree/master/src) folder, each with their own main() method based on the approach in this [Processing in Eclipse](https://processing.org/tutorials/eclipse/) tutorial.
 
