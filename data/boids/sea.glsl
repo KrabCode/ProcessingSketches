@@ -52,16 +52,16 @@ float noise(vec3 p){
 float fbm (float x, float y, float z) {
     vec3 st = vec3(x, y, z);
     float value = 0.0;
-    float amplitude = 1.0;
-    float frequency = 1.0;
+    float amplitude = 1;
+    float frequency = 1;
     // Loop of octaves
     for (int i = 0; i < 10; i++) {
         float n = noise(vec3(st.x*frequency, st.y*frequency, st.z));
         value += amplitude * n;
         st.xy *= rotate2d(amplitude+frequency);
-        st += pi*3.;
-        frequency *= 3.;
-        amplitude *= .58;
+//        st += pi;
+        frequency *= 5.;
+        amplitude *= .45;
     }
     return value;
 }
@@ -82,15 +82,15 @@ float cubicPulse(float c, float w, float x){
 }
 
 void main(){
-    float t = time*0.5;
+    float t = time*0.8;
     vec2 ov = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 uv = ov.xy;
     uv.x -= (camera.x/resolution.x);//*(16./9.);
     uv.y += (camera.y/resolution.y);
     vec2 distortUv = vec2(fbm(uv.y,uv.x), fbm(uv.x, uv.y));
-    distortUv *= 20.;
-    float water = fbm(distortUv.y+cos(t),distortUv.x+sin(t), t);
-    vec3 col = mix(rgb(.6, 1., .2), vec3(1.), 1.-pow(water, 0.4));
+    distortUv *= 5.;
+    float water = fbm(distortUv.y+cos(t),distortUv.x+sin(t));
+    vec3 col = mix(rgb(.58, 0.8, .25), vec3(1), 1.-pow(water, 0.2));
     float land = fbm(uv.x, uv.y, t);
     gl_FragColor = vec4(col, 1.);
 }

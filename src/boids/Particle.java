@@ -3,19 +3,22 @@ package boids;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
-public class ParticleBlood implements IParticle {
+public class Particle {
+    public float scl;
     private Boids p;
-    private PGraphics pg;
     private float h;
     private float w;
-    float shade;
+    private int clr;
     protected PVector pos = new PVector();
     protected PVector spd = new PVector();
     protected PVector acc = new PVector();
+    private PGraphics pg;
 
-    ParticleBlood(Boids p, PGraphics pg) {
-        this.p = p;
+    Particle(Boids p, int clr, float scl, PGraphics pg) {
         this.pg = pg;
+        this.p = p;
+        this.clr = clr;
+        this.scl = scl;
         w = p.random(10);
         h = p.random(10);
     }
@@ -28,9 +31,13 @@ public class ParticleBlood implements IParticle {
     }
 
     public void display() {
-        pg.fill(255-shade,0,0);
+        pg.fill(clr);
         pg.noStroke();
-        pg.ellipse(pos.x,pos.y,w, h);
+        pg.pushMatrix();
+        pg.translate(pos.x, pos.y);
+        pg.scale(scl);
+        pg.ellipse(0,0,w, h);
+        pg.popMatrix();
         w -= .1f;
         h -= .1f;
     }

@@ -155,8 +155,11 @@ void main(){
     uv.x -= (camera.x/resolution.x);//*(16./9.);
     uv.y += (camera.y/resolution.y);
     uv *= 1.5;
-    float clouds = fbm(uv.x, uv.y, t*.2);
-    clouds = smoothstep(0.0, 1.0, pow(clouds, 3.));
-    vec3 col = mix(texture(texture, tv).xyz, vec3(1), clouds);
+    float dir = snoise(vec4(t*.1, 0.,0.,0.))*pi*2.;
+    float moveSpd = 0.8;
+    vec2 movement = vec2(moveSpd*cos(dir), moveSpd*sin(dir));
+    float clouds = fbm(uv.x+movement.x, uv.y+movement.y, t*.5);
+    clouds = smoothstep(0.0, 0.7, pow(clouds, 3.8));
+    vec3 col = mix(texture(texture, tv).xyz, vec3(.7), clouds);
     gl_FragColor = vec4(col, 1.);
 }

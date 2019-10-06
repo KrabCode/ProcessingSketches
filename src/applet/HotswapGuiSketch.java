@@ -33,12 +33,17 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         hotFilter(chromatic, pg);
     }
 
+    protected void ceilBlack(PGraphics pg){
+        String ceilAlpha = "ceilBlack.glsl";
+        hotFilter(ceilAlpha,pg);
+    }
+
     protected void alphaFade(PGraphics pg) {
         pg.noStroke();
         pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
-        pg.fill(255,slider("alpha", 0, 100,10));
+        pg.fill(255,slider("alpha", 0, 100,17));
         pg.rectMode(CENTER);
         pg.rect(0,0,width*2, height*2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
@@ -50,8 +55,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         String noiseOffset = "noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
         uniform(noiseOffset).set("mixAmt", slider("mix", 0,1,.1f));
-        uniform(noiseOffset).set("mag", slider("mag", 0,.1f, .01f));
-        uniform(noiseOffset).set("frq", slider("frq", 0, 50, 2.5f));
+        uniform(noiseOffset).set("mag", slider("mag", 0,.01f, .001f));
+        uniform(noiseOffset).set("frq", slider("frq", 0, 50, 8.5f));
         hotFilter(noiseOffset, pg);
     }
 
@@ -71,7 +76,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitUniformPass(PGraphics pg) {
         String rgbSplit = "rgbSplitUniform.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 5));
+        uniform(rgbSplit).set("delta", slider("delta", 2));
         hotFilter(rgbSplit, pg);
     }
 

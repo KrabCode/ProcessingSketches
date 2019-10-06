@@ -37,17 +37,17 @@ public abstract class GuiSketch extends PApplet {
 
 //  UTILS
 
-    protected String id = regenId();
-    protected String captureDir = "out/capture/" + id + "/";
-    protected String captureFilename = captureDir + "####.jpg";
-    protected int frameRecordingEnds;
-    protected int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
+    public String id = regenId();
+    public String captureDir = "out/capture/" + id + "/";
+    public String captureFilename = captureDir + "####.jpg";
+    public int frameRecordingEnds;
+    public int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
 
-    protected void rec() {
+    public void rec() {
         rec(g);
     }
 
-    protected void rec(PGraphics pg) {
+    public void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
             println(frameCount - frameRecordingEnds + recordingFrames + " / " + (recordingFrames-1));
             pg.save(captureDir + frameCount + ".jpg");
@@ -63,10 +63,13 @@ public abstract class GuiSketch extends PApplet {
             frameRecordingEnds = frameCount + 2;
             id = regenId();
         }
+        if(key == 'c'){
+            frameRecordingEnds = frameCount - 1;
+        }
     }
 
 
-    protected ArrayList<PImage> loadImages(String folderPath) {
+    public ArrayList<PImage> loadImages(String folderPath) {
         ArrayList<PImage> images = new ArrayList<PImage>();
         try {
             List<File> filesInFolder = Files.walk(Paths.get(folderPath))
@@ -87,25 +90,25 @@ public abstract class GuiSketch extends PApplet {
         return images;
     }
 
-    protected String regenId() {
+    public String regenId() {
         String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
         id = newId;
         return newId;
     }
 
-    protected String randomImageUrl(float width, float height) {
+    public String randomImageUrl(float width, float height) {
         return "https://picsum.photos/" + floor(width) + "/" + floor(height) + ".jpg";
     }
 
-    protected String randomImageUrl(float size) {
+    public String randomImageUrl(float size) {
         return "https://picsum.photos/" + floor(size) + ".jpg";
     }
 
 
 // GUI
 
-    protected boolean mousePressedOutsideGui = false; //use this instead of mousePressed to ignore mouse press when over gui
-    protected boolean mouseOverGui = false;
+    public boolean mousePressedOutsideGui = false; //use this instead of mousePressed to ignore mouse press when over gui
+    public boolean mouseOverGui = false;
 
     private ArrayList<GuiElement> allElements = new ArrayList<GuiElement>();
     private ArrayList<GuiElement> activeElements = new ArrayList<GuiElement>();
@@ -137,15 +140,15 @@ public abstract class GuiSketch extends PApplet {
     private float extensionAnimationTarget = -1;
     private float backgroundTrayWidth, backgroundTrayHeight;
 
-    protected void resetGui() {
+    public void resetGui() {
         allElements.clear();
     }
 
-    protected void gui() {
+    public void gui() {
         gui(true);
     }
 
-    protected void gui(boolean extendedByDefault) {
+    public void gui(boolean extendedByDefault) {
         if (isGuiEmpty()) {
             return;
         }
@@ -206,7 +209,7 @@ public abstract class GuiSketch extends PApplet {
         mousePressedOutsideGui = mousePressed && !mouseOverGui;
     }
 
-    protected boolean button(String name) {
+    public boolean button(String name) {
         Button button = (Button) findElement(name);
         if (button == null) {
             button = new Button(name, false, false);
@@ -221,11 +224,11 @@ public abstract class GuiSketch extends PApplet {
         return button.value;
     }
 
-    protected boolean toggle(String name) {
+    public boolean toggle(String name) {
         return toggle(name, false);
     }
 
-    protected boolean toggle(String name, boolean initial) {
+    public boolean toggle(String name, boolean initial) {
         Button toggle = (Button) findElement(name);
         if (toggle == null) {
             toggle = new Button(name, true, initial);
@@ -240,20 +243,20 @@ public abstract class GuiSketch extends PApplet {
         return toggle.value;
     }
 
-    protected float slider(String name) {
+    public float slider(String name) {
         return slider(name, 0, 1);
     }
 
-    protected float slider(String name, float max) {
+    public float slider(String name, float max) {
         return slider(name, 0, max);
     }
 
-    protected float slider(String name, float min, float max) {
+    public float slider(String name, float min, float max) {
         float range = max - min;
         return slider(name, min, max, min + range / 2);
     }
 
-    protected float slider(String name, float min, float max, float initial) {
+    public float slider(String name, float min, float max, float initial) {
         Slider slider = (Slider) findElement(name);
         if (slider == null) {
             slider = new Slider(name, min, max, initial);
@@ -511,14 +514,14 @@ public abstract class GuiSketch extends PApplet {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 
-    protected float ease(float p, float g) {
+    public float ease(float p, float g) {
         if (p < 0.5)
             return 0.5f * pow(2 * p, g);
         else
             return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
-    protected float angularDiameter(float r, float size) {
+    public float angularDiameter(float r, float size) {
         return atan(2 * (size / (2 * r)));
     }
 
