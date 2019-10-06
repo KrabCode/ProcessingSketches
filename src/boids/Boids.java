@@ -47,7 +47,7 @@ public class Boids extends HotswapGuiSketch {
     public void settings() {
         size(800, 800, P2D);
 //        fullScreen(P2D, 2);
-        recordingFrames *= 3;
+        recordingFrames *= 10;
     }
 
     public void setup() {
@@ -55,9 +55,6 @@ public class Boids extends HotswapGuiSketch {
         main = createGraphics(width + margin, height + margin, P2D);
         bg = createGraphics(width + margin, height + margin, P2D);
         fg = createGraphics(width + margin, height + margin, P2D);
-        bg.beginDraw();
-        bg.background(0);
-        bg.endDraw();
 
         controllers = new ControllerManager();
         controllers.initSDLGamepad();
