@@ -117,7 +117,7 @@ float fbm (float x, float y, float z, float w) {
     float amplitude = 1.;
     float frequency = 1.0;
     // Loop of octaves
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 2; i++) {
         float n = snoise(vec4(st.x*frequency, st.y*frequency, st.z, st.w));
         value += amplitude * n;
         st.xy *= rotate2d(amplitude*frequency*pi);
