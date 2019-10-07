@@ -46,7 +46,7 @@ public class Boids extends HotswapGuiSketch {
 
     public void settings() {
         size(800, 800, P2D);
-//        fullScreen(P2D, 2);
+//        fullScreen(P2D, 1);
         recordingFrames *= 10;
     }
 
@@ -350,6 +350,14 @@ public class Boids extends HotswapGuiSketch {
             playerTarget.y = player.pos.y - input.rightStickY * abs(input.rightStickY) * .5f;
         } else {
             targetActive = false;
+        }
+
+        if(keyPressed){
+            if(keyCode == LEFT){
+                player.spd.rotate(-maxRot*.05f);
+            }else if(keyCode == RIGHT){
+                player.spd.rotate(maxRot*.05f);
+            }
         }
     }
 
