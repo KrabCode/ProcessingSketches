@@ -55,7 +55,7 @@ float fbm (float x, float y, float z) {
     float amplitude = 1;
     float frequency = 1;
     // Loop of octaves
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 10; i++) {
         float n = noise(vec3(st.x*frequency, st.y*frequency, st.z));
         value += amplitude * n;
         st.xy *= rotate2d(amplitude+frequency);
@@ -85,7 +85,11 @@ void main(){
     float t = time*0.8;
     vec2 ov = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 uv = ov.xy;
-    uv.x -= (camera.x/resolution.x);//*(16./9.);
+    if (resolution.x > resolution.y){
+        uv.x -= (camera.x/resolution.x)*(16./9.);
+    } else {
+        uv.x -= (camera.x/resolution.x);
+    }
     uv.y += (camera.y/resolution.y);
     vec2 distortUv = vec2(fbm(uv.y,uv.x), fbm(uv.x, uv.y));
     distortUv *= 5.;

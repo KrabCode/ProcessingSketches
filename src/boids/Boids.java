@@ -45,8 +45,8 @@ public class Boids extends HotswapGuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P2D);
-//        fullScreen(P2D, 1);
+//        size(800, 800, P2D);
+        fullScreen(P2D, 1);
         recordingFrames *= 10;
     }
 

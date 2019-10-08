@@ -11,7 +11,7 @@ uniform float time;
 uniform vec2 camera;
 
 vec3 rgb(float r, float g, float b){
-    vec3 c = vec3(r,g,b);
+    vec3 c = vec3(r, g, b);
     vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0, 4.0, 2.0), 6.0)-3.0)-1.0, 0.0, 1.0);
     rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
 }
@@ -117,7 +117,7 @@ float fbm (float x, float y, float z, float w) {
     float amplitude = 1.;
     float frequency = 1.0;
     // Loop of octaves
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 8; i++) {
         float n = snoise(vec4(st.x*frequency, st.y*frequency, st.z, st.w));
         value += amplitude * n;
         st.xy *= rotate2d(amplitude*frequency*pi);
@@ -152,10 +152,14 @@ void main(){
     vec2 tv = gl_FragCoord.xy / resolution.xy;
     vec2 ov = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 uv = ov.xy;
-    uv.x -= (camera.x/resolution.x);//*(16./9.);
+    if (resolution.x > resolution.y){
+        uv.x -= (camera.x/resolution.x)*(16./9.);
+    } else {
+        uv.x -= (camera.x/resolution.x);
+    }
     uv.y += (camera.y/resolution.y);
     uv *= 1.5;
-    float dir = snoise(vec4(t*.1, 0.,0.,0.))*pi*2.;
+    float dir = snoise(vec4(t*.1, 0., 0., 0.))*pi*2.;
     float moveSpd = 0.8;
     vec2 movement = vec2(moveSpd*cos(dir), moveSpd*sin(dir));
     float clouds = fbm(uv.x+movement.x, uv.y+movement.y, t*.5);
