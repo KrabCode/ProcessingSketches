@@ -33,7 +33,7 @@ public class Mindless extends HotswapGuiSketch {
         t += radians(slider("t"));
         main.beginDraw();
         alphaFade(main);
-        String planeFilter = "planeFilter.glsl";
+        String planeFilter = "mindless.glsl";
         uniform(planeFilter).set("time", t);
 
         for (int i = 0; i < planes.length; i++) {

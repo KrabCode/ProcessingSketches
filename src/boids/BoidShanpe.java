@@ -1,9 +1,11 @@
+package boids;
+
 import applet.HotswapGuiSketch;
 import processing.core.PVector;
 
 public class BoidShanpe extends HotswapGuiSketch {
     public static void main(String[] args) {
-        HotswapGuiSketch.main("BoidShanpe");
+        HotswapGuiSketch.main("boids.BoidShanpe");
     }
 
     public void settings() {
