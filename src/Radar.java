@@ -25,8 +25,9 @@ public class Radar extends HotswapGuiSketch {
     public void draw() {
         t += radians(slider("t",1, true));
         pg.beginDraw();
-        uniform("radar.glsl").set("time", t);
-        hotFilter("radar.glsl", pg);
+        String radar = "radar.glsl";
+        uniform(radar).set("time", t);
+        hotFilter(radar, pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
