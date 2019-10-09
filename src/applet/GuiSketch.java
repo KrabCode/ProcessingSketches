@@ -243,6 +243,14 @@ public abstract class GuiSketch extends PApplet {
         return toggle.value;
     }
 
+    public float slider(String name, float max, boolean initial){
+        if(initial){
+            return slider(name, 0, max, max);
+        }else{
+            return slider(name, 0, max, 0);
+        }
+    }
+
     public float slider(String name) {
         return slider(name, 0, 1);
     }

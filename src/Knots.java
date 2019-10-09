@@ -1,8 +1,8 @@
-import applet.GuiSketch;
+import applet.HotswapGuiSketch;
 
-public class Knots extends GuiSketch {
+public class Knots extends HotswapGuiSketch {
     public static void main(String[] args) {
-        GuiSketch.main("Knots");
+        HotswapGuiSketch.main("Knots");
     }
 
     float t = 0;
@@ -27,7 +27,7 @@ public class Knots extends GuiSketch {
             resetGui();
         }
         noFill();
-        translate(width/2,height/2);
+        translate(width*.5f,height*.5f);
         t += slider("rotation",-.1f,.1f);
         strokeWeight(slider("weight",0,10,2));
         for(int i = 1; i <= slider("knots",0,24); i++){
@@ -43,7 +43,8 @@ public class Knots extends GuiSketch {
             }
             endShape();
         }
-
+        rgbSplitPass(g);
+        rec();
         gui();
     }
 }

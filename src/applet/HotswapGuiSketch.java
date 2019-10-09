@@ -82,7 +82,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 15));
+        uniform(rgbSplit).set("delta", slider("delta", 20));
         hotFilter(rgbSplit, pg);
     }
 
