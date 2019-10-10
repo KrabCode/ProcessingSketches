@@ -23,7 +23,7 @@ public class Radar extends HotswapGuiSketch {
     }
 
     public void draw() {
-        t += radians(slider("t",3));
+        t += radians(slider("t",1, true));
         pg.beginDraw();
         String radar = "radar.glsl";
         uniform(radar).set("time", t);
