@@ -57,6 +57,7 @@ void main(){
     float staticAngle = atan(uv.y, uv.x);
     uv *= rotate2d(t);
     float rotatingAngle = atan(uv.y, uv.x);
+
 //TODO find distance from rotating angle, normalize it, expose some noise blobs on the radar using it
 
     col = max(col, darkerBlue * cubicPulse(0, 0.2, sin(d*70)) * sharpR);
