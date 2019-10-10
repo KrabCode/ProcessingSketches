@@ -3,7 +3,6 @@ import peasy.PeasyCam;
 import utils.OpenSimplexNoise;
 
 public class WarpCircles extends GuiSketch {
-    private PeasyCam cam;
     private float t;
     private OpenSimplexNoise noise = new OpenSimplexNoise();
 
@@ -16,7 +15,7 @@ public class WarpCircles extends GuiSketch {
     }
 
     public void setup() {
-        cam = new PeasyCam(this, 600);
+        PeasyCam cam = new PeasyCam(this, 600);
     }
 
     public void draw() {
