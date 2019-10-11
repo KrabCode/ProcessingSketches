@@ -4,7 +4,7 @@ import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 
 /**
- * Created by Jakub 'Krab' Rak on 2019-10-10T19:40
+ * Created by Jakub 'Krab' Rak on 2019-10-10
  */
 public class Pattern extends HotswapGuiSketch {
     private PGraphics pg;

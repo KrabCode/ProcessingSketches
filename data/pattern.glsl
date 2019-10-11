@@ -166,23 +166,23 @@ void main(){
     vec2 originalUV = uv.xy;
 //    uv = fract(uv*5.)-.5;
     uv = fract(uv*5.)-.5;
-    uv *= 50.;
+    uv *= 35.;
     vec2 gv = fract(uv)-.5;
     vec2 id = floor(uv)+.5;
     float distanceFromTileCenter = length(id*50.);
-    float distanceFromOriginalCenter = length(originalUV);
+    float distanceFromOriginalCenter = 1;//length(originalUV);
     float rawNoise = fbm(
         distanceFromTileCenter, distanceFromOriginalCenter,
         timeOrigin.x+timeRadius*cos(t), timeOrigin.y+timeRadius*sin(t)
     );
     float smoothNoise = smoothstep(-0.5,1.5,rawNoise);
-    float fadeToBlack = smoothstep(0.0, 1.2, length(originalUV));
-    float hueStart = .5;
+    float fadeToBlack = smoothstep(0.0, 1.1, length(originalUV));
+    float hueStart = .6;
     float hueRange = 1.;
     vec3 color = rgb(
         hueStart+hueRange*smoothNoise,
         1.-smoothNoise,
-        clamp(pow(smoothNoise, 0.6), 0., 1.)
+        clamp(pow(smoothNoise, 0.4), 0., 1.)
     );
     gl_FragColor = vec4(color-fadeToBlack, 1.);
 }
