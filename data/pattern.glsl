@@ -160,25 +160,25 @@ float fbm(float x, float y, float z, float w){
 
 void main(){
     float t = time;
-    float timeRadius = 0.3;
+    float timeRadius = 0.15;
     vec2 timeOrigin = vec2(5, 1);
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 originalUV = uv.xy;
 //    uv = fract(uv*5.)-.5;
     uv = fract(uv*5.)-.5;
-    uv *= 35.;
+    uv *= 30.;
     vec2 gv = fract(uv)-.5;
     vec2 id = floor(uv)+.5;
-    float distanceFromTileCenter = length(id*50.);
-    float distanceFromOriginalCenter = 1;//length(originalUV);
+    float distanceFromTileCenter = length(id*30.);
+    float distanceFromOriginalCenter = length(originalUV*.2);
     float rawNoise = fbm(
         distanceFromTileCenter, distanceFromOriginalCenter,
         timeOrigin.x+timeRadius*cos(t), timeOrigin.y+timeRadius*sin(t)
     );
     float smoothNoise = smoothstep(-0.5,1.5,rawNoise);
     float fadeToBlack = smoothstep(0.0, 1.1, length(originalUV));
-    float hueStart = .6;
-    float hueRange = 1.;
+    float hueStart = .5;
+    float hueRange = 0.75;
     vec3 color = rgb(
         hueStart+hueRange*smoothNoise,
         1.-smoothNoise,
@@ -186,24 +186,6 @@ void main(){
     );
     gl_FragColor = vec4(color-fadeToBlack, 1.);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
