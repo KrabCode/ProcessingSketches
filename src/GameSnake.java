@@ -53,7 +53,7 @@ public class GameSnake extends HotswapGuiSketch {
         updateSnakes();
         updateFruits();
         rgbSplitUniformPass(pg);
-        noiseOffsetPass(t, pg);
+        noiseOffsetPass(pg, t);
         pg.endDraw();
         image(pg, 0, 0, width, height);
         rec(pg);

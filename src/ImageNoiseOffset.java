@@ -24,7 +24,7 @@ public class ImageNoiseOffset extends HotswapGuiSketch {
         t += radians(slider("t"));
         tint(255, slider("alpha")*255);
         image(jesus, 0, 0, width, height);
-        noiseOffsetPass(t, g);
+        noiseOffsetPass(g, t);
         rec();
         gui();
     }

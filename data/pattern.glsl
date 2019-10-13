@@ -5,6 +5,7 @@ precision mediump int;
 
 uniform sampler2D texture;
 uniform vec2 resolution;
+uniform vec2 camera;
 uniform float time;
 
 #define pi 3.14159265359
@@ -20,7 +21,7 @@ mat2 rotate2d(float angle){
 }
 
 float angularDiameter(float r, float size) {
-    return atan(2 * (size / (2 * r)));
+    return atan(2. * (size / (2. * r)));
 }
 
 float cubicPulse(float c, float w, float x){
@@ -48,51 +49,34 @@ float taylorInvSqrt(float r){return 1.79284291400159 - 0.85373472095314 * r;}
 vec4 grad4(float j, vec4 ip){
     const vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);
     vec4 p,s;
-
     p.xyz = floor( fract (vec3(j) * ip.xyz) * 7.0) * ip.z - 1.0;
     p.w = 1.5 - dot(abs(p.xyz), ones.xyz);
     s = vec4(lessThan(p, vec4(0.0)));
     p.xyz = p.xyz + (s.xyz*2.0 - 1.0) * s.www;
-
     return p;
 }
+
 float snoise(vec4 v){
     const vec2  C = vec2( 0.138196601125010504,  // (5 - sqrt(5))/20  G4
     0.309016994374947451); // (sqrt(5) - 1)/4   F4
-    // First corner
     vec4 i  = floor(v + dot(v, C.yyyy) );
     vec4 x0 = v -   i + dot(i, C.xxxx);
-
-    // Other corners
-
-    // Rank sorting originally contributed by Bill Licea-Kane, AMD (formerly ATI)
     vec4 i0;
-
     vec3 isX = step( x0.yzw, x0.xxx );
     vec3 isYZ = step( x0.zww, x0.yyz );
-    //  i0.x = dot( isX, vec3( 1.0 ) );
-    i0.x = isX.x + isX.y + isX.z;
+     i0.x = isX.x + isX.y + isX.z;
     i0.yzw = 1.0 - isX;
-
-    //  i0.y += dot( isYZ.xy, vec2( 1.0 ) );
     i0.y += isYZ.x + isYZ.y;
     i0.zw += 1.0 - isYZ.xy;
-
     i0.z += isYZ.z;
     i0.w += 1.0 - isYZ.z;
-
-    // i0 now contains the unique values 0,1,2,3 in each channel
     vec4 i3 = clamp( i0, 0.0, 1.0 );
     vec4 i2 = clamp( i0-1.0, 0.0, 1.0 );
     vec4 i1 = clamp( i0-2.0, 0.0, 1.0 );
-
-    //  x0 = x0 - 0.0 + 0.0 * C
     vec4 x1 = x0 - i1 + 1.0 * C.xxxx;
     vec4 x2 = x0 - i2 + 2.0 * C.xxxx;
     vec4 x3 = x0 - i3 + 3.0 * C.xxxx;
     vec4 x4 = x0 - 1.0 + 4.0 * C.xxxx;
-
-    // Permutations
     i = mod(i, 289.0);
     float j0 = permute( permute( permute( permute(i.w) + i.z) + i.y) + i.x);
     vec4 j1 = permute( permute( permute( permute (
@@ -100,27 +84,18 @@ float snoise(vec4 v){
     + i.z + vec4(i1.z, i2.z, i3.z, 1.0 ))
     + i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))
     + i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));
-    // Gradients
-    // ( 7*7*6 points uniformly over a cube, mapped onto a 4-octahedron.)
-    // 7*7*6 = 294, which is close to the ring size 17*17 = 289.
-
     vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;
-
     vec4 p0 = grad4(j0,   ip);
     vec4 p1 = grad4(j1.x, ip);
     vec4 p2 = grad4(j1.y, ip);
     vec4 p3 = grad4(j1.z, ip);
     vec4 p4 = grad4(j1.w, ip);
-
-    // Normalise gradients
     vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
     p0 *= norm.x;
     p1 *= norm.y;
     p2 *= norm.z;
     p3 *= norm.w;
     p4 *= taylorInvSqrt(dot(p4,p4));
-
-    // Mix contributions from the five corners
     vec3 m0 = max(0.6 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), 0.0);
     vec2 m1 = max(0.6 - vec2(dot(x3,x3), dot(x4,x4)            ), 0.0);
     m0 = m0 * m0;
@@ -133,10 +108,9 @@ float fbm(vec4 p){
     float amp = 1.;
     float frq = 1.;
     float sum = 0.;
-
     for (int i = 0; i < 6; i++){
         sum += amp*snoise(p*frq);
-        amp *= .5;
+        amp *= .3;
         frq *= 2.;
     }
     return sum;
@@ -160,30 +134,32 @@ float fbm(float x, float y, float z, float w){
 
 void main(){
     float t = time;
-    float timeRadius = 0.15;
-    vec2 timeOrigin = vec2(5, 1);
+    float timeRadius = 0.035;
+    vec2 timeOrigin = vec2(3, 4);
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 originalUV = uv.xy;
-//    uv = fract(uv*5.)-.5;
+    uv.x -=  camera.x/resolution.x;
+    uv.y +=  camera.y/resolution.y;
     uv = fract(uv*5.)-.5;
-    uv *= 30.;
+    uv *= 20.;
     vec2 gv = fract(uv)-.5;
     vec2 id = floor(uv)+.5;
-    float distanceFromTileCenter = length(id*30.);
-    float distanceFromOriginalCenter = length(originalUV*.2);
+    float distanceFromTileCenter = length(id*10.);
+    float distanceFromOriginalCenter = length(originalUV*0.4);
     float rawNoise = fbm(
         distanceFromTileCenter, distanceFromOriginalCenter,
         timeOrigin.x+timeRadius*cos(t), timeOrigin.y+timeRadius*sin(t)
     );
     float smoothNoise = smoothstep(-0.5,1.5,rawNoise);
-    float fadeToBlack = smoothstep(0.0, 1.1, length(originalUV));
-    float hueStart = .5;
+    float fadeToBlack = smoothstep(0.0, 1.5, length(originalUV));
+    float hueStart = 0.57;
     float hueRange = 0.75;
     vec3 color = rgb(
         hueStart+hueRange*smoothNoise,
-        1.-smoothNoise,
-        clamp(pow(smoothNoise, 0.4), 0., 1.)
+        1-smoothNoise,
+        pow(rawNoise, 1.0)
     );
+    color -= .25;
     gl_FragColor = vec4(color-fadeToBlack, 1.);
 }
 

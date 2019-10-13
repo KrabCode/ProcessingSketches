@@ -1,5 +1,4 @@
 import applet.GuiSketch;
-import ch.bildspur.postfx.builder.PostFX;
 import peasy.PeasyCam;
 
 public class DotPlane extends GuiSketch {
@@ -13,7 +12,6 @@ public class DotPlane extends GuiSketch {
 
     float t = 0;
     PeasyCam cam;
-    PostFX fx;
 
     int recStarted = -1;
     int recDuration = 360;
@@ -28,7 +26,6 @@ public class DotPlane extends GuiSketch {
 
     public void setup() {
         cam = new PeasyCam(this, 200);
-        fx = new PostFX(this);
     }
 
     public void draw() {
@@ -38,7 +35,7 @@ public class DotPlane extends GuiSketch {
         drawDots();
         cam.beginHUD();
         if (toggle("chromatic")) {
-            fx.render().chromaticAberration().compose();
+
         }
         cam.endHUD();
         if (recStarted > 0 && frameCount <= recStarted + recDuration) {

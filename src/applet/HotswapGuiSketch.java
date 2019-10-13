@@ -25,12 +25,18 @@ import static java.lang.System.currentTimeMillis;
 public abstract class HotswapGuiSketch extends GuiSketch {
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 60;
+    int refreshRateInMillis = 30;
 
     protected void chromaticAberrationPass(PGraphics pg) {
         String chromatic = "postFX\\chromaticAberrationFrag.glsl";
         uniform(chromatic).set("maxDistort", slider("chromatic", 5f));
         hotFilter(chromatic, pg);
+    }
+
+    protected void patternPass(PGraphics pg, float t){
+        String pattern = "pattern.glsl";
+        uniform(pattern).set("time", t);
+        hotFilter(pattern, pg);
     }
 
     protected void ceilBlack(PGraphics pg){
@@ -51,7 +57,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         pg.popStyle();
     }
 
-    protected void noiseOffsetPass(float t, PGraphics pg) {
+    protected void noiseOffsetPass(PGraphics pg, float t) {
         String noiseOffset = "noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
         uniform(noiseOffset).set("mixAmt", slider("mix", 0,1,.1f));
