@@ -10,7 +10,7 @@ public class SnowMoon extends HotswapGuiSketch {
 
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Snow");
+        HotswapGuiSketch.main("SnowMoon");
     }
 
 
@@ -84,7 +84,9 @@ public class SnowMoon extends HotswapGuiSketch {
             p.update();
         }
 
+        rgbSplitPass(pg);
         noisePass(t, pg);
+        noiseOffsetPass(pg, t);
 
         pg.endDraw();
         image(pg, 0, 0);
