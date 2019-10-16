@@ -37,9 +37,9 @@ public abstract class GuiSketch extends PApplet {
 
 //  UTILS
 
+    public String captureDir;
+    public String captureFilename;
     public String id = regenId();
-    public String captureDir = "out/capture/" + id + "/";
-    public String captureFilename = captureDir + "####.jpg";
     public int frameRecordingEnds;
     public int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
 
@@ -92,7 +92,8 @@ public abstract class GuiSketch extends PApplet {
 
     public String regenId() {
         String newId = this.getClass().getSimpleName() + "_" + year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
-        id = newId;
+        captureDir = "out/capture/" + id + "/";
+        captureFilename = captureDir + "####.jpg";
         return newId;
     }
 
