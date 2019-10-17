@@ -68,7 +68,6 @@ public abstract class GuiSketch extends PApplet {
         }
     }
 
-
     public ArrayList<PImage> loadImages(String folderPath) {
         ArrayList<PImage> images = new ArrayList<PImage>();
         try {
