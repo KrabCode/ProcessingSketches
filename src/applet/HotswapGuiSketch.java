@@ -69,15 +69,9 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     protected void noisePass(float t, PGraphics pg) {
         String noise = "postFX/noiseFrag.glsl";
         uniform(noise).set("time", t);
-        uniform(noise).set("amount", slider("noise amt", .2f));
+        uniform(noise).set("amount", slider("noise amt", .24f));
         uniform(noise).set("speed", slider("noise spd", 1));
         hotFilter(noise, pg);
-    }
-
-    protected void wave(float t, PGraphics pg) {
-        String wave = "wave.glsl";
-        uniform(wave).set("time", t);
-        hotFilter(wave, pg);
     }
 
     protected void rgbSplitUniformPass(PGraphics pg) {
@@ -88,7 +82,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 20));
+        uniform(rgbSplit).set("delta", slider("rgb mag",100));
         hotFilter(rgbSplit, pg);
     }
 
@@ -98,8 +92,6 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
         hotFilter(saturationVibrance, pg);
     }
-
-
 
     public PShader uniform(String fragPath) {
         ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
