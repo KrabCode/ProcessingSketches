@@ -146,20 +146,15 @@ float norm(float value, float start, float stop){
 }
 
 void main(){
-    float t = time;
-    float tr = 0.005;
-    float to = 4;
+    float t = time*.05;
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 ov = gl_FragCoord.xy / resolution.xy;
     vec2 gv = fract(uv*3.)-.5;
-    float grid = cubicPulse(.0, .2, min(abs(gv.x), abs(gv.y)));
-    uv *= 0.02;
-    uv = vec2(
-        fbm(uv.y+cos(uv.x), uv.x+cos(uv.y),
-           (to+tr*cos(t), to+tr*sin(t)))
-    );
-    float n = 1.-pow(fbm(uv.x, uv.y, grid), 0.3);
+    float grid = cubicPulse(.0, .25, min(abs(gv.x), abs(gv.y)));
+    uv *= vec2(1.0,0.5);
+    vec2 distortUv = vec2(fbm(uv.y,uv.x, grid), fbm(grid, uv.x, uv.y));
+    distortUv *= 0.5;
+    float n = fbm(distortUv.y+cos(t),distortUv.x+sin(t), grid);
     vec3 color = vec3(n);
-
     gl_FragColor = vec4(color, 1.);
 }
