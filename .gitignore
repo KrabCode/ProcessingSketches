@@ -1,5 +1,6 @@
 # Project exclude paths
-/out/
+/out/capture
+/out/production
 /libs/
 /.idea/
 ProcessingSketches.iml

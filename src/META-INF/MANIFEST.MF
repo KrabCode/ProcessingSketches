@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Class-Path: Jamepad.jar jpen-2.jar Tablet.jar peasy-math.jar peasycam.ja
+ r jogl-all-natives-windows-amd64.jar gluegen-rt.jar gluegen-rt-natives-
+ linux-i586.jar core.jar jogl-all-natives-windows-i586.jar gluegen-rt-na
+ tives-windows-amd64.jar jogl-all-natives-linux-armv6hf.jar jogl-all.jar
+  gluegen-rt-natives-linux-amd64.jar jogl-all-natives-linux-aarch64.jar 
+ gluegen-rt-natives-linux-aarch64.jar jogl-all-natives-linux-i586.jar gl
+ uegen-rt-natives-linux-armv6hf.jar gluegen-rt-natives-macosx-universal.
+ jar jogl-all-natives-linux-amd64.jar gluegen-rt-natives-windows-i586.ja
+ r jogl-all-natives-macosx-universal.jar
+

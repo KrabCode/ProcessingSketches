@@ -33,6 +33,7 @@ public class Text extends HotswapGuiSketch {
 
     public void draw() {
         t += radians(slider("t", 1, true));
+        pg.colorMode(HSB, 1,1,1,1);
         pg.beginDraw();
         pg.background(0);
         pg.textAlign(CENTER, CENTER);
@@ -50,7 +51,9 @@ public class Text extends HotswapGuiSketch {
             if (i % 2 == 0) {
                 pg.fill(0);
             } else {
-                pg.fill(255-255*inorm);
+                float hueStart = slider("hue start");
+                float hueRange = slider("hue range");
+                pg.fill(hueStart+inorm*hueRange,1.f,1.f-inorm);
             }
             pg.text(userInputText, 0, 0);
             pg.pop();
