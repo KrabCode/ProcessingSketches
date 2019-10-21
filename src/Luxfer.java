@@ -24,9 +24,9 @@ public class Luxfer extends HotswapGuiSketch {
     public void draw() {
         t += radians(slider("t", 1, true));
         pg.beginDraw();
-        String causticsShader = "luxfer.glsl";
-        uniform(causticsShader).set("time", t);
-        hotFilter(causticsShader);
+        String luxfer = "luxfer.glsl";
+        uniform(luxfer).set("time", t);
+        hotFilter(luxfer);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
