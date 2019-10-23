@@ -3,9 +3,9 @@ package boids;
 import applet.HotswapGuiSketch;
 import processing.core.PVector;
 
-public class BoidShanpe extends HotswapGuiSketch {
+public class BoidShape extends HotswapGuiSketch {
     public static void main(String[] args) {
-        HotswapGuiSketch.main("boids.BoidShanpe");
+        HotswapGuiSketch.main("boids.BoidShape");
     }
 
     public void settings() {
