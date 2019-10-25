@@ -1,11 +1,12 @@
 import applet.GuiSketch;
+import applet.HotswapGuiSketch;
 import peasy.PeasyCam;
 import processing.core.PVector;
 import processing.opengl.PShader;
 
 import java.util.ArrayList;
 
-public class Stars extends GuiSketch {
+public class Stars extends HotswapGuiSketch {
     private ArrayList<Star> stars = new ArrayList<Star>();
     private int bgDark;
     private PShader rgbSplit;
@@ -21,7 +22,6 @@ public class Stars extends GuiSketch {
 
     public void setup() {
         bgDark = color(0, 0);
-        rgbSplit = loadShader("rgbSplit.glsl");
         depth = width;
         new PeasyCam(this, depth);
     }
@@ -30,9 +30,7 @@ public class Stars extends GuiSketch {
         background(bgDark);
         float t = radians(frameCount);
         updateDrawStars(t);
-        rgbSplit.set("strength", slider("strength", .005f));
-        rgbSplit.set("easing", slider("easing", 2));
-        filter(rgbSplit);
+        chromaticAberrationPass(g);
         rec();
         gui();
     }

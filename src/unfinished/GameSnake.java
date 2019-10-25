@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import com.studiohartman.jamepad.ControllerManager;
 import com.studiohartman.jamepad.ControllerState;
@@ -21,7 +23,7 @@ public class GameSnake extends HotswapGuiSketch {
     private float t;
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("GameSnake");
+        HotswapGuiSketch.main("unfinished.GameSnake");
     }
 
     public void settings() {

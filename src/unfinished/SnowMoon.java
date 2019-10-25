@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -10,7 +12,7 @@ public class SnowMoon extends HotswapGuiSketch {
 
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("SnowMoon");
+        HotswapGuiSketch.main("unfinished.SnowMoon");
     }
 
 

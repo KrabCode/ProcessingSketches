@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import com.studiohartman.jamepad.ControllerManager;
 import com.studiohartman.jamepad.ControllerState;
@@ -25,7 +27,7 @@ public class TwinStickShooter extends HotswapGuiSketch {
     private float NULL_ANIMATION_FRAME = -1;
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("TwinStickShooter");
+        HotswapGuiSketch.main("unfinished.TwinStickShooter");
     }
 
     public void settings() {

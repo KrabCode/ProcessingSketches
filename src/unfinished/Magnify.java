@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import com.studiohartman.jamepad.ControllerManager;
 import processing.core.PGraphics;
@@ -26,7 +28,7 @@ public class Magnify extends HotswapGuiSketch {
     private float t;
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Magnify");
+        HotswapGuiSketch.main("unfinished.Magnify");
     }
 
     public void settings() {

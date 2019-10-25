@@ -150,10 +150,10 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 ov = gl_FragCoord.xy / resolution.xy;
     vec2 gv = fract(uv*3.)-.5;
-    float grid = cubicPulse(.0, .25, min(abs(gv.x), abs(gv.y)));
-    uv *= vec2(1.0,0.5);
+    float grid = cubicPulse(.0, .2, min(abs(gv.x), abs(gv.y)));
+    uv *= vec2(1.0,2.2);
     vec2 distortUv = vec2(fbm(uv.y,uv.x, grid), fbm(grid, uv.x, uv.y));
-    distortUv *= 0.5;
+    distortUv *= 0.1;
     float n = fbm(distortUv.y+cos(t),distortUv.x+sin(t), grid);
     vec3 color = vec3(n);
     gl_FragColor = vec4(color, 1.);

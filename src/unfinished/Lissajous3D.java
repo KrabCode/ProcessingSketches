@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -11,7 +13,7 @@ public class Lissajous3D extends HotswapGuiSketch {
     private float lMax;
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Lissajous3D");
+        HotswapGuiSketch.main("unfinished.Lissajous3D");
     }
 
     public void settings() {

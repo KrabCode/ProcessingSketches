@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.GuiSketch;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -12,7 +14,7 @@ public class FaceAnimation extends GuiSketch {
     private int frameRecordingEnds = -1;
 
     public static void main(String[] args) {
-        GuiSketch.main("FaceAnimation");
+        GuiSketch.main("unfinished.FaceAnimation");
     }
 
     public void settings() {

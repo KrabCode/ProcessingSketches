@@ -25,11 +25,11 @@ import static java.lang.System.currentTimeMillis;
 public abstract class HotswapGuiSketch extends GuiSketch {
 
     ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    int refreshRateInMillis = 30;
+    int refreshRateInMillis = 36;
 
     protected void chromaticAberrationPass(PGraphics pg) {
         String chromatic = "postFX\\chromaticAberrationFrag.glsl";
-        uniform(chromatic).set("maxDistort", slider("chromatic", 5f));
+        uniform(chromatic).set("maxDistort", slider("chromatic", 5));
         hotFilter(chromatic, pg);
     }
 
@@ -92,6 +92,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         uniform(saturationVibrance).set("vibrance", slider("vibrance", 0, 0.5f, 0));
         hotFilter(saturationVibrance, pg);
     }
+
+
 
     public PShader uniform(String fragPath) {
         ShaderSnapshot snapshot = findSnapshotByPath(fragPath);

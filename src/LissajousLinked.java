@@ -35,19 +35,15 @@ public class LissajousLinked extends HotswapGuiSketch {
                     yNorm = .5f;
                 }
                 float r = slider("r", 300);
-                float xPos = map(xNorm, 0, 1, cx - width * .5f, cx + width * .5f);
-                float yPos = map(yNorm, 0, 1, cy - height * .5f, cx + width * .5f);
+                float margin = slider("margin", 300);
+                float xPos = map(xNorm, 0, 1, cx - width * .5f + margin, cx + width * .5f - margin);
+                float yPos = map(yNorm, 0, 1, cy - height * .5f + margin, cx + width * .5f - margin);
                 float xFreq = slider("x frq start", 5);
                 float yFreq = slider("y frq start", 5);
-                xFreq += xNorm * slider("frq range", 0,5, 0);
+                xFreq += xNorm * slider("frq range", 0, 5, 0);
                 yFreq += yNorm * slider("frq range");
                 pushMatrix();
                 translate(xPos, yPos);
-                if (toggle("points")) {
-                    stroke(1);
-                    strokeWeight(3);
-                    point(0, 0);
-                }
                 updateLissajous(r, xFreq, yFreq);
                 popMatrix();
             }
@@ -64,12 +60,12 @@ public class LissajousLinked extends HotswapGuiSketch {
             float x = r * cos(inorm * TWO_PI * xFreq + t);
             float y = r * sin(inorm * TWO_PI * yFreq + t);
             if (toggle("modulated")) {
-                float d = dist(x,y,0,0);
+                float d = dist(x, y, 0, 0);
                 float modFrq = slider("modFrq", 2.1f);
                 float modMag = slider("modMag", 1f);
                 points.add(new PVector(
-                        x * (1.f+modMag*sin(d*modFrq)),
-                        y * (1.f+modMag*sin(d*modFrq)),
+                        x * (1.f + modMag * sin(d * modFrq)),
+                        y * (1.f + modMag * sin(d * modFrq)),
                         inorm));
             } else {
                 points.add(new PVector(x, y, inorm));
