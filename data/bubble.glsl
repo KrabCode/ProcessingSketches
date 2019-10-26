@@ -14,7 +14,8 @@ void main(){
     vec3 bubble = texture(texture, uv).rgb * pct;
     float border = step(bubble.x + bubble.y + bubble.z, 2.0)*(pct);
 //    pct *= .1+cv.x+cv.y;
-    pct *= 1.-1.5*distance(cv, vec2(.2, .2));
+    float d = distance(cv, vec2(.2, .2));
+    pct *= 1.-smoothstep(0.0,0.6,d);
     pct = max(border, pct);
     pct = clamp(pct, 0, 1);
     gl_FragColor = vec4(vec3(1.), pct);
