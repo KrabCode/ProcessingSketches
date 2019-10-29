@@ -1,7 +1,7 @@
 import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 
-public class Smoke extends HotswapGuiSketch {
+public class Doodle extends HotswapGuiSketch {
     public static void main(String[] args) {
         HotswapGuiSketch.main("Smoke");
     }
