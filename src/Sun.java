@@ -1,9 +1,9 @@
 import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 
-public class Doodle extends HotswapGuiSketch {
+public class Sun extends HotswapGuiSketch {
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Smoke");
+        HotswapGuiSketch.main("Sun");
     }
 
     private float t;
@@ -19,15 +19,15 @@ public class Doodle extends HotswapGuiSketch {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        recordingFrames = 360*2;
     }
 
     public void draw() {
         t += radians(slider("t", 1, true));
         pg.beginDraw();
-        pg.background(0);
-        String smoke = "doodle.glsl";
-        uniform(smoke).set("time", t);
-        hotFilter(smoke);
+        String radialDoodle = "sun.glsl";
+        uniform(radialDoodle).set("time", t);
+        hotFilter(radialDoodle);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);

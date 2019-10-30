@@ -69,7 +69,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     protected void noisePass(float t, PGraphics pg) {
         String noise = "postFX/noiseFrag.glsl";
         uniform(noise).set("time", t);
-        uniform(noise).set("amount", slider("noise amt", .24f));
+        uniform(noise).set("amount", slider("noise amt", 0, .24f, .05f));
         uniform(noise).set("speed", slider("noise spd", 1));
         hotFilter(noise, pg);
     }
@@ -82,7 +82,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("rgb mag",100));
+        uniform(rgbSplit).set("delta", slider("rgb mag",500));
         hotFilter(rgbSplit, pg);
     }
 
@@ -93,7 +93,25 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         hotFilter(saturationVibrance, pg);
     }
 
+    protected void toonPass(PGraphics pg){
+        String toonPass = "postFX/toonFrag.glsl";
+        hotFilter(toonPass, pg);
+    }
 
+
+    protected void brightnessContractFrag(PGraphics pg){
+        String brightnessContractPass = "postFX/brightnessContrastFrag.glsl";
+        uniform(brightnessContractPass).set("brightness", slider("brightness", 1, false));
+        uniform(brightnessContractPass).set("contrast", slider("contrast", 2));
+        hotFilter(brightnessContractPass, pg);
+    }
+
+    protected void vignettePass(PGraphics pg){
+        String vignettePass = "postFX/vignetteFrag.glsl";
+        uniform(vignettePass).set("amount", slider("vignette", 5));
+        uniform(vignettePass).set("falloff", slider("falloff"));
+        hotFilter(vignettePass, pg);
+    }
 
     public PShader uniform(String fragPath) {
         ShaderSnapshot snapshot = findSnapshotByPath(fragPath);

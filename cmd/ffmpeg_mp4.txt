@@ -1,1 +1,1 @@
-ffmpeg -framerate 60 -an -start_number_range 1000000 -i %04d.jpg 1.mp4
+ffmpeg -framerate 60 -an -start_number_range 1000000 -i %03d.jpg 1.mp4
