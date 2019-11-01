@@ -11,6 +11,7 @@ public class FbmField extends HotswapGuiSketch {
 
     private float t;
     private PGraphics pg;
+    PVector center;
 
     ArrayList<P> ps = new ArrayList<>();
 
@@ -32,6 +33,7 @@ public class FbmField extends HotswapGuiSketch {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        center = new PVector(pg.width, pg.height).mult(.5f);
     }
 
     public void draw() {
@@ -49,13 +51,13 @@ public class FbmField extends HotswapGuiSketch {
 
     private void updateParticles() {
         int intendedParticleCount = floor(slider("count", 20000));
-        while(ps.size() < intendedParticleCount){
+        while (ps.size() < intendedParticleCount) {
             ps.add(new P());
         }
-        while(ps.size() > intendedParticleCount){
+        while (ps.size() > intendedParticleCount) {
             ps.remove(0);
         }
-        for(P p : ps){
+        for (P p : ps) {
             p.update();
         }
     }
@@ -66,43 +68,48 @@ public class FbmField extends HotswapGuiSketch {
         freqMod = slider("frq mod", 0, 5, 1.4f);
         ampMod = slider("amp mod", .5f);
         detail = floor(slider("detail", 800));
-        if(button("reset fbm") || frameCount == 1){
+        if (button("reset fbm") || frameCount == 1) {
             resetFbmGrid();
         }
-        if(display){
-            float size = width/(float)detail + 1;
+        if (display) {
+            float size = width / (float) detail + 1;
             for (int xi = 0; xi < detail; xi++) {
                 for (int yi = 0; yi < detail; yi++) {
-                    float x = map(xi, 0, detail-1, 0, width);
-                    float y = map(yi, 0, detail-1, 0, height);
+                    float x = map(xi, 0, detail - 1, 0, width);
+                    float y = map(yi, 0, detail - 1, 0, height);
                     float fbm = getFbmAt(xi, yi);
                     pg.rectMode(CORNER);
                     pg.noStroke();
-                    pg.fill(fbm*255);
-                    pg.rect(x,y,size,size);
+                    pg.fill(fbm * 255);
+                    pg.rect(x, y, size, size);
                 }
             }
         }
     }
 
-    class P{
+    class P {
         PVector pos = new PVector(random(width), random(height));
         PVector prevPos = null;
         PVector spd = new PVector();
 
-        void update(){
+        void update() {
             int xi = floor(map(pos.x, 0, width, 0, detail));
             int yi = floor(map(pos.y, 0, height, 0, detail));
-            PVector acc = PVector.fromAngle(4*PI*getFbmAt(xi, yi)).mult(slider("acc"));
+            PVector acc = PVector.fromAngle(4 * PI * getFbmAt(xi, yi)).mult(slider("acc", 2));
+            PVector towardsCenter = PVector.sub(center, pos);
+            float idealDistance = slider("ideal d", width);
+            float actualDistance = towardsCenter.mag();
+            towardsCenter.rotate(HALF_PI + (idealDistance > actualDistance? -QUARTER_PI : QUARTER_PI)*slider("d mag", 5));
+            acc.add(towardsCenter.normalize());
             spd.add(acc);
             spd.mult(slider("drag", .8f, 1.f));
             pos.add(spd);
             boolean teleported = checkBounds();
-            if(prevPos != null && !teleported){
-                pg.strokeWeight(slider("w", 3.8f));
-                pg.stroke(255, 255*slider("p alpha"));
+            if (prevPos != null && !teleported) {
+                pg.strokeWeight(slider("w", 2));
+                pg.stroke(255, 255 * slider("p alpha"));
                 pg.line(pos.x, pos.y, prevPos.x, prevPos.y);
-            }else{
+            } else {
                 prevPos = new PVector();
             }
             prevPos.x = pos.x;
@@ -112,25 +119,28 @@ public class FbmField extends HotswapGuiSketch {
         private boolean checkBounds() {
             boolean teleported = false;
             if (pos.x < 0) {
-                pos.x += width;
+//                pos.x += width;
                 teleported = true;
             }
             if (pos.x > width) {
-                pos.x -= width;
+//                pos.x -= width;
                 teleported = true;
             }
             if (pos.y < 0) {
-                pos.y += height;
+//                pos.y += height;
                 teleported = true;
             }
             if (pos.y > height) {
-                pos.y -= height;
+//                pos.y -= height;
                 teleported = true;
+            }
+            if(teleported){
+                pos.x = center.x;
+                pos.y = center.y;
             }
             return teleported;
         }
     }
-
 
 
     private void resetFbmGrid() {
@@ -165,6 +175,6 @@ public class FbmField extends HotswapGuiSketch {
             x += 50;
             y += 50;
         }
-        return .5f+.5f*sum;
+        return .5f + .5f * sum;
     }
 }
