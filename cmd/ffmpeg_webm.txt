@@ -1,1 +1,1 @@
-ffmpeg -framerate 60 -an -start_number_range 1000000 -i %04d.jpg -b:v 2M 1.webm
+ffmpeg -framerate 60 -an -start_number_range 1000000 -i %03d.jpg -b:v 3M 1.webm

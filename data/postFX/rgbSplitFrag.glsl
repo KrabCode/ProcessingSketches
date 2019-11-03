@@ -13,7 +13,7 @@ uniform float delta;
 
 void main() {
 	vec2 dir = vertTexCoord.xy - vec2(.5);
-	float d = .7 * length(dir);
+	float d = 0.8*length(dir);
 	normalize(dir);
 	vec2 value = d * dir * delta;
 
@@ -22,7 +22,7 @@ void main() {
 	vec4 c3 = texture2D(texture, vertTexCoord.xy + value / resolution.y);
 
 	//remove extra green because I hate green
-	c2.g = c2.g*.7*step(c1.a + c2.a + c3.b, 3.);
+	c2.g = c2.g*smoothstep(0., 2.5, c1.a + c2.a + c3.b);
 
 	gl_FragColor = vec4(c1.r, c2.g, c3.b, c1.a + c2.a + c3.b);
 }

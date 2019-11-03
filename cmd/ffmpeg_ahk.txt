@@ -1,3 +1,7 @@
 #f::
 SendRaw ffmpeg -framerate 60 -an -start_number_range 1000000 -i `%03d.jpg 1.mp4
 return
+
+#f::
+SendRaw -framerate 60 -an -start_number_range 1000000 -i `%03d.jpg -b:v 2M 1.webm
+return

@@ -1,10 +1,12 @@
+package unfinished;
+
 import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 
 public class Radar extends HotswapGuiSketch {
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Radar");
+        HotswapGuiSketch.main("unfinished.Radar");
     }
 
     float t;
