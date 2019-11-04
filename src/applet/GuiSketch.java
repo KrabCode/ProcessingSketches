@@ -473,12 +473,17 @@ public abstract class GuiSketch extends PApplet {
         stroke(mouseOutsideStroke, alpha);
         noFill();
         strokeWeight(2);
-        boolean atEitherEnd = extensionEasing == 0 || extensionEasing == 1;
+        boolean fullyRetracted = extensionEasing == 0;
+        boolean fullyExtended = extensionEasing == 1;
+        boolean atEitherEnd = fullyExtended || fullyRetracted;
         boolean justReleasedMouse = extensionTogglePressedLastFrame && !mousePressed;
         if (isPointInRect(mouseX, mouseY, x - cogR * 3, y - cogR, cogR * 6, cogR * 2)) {
             lastInteractedWithExtensionToggle = frameCount;
             if (atEitherEnd && justReleasedMouse) {
                 startExtensionAnimation();
+                if(fullyExtended){
+                    printGuiValues();
+                }
             }
             if (mousePressed) {
                 extensionTogglePressedLastFrame = true;
@@ -503,6 +508,37 @@ public abstract class GuiSketch extends PApplet {
         textAlign(LEFT, CENTER);
         int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
         text(nonFlickeringFrameRate + " fps", x + cogR * 1.5f, y);
+    }
+
+    private void printGuiValues() {
+        println("GUI values at frame " + frameCount + ":");
+        int longestNameLength = 0;
+        for (GuiElement ge : allElements) {
+            if (ge.lastQueried == frameCount) {
+                if(ge.name.length() > longestNameLength){
+                    longestNameLength = ge.name.length();
+                }
+            }
+        }
+        java.lang.StringBuilder delimiterDashes = new StringBuilder();
+        for(int i = 0; i < longestNameLength; i++){
+            delimiterDashes.append("-");
+        }
+        println(delimiterDashes.toString());
+        for (GuiElement ge : allElements) {
+            if (ge.lastQueried == frameCount) {
+                int alignmentSpacesLength = longestNameLength-ge.name.length();
+                java.lang.StringBuilder rowBuilder = new StringBuilder(ge.name);
+                for(int i = 0; i < alignmentSpacesLength; i++){
+                    rowBuilder.append(" ");
+                }
+                String row = rowBuilder.toString();
+                row += "\t" + ge.stringValue();
+                println(row);
+            }
+        }
+        println(delimiterDashes.toString());
+        println();
     }
 
     private void startExtensionAnimation() {
@@ -547,12 +583,14 @@ public abstract class GuiSketch extends PApplet {
         return null;
     }
 
-    private static class GuiElement {
+    private abstract static class GuiElement {
         String name;
         int lastQueried = 0;
         GuiElement(String name) {
             this.name = name;
         }
+
+        protected abstract String stringValue();
     }
 
     private class Slider extends GuiElement {
@@ -565,6 +603,11 @@ public abstract class GuiSketch extends PApplet {
             this.initial = initial;
             this.value = initial;
             allElements.add(this);
+        }
+
+        @Override
+        protected String stringValue() {
+            return String.valueOf(value);
         }
     }
 
@@ -579,6 +622,11 @@ public abstract class GuiSketch extends PApplet {
                 this.value = initial;
             }
             allElements.add(this);
+        }
+
+        @Override
+        protected String stringValue() {
+            return String.valueOf(value);
         }
     }
 }
