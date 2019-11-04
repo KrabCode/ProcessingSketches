@@ -45,15 +45,14 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     }
 
     protected void alphaFade(PGraphics pg) {
-        pg.noStroke();
         pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
+        pg.noStroke();
         pg.fill(255,slider("alpha", 0, 100,17));
         pg.rectMode(CENTER);
         pg.rect(0,0,width*2, height*2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
-        pg.blendMode(BLEND);
         pg.popStyle();
     }
 
