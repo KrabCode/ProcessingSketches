@@ -512,19 +512,12 @@ public abstract class GuiSketch extends PApplet {
 
     private void printGuiValues() {
         println("GUI values at frame " + frameCount + ":");
-        int longestNameLength = 0;
-        for (GuiElement ge : allElements) {
-            if (ge.lastQueried == frameCount) {
-                if(ge.name.length() > longestNameLength){
-                    longestNameLength = ge.name.length();
-                }
-            }
-        }
-        java.lang.StringBuilder delimiterDashes = new StringBuilder();
+        int longestNameLength = findLengthOfLongestUsedElementName();
+        java.lang.StringBuilder delimiterDashedLine = new StringBuilder();
         for(int i = 0; i < longestNameLength; i++){
-            delimiterDashes.append("-");
+            delimiterDashedLine.append("-");
         }
-        println(delimiterDashes.toString());
+        println(delimiterDashedLine.toString());
         for (GuiElement ge : allElements) {
             if (ge.lastQueried == frameCount) {
                 int alignmentSpacesLength = longestNameLength-ge.name.length();
@@ -537,9 +530,22 @@ public abstract class GuiSketch extends PApplet {
                 println(row);
             }
         }
-        println(delimiterDashes.toString());
+        println(delimiterDashedLine.toString());
         println();
     }
+
+    private int findLengthOfLongestUsedElementName() {
+        int longestNameLength = 0;
+        for (GuiElement ge : allElements) {
+            if (ge.lastQueried == frameCount) {
+                if(ge.name.length() > longestNameLength){
+                    longestNameLength = ge.name.length();
+                }
+            }
+        }
+        return longestNameLength;
+    }
+
 
     private void startExtensionAnimation() {
         boolean extend = extensionEasing == 0;
