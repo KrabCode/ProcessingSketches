@@ -27,9 +27,6 @@ import java.util.stream.Collectors;
  * - click on the left arrow "<" to hide it, click the cog to show it
  * - the cog fades away when not in use but it's still there, you can click on it
  *
- * TODO improve the user experience
- * - lock sliders that are not being dragged
- * - add a scrollbar to allow unlimited number of elements
  */
 
 @SuppressWarnings({"WeakerAccess", "FieldCanBeLocal", "unused", "DuplicatedCode"})
