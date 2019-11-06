@@ -23,4 +23,11 @@ public class JuicyGuiSketch extends PApplet {
     // two or three buttons/toggles to a row
     // print state on tray hide
     // honor existing interface, only extend it
+
+    // implementation:
+    // gui element class
+    // standalone slider, button, toggle, hue, grid, radio
+    // tray class
+    // category class
+    // row class
 }
