@@ -22,4 +22,5 @@ public class JuicyGuiSketch extends PApplet {
     // action click animation for extra juice
     // two or three buttons/toggles to a row
     // print state on tray hide
+    // honor existing interface, only extend it
 }
