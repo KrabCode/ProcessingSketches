@@ -3,7 +3,7 @@ import processing.core.PGraphics;
 
 public class Doodle extends HotswapGuiSketch {
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Smoke");
+        HotswapGuiSketch.main("Doodle");
     }
 
     private float t;

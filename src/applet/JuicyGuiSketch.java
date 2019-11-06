@@ -2,7 +2,7 @@ package applet;
 
 import processing.core.PApplet;
 
-public class JuicyGuiSketch extends PApplet {
+public abstract class JuicyGuiSketch extends PApplet {
     //TODO
     // ----- Operation JUICE -----
     // gui elements:
