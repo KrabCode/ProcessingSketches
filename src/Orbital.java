@@ -20,8 +20,8 @@ public class Orbital extends HotswapGuiSketch {
     }
 
     public void settings() {
-        size(800, 800, P3D);
-//        fullScreen(P3D, 2);
+//        size(800, 800, P3D);
+        fullScreen(P3D, 1);
     }
 
     public void setup() {
