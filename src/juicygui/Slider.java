@@ -55,7 +55,6 @@ public class Slider extends HotswapGuiSketch {
         // text
         fill(slider("text fill", 255, true));
         textAlign(LEFT, CENTER);
-        textMode(CORNER);
         textSize(slider("text size", 0, 80, 25));
         text(name,x+slider("text margin x", -5,  10, 5.6388893f),y + slider("text margin y", -50, 50, 13.703705f));
 
