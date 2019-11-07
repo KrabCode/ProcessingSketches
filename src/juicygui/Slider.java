@@ -33,7 +33,7 @@ public class Slider extends HotswapGuiSketch {
         fill(0);
         stroke(255);
         strokeWeight(1);
-        rect(x, y, w, h, 10); // rounded?
+        rect(x, y, w, h, slider("rounded", 20)); // rounded?
 
         float handleWidth = w * slider("handle w mult", .1f);
         float handleOverflow = 2;
