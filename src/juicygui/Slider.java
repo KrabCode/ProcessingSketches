@@ -30,7 +30,7 @@ public class Slider extends HotswapGuiSketch {
         gui();
     }
 
-    void slider(String name, float min, float max, float x, float y, float w, float h) {
+    private void slider(String name, float min, float max, float x, float y, float w, float h) {
         float handleWidth = w * slider("handle w mult", .2f);
         float handleOverflow = slider("overflow", 20);
         float handleHeight = h + handleOverflow * 2;
