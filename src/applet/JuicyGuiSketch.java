@@ -16,8 +16,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     // ...
     // other features:
     // proper margins and sizes, no code salad
-    // power sliders
-    // editable slider ranges, editable powers
+    // infinite sliders, define precision instead of min/max (division by 0 problem)
     // lock other gui elements when one is being used, unlock one frame after mouse release to avoid unintentional input
     // action click animation for extra juice
     // two or three buttons/toggles to a row
