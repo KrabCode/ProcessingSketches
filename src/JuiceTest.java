@@ -26,11 +26,12 @@ public class JuiceTest extends JuicyGuiSketch {
 
     public void draw() {
         pg.beginDraw();
-        pg.background(100);
+        group("background");
+        pg.background(sliderInt("background", 100, 100));
         pg.stroke(255, 0, 0);
-        pg.fill(0);
         pg.rectMode(CENTER);
         group("rect");
+        pg.fill(sliderInt("fill", 0, 100));
         float size = sliderInt("size", 50, 10);
         pg.rect(width*.5f, height*.5f, size, size);
         pg.endDraw();

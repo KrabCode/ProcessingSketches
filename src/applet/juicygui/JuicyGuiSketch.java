@@ -5,7 +5,7 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue"})
+@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal"})
 public class JuicyGuiSketch extends PApplet {
     //TODO
     // ----- Operation JUICE -----
@@ -35,22 +35,31 @@ public class JuicyGuiSketch extends PApplet {
     // category class
     // row class
 
+    // color
+    float backgroundAlpha = .5f;
+    private boolean onPC;
+    private boolean justStarted = true;
     private ArrayList<Group> groups = new ArrayList<>();
     private Group parentGroup = null; //do not access directly!
-    private float cell = 40;
-    private float minimumTrayWidth = cell * 6;
-    private boolean trayVisible = true;
-    private boolean pMousePressed;
+    private float fillBackground = .3f;
+    private float fillTextSelected = 1;
+    private float fillText = .6f;
+    private float fontSize = 24;
 
+    // input
+    private boolean pMousePressed = false;
     private int keyboardSelectionIndex = 0;
     private String keyboardAction;
     private boolean keyboardInputActive;
     private int specialKeyCount = 3;
 
-    private float fillTextSelected = 1;
-    private float fillText = .6f;
-    private float fontSize = 24;
+    // layout
+    private boolean trayVisible = true;
+    private float cell = 40;
+    private float minimumTrayWidth = cell * 6;
+    private float trayWidth;
 
+    //overlay
     private boolean overlayVisible;
     private Element overlayOwner;
 
@@ -63,39 +72,40 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        if(frameCount == 1){
-            trayVisible = defaultVisibility;
-        }
+        firstFrameSetup(defaultVisibility);
         pushStyle();
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
         updateTrayBackground();
         updateSpecialButtons();
-        updateGroupsAndElementsInTray();
+        updateGroupsAndTheirElements();
         updateFps();
-        updateOverlay();
+        if (overlayVisible) {
+            overlayOwner.updateOverlay();
+        }
         popStyle();
         pMousePressed = mousePressed;
         keyboardAction = "";
     }
 
-    private void updateFps() {
-        if(!trayVisible){
-            return;
+    private void firstFrameSetup(boolean defaultVisibility) {
+        if (justStarted) {
+            trayVisible = defaultVisibility;
+            onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
+            justStarted = false;
         }
-        float x = cell*.25f;
-        float y = height-cell;
-        fill(fillText);
-        textAlign(CENTER, CENTER);
-        int nonFlickeringFrameRate = floor(frameRate > 58 && frameRate < 62 ? 60 : frameRate);
-        text(nonFlickeringFrameRate + " fps", x,y,cell*2, cell);
     }
 
-    private void updateOverlay() {
-        if(!overlayVisible){
+    private void updateFps() {
+        if (!trayVisible) {
             return;
         }
-
+        float x = cell * .25f;
+        float y = height - cell;
+        fill(fillText);
+        textAlign(CENTER, CENTER);
+        int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
+        text(nonFlickeringFrameRate + " fps", x, y, cell * 2, cell);
     }
 
     private void updateSpecialButtons() {
@@ -114,47 +124,58 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     private void updateSpecialHideButton(float x, float y, float w, float h) {
-        if (mouseJustReleased(x, y, w, h) || (keyboardInput("hide/show") && keyboardAction.equals("ACTION"))) {
+        if (activated("hide/show", x, y, w, h)) {
             trayVisible = !trayVisible;
         }
-        fill(keyboardInput("hide/show") ? fillTextSelected : fillText);
+        fill((keyboardSelected("hide/show") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
         text(trayVisible ? "hide" : "show", x, y, w, h);
     }
 
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
-        fill(keyboardInput("undo") ? fillTextSelected : fillText);
+        if (activated("undo", x, y, w, h)) {
+            pushTopUndoOntoRedo();
+            popUndo();
+        }
+        fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
         text("undo", x, y, w, h);
     }
 
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
-        fill(keyboardInput("redo") ? fillTextSelected : fillText);
+        if (activated("redo", x, y, w, h)) {
+            popRedo();
+        }
+        fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
         text("redo", x, y, w, h);
     }
 
-    private boolean keyboardInput(String query) {
-        if(!trayVisible){
+    private boolean activated(String query, float x, float y, float w, float h) {
+        return mouseJustReleasedHere(x, y, w, h) || keyboardActivated(query);
+    }
+
+    private boolean keyboardActivated(String query) {
+        return keyboardSelected(query) && keyboardAction.equals("ACTION");
+    }
+
+    private boolean keyboardSelected(String query) {
+        if (!trayVisible) {
             keyboardSelectionIndex = 0;
         }
         if (!keyboardInputActive) {
             return false;
         }
-        if (query.equals("hide/show") && keyboardSelectionIndex == 0) {
-            return true;
-        }
-        if (query.equals("undo") && keyboardSelectionIndex == 1) {
-            return true;
-        }
-        if (query.equals("redo") && keyboardSelectionIndex == 2) {
+        if ((query.equals("hide/show") && keyboardSelectionIndex == 0)
+                || (query.equals("undo") && keyboardSelectionIndex == 1)
+                || (query.equals("redo") && keyboardSelectionIndex == 2)) {
             return true;
         }
         int i = specialKeyCount;
         for (Group group : groups) {
-            if(group.name.equals(query) && keyboardSelectionIndex == i){
+            if (group.name.equals(query) && keyboardSelectionIndex == i) {
                 return true;
             }
             i++;
-            for(Element el : group.elements){
-                if(el.name.equals(query) && keyboardSelectionIndex == i){
+            for (Element el : group.elements) {
+                if ((group.name + el.name).equals(query) && keyboardSelectionIndex == i) {
                     return true;
                 }
                 i++;
@@ -163,12 +184,20 @@ public class JuicyGuiSketch extends PApplet {
         return false;
     }
 
-    int keyboardSelectionIndexMax() {
+    int keyboardSelectableItemCount() {
         int elementCount = 0;
         for (Group group : groups) {
             elementCount += group.elements.size();
         }
         return specialKeyCount + groups.size() + elementCount;
+    }
+
+    private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
+        return pMousePressed && !mousePressed && isPointInRect(mouseX, mouseY, x, y, w, h);
+    }
+
+    private boolean isMouseOver(float x, float y, float w, float h) {
+        return onPC && isPointInRect(mouseX, mouseY, x, y, w, h);
     }
 
     public void mousePressed() {
@@ -178,43 +207,39 @@ public class JuicyGuiSketch extends PApplet {
     public void keyPressed() {
         if (key == CODED) {
             if (keyCode == UP) {
-                if(keyboardSelectionIndex == specialKeyCount){
+                if (keyboardSelectionIndex == specialKeyCount) {
                     keyboardSelectionIndex = 0;
-                }else{
+                } else {
                     keyboardSelectionIndex--;
                 }
             } else if (keyCode == DOWN) {
-                if(keyboardSelectionIndex < specialKeyCount){
+                if (keyboardSelectionIndex < specialKeyCount) {
                     keyboardSelectionIndex = specialKeyCount;
-                }else{
+                } else {
                     keyboardSelectionIndex++;
                 }
             } else if (keyCode == LEFT) {
-                if(keyboardSelectionIndex > 0 && keyboardSelectionIndex < specialKeyCount){
+                if (keyboardSelectionIndex > 0 && keyboardSelectionIndex < specialKeyCount) {
                     keyboardSelectionIndex--;
-                }else{
+                } else {
                     keyboardAction = "LEFT";
                 }
             } else if (keyCode == RIGHT) {
-                if(keyboardSelectionIndex < specialKeyCount){
+                if (keyboardSelectionIndex < specialKeyCount) {
                     keyboardSelectionIndex++;
-                }else{
+                } else {
                     keyboardAction = "RIGHT";
                 }
             }
+            keyboardSelectionIndex %= keyboardSelectableItemCount();
             if (keyboardSelectionIndex < 0) {
-                keyboardSelectionIndex = keyboardSelectionIndexMax();
+                keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
             }
-            keyboardSelectionIndex %= keyboardSelectionIndexMax();
         }
         if (key == ' ' || key == ENTER) {
             keyboardAction = "ACTION";
         }
         keyboardInputActive = true;
-    }
-
-    private boolean mouseJustReleased(float x, float y, float w, float h) {
-        return pMousePressed && !mousePressed && isPointInRect(mouseX, mouseY, x, y, w, h);
     }
 
     protected void group(String name) {
@@ -226,25 +251,54 @@ public class JuicyGuiSketch extends PApplet {
         setParentGroup(group);
     }
 
-    private void updateGroupsAndElementsInTray() {
+    private void updateGroupsAndTheirElements() {
         if (!trayVisible) {
             return;
         }
         float x = cell * .5f;
         float y = cell * 3;
         for (Group group : groups) {
-            textAlign(LEFT, BOTTOM);
-            fill(keyboardInput(group.name) ? fillTextSelected : fillText);
-            textSize(fontSize);
-            text(group.name, x, y);
-            x += cell * .5f;
-            for (Element el : group.elements) {
-                y += cell;
-                fill(keyboardInput(el.name) ? fillTextSelected : fillText);
-                text(el.name, x, y);
+            updateGroup(group, x, y);
+            if (group.expanded) {
+                x += cell * .5f;
+                for (Element el : group.elements) {
+                    y += cell;
+                    updateElement(group, el, x, y);
+                }
+                x -= cell * .5f;
             }
-            x -= cell * .5f;
             y += cell;
+        }
+    }
+
+    private void updateGroup(Group group, float x, float y) {
+        fill((keyboardSelected(group.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? fillTextSelected : fillText);
+        textAlign(LEFT, BOTTOM);
+        textSize(fontSize);
+        text(group.name, x, y);
+        if (activated(group.name, 0, y - cell, trayWidth, cell)) {
+            group.expanded = !group.expanded;
+        }
+    }
+
+    private void updateElement(Group group, Element el, float x, float y) {
+        fill((keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? fillTextSelected : fillText);
+        textAlign(LEFT, BOTTOM);
+        textSize(fontSize);
+        text(el.name, x, y);
+        if (activated(group.name + el.name, 0, y - cell, trayWidth, cell)) {
+            if (!el.canHaveOverlay()) {
+                println("cannot have overlay");
+                el.handleActivation(0, y - cell, trayWidth, cell);
+                return;
+            }
+            if (!overlayVisible) {
+                overlayOwner = el;
+                overlayVisible = true;
+            }else if (overlayVisible && el.equals(overlayOwner)) {
+                overlayVisible = false;
+                pushUndo();
+            }
         }
     }
 
@@ -252,13 +306,12 @@ public class JuicyGuiSketch extends PApplet {
         if (!trayVisible) {
             return;
         }
-        float trayWidth = max(minimumTrayWidth, findLongestNameWidth() + cell * 2);
-        float backgroundAlpha = .5f;
+        trayWidth = max(minimumTrayWidth, findLongestNameWidth() + cell * 2);
         noStroke();
         fill(0, backgroundAlpha);
         rectMode(CORNER);
         rect(0, 0, trayWidth, height);
-        stroke(.3f, backgroundAlpha);
+        stroke(fillBackground, backgroundAlpha);
         for (float x = cell; x < trayWidth; x += cell) {
             line(x, 0, x, height);
         }
@@ -329,16 +382,31 @@ public class JuicyGuiSketch extends PApplet {
 
     protected int sliderInt(String name, int defaultValue, int defaultPrecision) {
         if (!groupContainsElement(name, getParentGroup())) {
-            parentGroup.elements.add(new SliderInt(name, defaultValue, defaultPrecision));
+            parentGroup.elements.add(new SliderInt(name, defaultValue, defaultPrecision, getParentGroup()));
         }
         SliderInt slider = (SliderInt) findElementInGroup(name, parentGroup);
-        return defaultValue;
+        return slider.value;
+    }
+
+    private void pushUndo() {
+
+    }
+
+    private void popUndo() {
+    }
+
+    private void pushTopUndoOntoRedo() {
+
+    }
+
+    private void popRedo() {
+
     }
 
     class Group {
+
         String name;
         boolean expanded = true;
-        float x,y,w,h;
         ArrayList<Element> elements = new ArrayList<>();
 
         public Group(String name) {
@@ -351,43 +419,232 @@ public class JuicyGuiSketch extends PApplet {
         }
     }
 
-    class Element{
-        float x,y,w,h;
+    abstract class Element {
         String name;
+
+        abstract boolean canHaveOverlay();
+
+        abstract void updateOverlay();
+
+        abstract String value();
+
+        public abstract String toString();
+
+        public abstract void handleActivation(int x, float y, float w, float h);
     }
 
     class SliderInt extends Element {
+        Group parent;
         int value, precision;
 
-        public SliderInt(String name, int defaultValue, int defaultPrecision) {
+        public SliderInt(String name, int defaultValue, int defaultPrecision, Group parent) {
+            this.parent = parent;
             this.name = name;
             this.value = defaultValue;
             this.precision = defaultPrecision;
         }
+
+        @Override
+        boolean canHaveOverlay() {
+            return true;
+        }
+
+        @Override
+        void updateOverlay() {
+            noStroke();
+            fill(1);
+            rect(0, height - cell * 8, width, cell * 8);
+        }
+
+        @Override
+        String value() {
+            return String.valueOf(value);
+        }
+
+        @Override
+        public String toString() {
+            return parent.name + " " + name + ": " + value();
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 
-    class Slider1D extends Element {
+    class SliderFloat extends Element {
         float value, precision;
+
+        @Override
+        boolean canHaveOverlay() {
+            return true;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
+
     }
 
     class Slider2D extends Element {
         PVector value = new PVector();
         float precision;
+
+        @Override
+        boolean canHaveOverlay() {
+            return true;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 
     class SliderColor extends Element {
         float hue, saturation, brightness;
+
+        @Override
+        boolean canHaveOverlay() {
+            return true;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 
     class Radio extends Element {
         String[] options;
+
+        @Override
+        boolean canHaveOverlay() {
+            return false;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 
     class Button extends Element {
         boolean justPressed = false;
+
+        @Override
+        boolean canHaveOverlay() {
+            return false;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 
     class Toggle extends Element {
         boolean state = false;
+
+        @Override
+        boolean canHaveOverlay() {
+            return false;
+        }
+
+        @Override
+        void updateOverlay() {
+
+        }
+
+        @Override
+        String value() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return null;
+        }
+
+        @Override
+        public void handleActivation(int x, float y, float w, float h) {
+
+        }
     }
 }
