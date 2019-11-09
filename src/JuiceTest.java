@@ -1,5 +1,6 @@
 import applet.juicygui.JuicyGuiSketch;
 import processing.core.PGraphics;
+import processing.core.PVector;
 
 /**
  * Created by Jakub 'Krab' Rak on 2019-11-09
@@ -27,13 +28,19 @@ public class JuiceTest extends JuicyGuiSketch {
     public void draw() {
         pg.beginDraw();
         group("background");
-        pg.background(sliderInt("background", 100, 100));
-        pg.stroke(255, 0, 0);
+        pg.background(sliderFloat("background", 0, 100));
         pg.rectMode(CENTER);
         group("rect");
-        pg.fill(sliderInt("fill", 0, 100));
-        float size = sliderInt("size", 50, 10);
-        pg.rect(width*.5f, height*.5f, size, size);
+        pg.fill(sliderFloat("fill", 100, 100));
+        float size = sliderFloat("size", 50, 10);
+        group("text");
+        PVector translate = slider2D("translate", width*.5f, width*.5f, 100);
+        pg.translate(translate.x, translate.y);
+        pg.textAlign(CENTER, CENTER);
+        pg.fill(sliderFloat("fill", 255, 50));
+        pg.textSize(sliderFloat("textSize", 4, 50));
+        pg.text(radio("hi", "world", "bejbii"), 0, 0);
+        pg.rect(0, 0, size, size);
         pg.endDraw();
         image(pg, 0, 0);
         gui();

@@ -4,13 +4,16 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal"})
+@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused"})
 public class JuicyGuiSketch extends PApplet {
-    //TODO
+    //TODO FIX THE GROUP / NAME UNIQUENESS, test with fill
+
     // ----- Operation JUICE -----
     // gui elements:
-    // keyboard, mouse, mousewheel controls
+    // gamepad support
+    // mousewheel controls
     // optional dynamic hide-able categories
     // juicy minimalist sliders with tooltip value
     // juicy buttons, visually clear on/off states
@@ -38,19 +41,18 @@ public class JuicyGuiSketch extends PApplet {
     // color
     float backgroundAlpha = .5f;
     private boolean onPC;
-    private boolean justStarted = true;
     private ArrayList<Group> groups = new ArrayList<>();
     private Group parentGroup = null; //do not access directly!
-    private float fillBackground = .3f;
-    private float fillTextSelected = 1;
-    private float fillText = .6f;
-    private float fontSize = 24;
+    private float grayscaleBackground = .3f;
+    private float grayscaleTextSelected = 1;
+    private float grayscaleText = .6f;
+    private float textSize = 24;
 
     // input
     private boolean pMousePressed = false;
     private int keyboardSelectionIndex = 0;
     private String keyboardAction;
-    private boolean keyboardInputActive;
+    private boolean keyboardInputActive = false;
     private int specialKeyCount = 3;
 
     // layout
@@ -72,7 +74,11 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        firstFrameSetup(defaultVisibility);
+        if (frameCount == 1) {
+            trayVisible = defaultVisibility;
+            onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
+            return;
+        }
         pushStyle();
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
@@ -88,21 +94,13 @@ public class JuicyGuiSketch extends PApplet {
         keyboardAction = "";
     }
 
-    private void firstFrameSetup(boolean defaultVisibility) {
-        if (justStarted) {
-            trayVisible = defaultVisibility;
-            onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
-            justStarted = false;
-        }
-    }
-
     private void updateFps() {
         if (!trayVisible) {
             return;
         }
         float x = cell * .25f;
         float y = height - cell;
-        fill(fillText);
+        fill(grayscaleText);
         textAlign(CENTER, CENTER);
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
         text(nonFlickeringFrameRate + " fps", x, y, cell * 2, cell);
@@ -111,7 +109,7 @@ public class JuicyGuiSketch extends PApplet {
     private void updateSpecialButtons() {
         float x = 0;
         float y = 0;
-        textSize(fontSize);
+        textSize(textSize);
         textAlign(CENTER, BOTTOM);
         updateSpecialHideButton(x, y, cell * 2, cell);
         if (!trayVisible) {
@@ -127,8 +125,10 @@ public class JuicyGuiSketch extends PApplet {
         if (activated("hide/show", x, y, w, h)) {
             trayVisible = !trayVisible;
         }
-        fill((keyboardSelected("hide/show") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
-        text(trayVisible ? "hide" : "show", x, y, w, h);
+        fill((keyboardSelected("hide/show") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        if (isMouseOver(x, y, w, h) || trayVisible) {
+            text(trayVisible ? "hide" : "show", x, y, w, h);
+        }
     }
 
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
@@ -136,7 +136,7 @@ public class JuicyGuiSketch extends PApplet {
             pushTopUndoOntoRedo();
             popUndo();
         }
-        fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
+        fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         text("undo", x, y, w, h);
     }
 
@@ -144,7 +144,7 @@ public class JuicyGuiSketch extends PApplet {
         if (activated("redo", x, y, w, h)) {
             popRedo();
         }
-        fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? fillTextSelected : fillText);
+        fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         text("redo", x, y, w, h);
     }
 
@@ -197,7 +197,7 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     private boolean isMouseOver(float x, float y, float w, float h) {
-        return onPC && isPointInRect(mouseX, mouseY, x, y, w, h);
+        return onPC && (frameCount > 1) && isPointInRect(mouseX, mouseY, x, y, w, h);
     }
 
     public void mousePressed() {
@@ -221,15 +221,16 @@ public class JuicyGuiSketch extends PApplet {
             } else if (keyCode == LEFT) {
                 if (keyboardSelectionIndex > 0 && keyboardSelectionIndex < specialKeyCount) {
                     keyboardSelectionIndex--;
-                } else {
-                    keyboardAction = "LEFT";
                 }
+                keyboardAction = "LEFT";
             } else if (keyCode == RIGHT) {
                 if (keyboardSelectionIndex < specialKeyCount) {
                     keyboardSelectionIndex++;
-                } else {
-                    keyboardAction = "RIGHT";
+                } else if (keyboardSelectionIndex > specialKeyCount) {
+                    keyboardSelectionIndex = 1;
                 }
+                keyboardAction = "RIGHT";
+
             }
             keyboardSelectionIndex %= keyboardSelectableItemCount();
             if (keyboardSelectionIndex < 0) {
@@ -272,9 +273,9 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     private void updateGroup(Group group, float x, float y) {
-        fill((keyboardSelected(group.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? fillTextSelected : fillText);
+        fill((keyboardSelected(group.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
         textAlign(LEFT, BOTTOM);
-        textSize(fontSize);
+        textSize(textSize);
         text(group.name, x, y);
         if (activated(group.name, 0, y - cell, trayWidth, cell)) {
             group.expanded = !group.expanded;
@@ -282,23 +283,24 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     private void updateElement(Group group, Element el, float x, float y) {
-        fill((keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? fillTextSelected : fillText);
-        textAlign(LEFT, BOTTOM);
-        textSize(fontSize);
-        text(el.name, x, y);
+        fill((keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
+        el.displayOnTray(x, y);
+        el.update();
         if (activated(group.name + el.name, 0, y - cell, trayWidth, cell)) {
             if (!el.canHaveOverlay()) {
-                println("cannot have overlay");
-                el.handleActivation(0, y - cell, trayWidth, cell);
+                el.onActivation(0, y - cell, trayWidth, cell);
                 return;
             }
             if (!overlayVisible) {
                 overlayOwner = el;
                 overlayVisible = true;
-            }else if (overlayVisible && el.equals(overlayOwner)) {
+            } else if (overlayVisible && !el.equals(overlayOwner)) {
+                overlayOwner = el;
+            } else if (overlayVisible && el.equals(overlayOwner)) {
                 overlayVisible = false;
                 pushUndo();
             }
+
         }
     }
 
@@ -311,7 +313,7 @@ public class JuicyGuiSketch extends PApplet {
         fill(0, backgroundAlpha);
         rectMode(CORNER);
         rect(0, 0, trayWidth, height);
-        stroke(fillBackground, backgroundAlpha);
+        stroke(grayscaleBackground, backgroundAlpha);
         for (float x = cell; x < trayWidth; x += cell) {
             line(x, 0, x, height);
         }
@@ -367,8 +369,8 @@ public class JuicyGuiSketch extends PApplet {
         return findGroup(name) != null;
     }
 
-    private Element findElementInGroup(String name, Group parentGroup) {
-        for (Element el : parentGroup.elements) {
+    private Element findElementInGroup(String name, Group group) {
+        for (Element el : group.elements) {
             if (el.name.equals(name)) {
                 return el;
             }
@@ -376,16 +378,8 @@ public class JuicyGuiSketch extends PApplet {
         return null;
     }
 
-    private boolean groupContainsElement(String name, Group parentGroup) {
-        return findElementInGroup(name, parentGroup) != null;
-    }
-
-    protected int sliderInt(String name, int defaultValue, int defaultPrecision) {
-        if (!groupContainsElement(name, getParentGroup())) {
-            parentGroup.elements.add(new SliderInt(name, defaultValue, defaultPrecision, getParentGroup()));
-        }
-        SliderInt slider = (SliderInt) findElementInGroup(name, parentGroup);
-        return slider.value;
+    private boolean groupContainsElement(String name, Group group) {
+        return findElementInGroup(name, group) != null;
     }
 
     private void pushUndo() {
@@ -403,8 +397,58 @@ public class JuicyGuiSketch extends PApplet {
 
     }
 
-    class Group {
+    protected float sliderFloat(String name, float defaultValue, float precision) {
+        if (!groupContainsElement(name, getParentGroup())) {
+            InfiniteSlider newElement = new InfiniteSlider(getParentGroup(), name, defaultValue, precision);
+            newElement.update();
+            getParentGroup().elements.add(newElement);
+        }
+        InfiniteSlider slider = (InfiniteSlider) findElementInGroup(name, getParentGroup());
+        return slider.value;
+    }
 
+    protected PVector slider2D(String name, float defaultX, float defaultY, float precision) {
+        if (!groupContainsElement(name, getParentGroup())) {
+            InfiniteSlider2D newElement = new InfiniteSlider2D(getParentGroup(), name, defaultX, defaultY, precision);
+            newElement.update();
+            getParentGroup().elements.add(newElement);
+        }
+        InfiniteSlider2D slider = (InfiniteSlider2D) findElementInGroup(name, getParentGroup());
+        return slider.value;
+    }
+
+    protected int sliderColor(String name, float hue, float sat, float br) {
+        if (!groupContainsElement(name, getParentGroup())) {
+            SliderColor newElement = new SliderColor(getParentGroup(), name, hue, sat, br);
+            newElement.update();
+            getParentGroup().elements.add(newElement);
+        }
+        SliderColor slider = (SliderColor) findElementInGroup(name, getParentGroup());
+        return slider.value;
+    }
+
+    protected String radio(String defaultValue, String... otherValues) {
+        if (!groupContainsElement(defaultValue, getParentGroup())) {
+            Element newElement = new Radio(getParentGroup(), defaultValue, otherValues);
+            newElement.update();
+            getParentGroup().elements.add(newElement);
+        }
+        Radio radio = (Radio) findElementInGroup(defaultValue, getParentGroup());
+        return radio.options.get(radio.valueIndex);
+    }
+
+
+    protected boolean button(String name) {
+        if (!groupContainsElement(name, getParentGroup())) {
+            Button newElement = new Button(getParentGroup(), name);
+            newElement.update();
+            getParentGroup().elements.add(newElement);
+        }
+        Button radio = (Button) findElementInGroup(name, getParentGroup());
+        return radio.value;
+    }
+
+    class Group {
         String name;
         boolean expanded = true;
         ArrayList<Element> elements = new ArrayList<>();
@@ -412,239 +456,320 @@ public class JuicyGuiSketch extends PApplet {
         public Group(String name) {
             this.name = name;
         }
-
-        public Group(String name, boolean expanded) {
-            this.name = name;
-            this.expanded = expanded;
-        }
     }
 
     abstract class Element {
+        Group parent;
         String name;
+
+        public Element(Group parent, String name) {
+            this.parent = parent;
+            this.name = name;
+        }
 
         abstract boolean canHaveOverlay();
 
-        abstract void updateOverlay();
+        void update() {
 
-        abstract String value();
-
-        public abstract String toString();
-
-        public abstract void handleActivation(int x, float y, float w, float h);
-    }
-
-    class SliderInt extends Element {
-        Group parent;
-        int value, precision;
-
-        public SliderInt(String name, int defaultValue, int defaultPrecision, Group parent) {
-            this.parent = parent;
-            this.name = name;
-            this.value = defaultValue;
-            this.precision = defaultPrecision;
         }
 
-        @Override
-        boolean canHaveOverlay() {
-            return true;
-        }
-
-        @Override
         void updateOverlay() {
-            noStroke();
-            fill(1);
-            rect(0, height - cell * 8, width, cell * 8);
+
         }
 
-        @Override
-        String value() {
-            return String.valueOf(value);
-        }
+        abstract String valueForConsole();
 
-        @Override
         public String toString() {
-            return parent.name + " " + name + ": " + value();
+            return parent + " " + name + " - " + valueForConsole();
         }
 
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
+        public void onActivation(int x, float y, float w, float h) {
 
+        }
+
+        public void displayOnTray(float x, float y) {
+            textAlign(LEFT, BOTTOM);
+            textSize(textSize);
+            text(name, x, y);
         }
     }
 
-    class SliderFloat extends Element {
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    abstract class Slider extends Element {
+
+        public Slider(Group parent, String name) {
+            super(parent, name);
+        }
+
+        protected float updateInfiniteSlider(float precision, float sliderWidth) {
+            if (mousePressed && !isPointInRect(mouseX, mouseY, 0, 0, trayWidth, height)) {
+                float screenSpaceDelta = pmouseX - mouseX;
+                float valueToScreenRatio = (precision * 2) / sliderWidth;
+                float valueSpaceDelta = screenSpaceDelta * valueToScreenRatio;
+                if (abs(valueSpaceDelta) > 0) {
+                    return valueSpaceDelta;
+                }
+            }
+            return 0;
+        }
+
+        protected void infiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value) {
+            pushMatrix();
+            pushStyle();
+            translate(x, y);
+            strokeWeight(2);
+            drawHorizontalLine(-w, w);
+            drawMarkerLines(precision * 1.0f, h * .6f, true, value, precision, w);
+            drawMarkerLines(precision * 0.5f, h * .3f, false, value, precision, w);
+            drawMarkerLines(precision * .05f, h * .2f, false, value, precision, w);
+            strokeWeight(1);
+            drawSelectionBox(h, precision, value);
+            popMatrix();
+            popStyle();
+        }
+
+        private void drawHorizontalLine(float leftEdgeX, float rightEdgeX) {
+            stroke(grayscaleText);
+            line(leftEdgeX, 0, rightEdgeX, 0);
+        }
+
+        private void drawSelectionBox(float sliderHeight, float precision, float value) {
+            stroke(grayscaleText);
+            noFill();
+            rectMode(CENTER);
+            rect(0, 0, 20, sliderHeight * .5f, 20);
+            fill(grayscaleText);
+            float textY = -cell * 2;
+            if (precision < 1) {
+                text(String.valueOf(value), 0, -textY);
+            } else {
+                text(value, 0, textY);
+            }
+        }
+
+        private void drawMarkerLines(float frequency, float markerHeight, boolean shouldDrawValue, float value, float precision, float w) {
+            float valueOnLeftEdge = -precision;
+            float valueOnRightEdge = precision;
+            float markerValue = valueOnLeftEdge - value;
+            while (markerValue <= valueOnRightEdge - value) {
+                float moduloValue = markerValue;
+                //TODO remove the silly while and replace with multiplication for a tiny speed boost and hang prevention
+                while (moduloValue > valueOnRightEdge) {
+                    moduloValue -= precision * 2;
+                }
+                while (moduloValue < valueOnLeftEdge) {
+                    moduloValue += precision * 2;
+                }
+                float screenX = map(moduloValue, valueOnLeftEdge, valueOnRightEdge, -w, w);
+                stroke(grayscaleText);
+                line(screenX, -markerHeight * .5f, screenX, markerHeight * .5f);
+                if (shouldDrawValue) {
+                    float displayValue = moduloValue + value;
+                    String displayText = nf(displayValue, 0, 0);
+                    if (displayText.equals("-0")) {
+                        displayText = "0";
+                    }
+                    fill(grayscaleText);
+                    textAlign(CENTER, CENTER);
+                    textSize(textSize);
+                    text(displayText, screenX, cell);
+                }
+                markerValue += frequency;
+            }
+        }
+    }
+
+    class InfiniteSlider extends Slider {
         float value, precision;
 
-        @Override
+        public InfiniteSlider(Group parent, String name, float defaultValue, float precision) {
+            super(parent, name);
+            this.value = defaultValue;
+            this.precision = precision;
+        }
+
         boolean canHaveOverlay() {
             return true;
         }
 
-        @Override
         void updateOverlay() {
-
+            //todo
+            // if name contains angle: draw a circle
+            float sliderHeight = cell * 2;
+            fill(grayscaleText);
+            value += updateInfiniteSlider(precision, width);
+            infiniteSliderCenterMode(width * .5f, height - sliderHeight, width, sliderHeight, precision, value);
         }
 
-        @Override
-        String value() {
-            return null;
+        String valueForConsole() {
+            return nf(value, 0, 0);
         }
-
-        @Override
-        public String toString() {
-            return null;
-        }
-
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
-
-        }
-
     }
 
-    class Slider2D extends Element {
+    class InfiniteSlider2D extends Slider {
         PVector value = new PVector();
         float precision;
 
-        @Override
+        public InfiniteSlider2D(Group parent, String name, float defaultX, float defaultY, float precision) {
+            super(parent, name);
+            this.value.x = defaultX;
+            this.value.y = defaultY;
+            this.precision = precision;
+        }
+
         boolean canHaveOverlay() {
             return true;
         }
 
-        @Override
         void updateOverlay() {
-
+            //todo sick orthogonal slider action
         }
 
-        @Override
-        String value() {
-            return null;
-        }
-
-        @Override
-        public String toString() {
-            return null;
-        }
-
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
-
+        String valueForConsole() {
+            return String.valueOf(value);
         }
     }
 
-    class SliderColor extends Element {
+    class SliderColor extends Slider {
         float hue, saturation, brightness;
+        int value;
 
-        @Override
+        public SliderColor(Group parent, String name, float hue, float sat, float br) {
+            super(parent, name);
+            this.hue = hue;
+            this.saturation = sat;
+            this.brightness = br;
+        }
+
         boolean canHaveOverlay() {
             return true;
         }
 
-        @Override
         void updateOverlay() {
-
+            // TODO draw fancy stuff
         }
 
-        @Override
-        String value() {
-            return null;
+        void update() {
+            pushStyle();
+            colorMode(HSB, 1, 1, 1, 1);
+            value = color(hue, saturation, brightness);
+            popStyle();
         }
 
-        @Override
-        public String toString() {
-            return null;
-        }
-
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
-
+        String valueForConsole() {
+            return "h " + hue + " s " + saturation + " b " + brightness;
         }
     }
 
     class Radio extends Element {
-        String[] options;
+        int valueIndex = 0;
+        ArrayList<String> options = new ArrayList<>();
 
-        @Override
+        public Radio(Group parent, String name, String[] options) {
+            super(parent, name);
+            this.options.add(name);
+            this.options.addAll(Arrays.asList(options));
+        }
+
         boolean canHaveOverlay() {
             return false;
         }
 
-        @Override
-        void updateOverlay() {
-
+        String valueForConsole() {
+            return options.get(valueIndex);
         }
 
-        @Override
         String value() {
-            return null;
+            return options.get(valueIndex);
         }
 
         @Override
-        public String toString() {
-            return null;
+        public void displayOnTray(float x, float y) {
+            textAlign(LEFT, BOTTOM);
+            textSize(textSize);
+            pushStyle();
+            float optionX = x;
+            for (int i = 0; i < options.size(); i++) {
+                String option = options.get(i);
+                if (i < options.size() - 1) {
+                    option += ", ";
+                }
+                fill(i == valueIndex ? grayscaleTextSelected : grayscaleText);
+                text(option, optionX, y);
+                optionX += textWidth(option);
+            }
+            popStyle();
         }
 
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
 
+        public void onActivation(int x, float y, float w, float h) {
+            valueIndex++;
+            if (valueIndex >= options.size()) {
+                valueIndex = 0;
+            }
         }
     }
 
     class Button extends Element {
+        public boolean value;
         boolean justPressed = false;
 
-        @Override
+        public Button(Group parent, String name) {
+            super(parent, name);
+        }
+
         boolean canHaveOverlay() {
             return false;
         }
 
-        @Override
-        void updateOverlay() {
-
+        String valueForConsole() {
+            return String.valueOf(value);
         }
 
-        @Override
-        String value() {
-            return null;
+        public void onActivation(int x, float y, float w, float h) {
+            justPressed = true;
         }
 
-        @Override
-        public String toString() {
-            return null;
+        public void displayOnTray(float x, float y) {
+            textAlign(LEFT, BOTTOM);
+            textSize(textSize);
+            if (justPressed) {
+                fill(grayscaleTextSelected);
+            }
+            text(name, x, y);
         }
 
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
-
+        void update() {
+            justPressed = false;
         }
     }
 
     class Toggle extends Element {
         boolean state = false;
 
-        @Override
+        public Toggle(Group parent, String name) {
+            super(parent, name);
+        }
+
         boolean canHaveOverlay() {
             return false;
         }
 
-        @Override
-        void updateOverlay() {
-
+        String valueForConsole() {
+            return String.valueOf(state);
         }
 
-        @Override
-        String value() {
-            return null;
+        public void displayOnTray(float x, float y) {
+            textAlign(LEFT, BOTTOM);
+            textSize(textSize);
+            if (state) {
+                fill(grayscaleTextSelected);
+            }
+            text(name, x, y);
         }
 
-        @Override
-        public String toString() {
-            return null;
-        }
-
-        @Override
-        public void handleActivation(int x, float y, float w, float h) {
-
+        public void onActivation(int x, float y, float w, float h) {
+            state = !state;
         }
     }
 }
