@@ -46,7 +46,7 @@ public class JuicyGuiSketch extends PApplet {
     private float grayscaleBackground = .3f;
     private float grayscaleTextSelected = 1;
     private float grayscaleText = .6f;
-    private float textSize = 24;
+    protected float textSize = 24;
 
     // input
     private boolean pMousePressed = false;
@@ -98,12 +98,13 @@ public class JuicyGuiSketch extends PApplet {
         if (!trayVisible) {
             return;
         }
-        float x = cell * .25f;
-        float y = height - cell;
         fill(grayscaleText);
         textAlign(CENTER, CENTER);
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
-        text(nonFlickeringFrameRate + " fps", x, y, cell * 2, cell);
+        String text = nonFlickeringFrameRate + " fps";
+        float x = width - textWidth(text) - cell*.5f;
+        float y = 0;
+        text(text, x, y, cell * 2, cell);
     }
 
     private void updateSpecialButtons() {
@@ -326,9 +327,8 @@ public class JuicyGuiSketch extends PApplet {
         float longestNameWidth = 0;
         for (Group group : groups) {
             for (Element el : group.elements) {
-                float nameWidth = textWidth(el.name);
-                if (nameWidth > longestNameWidth) {
-                    longestNameWidth = nameWidth;
+                if (el.trayTextWidth() > longestNameWidth) {
+                    longestNameWidth = el.trayTextWidth();
                 }
             }
         }
@@ -369,19 +369,6 @@ public class JuicyGuiSketch extends PApplet {
         return findGroup(name) != null;
     }
 
-    private Element findElementInGroup(String name, Group group) {
-        for (Element el : group.elements) {
-            if (el.name.equals(name)) {
-                return el;
-            }
-        }
-        return null;
-    }
-
-    private boolean groupContainsElement(String name, Group group) {
-        return findElementInGroup(name, group) != null;
-    }
-
     private void pushUndo() {
 
     }
@@ -398,56 +385,73 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected float sliderFloat(String name, float defaultValue, float precision) {
-        if (!groupContainsElement(name, getParentGroup())) {
-            InfiniteSlider newElement = new InfiniteSlider(getParentGroup(), name, defaultValue, precision);
+        if (!elementExists(name, getParentGroup().name)) {
+            SliderFloat newElement = new SliderFloat(getParentGroup(), name, defaultValue, precision);
             newElement.update();
             getParentGroup().elements.add(newElement);
         }
-        InfiniteSlider slider = (InfiniteSlider) findElementInGroup(name, getParentGroup());
+        SliderFloat slider = (SliderFloat) findElement(name, getParentGroup().name);
         return slider.value;
     }
 
     protected PVector slider2D(String name, float defaultX, float defaultY, float precision) {
-        if (!groupContainsElement(name, getParentGroup())) {
-            InfiniteSlider2D newElement = new InfiniteSlider2D(getParentGroup(), name, defaultX, defaultY, precision);
+        if (!elementExists(name, getParentGroup().name)) {
+            Slider2D newElement = new Slider2D(getParentGroup(), name, defaultX, defaultY, precision);
             newElement.update();
             getParentGroup().elements.add(newElement);
         }
-        InfiniteSlider2D slider = (InfiniteSlider2D) findElementInGroup(name, getParentGroup());
+        Slider2D slider = (Slider2D) findElement(name, getParentGroup().name);
         return slider.value;
     }
 
     protected int sliderColor(String name, float hue, float sat, float br) {
-        if (!groupContainsElement(name, getParentGroup())) {
+        if (!elementExists(name, getParentGroup().name)) {
             SliderColor newElement = new SliderColor(getParentGroup(), name, hue, sat, br);
             newElement.update();
             getParentGroup().elements.add(newElement);
         }
-        SliderColor slider = (SliderColor) findElementInGroup(name, getParentGroup());
+        SliderColor slider = (SliderColor) findElement(name, getParentGroup().name);
         return slider.value;
     }
 
     protected String radio(String defaultValue, String... otherValues) {
-        if (!groupContainsElement(defaultValue, getParentGroup())) {
+        if (!elementExists(defaultValue, getParentGroup().name)) {
             Element newElement = new Radio(getParentGroup(), defaultValue, otherValues);
             newElement.update();
             getParentGroup().elements.add(newElement);
         }
-        Radio radio = (Radio) findElementInGroup(defaultValue, getParentGroup());
+        Radio radio = (Radio) findElement(defaultValue, getParentGroup().name);
         return radio.options.get(radio.valueIndex);
     }
 
-
     protected boolean button(String name) {
-        if (!groupContainsElement(name, getParentGroup())) {
+        if (!elementExists(name, getParentGroup().name)) {
             Button newElement = new Button(getParentGroup(), name);
             newElement.update();
             getParentGroup().elements.add(newElement);
         }
-        Button radio = (Button) findElementInGroup(name, getParentGroup());
+        Button radio = (Button) findElement(name, getParentGroup().name);
         return radio.value;
     }
 
+    private boolean elementExists(String elementName, String groupName) {
+        return findElement(elementName, groupName) != null;
+    }
+    
+    private Element findElement(String elementName, String groupName){
+        for(Group g : groups){
+            if(!g.name.equals(groupName)){
+                continue;
+            }
+            for(Element el : g.elements){
+                if(el.name.equals(elementName)){
+                    return el;
+                }
+            }
+        }
+        return null;
+    }
+    
     class Group {
         String name;
         boolean expanded = true;
@@ -492,6 +496,10 @@ public class JuicyGuiSketch extends PApplet {
             textSize(textSize);
             text(name, x, y);
         }
+
+        public float trayTextWidth() {
+            return textWidth(name);
+        }
     }
 
     @SuppressWarnings("UnnecessaryLocalVariable")
@@ -519,9 +527,9 @@ public class JuicyGuiSketch extends PApplet {
             translate(x, y);
             strokeWeight(2);
             drawHorizontalLine(-w, w);
-            drawMarkerLines(precision * 1.0f, h * .6f, true, value, precision, w);
-            drawMarkerLines(precision * 0.5f, h * .3f, false, value, precision, w);
-            drawMarkerLines(precision * .05f, h * .2f, false, value, precision, w);
+            drawMarkerLines(precision * 0.5f, h * .8f, true, value, precision, w);
+            drawMarkerLines(precision * 0.25f, h * .5f, false, value, precision, w);
+            drawMarkerLines(precision * .025f, h * .2f, false, value, precision, w);
             strokeWeight(1);
             drawSelectionBox(h, precision, value);
             popMatrix();
@@ -537,11 +545,11 @@ public class JuicyGuiSketch extends PApplet {
             stroke(grayscaleText);
             noFill();
             rectMode(CENTER);
-            rect(0, 0, 20, sliderHeight * .5f, 20);
+            rect(0, 0, 20, sliderHeight, 20);
             fill(grayscaleText);
             float textY = -cell * 2;
             if (precision < 1) {
-                text(String.valueOf(value), 0, -textY);
+                text(String.valueOf(value), 0, textY);
             } else {
                 text(value, 0, textY);
             }
@@ -579,10 +587,10 @@ public class JuicyGuiSketch extends PApplet {
         }
     }
 
-    class InfiniteSlider extends Slider {
+    class SliderFloat extends Slider {
         float value, precision;
 
-        public InfiniteSlider(Group parent, String name, float defaultValue, float precision) {
+        public SliderFloat(Group parent, String name, float defaultValue, float precision) {
             super(parent, name);
             this.value = defaultValue;
             this.precision = precision;
@@ -606,11 +614,11 @@ public class JuicyGuiSketch extends PApplet {
         }
     }
 
-    class InfiniteSlider2D extends Slider {
+    class Slider2D extends Slider {
         PVector value = new PVector();
         float precision;
 
-        public InfiniteSlider2D(Group parent, String name, float defaultX, float defaultY, float precision) {
+        public Slider2D(Group parent, String name, float defaultX, float defaultY, float precision) {
             super(parent, name);
             this.value.x = defaultX;
             this.value.y = defaultY;

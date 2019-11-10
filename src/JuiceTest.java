@@ -20,6 +20,7 @@ public class JuiceTest extends JuicyGuiSketch {
     public void setup() {
         surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
+        pg.noSmooth();
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
@@ -30,17 +31,24 @@ public class JuiceTest extends JuicyGuiSketch {
         group("background");
         pg.background(sliderFloat("background", 0, 100));
         pg.rectMode(CENTER);
-        group("rect");
-        pg.fill(sliderFloat("fill", 100, 100));
-        float size = sliderFloat("size", 50, 10);
-        group("text");
-        PVector translate = slider2D("translate", width*.5f, width*.5f, 100);
+
+        PVector translate = new PVector(width*.5f, width*.5f);
         pg.translate(translate.x, translate.y);
-        pg.textAlign(CENTER, CENTER);
-        pg.fill(sliderFloat("fill", 255, 50));
-        pg.textSize(sliderFloat("textSize", 4, 50));
-        pg.text(radio("hi", "world", "bejbii"), 0, 0);
+
+        group("rect");
+        pg.stroke(sliderFloat("stroke", 255, 100));
+        pg.strokeWeight(sliderFloat("weight", 2, 10));
+        pg.fill(sliderFloat("fill", 100, 100));
+        float size = sliderFloat("size", 50, 100);
         pg.rect(0, 0, size, size);
+
+        group("text");
+//        PVector translate = slider2D("translate", width*.5f, width*.5f, 100);
+        pg.textAlign(CENTER, CENTER);
+        pg.fill(sliderFloat("fill", 255, 100));
+        pg.textSize(floor(sliderFloat("size", textSize*2, 100)));
+        pg.text(radio( "hello", "world!"), 0, 0);
+
         pg.endDraw();
         image(pg, 0, 0);
         gui();
