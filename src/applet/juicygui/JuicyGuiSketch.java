@@ -38,6 +38,7 @@ public class JuicyGuiSketch extends PApplet {
     // category class
     // row class
 
+    protected float textSize = 24;
     // color
     float backgroundAlpha = .5f;
     private boolean onPC;
@@ -46,8 +47,6 @@ public class JuicyGuiSketch extends PApplet {
     private float grayscaleBackground = .3f;
     private float grayscaleTextSelected = 1;
     private float grayscaleText = .6f;
-    protected float textSize = 24;
-
     // input
     private boolean pMousePressed = false;
     private int keyboardSelectionIndex = 0;
@@ -75,7 +74,7 @@ public class JuicyGuiSketch extends PApplet {
 
     protected void gui(boolean defaultVisibility) {
         if (frameCount == 1) {
-            textSize(textSize*4);
+            textSize(textSize * 4);
             trayVisible = defaultVisibility;
             onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
             return;
@@ -92,7 +91,7 @@ public class JuicyGuiSketch extends PApplet {
         }
         popStyle();
         pMousePressed = mousePressed;
-        if(!keyPressed || keyboardAction.equals("ACTION")){
+        if (!keyPressed || keyboardAction.equals("ACTION") || keyboardAction.equals("PAGE_DOWN") || keyboardAction.equals("PAGE_UP")) {
             keyboardAction = "";
         }
     }
@@ -105,7 +104,7 @@ public class JuicyGuiSketch extends PApplet {
         textAlign(CENTER, CENTER);
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
         String text = nonFlickeringFrameRate + " fps";
-        float x = width - textWidth(text) - cell*.5f;
+        float x = width - textWidth(text) - cell * .5f;
         float y = 0;
         text(text, x, y, cell * 2, cell);
     }
@@ -234,13 +233,19 @@ public class JuicyGuiSketch extends PApplet {
                     keyboardSelectionIndex = 1;
                 }
                 keyboardAction = "RIGHT";
-
             }
+
             keyboardSelectionIndex %= keyboardSelectableItemCount();
             if (keyboardSelectionIndex < 0) {
                 keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
             }
         }
+        else if (key == '*') {
+            keyboardAction = "PAGE_UP";
+        } else if (key == '/') {
+            keyboardAction = "PAGE_DOWN";
+        }
+
         if (key == ' ' || key == ENTER) {
             keyboardAction = "ACTION";
         }
@@ -445,18 +450,18 @@ public class JuicyGuiSketch extends PApplet {
     private boolean elementExists(String elementName, String groupName) {
         return findElement(elementName, groupName) != null;
     }
-    
-    private Element findElement(String elementName, String groupName){
-        for(Group g : groups){
-            for(Element el : g.elements){
-                if(g.name.equals(groupName) && el.name.equals(elementName)){
+
+    private Element findElement(String elementName, String groupName) {
+        for (Group g : groups) {
+            for (Element el : g.elements) {
+                if (g.name.equals(groupName) && el.name.equals(elementName)) {
                     return el;
                 }
             }
         }
         return null;
     }
-    
+
     class Group {
         String name;
         boolean expanded = true;
@@ -533,9 +538,9 @@ public class JuicyGuiSketch extends PApplet {
                     return valueSpaceDelta;
                 }
             }
-            if(keyboardAction.equals("LEFT")){
+            if (keyboardAction.equals("LEFT")) {
                 return -5;
-            }else if(keyboardAction.equals("RIGHT")){
+            } else if (keyboardAction.equals("RIGHT")) {
                 return 5;
             }
             return 0;
@@ -547,7 +552,7 @@ public class JuicyGuiSketch extends PApplet {
             translate(x, y);
             strokeWeight(2);
             drawHorizontalLine(-w, w);
-            drawMarkerLines(precision * 0.5f, h * .8f,  true, value, precision, w);
+            drawMarkerLines(precision * 0.5f, h * .8f, true, value, precision, w);
             drawMarkerLines(precision * 0.25f, h * .5f, true, value, precision, w);
             drawMarkerLines(precision * .025f, h * .2f, false, value, precision, w);
             strokeWeight(1);
@@ -571,7 +576,7 @@ public class JuicyGuiSketch extends PApplet {
             if (abs(value) < 1) {
                 text(String.valueOf(value), 0, textY);
             } else {
-                text(nf(value,0,0), 0, textY);
+                text(nf(value, 0, 0), 0, textY);
             }
         }
 
@@ -593,6 +598,9 @@ public class JuicyGuiSketch extends PApplet {
                 line(screenX, -markerHeight * .5f, screenX, markerHeight * .5f);
                 if (shouldDrawValue) {
                     float displayValue = moduloValue + value;
+                    if(abs(displayValue) > 50){
+                        displayValue = floor(displayValue);
+                    }
                     String displayText = nf(displayValue, 0, 0);
                     if (displayText.equals("-0")) {
                         displayText = "0";
@@ -627,15 +635,13 @@ public class JuicyGuiSketch extends PApplet {
             float sliderHeight = cell * 2;
             fill(grayscaleText);
             float acc = updateInfiniteSlider(precision, width);
-            /*
-            if(acc > 0){
-
-                speed = max(speed, acc);
-            }else if(acc < 0){
-                speed = min(speed, acc);
+            if (keyboardAction.equals("PAGE_UP")) {
+                precision *= 10;
+            } else if (keyboardAction.equals("PAGE_DOWN")) {
+                precision *= .1f;
             }
-            */
-            if(abs(acc) > 0 ){
+            precision = max(1, precision);
+            if (abs(acc) > 0) {
                 speed = acc;
             }
             speed *= drag;
