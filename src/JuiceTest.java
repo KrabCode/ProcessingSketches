@@ -32,21 +32,30 @@ public class JuiceTest extends JuicyGuiSketch {
         pg.background(sliderFloat("background", 0, 100));
         pg.rectMode(CENTER);
 
-        PVector translate = new PVector(width*.5f, width*.5f);
+        group("translate");
+        PVector translate = new PVector(
+                sliderFloat("x", width*.5f, width),
+                sliderFloat("y", width*.5f, height)
+        );
         pg.translate(translate.x, translate.y);
 
         group("rect");
         pg.stroke(sliderFloat("stroke", 255, 100));
         pg.strokeWeight(sliderFloat("weight", 2, 10));
         pg.fill(sliderFloat("fill", 100, 100));
-        float size = sliderFloat("size", 50, 100);
+        float size = sliderFloat("size", 150, 100);
         pg.rect(0, 0, size, size);
 
         group("text");
-//        PVector translate = slider2D("translate", width*.5f, width*.5f, 100);
+
+        PVector translateText = new PVector(
+                sliderFloat("x", 0, width),
+                sliderFloat("y", 0, height)
+        );
+        pg.translate(translateText.x, translateText.y);
         pg.textAlign(CENTER, CENTER);
         pg.fill(sliderFloat("fill", 255, 100));
-        pg.textSize(floor(sliderFloat("size", textSize*2, 100)));
+        pg.textSize(floor(sliderFloat("size", textSize*4, 100)));
         pg.text(radio( "hello", "world!"), 0, 0);
 
         pg.endDraw();
