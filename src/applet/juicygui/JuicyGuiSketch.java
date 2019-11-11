@@ -2,14 +2,14 @@ package applet.juicygui;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions"})
 public class JuicyGuiSketch extends PApplet {
-    //TODO FIX THE GROUP / NAME UNIQUENESS, test with fill
-
+    //TODO:
     // ----- Operation JUICE -----
     // gui elements:
     // gamepad support
@@ -64,12 +64,16 @@ public class JuicyGuiSketch extends PApplet {
     private boolean overlayVisible;
     private Element overlayOwner;
 
+    private static boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
+        return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
+    }
 
     protected void gui() {
         gui(true);
     }
 
     protected void gui(boolean defaultVisibility) {
+        group("gui");
         if (frameCount == 1) {
             textSize(textSize * 4);
             trayVisible = defaultVisibility;
@@ -77,6 +81,7 @@ public class JuicyGuiSketch extends PApplet {
             return;
         }
         pushStyle();
+        strokeCap(PROJECT);
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
         updateTrayBackground();
@@ -88,7 +93,11 @@ public class JuicyGuiSketch extends PApplet {
         }
         popStyle();
         pMousePressed = mousePressed;
-        if (!keyPressed || keyboardAction.equals("ACTION") || keyboardAction.equals("PRECISION_DOWN") || keyboardAction.equals("PRECISION_UP")) {
+        if (!keyPressed ||
+                (!keyboardAction.equals("") &&
+                        !keyboardAction.equals("LEFT") &&
+                        !keyboardAction.equals("RIGHT"))
+        ) {
             keyboardAction = "";
         }
     }
@@ -268,7 +277,7 @@ public class JuicyGuiSketch extends PApplet {
                     keyboardSelectionIndex -= hiddenElementCount(false);
                     keyboardSelectionIndex--;
                 }
-                if(isAnyElementKeyboardSelected()){
+                if (isAnyElementKeyboardSelected()) {
                     overlayOwner = findKeyboardSelectedElement();
                 }
             } else if (keyCode == DOWN) {
@@ -278,7 +287,7 @@ public class JuicyGuiSketch extends PApplet {
                     keyboardSelectionIndex += hiddenElementCount(true);
                     keyboardSelectionIndex++;
                 }
-                if(isAnyElementKeyboardSelected()){
+                if (isAnyElementKeyboardSelected()) {
                     overlayOwner = findKeyboardSelectedElement();
                 }
             } else if (keyCode == LEFT) {
@@ -308,6 +317,15 @@ public class JuicyGuiSketch extends PApplet {
             keyboardAction = "ACTION";
         }
         keyboardInputActive = true;
+    }
+
+    public void mouseWheel(MouseEvent event) {
+        float direction = event.getCount();
+        if (direction > 0) {
+            keyboardAction = "TINY_RIGHT";
+        } else if (direction < 0) {
+            keyboardAction = "TINY_LEFT";
+        }
     }
 
     private int hiddenElementCount(boolean forwardFacing) {
@@ -365,7 +383,7 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     private void updateElement(Group group, Element el, float x, float y) {
-        fill((keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
+        fill((keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell) || (overlayOwner != null && overlayOwner.equals(el))) ? grayscaleTextSelected : grayscaleText);
         el.displayOnTray(x, y);
         el.update();
         if (activated(group.name + el.name, 0, y - cell, trayWidth, cell)) {
@@ -534,10 +552,6 @@ public class JuicyGuiSketch extends PApplet {
         return null;
     }
 
-    private static boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
-        return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
-    }
-
     class Group {
         String name;
         boolean expanded = true;
@@ -599,7 +613,7 @@ public class JuicyGuiSketch extends PApplet {
     @SuppressWarnings({"UnnecessaryLocalVariable", "DuplicatedCode"})
     abstract class Slider extends Element {
         float speed = 0;
-        float drag = .6f;
+        float drag = .5f;
 
         Slider(Group parent, String name) {
             super(parent, name);
@@ -614,15 +628,19 @@ public class JuicyGuiSketch extends PApplet {
                 }
             }
             if (keyboardAction.equals("LEFT")) {
-                return screenDistanceToValueDistance(-5, precision, sliderWidth);
+                return screenDistanceToValueDistance(-3, precision, sliderWidth);
             } else if (keyboardAction.equals("RIGHT")) {
-                return screenDistanceToValueDistance(5, precision, sliderWidth);
+                return screenDistanceToValueDistance(3, precision, sliderWidth);
+            } else if (keyboardAction.equals("TINY_LEFT")) {
+                return screenDistanceToValueDistance(-1, precision, sliderWidth);
+            } else if (keyboardAction.equals("TINY_RIGHT")) {
+                return screenDistanceToValueDistance(1, precision, sliderWidth);
             }
             return 0;
         }
 
         private float screenDistanceToValueDistance(float screenSpaceDelta, float precision, float sliderWidth) {
-            float valueToScreenRatio = (precision * 2) / sliderWidth;
+            float valueToScreenRatio = precision / sliderWidth;
             return screenSpaceDelta * valueToScreenRatio;
         }
 
@@ -630,13 +648,11 @@ public class JuicyGuiSketch extends PApplet {
             pushMatrix();
             pushStyle();
             translate(x, y);
-            strokeWeight(2);
+            strokeWeight(3);
             drawHorizontalLine(-w, w);
-            drawMarkerLines(precision * 0.5f, h * .8f, true, value, precision, w);
-            drawMarkerLines(precision * 0.25f, h * .5f, true, value, precision, w);
-            drawMarkerLines(precision * .025f, h * .2f, false, value, precision, w);
-            strokeWeight(1);
-            drawSelectionBox(h, precision, value);
+            drawMarkerLines(precision * 0.25f, h * .6f, true, value, precision, w);
+            drawMarkerLines(precision * .025f, h * .3f, false, value, precision, w);
+            drawValue(h, precision, value);
             popMatrix();
             popStyle();
         }
@@ -646,20 +662,18 @@ public class JuicyGuiSketch extends PApplet {
             line(leftEdgeX, 0, rightEdgeX, 0);
         }
 
-        private void drawSelectionBox(float sliderHeight, float precision, float value) {
-            stroke(grayscaleText);
-            noFill();
-            rectMode(CENTER);
-            rect(0, 0, 20, sliderHeight, 20);
+        private void drawValue(float sliderHeight, float precision, float value) {
             fill(grayscaleText);
             textAlign(CENTER, CENTER);
             textSize(textSize * 2);
             float textY = -cell * 2;
-            if (abs(value) < 1) {
-                text(String.valueOf(value), 0, textY);
-            } else {
-                text(nf(value, 0, 0), 0, textY);
-            }
+            String text = nf(value, 0, 0);
+            noStroke();
+            fill(0,.5f);
+            rectMode(CENTER);
+            rect(0,textY+textSize*.33f,textWidth(text)+20, textSize*2+20);
+            fill(grayscaleTextSelected);
+            text(text,0, textY);
         }
 
         private void drawMarkerLines(float frequency, float markerHeight, boolean shouldDrawValue, float value, float precision, float w) {
@@ -677,7 +691,7 @@ public class JuicyGuiSketch extends PApplet {
                 }
                 float screenX = map(moduloValue, valueOnLeftEdge, valueOnRightEdge, -w, w);
                 stroke(grayscaleText);
-                line(screenX, -markerHeight * .5f, screenX, 5);
+                line(screenX, -markerHeight * .5f, screenX, 0);
                 if (shouldDrawValue) {
                     float displayValue = moduloValue + value;
                     if (abs(displayValue) > 10) {
@@ -687,10 +701,12 @@ public class JuicyGuiSketch extends PApplet {
                     if (displayText.equals("-0")) {
                         displayText = "0";
                     }
+                    pushMatrix();
                     fill(grayscaleText);
-                    textAlign(CENTER, CENTER);
+                    textAlign(CENTER, TOP);
                     textSize(textSize);
-                    text(displayText, screenX + ((displayText.equals("0") || displayValue > 0) ? 0 : -textWidth("-") * .5f), cell * .5f);
+                    text(displayText, screenX + ((displayText.equals("0") || displayValue > 0) ? 0 : -textWidth("-") * .5f), 0);
+                    popMatrix();
                 }
                 markerValue += frequency;
             }
@@ -712,23 +728,18 @@ public class JuicyGuiSketch extends PApplet {
 
         void updateOverlay() {
             //todo
-            // if name contains angle: draw a circle instead
+            // if name or limit is an angle: draw a circle instead
 
             float sliderHeight = cell * 2;
-            fill(grayscaleText);
-            float acc = updateInfiniteSlider(precision, width);
+            float valueDelta = updateInfiniteSlider(precision, width);
             if (keyboardAction.equals("PRECISION_UP")) {
                 precision *= 10;
             } else if (keyboardAction.equals("PRECISION_DOWN")) {
                 precision *= .1f;
             }
             precision = max(1, precision);
-            if (abs(acc) > 0) {
-                speed = acc;
-            }
-            speed *= drag;
-            value += speed;
-            infiniteSliderCenterMode(width * .5f, height - sliderHeight, width, sliderHeight, precision, value);
+            value += valueDelta;
+            infiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision, value);
         }
 
         String valueForConsole() {
