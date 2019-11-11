@@ -39,12 +39,20 @@ public class JuiceTest extends JuicyGuiSketch {
         );
         pg.translate(translate.x, translate.y);
 
-        group("rect");
+        group("shape");
         pg.stroke(sliderFloat("stroke", 255, 100));
         pg.strokeWeight(sliderFloat("weight", 2, 10));
         pg.fill(sliderFloat("fill", 100, 100));
         float size = sliderFloat("size", 150, 100);
-        pg.rect(0, 0, size, size);
+        pg.pushMatrix();
+        pg.translate(-size*.5f, -size*.5f);
+        pg.beginShape();
+        pg.vertex(0,0);
+        pg.vertex(size,0);
+        pg.vertex(size,size);
+        pg.vertex(0,size);
+        pg.endShape(CLOSE);
+        pg.popMatrix();
 
         group("text");
 
