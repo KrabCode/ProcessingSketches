@@ -29,8 +29,10 @@ public class JuiceTest extends JuicyGuiSketch {
     public void draw() {
         pg.beginDraw();
         group("background");
-        pg.background(sliderFloat("background", 0, 100));
-        pg.rectMode(CENTER);
+        if(toggle("redraw", true)){
+            pg.background(sliderFloat("fill", 0, 100));
+            pg.rectMode(CENTER);
+        }
 
         group("translate");
         PVector translate = new PVector(

@@ -38,13 +38,13 @@ public class JuicyGuiSketch extends PApplet {
     // category class
     // row class
 
-    protected float textSize = 24;
+    private float textSize = 24;
     // color
     private float backgroundAlpha = .5f;
     private boolean onPC;
-    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<Group>();
     private Group parentGroup = null; // do not access directly!
-    private float grayscaleBackground = .3f;
+    private float grayscaleGrid = .3f;
     private float grayscaleTextSelected = 1;
     private float grayscaleText = .6f;
     // input
@@ -52,7 +52,13 @@ public class JuicyGuiSketch extends PApplet {
     private int keyboardSelectionIndex = 0;
     private String keyboardAction = "";
     private boolean keyboardInputActive = false;
-    private int specialKeyCount = 3;
+    private int specialButtonCount = 3;
+
+    private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
+    private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
+    private int keyRepeatDelayFirst = 200;
+    private int keyRepeatDelay = 30;
+
 
     // layout
     private boolean trayVisible = true;
@@ -86,11 +92,14 @@ public class JuicyGuiSketch extends PApplet {
 
     protected void gui(boolean defaultVisibility) {
         if (frameCount == 1) {
-//            textSize(textSize * 4);
+            //the maximum text size we want to ever use needs to be called first, otherwise the font is stretched and ugly
+            textSize(textSize * 2);
             trayVisible = defaultVisibility;
             onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
             return;
         }
+
+        handleKeyboardInput();
         pushStyle();
         strokeCap(SQUARE);
         colorMode(HSB, 1, 1, 1, 1);
@@ -116,13 +125,17 @@ public class JuicyGuiSketch extends PApplet {
         if (!trayVisible) {
             return;
         }
-        fill(grayscaleText);
         textAlign(CENTER, CENTER);
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
         String text = nonFlickeringFrameRate + " fps";
-        float x = width - textWidth(text) - cell * .5f;
-        float y = 0;
-        text(text, x, y, cell * 2, cell);
+        float x = width - cell;
+        float y = textSize;
+        rectMode(CENTER);
+        noStroke();
+        fill(0, backgroundAlpha);
+        rect(x, y, cell * 2, cell);
+        fill(grayscaleText);
+        text(text, x, y);
     }
 
     private void updateSpecialButtons() {
@@ -167,7 +180,7 @@ public class JuicyGuiSketch extends PApplet {
         text("redo", x, y, w, h);
     }
 
-    public void setOverlayOwner(Element overlayOwner) {
+    private void setOverlayOwner(Element overlayOwner) {
         if (this.overlayOwner != null) {
             this.overlayOwner.onOverlayHidden();
         }
@@ -205,7 +218,7 @@ public class JuicyGuiSketch extends PApplet {
                 || (query.equals("redo") && keyboardSelectionIndex == 2)) {
             return true;
         }
-        int i = specialKeyCount;
+        int i = specialButtonCount;
         for (Group group : groups) {
             if (group.name.equals(query) && keyboardSelectionIndex == i) {
                 return true;
@@ -226,7 +239,7 @@ public class JuicyGuiSketch extends PApplet {
         for (Group group : groups) {
             elementCount += group.elements.size();
         }
-        return specialKeyCount + groups.size() + elementCount;
+        return specialButtonCount + groups.size() + elementCount;
     }
 
     private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
@@ -242,57 +255,142 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     public void keyPressed() {
+        keyboardInputActive = true;
         if (key == CODED) {
-            if (keyCode == UP) {
-                if (keyboardSelectionIndex == specialKeyCount) {
-                    keyboardSelectionIndex = 0;
-                } else {
-                    keyboardSelectionIndex -= hiddenElementCount(false);
-                    keyboardSelectionIndex--;
-                }
-                if (isAnyElementKeyboardSelected()) {
-                    setOverlayOwner(findKeyboardSelectedElement());
-                }
-            } else if (keyCode == DOWN) {
-                if (keyboardSelectionIndex < specialKeyCount) {
-                    keyboardSelectionIndex = specialKeyCount;
-                } else {
-                    keyboardSelectionIndex += hiddenElementCount(true);
-                    keyboardSelectionIndex++;
-                }
-                if (isAnyElementKeyboardSelected()) {
-                    setOverlayOwner(findKeyboardSelectedElement());
-                }
-            } else if (keyCode == LEFT) {
-                if (!overlayVisible && keyboardSelectionIndex > 0 && keyboardSelectionIndex < specialKeyCount) {
-                    keyboardSelectionIndex--;
-                }
-                keyboardAction = "LEFT";
-            } else if (keyCode == RIGHT) {
-                if (!overlayVisible && keyboardSelectionIndex < specialKeyCount) {
-                    keyboardSelectionIndex++;
-                } else if (!overlayVisible && keyboardSelectionIndex > specialKeyCount) {
-                    keyboardSelectionIndex = 1;
-                }
-                keyboardAction = "RIGHT";
+            if(!isPressed(keyCode, true)){
+                keyboardKeys.add(new Key(keyCode, true));
             }
-            keyboardSelectionIndex %= keyboardSelectableItemCount();
-            if (keyboardSelectionIndex < 0) {
+        } else {
+            if(!isPressed(key, false)){
+                keyboardKeys.add(new Key((int) key, false));
+            }
+        }
+        println(keyboardKeys.size());
+    }
+
+    private boolean isPressed(int keyCode, boolean coded) {
+        for(Key kk : keyboardKeys){
+            if(kk.character == keyCode && kk.coded == coded){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void keyReleased() {
+        if (key == CODED) {
+            removeKey(keyCode, true);
+        } else {
+            removeKey(key, false);
+        }
+    }
+
+    private void removeKey(int keyCodeToRemove, boolean coded) {
+        keyboardKeysToRemove.clear();
+        for (Key kk : keyboardKeys) {
+            if (kk.coded == coded && kk.character == keyCodeToRemove) {
+                keyboardKeysToRemove.add(kk);
+            }
+        }
+        keyboardKeys.removeAll(keyboardKeysToRemove);
+    }
+
+    class Key {
+        boolean justPressed = true;
+        boolean repeatedAlready = false;
+        boolean coded;
+        int character;
+        int lastRegistered = -1;
+
+        Key(Integer character, boolean coded) {
+            this.character = character;
+            this.coded = coded;
+        }
+
+
+    }
+
+    private void handleKeyboardInput() {
+        for (Key kk : keyboardKeys) {
+            if (kk.coded) {
+                if (kk.justPressed ||
+                        (!kk.repeatedAlready && millis() > kk.lastRegistered + keyRepeatDelayFirst) ||
+                        ( kk.repeatedAlready && millis() > kk.lastRegistered + keyRepeatDelay)) {
+                    kk.lastRegistered = millis();
+                    if(!kk.justPressed){
+                        kk.repeatedAlready = true;
+                    }
+                    if (kk.character == UP) {
+                        if (keyboardSelectionIndex == specialButtonCount) {
+                            keyboardSelectionIndex = 0;
+                        } else {
+                            keyboardSelectionIndex -= hiddenElementCount(false);
+                            keyboardSelectionIndex--;
+                        }
+                        if (isAnyElementKeyboardSelected()) {
+                            setOverlayOwner(findKeyboardSelectedElement());
+                        }
+                    }
+                    if (kk.character == DOWN) {
+                        if (keyboardSelectionIndex < specialButtonCount) {
+                            keyboardSelectionIndex = specialButtonCount;
+                        } else {
+                            keyboardSelectionIndex += hiddenElementCount(true);
+                            keyboardSelectionIndex++;
+                        }
+                        if (isAnyElementKeyboardSelected()) {
+                            setOverlayOwner(findKeyboardSelectedElement());
+                        }
+                    }
+                }
+                if (kk.character == LEFT) {
+                    if (!overlayVisible && keyboardSelectionIndex < specialButtonCount) {
+                        keyboardSelectionIndex--;
+                    }
+                    if (isAnyGroupKeyboardSelected() && findKeyboardSelectedGroup().expanded) {
+                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
+                    } else {
+                        keyboardAction = "LEFT";
+                    }
+                }
+                if (kk.character == RIGHT) {
+                    if (!overlayVisible && keyboardSelectionIndex < specialButtonCount) {
+                        keyboardSelectionIndex++;
+                    }
+                    if (isAnyGroupKeyboardSelected() && !findKeyboardSelectedGroup().expanded) {
+                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
+                    } else {
+                        keyboardAction = "RIGHT";
+                    }
+                }
+            } else {
+                if(!kk.justPressed){
+                    continue;
+                }
+                if (kk.character == (int)'*' || kk.character == (int)'+') {
+                    keyboardAction = "PRECISION_UP";
+                }
+                if (kk.character == '/' || kk.character == '-') {
+                    keyboardAction = "PRECISION_DOWN";
+                }
+                if (kk.character == ' ' || kk.character == ENTER) {
+                    keyboardAction = "ACTION";
+                }
+                if (kk.character == 'r') {
+                    keyboardAction = "RESET";
+                }
+            }
+            kk.justPressed = false;
+        }
+        keyboardSelectionIndex %= keyboardSelectableItemCount();
+        if (keyboardSelectionIndex < 0) {
+            Group lastGroup = getLastGroup();
+            if (!lastGroup.expanded) {
+                keyboardSelectionIndex = keyboardSelectableItemCount() - lastGroup.elements.size() - 1;
+            } else {
                 keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
             }
-        } else if (key == '*' || key == '+') {
-            keyboardAction = "PRECISION_UP";
-        } else if (key == '/' || key == '-') {
-            keyboardAction = "PRECISION_DOWN";
         }
-        println(keyboardSelectionIndex);
-        if (key == ' ' || key == ENTER) {
-            keyboardAction = "ACTION";
-        }
-        if (key == 'r') {
-            keyboardAction = "RESET";
-        }
-        keyboardInputActive = true;
     }
 
     public void mouseWheel(MouseEvent event) {
@@ -337,14 +435,14 @@ public class JuicyGuiSketch extends PApplet {
         fill((keyboardSelected(group.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
         textAlign(LEFT, BOTTOM);
         textSize(textSize);
-        text("> " + group.name, x, y);
+        text(group.name, x, y);
         if (activated(group.name, 0, y - cell, trayWidth, cell)) {
             group.expanded = !group.expanded;
         }
     }
 
     private void updateElement(Group group, Element el, float x, float y) {
-        float grayScale = keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell) || overlayOwner != null && overlayOwner.equals(el) ? grayscaleTextSelected : grayscaleText;
+        float grayScale = keyboardSelected(group.name + el.name) || isMouseOver(0, y - cell, trayWidth, cell) ? grayscaleTextSelected : grayscaleText;
         fill(grayScale);
         stroke(grayScale);
         el.displayOnTray(x, y);
@@ -378,7 +476,11 @@ public class JuicyGuiSketch extends PApplet {
         fill(0, backgroundAlpha);
         rectMode(CORNER);
         rect(0, 0, trayWidth, height);
-        stroke(grayscaleBackground, backgroundAlpha);
+//        drawTrayGrid();
+    }
+
+    private void drawTrayGrid() {
+        stroke(grayscaleGrid);
         for (float x = cell; x < trayWidth; x += cell) {
             line(x, 0, x, height);
         }
@@ -431,6 +533,10 @@ public class JuicyGuiSketch extends PApplet {
             parentGroup = anonymous;
         }
         return parentGroup;
+    }
+
+    private Group getLastGroup() {
+        return groups.get(groups.size() - 1);
     }
 
     private void setParentGroup(Group parentGroup) {
@@ -542,8 +648,21 @@ public class JuicyGuiSketch extends PApplet {
             Button newElement = new Button(getParentGroup(), name);
             getParentGroup().elements.add(newElement);
         }
-        Button radio = (Button) findElement(name, getParentGroup().name);
-        return radio.value;
+        Button button = (Button) findElement(name, getParentGroup().name);
+        return button.value;
+    }
+
+    protected boolean toggle(String name) {
+        return toggle(name, false);
+    }
+
+    protected boolean toggle(String name, boolean defaultState) {
+        if (!elementExists(name, getParentGroup().name)) {
+            Toggle newElement = new Toggle(getParentGroup(), name, defaultState);
+            getParentGroup().elements.add(newElement);
+        }
+        Toggle toggle = (Toggle) findElement(name, getParentGroup().name);
+        return toggle.state;
     }
 
     private boolean elementExists(String elementName, String groupName) {
@@ -568,7 +687,7 @@ public class JuicyGuiSketch extends PApplet {
     class Group {
         String name;
         boolean expanded = true;
-        ArrayList<Element> elements = new ArrayList<>();
+        ArrayList<Element> elements = new ArrayList<Element>();
 
         Group(String name) {
             this.name = name;
@@ -607,6 +726,11 @@ public class JuicyGuiSketch extends PApplet {
         public void displayOnTray(float x, float y) {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
+            if (this.equals(overlayOwner)) {
+                strokeWeight(1);
+                stroke(grayscaleText);
+                line(x, y, x + textWidth(name), y);
+            }
             text(name, x, y);
         }
 
@@ -657,10 +781,14 @@ public class JuicyGuiSketch extends PApplet {
             return screenSpaceDelta * valueToScreenRatio;
         }
 
-        void infiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value) {
+        void drawInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value) {
             pushMatrix();
             pushStyle();
             translate(x, y);
+            noStroke();
+            fill(0, backgroundAlpha);
+            rectMode(CENTER);
+            rect(0, 0, w, h);
             strokeWeight(3);
             drawHorizontalLine(-w, w);
             drawMarkerLines(precision * 0.25f, h * .6f, true, value, precision, w);
@@ -679,7 +807,7 @@ public class JuicyGuiSketch extends PApplet {
             fill(grayscaleText);
             textAlign(CENTER, CENTER);
             textSize(textSize * 2);
-            float textY = -cell * 2;
+            float textY = -cell * 3;
             String text = nf(value, 0, 0);
             noStroke();
             fill(0, .5f);
@@ -727,7 +855,8 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     class SliderFloat extends Slider {
-        float value, precision, defaultValue, defaultPrecision;
+        float value, precision, defaultValue, defaultPrecision, minValue, maxValue;
+        boolean constrained = false;
 
         SliderFloat(Group parent, String name, float defaultValue, float precision) {
             super(parent, name);
@@ -735,6 +864,11 @@ public class JuicyGuiSketch extends PApplet {
             this.defaultValue = defaultValue;
             this.precision = precision;
             this.defaultPrecision = precision;
+            if (name.equals("fill") || name.equals("stroke")) {
+                constrained = true;
+                minValue = 0;
+                maxValue = 255;
+            }
         }
 
         boolean canHaveOverlay() {
@@ -747,7 +881,7 @@ public class JuicyGuiSketch extends PApplet {
 
             float sliderHeight = cell * 2;
             float valueDelta = updateInfiniteSlider(precision, width);
-            if (keyboardAction.equals("PRECISION_UP") && precision < 1000) {
+            if (keyboardAction.equals("PRECISION_UP") && precision < 10000) {
                 precision *= 10;
             } else if (keyboardAction.equals("PRECISION_DOWN") && precision > 1) {
                 precision *= .1f;
@@ -756,7 +890,10 @@ public class JuicyGuiSketch extends PApplet {
                 value = defaultValue;
             }
             value += valueDelta;
-            infiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision, value);
+            if (constrained) {
+                value = constrain(value, minValue, maxValue);
+            }
+            drawInfiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision, value);
         }
 
         String valueForConsole() {
@@ -821,7 +958,7 @@ public class JuicyGuiSketch extends PApplet {
 
     class Radio extends Element {
         int valueIndex = 0;
-        ArrayList<String> options = new ArrayList<>();
+        ArrayList<String> options = new ArrayList<String>();
 
         Radio(Group parent, String name, String[] options) {
             super(parent, name);
@@ -849,21 +986,19 @@ public class JuicyGuiSketch extends PApplet {
             float optionX = x;
             for (int i = 0; i < options.size(); i++) {
                 String option = options.get(i);
-                float textWidthWithoutComma = textWidth(option);
+                float textWidthWithoutSeparator = textWidth(option);
                 if (i < options.size() - 1) {
-                    option += ", ";
+                    option += " ";
+                }
+                if (i == valueIndex) {
+                    strokeWeight(2);
+                    line(optionX, y, optionX + textWidthWithoutSeparator, y);
                 }
                 text(option, optionX, y);
-                float textWidth = textWidth(option);
-                if(i == valueIndex){
-                    strokeWeight(2);
-                    line(optionX, y, optionX+textWidthWithoutComma, y);
-                }
-                optionX += textWidth;
+                optionX += textWidth(option);
             }
             popStyle();
         }
-
 
         public void onActivationWithoutOverlay(int x, float y, float w, float h) {
             valueIndex++;
@@ -908,10 +1043,12 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     class Toggle extends Element {
-        boolean state = false;
+        boolean state, defaultState;
 
-        public Toggle(Group parent, String name) {
+        Toggle(Group parent, String name, boolean defaultState) {
             super(parent, name);
+            this.defaultState = defaultState;
+            this.state = defaultState;
         }
 
         boolean canHaveOverlay() {
@@ -926,9 +1063,16 @@ public class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (state) {
-                fill(grayscaleTextSelected);
+                strokeWeight(2);
+                line(x, y, x + textWidth(name), y);
             }
             text(name, x, y);
+        }
+
+        void update() {
+            if (keyboardAction.equals("RESET")) {
+                state = defaultState;
+            }
         }
 
         public void onActivationWithoutOverlay(int x, float y, float w, float h) {
