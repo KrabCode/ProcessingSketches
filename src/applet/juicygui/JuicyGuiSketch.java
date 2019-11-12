@@ -69,18 +69,19 @@ public class JuicyGuiSketch extends PApplet {
     private boolean overlayVisible;
     private Element overlayOwner; // do not assign directly!
 
-    private void pushUndo() {
+    private void pushCurrentStateToUndo() {
 
     }
 
-    private void popUndo() {
+    private void popUndoToCurrentState() {
+
     }
 
     private void pushTopUndoOntoRedo() {
 
     }
 
-    private void popRedo() {
+    private void popRedoToCurrentState() {
 
     }
 
@@ -166,7 +167,7 @@ public class JuicyGuiSketch extends PApplet {
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
         if (activated("undo", x, y, w, h)) {
             pushTopUndoOntoRedo();
-            popUndo();
+            popUndoToCurrentState();
             keyboardSelectionIndex = 1;
         }
         fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
@@ -175,7 +176,7 @@ public class JuicyGuiSketch extends PApplet {
 
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
         if (activated("redo", x, y, w, h)) {
-            popRedo();
+            popRedoToCurrentState();
             keyboardSelectionIndex = 2;
         }
         fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
@@ -240,7 +241,7 @@ public class JuicyGuiSketch extends PApplet {
             } else if (overlayVisible && el.equals(overlayOwner)) {
                 overlayOwner.onOverlayHidden();
                 overlayVisible = false;
-                pushUndo();
+                pushCurrentStateToUndo();
             }
 
         }
@@ -729,7 +730,7 @@ public class JuicyGuiSketch extends PApplet {
             textSize(textSize);
             if (this.equals(overlayOwner)) {
                 strokeWeight(2);
-                stroke(grayscaleText);
+                stroke(grayscaleTextSelected);
                 line(x, y, x + textWidth(name), y);
             }
             text(name, x, y);
@@ -1074,6 +1075,7 @@ public class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (state) {
+                //TODO display this differently, it clashes with the slider overlay indicator
                 strokeWeight(2);
                 line(x, y, x + textWidth(name), y);
             }
