@@ -47,17 +47,16 @@ public class JuicyGuiSketch extends PApplet {
     private float grayscaleGrid = .3f;
     private float grayscaleTextSelected = 1;
     private float grayscaleText = .6f;
-    // input
-    private boolean pMousePressed = false;
-    private int keyboardSelectionIndex = 0;
-    private String keyboardAction = "";
-    private boolean keyboardInputActive = false;
-    private int specialButtonCount = 3;
 
+    // input
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
     private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
-    private int keyRepeatDelayFirst = 200;
-    private int keyRepeatDelay = 30;
+    private String keyboardAction = "";
+    private int keyboardSelectionIndex = 0;
+    private int specialButtonCount = 3;
+    private int keyRepeatDelayFirst = 300;
+    private int keyRepeatDelay = 40;
+    private boolean pMousePressed = false;
 
 
     // layout
@@ -156,6 +155,7 @@ public class JuicyGuiSketch extends PApplet {
     private void updateSpecialHideButton(float x, float y, float w, float h) {
         if (activated("hide/show", x, y, w, h)) {
             trayVisible = !trayVisible;
+            keyboardSelectionIndex = 0;
         }
         fill((keyboardSelected("hide/show") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         if (isMouseOver(x, y, w, h) || trayVisible) {
@@ -167,6 +167,7 @@ public class JuicyGuiSketch extends PApplet {
         if (activated("undo", x, y, w, h)) {
             pushTopUndoOntoRedo();
             popUndo();
+            keyboardSelectionIndex = 1;
         }
         fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         text("undo", x, y, w, h);
@@ -175,231 +176,10 @@ public class JuicyGuiSketch extends PApplet {
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
         if (activated("redo", x, y, w, h)) {
             popRedo();
+            keyboardSelectionIndex = 2;
         }
         fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         text("redo", x, y, w, h);
-    }
-
-    private void setOverlayOwner(Element overlayOwner) {
-        if (this.overlayOwner != null) {
-            this.overlayOwner.onOverlayHidden();
-        }
-        this.overlayOwner = overlayOwner;
-        this.overlayOwner.onOverlayShown();
-    }
-
-    // INPUT
-
-    private boolean activated(String query, float x, float y, float w, float h) {
-        return mouseJustReleasedHere(x, y, w, h) || keyboardActivated(query);
-    }
-
-    private boolean keyboardActivated(String query) {
-        return keyboardSelected(query) && keyboardAction.equals("ACTION");
-    }
-
-    private boolean isAnyGroupKeyboardSelected() {
-        return findKeyboardSelectedGroup() != null;
-    }
-
-    private boolean isAnyElementKeyboardSelected() {
-        return findKeyboardSelectedElement() != null;
-    }
-
-    private boolean keyboardSelected(String query) {
-        if (!trayVisible) {
-            keyboardSelectionIndex = 0;
-        }
-        if (!keyboardInputActive) {
-            return false;
-        }
-        if ((query.equals("hide/show") && keyboardSelectionIndex == 0)
-                || (query.equals("undo") && keyboardSelectionIndex == 1)
-                || (query.equals("redo") && keyboardSelectionIndex == 2)) {
-            return true;
-        }
-        int i = specialButtonCount;
-        for (Group group : groups) {
-            if (group.name.equals(query) && keyboardSelectionIndex == i) {
-                return true;
-            }
-            i++;
-            for (Element el : group.elements) {
-                if ((group.name + el.name).equals(query) && keyboardSelectionIndex == i) {
-                    return true;
-                }
-                i++;
-            }
-        }
-        return false;
-    }
-
-    private int keyboardSelectableItemCount() {
-        int elementCount = 0;
-        for (Group group : groups) {
-            elementCount += group.elements.size();
-        }
-        return specialButtonCount + groups.size() + elementCount;
-    }
-
-    private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
-        return pMousePressed && !mousePressed && isPointInRect(mouseX, mouseY, x, y, w, h);
-    }
-
-    private boolean isMouseOver(float x, float y, float w, float h) {
-        return onPC && (frameCount > 1) && isPointInRect(mouseX, mouseY, x, y, w, h);
-    }
-
-    public void mousePressed() {
-        keyboardInputActive = false;
-    }
-
-    public void keyPressed() {
-        keyboardInputActive = true;
-        if (key == CODED) {
-            if(!isPressed(keyCode, true)){
-                keyboardKeys.add(new Key(keyCode, true));
-            }
-        } else {
-            if(!isPressed(key, false)){
-                keyboardKeys.add(new Key((int) key, false));
-            }
-        }
-        println(keyboardKeys.size());
-    }
-
-    private boolean isPressed(int keyCode, boolean coded) {
-        for(Key kk : keyboardKeys){
-            if(kk.character == keyCode && kk.coded == coded){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void keyReleased() {
-        if (key == CODED) {
-            removeKey(keyCode, true);
-        } else {
-            removeKey(key, false);
-        }
-    }
-
-    private void removeKey(int keyCodeToRemove, boolean coded) {
-        keyboardKeysToRemove.clear();
-        for (Key kk : keyboardKeys) {
-            if (kk.coded == coded && kk.character == keyCodeToRemove) {
-                keyboardKeysToRemove.add(kk);
-            }
-        }
-        keyboardKeys.removeAll(keyboardKeysToRemove);
-    }
-
-    class Key {
-        boolean justPressed = true;
-        boolean repeatedAlready = false;
-        boolean coded;
-        int character;
-        int lastRegistered = -1;
-
-        Key(Integer character, boolean coded) {
-            this.character = character;
-            this.coded = coded;
-        }
-
-
-    }
-
-    private void handleKeyboardInput() {
-        for (Key kk : keyboardKeys) {
-            if (kk.coded) {
-                if (kk.justPressed ||
-                        (!kk.repeatedAlready && millis() > kk.lastRegistered + keyRepeatDelayFirst) ||
-                        ( kk.repeatedAlready && millis() > kk.lastRegistered + keyRepeatDelay)) {
-                    kk.lastRegistered = millis();
-                    if(!kk.justPressed){
-                        kk.repeatedAlready = true;
-                    }
-                    if (kk.character == UP) {
-                        if (keyboardSelectionIndex == specialButtonCount) {
-                            keyboardSelectionIndex = 0;
-                        } else {
-                            keyboardSelectionIndex -= hiddenElementCount(false);
-                            keyboardSelectionIndex--;
-                        }
-                        if (isAnyElementKeyboardSelected()) {
-                            setOverlayOwner(findKeyboardSelectedElement());
-                        }
-                    }
-                    if (kk.character == DOWN) {
-                        if (keyboardSelectionIndex < specialButtonCount) {
-                            keyboardSelectionIndex = specialButtonCount;
-                        } else {
-                            keyboardSelectionIndex += hiddenElementCount(true);
-                            keyboardSelectionIndex++;
-                        }
-                        if (isAnyElementKeyboardSelected()) {
-                            setOverlayOwner(findKeyboardSelectedElement());
-                        }
-                    }
-                }
-                if (kk.character == LEFT) {
-                    if (!overlayVisible && keyboardSelectionIndex < specialButtonCount) {
-                        keyboardSelectionIndex--;
-                    }
-                    if (isAnyGroupKeyboardSelected() && findKeyboardSelectedGroup().expanded) {
-                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
-                    } else {
-                        keyboardAction = "LEFT";
-                    }
-                }
-                if (kk.character == RIGHT) {
-                    if (!overlayVisible && keyboardSelectionIndex < specialButtonCount) {
-                        keyboardSelectionIndex++;
-                    }
-                    if (isAnyGroupKeyboardSelected() && !findKeyboardSelectedGroup().expanded) {
-                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
-                    } else {
-                        keyboardAction = "RIGHT";
-                    }
-                }
-            } else {
-                if(!kk.justPressed){
-                    continue;
-                }
-                if (kk.character == (int)'*' || kk.character == (int)'+') {
-                    keyboardAction = "PRECISION_UP";
-                }
-                if (kk.character == '/' || kk.character == '-') {
-                    keyboardAction = "PRECISION_DOWN";
-                }
-                if (kk.character == ' ' || kk.character == ENTER) {
-                    keyboardAction = "ACTION";
-                }
-                if (kk.character == 'r') {
-                    keyboardAction = "RESET";
-                }
-            }
-            kk.justPressed = false;
-        }
-        keyboardSelectionIndex %= keyboardSelectableItemCount();
-        if (keyboardSelectionIndex < 0) {
-            Group lastGroup = getLastGroup();
-            if (!lastGroup.expanded) {
-                keyboardSelectionIndex = keyboardSelectableItemCount() - lastGroup.elements.size() - 1;
-            } else {
-                keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
-            }
-        }
-    }
-
-    public void mouseWheel(MouseEvent event) {
-        float direction = event.getCount();
-        if (direction > 0) {
-            keyboardAction = "TINY_RIGHT";
-        } else if (direction < 0) {
-            keyboardAction = "TINY_LEFT";
-        }
     }
 
     protected void group(String name) {
@@ -494,6 +274,227 @@ public class JuicyGuiSketch extends PApplet {
             camera();
         } else {
             resetMatrix();
+        }
+    }
+
+    private void setOverlayOwner(Element overlayOwner) {
+        if (this.overlayOwner != null) {
+            this.overlayOwner.onOverlayHidden();
+        }
+        this.overlayOwner = overlayOwner;
+        this.overlayOwner.onOverlayShown();
+        overlayVisible = true;
+    }
+
+
+    // INPUT
+
+    private boolean activated(String query, float x, float y, float w, float h) {
+        return mouseJustReleasedHere(x, y, w, h) || keyboardActivated(query);
+    }
+
+    private boolean keyboardActivated(String query) {
+        return keyboardSelected(query) && keyboardAction.equals("ACTION");
+    }
+
+    private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
+        return pMousePressed && !mousePressed && isPointInRect(mouseX, mouseY, x, y, w, h);
+    }
+
+    private boolean isMouseOver(float x, float y, float w, float h) {
+        return onPC && (frameCount > 1) && isPointInRect(mouseX, mouseY, x, y, w, h);
+    }
+
+
+    public void mouseWheel(MouseEvent event) {
+        float direction = event.getCount();
+        if (direction > 0) {
+            keyboardAction = "TINY_RIGHT";
+        } else if (direction < 0) {
+            keyboardAction = "TINY_LEFT";
+        }
+    }
+
+    private boolean isAnyGroupKeyboardSelected() {
+        return findKeyboardSelectedGroup() != null;
+    }
+
+    private boolean isAnyElementKeyboardSelected() {
+        return findKeyboardSelectedElement() != null;
+    }
+
+    private boolean keyboardSelected(String query) {
+        if (!trayVisible) {
+            keyboardSelectionIndex = 0;
+        }
+        if ((query.equals("hide/show") && keyboardSelectionIndex == 0)
+                || (query.equals("undo") && keyboardSelectionIndex == 1)
+                || (query.equals("redo") && keyboardSelectionIndex == 2)) {
+            return true;
+        }
+        int i = specialButtonCount;
+        for (Group group : groups) {
+            if (group.name.equals(query) && keyboardSelectionIndex == i) {
+                return true;
+            }
+            i++;
+            for (Element el : group.elements) {
+                if ((group.name + el.name).equals(query) && keyboardSelectionIndex == i) {
+                    return true;
+                }
+                i++;
+            }
+        }
+        return false;
+    }
+
+    private int keyboardSelectableItemCount() {
+        int elementCount = 0;
+        for (Group group : groups) {
+            elementCount += group.elements.size();
+        }
+        return specialButtonCount + groups.size() + elementCount;
+    }
+
+    public void keyPressed() {
+        if (key == CODED) {
+            if (!isPressed(keyCode, true)) {
+                keyboardKeys.add(new Key(keyCode, true));
+            }
+        } else {
+            if (!isPressed(key, false)) {
+                keyboardKeys.add(new Key((int) key, false));
+            }
+        }
+    }
+
+    private boolean isPressed(int keyCode, boolean coded) {
+        for (Key kk : keyboardKeys) {
+            if (kk.character == keyCode && kk.coded == coded) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void keyReleased() {
+        if (key == CODED) {
+            removeKey(keyCode, true);
+        } else {
+            removeKey(key, false);
+        }
+    }
+
+    private void removeKey(int keyCodeToRemove, boolean coded) {
+        keyboardKeysToRemove.clear();
+        for (Key kk : keyboardKeys) {
+            if (kk.coded == coded && kk.character == keyCodeToRemove) {
+                keyboardKeysToRemove.add(kk);
+            }
+        }
+        keyboardKeys.removeAll(keyboardKeysToRemove);
+    }
+
+    private void handleKeyboardInput() {
+        for (Key kk : keyboardKeys) {
+            if (kk.coded) {
+                if (kk.character == UP && kk.repeatCheck()) {
+                    if (keyboardSelectionIndex == specialButtonCount) {
+                        keyboardSelectionIndex = 0;
+                    } else {
+                        keyboardSelectionIndex -= hiddenElementCount(false);
+                        keyboardSelectionIndex--;
+                    }
+                    if (isAnyElementKeyboardSelected()) {
+                        setOverlayOwner(findKeyboardSelectedElement());
+                    }
+                }
+                if (kk.character == DOWN && kk.repeatCheck()) {
+                    if (keyboardSelectionIndex < specialButtonCount) {
+                        keyboardSelectionIndex = specialButtonCount;
+                    } else {
+                        keyboardSelectionIndex += hiddenElementCount(true);
+                        keyboardSelectionIndex++;
+                    }
+                    if (isAnyElementKeyboardSelected()) {
+                        setOverlayOwner(findKeyboardSelectedElement());
+                    }
+                }
+                if (kk.character == LEFT) {
+                    if (kk.repeatCheck() && keyboardSelectionIndex < specialButtonCount && keyboardSelectionIndex > 0) {
+                        keyboardSelectionIndex--;
+                    }
+                    if (isAnyGroupKeyboardSelected() && findKeyboardSelectedGroup().expanded) {
+                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
+                    } else {
+                        keyboardAction = "LEFT";
+                    }
+                }
+                if (kk.character == RIGHT) {
+                    if (kk.repeatCheck() && keyboardSelectionIndex < specialButtonCount) {
+                        keyboardSelectionIndex++;
+                    }
+                    if (isAnyGroupKeyboardSelected() && !findKeyboardSelectedGroup().expanded) {
+                        findKeyboardSelectedGroup().expanded = !findKeyboardSelectedGroup().expanded;
+                    } else {
+                        keyboardAction = "RIGHT";
+                    }
+                }
+            } else {
+                if (!kk.justPressed) {
+                    continue;
+                }
+                if (kk.character == (int) '*' || kk.character == (int) '+') {
+                    keyboardAction = "PRECISION_UP";
+                }
+                if (kk.character == '/' || kk.character == '-') {
+                    keyboardAction = "PRECISION_DOWN";
+                }
+                if (kk.character == ' ' || kk.character == ENTER) {
+                    keyboardAction = "ACTION";
+                }
+                if (kk.character == 'r') {
+                    keyboardAction = "RESET";
+                }
+            }
+            kk.justPressed = false;
+        }
+        keyboardSelectionIndex %= keyboardSelectableItemCount();
+        if (keyboardSelectionIndex < 0) {
+            Group lastGroup = getLastGroup();
+            if (!lastGroup.expanded) {
+                keyboardSelectionIndex = keyboardSelectableItemCount() - lastGroup.elements.size() - 1;
+            } else {
+                keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
+            }
+        }
+    }
+
+    class Key {
+        boolean justPressed;
+        boolean repeatedAlready = false;
+        boolean coded;
+        int character;
+        int lastRegistered = -1;
+
+        Key(Integer character, boolean coded) {
+            this.character = character;
+            this.coded = coded;
+            justPressed = true;
+        }
+
+        boolean repeatCheck() {
+            boolean shouldApply = justPressed ||
+                    (!repeatedAlready && millis() > lastRegistered + keyRepeatDelayFirst) ||
+                    (repeatedAlready && millis() > lastRegistered + keyRepeatDelay);
+            if (shouldApply) {
+                lastRegistered = millis();
+                if (!justPressed) {
+                    repeatedAlready = true;
+                }
+            }
+            justPressed = false;
+            return shouldApply;
         }
     }
 
@@ -1010,7 +1011,6 @@ public class JuicyGuiSketch extends PApplet {
 
     class Button extends Element {
         public boolean value;
-        boolean justPressed = false;
 
         Button(Group parent, String name) {
             super(parent, name);
@@ -1025,20 +1025,21 @@ public class JuicyGuiSketch extends PApplet {
         }
 
         public void onActivationWithoutOverlay(int x, float y, float w, float h) {
-            justPressed = true;
+            value = true;
         }
 
         public void displayOnTray(float x, float y) {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
-            if (justPressed) {
-                fill(grayscaleTextSelected);
-            }
             text(name, x, y);
+            rectMode(CENTER);
+            if(value){
+                line(x,y,x+textWidth(name), y);
+            }
         }
 
         void update() {
-            justPressed = false;
+            value = false;
         }
     }
 
