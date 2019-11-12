@@ -34,6 +34,10 @@ public class JuiceTest extends JuicyGuiSketch {
             pg.rectMode(CENTER);
         }
 
+        if(button("bang")){
+            println("bang");
+        }
+
         group("translate");
         PVector translate = new PVector(
                 sliderFloat("x", width*.5f, width*2),

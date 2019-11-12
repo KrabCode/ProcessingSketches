@@ -728,7 +728,7 @@ public class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (this.equals(overlayOwner)) {
-                strokeWeight(1);
+                strokeWeight(2);
                 stroke(grayscaleText);
                 line(x, y, x + textWidth(name), y);
             }
@@ -824,7 +824,6 @@ public class JuicyGuiSketch extends PApplet {
             float markerValue = valueOnLeftEdge - value;
             while (markerValue <= valueOnRightEdge - value) {
                 float moduloValue = markerValue;
-                //TODO remove the silly while and replace with multiplication for a tiny speed boost and hang prevention
                 while (moduloValue > valueOnRightEdge) {
                     moduloValue -= precision * 2;
                 }
@@ -1011,6 +1010,8 @@ public class JuicyGuiSketch extends PApplet {
 
     class Button extends Element {
         public boolean value;
+        int activationFadeoutDuration = 10;
+        int lastActivated = -activationFadeoutDuration;
 
         Button(Group parent, String name) {
             super(parent, name);
@@ -1033,9 +1034,18 @@ public class JuicyGuiSketch extends PApplet {
             textSize(textSize);
             text(name, x, y);
             rectMode(CENTER);
-            if(value){
-                line(x,y,x+textWidth(name), y);
+            if (value) {
+                lastActivated = frameCount;
             }
+            float fullWidth = textWidth(name);
+            float extensionNormalized = constrain(norm(frameCount, lastActivated, lastActivated + activationFadeoutDuration), 0, 1);
+            if(extensionNormalized == 1){
+                extensionNormalized = 0;
+            }
+            float w = fullWidth * extensionNormalized;
+            float centerX = x + fullWidth * .5f;
+            strokeWeight(2);
+            line(centerX - w * .5f, y, centerX + w * .5f, y);
         }
 
         void update() {
