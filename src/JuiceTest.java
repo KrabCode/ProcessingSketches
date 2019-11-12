@@ -55,6 +55,8 @@ public class JuiceTest extends JuicyGuiSketch {
         pg.endShape(CLOSE);
         pg.popMatrix();
 
+        pg.text(radio("test", "testing"), 0, 0);
+
         pg.endDraw();
         image(pg, 0, 0);
         gui();
