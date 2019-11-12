@@ -85,15 +85,14 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        group("gui");
         if (frameCount == 1) {
-            textSize(textSize * 4);
+//            textSize(textSize * 4);
             trayVisible = defaultVisibility;
             onPC = System.getProperty("os.name").toLowerCase().startsWith("windows");
             return;
         }
         pushStyle();
-        strokeCap(PROJECT);
+        strokeCap(SQUARE);
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
         updateTrayBackground();
@@ -338,7 +337,7 @@ public class JuicyGuiSketch extends PApplet {
         fill((keyboardSelected(group.name) || isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
         textAlign(LEFT, BOTTOM);
         textSize(textSize);
-        text(group.name, x, y);
+        text("> " + group.name, x, y);
         if (activated(group.name, 0, y - cell, trayWidth, cell)) {
             group.expanded = !group.expanded;
         }
