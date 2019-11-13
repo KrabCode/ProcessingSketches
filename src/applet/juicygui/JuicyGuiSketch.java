@@ -1,12 +1,13 @@
 package applet.juicygui;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions"})
+@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
 public class JuicyGuiSketch extends PApplet {
     //TODO:
     // ----- Operation JUICE -----
@@ -62,8 +63,9 @@ public class JuicyGuiSketch extends PApplet {
     private float minimumTrayWidth = cell * 6;
     private float trayWidth;
     private boolean trayVisible = true;
+    private float easingFactor = 3;
 
-    //overlay
+    // overlay
     private boolean overlayVisible;
     private Element overlayOwner; // do not assign directly!
     private float overlayOwnershipAnimationDuration = 10;
@@ -71,9 +73,9 @@ public class JuicyGuiSketch extends PApplet {
 
     // state
     private static final String GROUP_MARKER = "GROUP_MARKER";
+    private static final String SEPARATOR = "-!-!-!-!-!-";
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
-    private String SEPARATOR = "-!-!-!-!-!-";
 
     protected void gui() {
         gui(true);
@@ -505,7 +507,7 @@ public class JuicyGuiSketch extends PApplet {
         }
     }
 
-    // GROUP / ELEMENT HANDLING
+    // GROUPS AND ELEMENTS
 
     private float findLongestNameWidth() {
         float longestNameWidth = 0;
@@ -612,52 +614,56 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected float sliderFloat(String name, float defaultValue, float precision) {
-        if (!elementExists(name, getCurrentGroup().name)) {
-            SliderFloat newElement = new SliderFloat(getCurrentGroup(), name, defaultValue, precision);
-            getCurrentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            SliderFloat newElement = new SliderFloat(currentGroup, name, defaultValue, precision);
+            currentGroup.elements.add(newElement);
         }
-        SliderFloat slider = (SliderFloat) findElement(name, getCurrentGroup().name);
+        SliderFloat slider = (SliderFloat) findElement(name, currentGroup.name);
         assert slider != null;
         return slider.value;
     }
 
-    /*
     protected PVector slider2D(String name, float defaultX, float defaultY, float precision) {
-        if (!elementExists(name, getParentGroup().name)) {
-            Slider2D newElement = new Slider2D(getParentGroup(), name, defaultX, defaultY, precision);
-            getParentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            Slider2D newElement = new Slider2D(currentGroup, name, defaultX, defaultY, precision);
+            currentGroup.elements.add(newElement);
         }
-        Slider2D slider = (Slider2D) findElement(name, getParentGroup().name);
+        Slider2D slider = (Slider2D) findElement(name, currentGroup.name);
         assert slider != null;
         return slider.value;
     }
 
     protected int sliderColor(String name, float hue, float sat, float br) {
-        if (!elementExists(name, getParentGroup().name)) {
-            SliderColor newElement = new SliderColor(getParentGroup(), name, hue, sat, br);
-            getParentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            SliderColor newElement = new SliderColor(currentGroup, name, hue, sat, br);
+            currentGroup.elements.add(newElement);
         }
-        SliderColor slider = (SliderColor) findElement(name, getParentGroup().name);
+        SliderColor slider = (SliderColor) findElement(name, currentGroup.name);
         assert slider != null;
         return slider.value;
     }
-*/
+
     protected String radio(String defaultValue, String... otherValues) {
-        if (!elementExists(defaultValue, getCurrentGroup().name)) {
-            Element newElement = new Radio(getCurrentGroup(), defaultValue, otherValues);
-            getCurrentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(defaultValue, currentGroup.name)) {
+            Element newElement = new Radio(currentGroup, defaultValue, otherValues);
+            currentGroup.elements.add(newElement);
         }
-        Radio radio = (Radio) findElement(defaultValue, getCurrentGroup().name);
+        Radio radio = (Radio) findElement(defaultValue, currentGroup.name);
         assert radio != null;
         return radio.options.get(radio.valueIndex);
     }
 
     protected boolean button(String name) {
-        if (!elementExists(name, getCurrentGroup().name)) {
-            Button newElement = new Button(getCurrentGroup(), name);
-            getCurrentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            Button newElement = new Button(currentGroup, name);
+            currentGroup.elements.add(newElement);
         }
-        Button button = (Button) findElement(name, getCurrentGroup().name);
+        Button button = (Button) findElement(name, currentGroup.name);
         return button.value;
     }
 
@@ -666,20 +672,17 @@ public class JuicyGuiSketch extends PApplet {
     }
 
     protected boolean toggle(String name, boolean defaultState) {
-        if (!elementExists(name, getCurrentGroup().name)) {
-            Toggle newElement = new Toggle(getCurrentGroup(), name, defaultState);
-            getCurrentGroup().elements.add(newElement);
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            Toggle newElement = new Toggle(currentGroup, name, defaultState);
+            currentGroup.elements.add(newElement);
         }
-        Toggle toggle = (Toggle) findElement(name, getCurrentGroup().name);
+        Toggle toggle = (Toggle) findElement(name, currentGroup.name);
         return toggle.state;
     }
 
     private boolean elementExists(String elementName, String groupName) {
         return findElement(elementName, groupName) != null;
-    }
-
-    private boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
-        return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 
     private Element findElement(String elementName, String groupName) {
@@ -691,6 +694,17 @@ public class JuicyGuiSketch extends PApplet {
             }
         }
         return null;
+    }
+
+    private boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
+        return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
+    }
+
+    protected float ease(float p, float g) {
+        if (p < 0.5)
+            return 0.5f * pow(2 * p, g);
+        else
+            return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
     // STATE
@@ -812,10 +826,11 @@ public class JuicyGuiSketch extends PApplet {
             if (this.equals(overlayOwner)) {
                 strokeWeight(2);
                 stroke(grayscaleTextSelected);
-                float animation = constrain(norm(frameCount, overlayOwnershipAnimationStarted, overlayOwnershipAnimationStarted+overlayOwnershipAnimationDuration), 0, 1);
+                float animationNorm = constrain(norm(frameCount, overlayOwnershipAnimationStarted, overlayOwnershipAnimationStarted + overlayOwnershipAnimationDuration), 0, 1);
+                float animationEased = ease(animationNorm, easingFactor);
                 float fullWidth = textWidth(name);
-                float animatedWidth = fullWidth*animation;
-                float center = x + fullWidth*.5f;
+                float animatedWidth = fullWidth * animationEased;
+                float center = x + fullWidth * .5f;
                 line(center - animatedWidth * .5f, y, center + animatedWidth * .5f, y);
             }
             text(name, x, y);
@@ -1016,7 +1031,6 @@ public class JuicyGuiSketch extends PApplet {
 
     }
 
-
     class Radio extends Element {
         int valueIndex = 0;
         ArrayList<String> options = new ArrayList<String>();
@@ -1060,7 +1074,6 @@ public class JuicyGuiSketch extends PApplet {
             return options.get(valueIndex);
         }
 
-        @Override
         public void displayOnTray(float x, float y) {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
@@ -1072,9 +1085,10 @@ public class JuicyGuiSketch extends PApplet {
                 if (i < options.size() - 1) {
                     option += " ";
                 }
-                if (i == valueIndex) {
+                if (i != valueIndex) {
+                    float strikethroughY = y - textSize * .5f;
                     strokeWeight(2);
-                    line(optionX, y, optionX + textWidthWithoutSeparator, y);
+                    line(optionX, strikethroughY, optionX + textWidthWithoutSeparator, strikethroughY);
                 }
                 text(option, optionX, y);
                 optionX += textWidth(option);
@@ -1126,6 +1140,7 @@ public class JuicyGuiSketch extends PApplet {
             }
             float fullWidth = textWidth(name);
             float animation = constrain(norm(frameCount, lastActivated, lastActivated + activationFadeoutDuration), 0, 1);
+            float animationEased = ease(animation, easingFactor);
             if (animation == 1) {
                 animation = 0;
             }
@@ -1187,4 +1202,44 @@ public class JuicyGuiSketch extends PApplet {
     }
 
 
+    private class Slider2D extends Slider {
+        public PVector value;
+
+        public Slider2D(Group currentGroup, String name, float defaultX, float defaultY, float precision) {
+            super(currentGroup, name);
+
+        }
+
+        String getState() {
+            return null;
+        }
+
+        void overwriteState(String newState) {
+
+        }
+
+        boolean canHaveOverlay() {
+            return true;
+        }
+    }
+
+    private class SliderColor extends Slider {
+        public int value;
+
+        public SliderColor(Group currentGroup, String name, float hue, float sat, float br) {
+            super(currentGroup, name);
+        }
+
+        String getState() {
+            return null;
+        }
+
+        void overwriteState(String newState) {
+
+        }
+
+        boolean canHaveOverlay() {
+            return false;
+        }
+    }
 }
