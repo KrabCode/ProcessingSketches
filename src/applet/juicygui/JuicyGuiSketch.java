@@ -11,20 +11,15 @@ import java.util.Arrays;
 public class JuicyGuiSketch extends PApplet {
     //TODO:
     // ----- Operation JUICE -----
-    // gui elements:
-    // gamepad support
+    // fix the slider marker alpha problem
     // juicy special buttons, cool animations
-    // juicy buttons, visually clear on/off states
     // hue picker slider
-    // 2D vector unit grid picker
-    // ...
-    // other features:
-    // action click animation for extra juice
+    // activation animation for extra juice
     // scrolling down to allow unlimited group and element count
 
     // state
     private static final String GROUP_MARKER = "GROUP_MARKER";
-    private static final String SEPARATOR = " _ ";
+    private static final String SEPARATOR = "-!-";
     private static final String ACTION_MIDDLE_MOUSE_BUTTON = "MIDDLE_MOUSE_BUTTON";
     private static final String ACTION_UP = "UP";
     private static final String ACTION_DOWN = "DOWN";
@@ -33,18 +28,21 @@ public class JuicyGuiSketch extends PApplet {
     private static final String ACTION_PRECISION_ZOOM_IN = "PRECISION_ZOOM_IN";
     private static final String ACTION_PRECISION_ZOOM_OUT = "PRECISION_ZOOM_OUT";
     private static final String ACTION_RESET = "RESET";
+
     // utils
     protected float t;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
+
     // color
     private float backgroundAlpha = .5f;
     private boolean onPC;
     private ArrayList<Group> groups = new ArrayList<Group>();
-    private Group currentGroup = null; // do not access directly!
+    private Group currentGroup = null; // do not assign to nor read directly!
     private float grayscaleGrid = .3f;
     private float grayscaleTextSelected = 1;
     private float grayscaleText = .6f;
+
     // input
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
     private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
@@ -65,11 +63,10 @@ public class JuicyGuiSketch extends PApplet {
 
     // overlay
     private boolean overlayVisible;
-    private Element overlayOwner; // do not assign directly!
+    private Element overlayOwner = null; // do not assign directly!
     private int overlayOwnershipAnimationDuration = 10;
     private int overlayOwnershipAnimationStarted = -overlayOwnershipAnimationDuration;
     private float overlayDarkenEasingFactor = 3;
-
 
     // INTERFACE
 
@@ -1084,7 +1081,7 @@ public class JuicyGuiSketch extends PApplet {
         void drawSliderBackground(float w, float h, boolean verticalCutout) {
             fill(0, backgroundAlpha);
             rectMode(CENTER);
-            rect(0, 0, verticalCutout?w-h*2:w,h);
+            rect(0, 0, verticalCutout ? w - h * 2 : w, h);
         }
 
         void drawHorizontalLine(float w) {
@@ -1118,8 +1115,8 @@ public class JuicyGuiSketch extends PApplet {
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float grayscale = distanceFromCenterGrayscale(screenX, w);
-            fill(1,grayscale);
-            stroke(1,grayscale);
+            fill(1, grayscale);
+            stroke(1, grayscale);
             line(screenX, -markerHeight * .5f, screenX, 0);
             if (shouldDrawValue) {
                 if (flipTextHorizontally) {
@@ -1135,7 +1132,7 @@ public class JuicyGuiSketch extends PApplet {
                 textAlign(CENTER, CENTER);
                 textSize(textSize);
                 float textX = screenX + ((displayText.equals("0") || displayValue > 0) ? 0 : -textWidth("-") * .5f);
-                text(displayText, flipTextHorizontally ? -textX : textX, h*.25f);
+                text(displayText, flipTextHorizontally ? -textX : textX, h * .25f);
                 if (flipTextHorizontally) {
                     popMatrix();
                 }
