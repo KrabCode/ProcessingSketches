@@ -7,7 +7,6 @@ import processing.core.PVector;
  */
 public class JuiceTest extends JuicyGuiSketch {
     private PGraphics pg;
-    private float t;
 
     public static void main(String[] args) {
         JuicyGuiSketch.main("JuiceTest");
@@ -29,40 +28,28 @@ public class JuiceTest extends JuicyGuiSketch {
     public void draw() {
         pg.beginDraw();
         group("background");
-        if(toggle("redraw", true)){
-            pg.background(sliderFloat("fill", 0, 1000));
+        if (toggle("redraw", true) | button("reset once")) {
+            pg.background(sliderColor("fill", 0, 0, 0));
             pg.rectMode(CENTER);
         }
-
-        if(button("bang")){
-            println("bang");
-        }
-
-        group("translate");
-        PVector translate = new PVector(
-                sliderFloat("x", width*.5f, width*2),
-                sliderFloat("y", width*.5f, height*2)
-        );
-        pg.translate(translate.x, translate.y);
-        pg.rotate(sliderFloat("rotation", 0, TWO_PI));
-
+        group("matrix");
+        PVector translate = slider2D("translate", 0, 0, 1000);
+        pg.translate(width * .5f + translate.x, height * .5f + translate.y);
+        pg.rotate(sliderFloat("rotation", 0, 10));
         group("shape");
-        pg.fill(sliderFloat("fill", 100, 1000));
-        pg.stroke(sliderFloat("stroke", 255, 1000));
+        pg.fill(sliderColor("fill", 0, 0, .5f));
+        pg.stroke(sliderColor("stroke", 0, 0, .8f));
         pg.strokeWeight(sliderFloat("weight", 2, 100));
         float size = sliderFloat("size", 150, 1000);
         pg.pushMatrix();
-        pg.translate(-size*.5f, -size*.5f);
+        pg.translate(-size * .5f, -size * .5f);
         pg.beginShape();
-        pg.vertex(0,0);
-        pg.vertex(size,0);
-        pg.vertex(size,size);
-        pg.vertex(0,size);
+        pg.vertex(0, 0);
+        pg.vertex(size, 0);
+        pg.vertex(size, size);
+        pg.vertex(0, size);
         pg.endShape(CLOSE);
         pg.popMatrix();
-
-        pg.text(radio("test", "testing"), 0, 0);
-
         pg.endDraw();
         image(pg, 0, 0);
         gui();
