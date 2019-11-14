@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
-public class JuicyGuiSketch extends PApplet {
+public abstract class JuicyGuiSketch extends PApplet {
     //TODO:
     // ----- Operation JUICE -----
     // fix the slider marker alpha problem
