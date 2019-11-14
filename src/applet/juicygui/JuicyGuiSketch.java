@@ -7,7 +7,8 @@ import processing.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions",
+@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted",
+        "unused", "ConstantConditions",
         "WeakerAccess"})
 public abstract class JuicyGuiSketch extends PApplet {
     //TODO:
@@ -193,7 +194,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             textSize *= 2;
             cell *= 2;
         }
-        textSize(textSize * 2); //the maximum text size needs to be called first, otherwise the font is stretched and ugly
+        textSize(textSize * 2); //the maximum text size needs to be called first, otherwise the font is stretched and
+        // ugly
     }
 
     // UTILS
@@ -864,7 +866,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (overlayVisible && this.equals(overlayOwner)) {
-                underlineAnimation(overlayOwnershipTrayAnimationStarted, overlayOwnershipTrayAnimationDuration, x, y, true);
+                underlineAnimation(overlayOwnershipTrayAnimationStarted, overlayOwnershipTrayAnimationDuration, x, y,
+                        true);
             }
             text(name, x, y);
         }
@@ -1050,7 +1053,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             super(parent, name);
         }
 
-        float updateInfiniteSlider(float precision, float sliderWidth, boolean horizontallyControlled, boolean mouseWheelHorizontal) {
+        float updateInfiniteSlider(float precision, float sliderWidth, boolean horizontallyControlled,
+                                   boolean mouseWheelHorizontal) {
             if (mousePressed && isMouseOutsideGui()) {
                 float screenSpaceDelta = horizontallyControlled ? -(pmouseX - mouseX) : -(pmouseY - mouseY);
                 float valueSpaceDelta = screenDistanceToValueDistance(screenSpaceDelta, precision, sliderWidth);
@@ -1078,7 +1082,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             return screenSpaceDelta * valueToScreenRatio;
         }
 
-        void displayInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value, boolean horizontal, float revealAnimation) {
+        void displayInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value,
+                                             boolean horizontal, float revealAnimation) {
             float markerHeight = h * revealAnimation;
             pushMatrix();
             pushStyle();
@@ -1134,14 +1139,17 @@ public abstract class JuicyGuiSketch extends PApplet {
                     continue;
                 }
                 float markerNorm = norm(markerValue, -precision - value, precision - value);
-                drawMarkerLine(markerValue, precision, w, h, markerHeight, horizontalLineHeight, value, shouldDrawValue, flipTextHorizontally,
+                drawMarkerLine(markerValue, precision, w, h, markerHeight, horizontalLineHeight, value,
+                        shouldDrawValue, flipTextHorizontally,
                         revealAnimationEased);
                 markerValue += frequency;
             }
         }
 
-        private void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight, float horizontalLineHeight,
-                                    float value, boolean shouldDrawValue, boolean flipTextHorizontally, float revealAnimationEased) {
+        private void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight,
+                                    float horizontalLineHeight,
+                                    float value, boolean shouldDrawValue, boolean flipTextHorizontally,
+                                    float revealAnimationEased) {
             float moduloValue = markerValue;
             while (moduloValue > precision) {
                 moduloValue -= precision * 2;
@@ -1262,9 +1270,11 @@ public abstract class JuicyGuiSketch extends PApplet {
             if (constrained) {
                 value = constrain(value, minValue, maxValue);
             }
-            float revealAnimation = easedAnimation(overlayRevealAnimationStarted - overlayRevealStartSkip, overlayRevealAnimationDuration,
+            float revealAnimation = easedAnimation(overlayRevealAnimationStarted - overlayRevealStartSkip,
+                    overlayRevealAnimationDuration,
                     overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value, true, revealAnimation);
+            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value, true,
+                    revealAnimation);
         }
 
         void recordInteractionForUndo(float valueDelta) {
@@ -1328,16 +1338,21 @@ public abstract class JuicyGuiSketch extends PApplet {
         void updateOverlay() {
             PVector valueDelta = new PVector();
             valueDelta.x = updateInfiniteSlider(precision, width, true, mouseWheelHorizontal);
-            float horizontalAnimation = easedAnimation(horizontalOverlayRevealAnimationStarted - overlayRevealStartSkip, overlayRevealAnimationDuration,
+            float horizontalAnimation =
+                    easedAnimation(horizontalOverlayRevealAnimationStarted - overlayRevealStartSkip,
+                            overlayRevealAnimationDuration,
                     overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value.x, true, horizontalAnimation);
+            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value.x, true,
+                    horizontalAnimation);
             translate(width * .5f, height * .5f);
             rotate(-HALF_PI);
             translate(-height * .5f, -width * .5f);
             valueDelta.y = updateInfiniteSlider(precision, width, false, mouseWheelHorizontal);
-            float verticalAnimation = easedAnimation(verticalOverlayRevealAnimationStarted - overlayRevealStartSkip, overlayRevealAnimationDuration,
+            float verticalAnimation = easedAnimation(verticalOverlayRevealAnimationStarted - overlayRevealStartSkip,
+                    overlayRevealAnimationDuration,
                     overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(height * .5f, width - cell, height, cell * 2, precision, value.y, false, verticalAnimation);
+            displayInfiniteSliderCenterMode(height * .5f, width - cell, height, cell * 2, precision, value.y, false,
+                    verticalAnimation);
             recordInteractionForUndo(valueDelta);
             value.x += valueDelta.x;
             value.y += valueDelta.y;
