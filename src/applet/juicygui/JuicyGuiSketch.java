@@ -63,12 +63,13 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     // overlay
     private boolean overlayVisible;
+    private boolean horizontalOverlayVisible;
+    private boolean verticalOverlayVisible;
     private Element overlayOwner = null; // do not assign directly!
     private int overlayOwnershipTrayAnimationDuration = 10;
     private int overlayOwnershipTrayAnimationStarted = -overlayOwnershipTrayAnimationDuration;
     private float overlayDarkenEasingFactor = 3;
     private int overlayRevealAnimationDuration = 20;
-    private int overlayRevealAnimationStarted = -overlayRevealAnimationDuration;
     private float overlayRevealEasingFactor = 4;
 
     // INTERFACE
@@ -360,9 +361,6 @@ public abstract class JuicyGuiSketch extends PApplet {
     }
 
     private void setOverlayOwner(Element overlayOwnerToSet) {
-        if(this.overlayOwner != null){
-            this.overlayOwner.onOverlayHidden();
-        }
         this.overlayOwner = overlayOwnerToSet;
         this.overlayOwner.onOverlayShown();
         overlayVisible = true;
@@ -883,14 +881,9 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onOverlayShown() {
-            if (!overlayVisible){
-                overlayRevealAnimationStarted = frameCount;
-            }
-        }
-
-        void onOverlayHidden() {
 
         }
+
     }
 
     class Radio extends Element {
@@ -1084,8 +1077,10 @@ public abstract class JuicyGuiSketch extends PApplet {
                 pushMatrix();
                 scale(-1, 1);
             }
-            drawMarkerLines(precision * 0.5f, 0, markerHeight * .5f, horizontalLineWeight, true, value, precision, w, h, !horizontal);
-            drawMarkerLines(precision * .05f, 10, markerHeight * .3f, horizontalLineWeight, false, value, precision, w, h, !horizontal);
+            drawMarkerLines(precision * 0.5f, 0, markerHeight * .5f,
+                    horizontalLineWeight, true, value, precision, w, h, !horizontal, revealAnimationEased);
+            drawMarkerLines(precision * .05f, 10, markerHeight * .3f,
+                    horizontalLineWeight, false, value, precision, w, h, !horizontal, revealAnimationEased);
             if (!horizontal) {
                 popMatrix();
             }
@@ -1114,7 +1109,8 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void drawMarkerLines(float frequency, int skipEveryNth, float markerHeight, float horizontalLineHeight,
-                             boolean shouldDrawValue, float value, float precision, float w, float h, boolean flipTextHorizontally) {
+                             boolean shouldDrawValue, float value, float precision, float w, float h,
+                             boolean flipTextHorizontally, float revealAnimationEased) {
             float markerValue = -precision - value;
             int i = 0;
             while (markerValue <= precision - value) {
@@ -1123,13 +1119,15 @@ public abstract class JuicyGuiSketch extends PApplet {
                     continue;
                 }
                 float markerNorm = norm(markerValue, -precision - value, precision - value);
-                drawMarkerLine(markerValue, precision, w, h, markerHeight, horizontalLineHeight, value, shouldDrawValue, flipTextHorizontally);
+
+
+                drawMarkerLine(markerValue, precision, w, h, markerHeight, horizontalLineHeight, value, shouldDrawValue, flipTextHorizontally, revealAnimationEased);
                 markerValue += frequency;
             }
         }
 
         private void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight, float horizontalLineHeight,
-                                    float value, boolean shouldDrawValue, boolean flipTextHorizontally) {
+                                    float value, boolean shouldDrawValue, boolean flipTextHorizontally, float revealAnimationEased) {
             float moduloValue = markerValue;
             while (moduloValue > precision) {
                 moduloValue -= precision * 2;
@@ -1139,8 +1137,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float grayscale = distanceFromCenterGrayscale(screenX, w);
-            fill(grayscaleTextSelected, grayscale);
-            stroke(grayscaleTextSelected, grayscale);
+            fill(grayscaleTextSelected, grayscale*revealAnimationEased);
+            stroke(grayscaleTextSelected, grayscale*revealAnimationEased);
             line(screenX, -markerHeight * .5f, screenX, -horizontalLineHeight * .5f);
             if (shouldDrawValue) {
                 if (flipTextHorizontally) {
@@ -1192,6 +1190,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     class SliderFloat extends Slider {
         float value, precision, defaultValue, defaultPrecision, minValue, maxValue, lastValueDelta, valueWhenMouseInteractionStarted;
         boolean constrained = false;
+        private int overlayRevealAnimationStarted = -overlayRevealAnimationDuration;
 
         SliderFloat(Group parent, String name, float defaultValue, float precision) {
             super(parent, name);
@@ -1208,11 +1207,9 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         void handleKeyboardInput() {
             if (keyboardAction.equals(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
-                pushCurrentStateToUndo();
                 precision *= .1f;
             }
             if (keyboardAction.equals(ACTION_PRECISION_ZOOM_IN) && precision < 100000) {
-                pushCurrentStateToUndo();
                 precision *= 10f;
             }
             if (keyboardAction.equals(ACTION_RESET)) {
@@ -1233,10 +1230,11 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onOverlayShown() {
-            super.onOverlayShown();
-        }
-
-        void onOverlayHidden() {
+            if (!overlayVisible || !horizontalOverlayVisible){
+                overlayRevealAnimationStarted = frameCount;
+            }
+            horizontalOverlayVisible = true;
+            verticalOverlayVisible = false;
         }
 
         boolean canHaveOverlay() {
@@ -1269,6 +1267,8 @@ public abstract class JuicyGuiSketch extends PApplet {
         PVector lastValueDelta = new PVector();
         float precision, defaultPrecision;
         private boolean mouseWheelHorizontal = false;
+        private int horizontalOverlayRevealAnimationStarted = -overlayRevealAnimationDuration;
+        private int verticalOverlayRevealAnimationStarted = -overlayRevealAnimationDuration;
 
 
         Slider2D(Group currentGroup, String name, float defaultX, float defaultY, float precision) {
@@ -1296,19 +1296,26 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onOverlayShown() {
-            super.onOverlayShown();
+            if (!overlayVisible || !horizontalOverlayVisible){
+                horizontalOverlayRevealAnimationStarted = frameCount;
+            }
+            if(!overlayVisible || !verticalOverlayVisible){
+                verticalOverlayRevealAnimationStarted = frameCount;
+            }
+            horizontalOverlayVisible = true;
+            verticalOverlayVisible = true;
         }
 
         void updateOverlay() {
             PVector valueDelta = new PVector();
             valueDelta.x = updateInfiniteSlider(precision, width, true, mouseWheelHorizontal);
-            float horizontalAnimation = easedAnimation(overlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
+            float horizontalAnimation = easedAnimation(horizontalOverlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
             displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value.x, true, horizontalAnimation);
             translate(width * .5f, height * .5f);
             rotate(-HALF_PI);
             translate(-height * .5f, -width * .5f);
             valueDelta.y = updateInfiniteSlider(precision, width, false, mouseWheelHorizontal);
-            float verticalAnimation = easedAnimation(overlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
+            float verticalAnimation = easedAnimation(verticalOverlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
             displayInfiniteSliderCenterMode(height * .5f, width - cell, height, cell * 2, precision, value.y, false, verticalAnimation);
             recordInteractionForUndo(valueDelta);
             value.x += valueDelta.x;
@@ -1325,11 +1332,9 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         void handleKeyboardInput() {
             if (keyboardAction.equals(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
-                pushCurrentStateToUndo();
                 precision *= .1f;
             }
             if (keyboardAction.equals(ACTION_PRECISION_ZOOM_IN) && precision < 10000) {
-                pushCurrentStateToUndo();
                 precision *= 10f;
             }
             if (keyboardAction.equals(ACTION_RESET)) {
