@@ -247,7 +247,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
         if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
-            pushTopUndoToRedo();
+            pushCurrentStateToRedo();
             popUndoToCurrentState();
             keyboardSelectionIndex = 1;
         }
@@ -257,8 +257,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
         if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
-            //TODO first redo click does nothing!
-            pushTopRedoOntoUndo();
+            pushCurrentStateToUndoManually();
             popRedoToCurrentState();
             keyboardSelectionIndex = 2;
         }
@@ -721,23 +720,17 @@ public abstract class JuicyGuiSketch extends PApplet {
         undoStack.remove(undoStack.size() - 1);
     }
 
-    private void pushCurrentStateToUndo() {
-        undoStack.add(getGuiState());
+    private void pushCurrentStateToRedo() {
+        redoStack.add(getGuiState());
+    }
+
+    private void pushCurrentStateToUndoNaturally() {
         redoStack.clear();
+        undoStack.add(getGuiState());
     }
 
-    private void pushTopUndoToRedo() {
-        if (undoStack.size() == 0) {
-            throw new IllegalStateException("nothing to find in undo stack!");
-        }
-        redoStack.add(undoStack.get(undoStack.size() - 1));
-    }
-
-    private void pushTopRedoOntoUndo() {
-        if (redoStack.size() == 0) {
-            throw new IllegalStateException("nothing to find in undo stack!");
-        }
-        undoStack.add(redoStack.get(redoStack.size() - 1));
+    private void pushCurrentStateToUndoManually() {
+        undoStack.add(getGuiState());
     }
 
     private void popUndoToCurrentState() {
@@ -961,7 +954,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
-            pushCurrentStateToUndo();
+            pushCurrentStateToUndoNaturally();
             valueIndex++;
             if (valueIndex >= options.size()) {
                 valueIndex = 0;
@@ -1041,7 +1034,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
-            pushCurrentStateToUndo();
+            pushCurrentStateToUndoNaturally();
             state = !state;
         }
     }
@@ -1228,7 +1221,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                 precision *= 10f;
             }
             if (actions.contains(ACTION_RESET)) {
-                pushCurrentStateToUndo();
+                pushCurrentStateToUndoNaturally();
                 precision = defaultPrecision;
                 value = defaultValue;
             }
@@ -1268,11 +1261,8 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void recordInteractionForUndo(float valueDelta) {
-            if (mouseJustPressedOutsideGui()) {
-                pushCurrentStateToUndo();
-            }
-            if (keyboardInteractionJustStarted()) {
-                pushCurrentStateToUndo();
+            if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
+                pushCurrentStateToUndoNaturally();
             }
         }
 
@@ -1347,18 +1337,15 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void recordInteractionForUndo(PVector valueDelta) {
-            if (mouseJustPressedOutsideGui()) {
-                pushCurrentStateToUndo();
-            }
-            if (keyboardInteractionJustStarted()) {
-                pushCurrentStateToUndo();
+            if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
+                pushCurrentStateToUndoNaturally();
             }
         }
 
         private boolean keyboardInteractionJustStarted() {
-            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) &&
-                    previousActions.contains(ACTION_RIGHT) &&
-                    previousActions.contains(ACTION_UP) &&
+            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) ||
+                    previousActions.contains(ACTION_RIGHT) ||
+                    previousActions.contains(ACTION_UP) ||
                     previousActions.contains(ACTION_DOWN);
             boolean isKeyboardActive = actions.contains(ACTION_LEFT) ||
                     actions.contains(ACTION_RIGHT) ||
@@ -1375,7 +1362,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                 precision *= 10f;
             }
             if (actions.contains(ACTION_RESET)) {
-                pushCurrentStateToUndo();
+                pushCurrentStateToUndoNaturally();
                 precision = defaultPrecision;
                 value.x = defaultValue.x;
                 value.y = defaultValue.y;
