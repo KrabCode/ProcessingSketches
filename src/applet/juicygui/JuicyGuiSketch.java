@@ -46,7 +46,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     // input
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
     private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
-    private String keyboardAction = "";
+    private ArrayList<String> keyboardActions = new ArrayList<String>();
     private int keyboardSelectionIndex = 0;
     private int specialButtonCount = 3;
     private int keyRepeatDelayFirst = 300;
@@ -170,9 +170,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
         popStyle();
         pMousePressed = mousePressed;
-        if (!keyPressed || (!keyboardAction.equals("") && !keyboardAction.equals(ACTION_LEFT) && !keyboardAction.equals(ACTION_RIGHT))) {
-            keyboardAction = "";
-        }
+        keyboardActions.clear();
     }
 
     private void firstFrameSetup(boolean defaultVisibility) {
@@ -238,7 +236,7 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
-        if (canUndo && (activated("undo", x, y, w, h) || keyboardAction.equals("UNDO"))) {
+        if (canUndo && (activated("undo", x, y, w, h) || keyboardActions.contains("UNDO"))) {
             pushTopUndoToRedo();
             popUndoToCurrentState();
             keyboardSelectionIndex = 1;
@@ -254,7 +252,7 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
-        if (canRedo && (activated("redo", x, y, w, h) || keyboardAction.equals("REDO"))) {
+        if (canRedo && (activated("redo", x, y, w, h) || keyboardActions.contains("REDO"))) {
             pushTopRedoOntoUndo();
             popRedoToCurrentState();
             keyboardSelectionIndex = 2;
@@ -374,7 +372,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     }
 
     private boolean keyboardActivated(String query) {
-        return keyboardSelected(query) && keyboardAction.equals("ACTION");
+        return keyboardSelected(query) && keyboardActions.contains("ACTION");
     }
 
     private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
@@ -403,16 +401,16 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     public void mouseReleased() {
         if (mouseButton == CENTER) {
-            keyboardAction = ACTION_MIDDLE_MOUSE_BUTTON;
+            keyboardActions.add(ACTION_MIDDLE_MOUSE_BUTTON);
         }
     }
 
     public void mouseWheel(MouseEvent event) {
         float direction = event.getCount();
         if (direction > 0) {
-            keyboardAction = ACTION_PRECISION_ZOOM_IN;
+            keyboardActions.add(ACTION_PRECISION_ZOOM_IN);
         } else if (direction < 0) {
-            keyboardAction = ACTION_PRECISION_ZOOM_OUT;
+            keyboardActions.add(ACTION_PRECISION_ZOOM_OUT);
         }
     }
 
@@ -500,30 +498,24 @@ public abstract class JuicyGuiSketch extends PApplet {
         for (Key kk : keyboardKeys) {
             if (kk.coded) {
                 if (kk.character == UP) {
-                    keyboardAction = ACTION_UP;
-                    if (kk.repeatCheck()) {
+                    keyboardActions.add(ACTION_UP);
+                    if (!verticalOverlayVisible && kk.repeatCheck()) {
                         if (keyboardSelectionIndex == specialButtonCount) {
                             keyboardSelectionIndex = 0;
                         } else {
                             keyboardSelectionIndex -= hiddenElementCount(false);
                             keyboardSelectionIndex--;
                         }
-                        if (isAnyElementKeyboardSelected()) {
-                            setOverlayOwner(findKeyboardSelectedElement());
-                        }
                     }
                 }
                 if (kk.character == DOWN) {
-                    keyboardAction = ACTION_DOWN;
-                    if (kk.repeatCheck()) {
+                    keyboardActions.add(ACTION_DOWN);
+                    if (!verticalOverlayVisible && kk.repeatCheck()) {
                         if (keyboardSelectionIndex < specialButtonCount) {
                             keyboardSelectionIndex = specialButtonCount;
                         } else {
                             keyboardSelectionIndex += hiddenElementCount(true);
                             keyboardSelectionIndex++;
-                        }
-                        if (isAnyElementKeyboardSelected()) {
-                            setOverlayOwner(findKeyboardSelectedElement());
                         }
                     }
                 }
@@ -532,7 +524,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                         Group keyboardSelected = findKeyboardSelectedGroup();
                         keyboardSelected.expanded = !keyboardSelected.expanded;
                     } else {
-                        keyboardAction = ACTION_LEFT;
+                        keyboardActions.add(ACTION_LEFT);
                     }
                 }
                 if (kk.character == RIGHT) {
@@ -540,7 +532,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                         Group keyboardSelected = findKeyboardSelectedGroup();
                         keyboardSelected.expanded = !keyboardSelected.expanded;
                     } else {
-                        keyboardAction = ACTION_RIGHT;
+                        keyboardActions.add(ACTION_RIGHT);
                     }
                 }
             } else if (!kk.coded) {
@@ -548,22 +540,22 @@ public abstract class JuicyGuiSketch extends PApplet {
                     continue;
                 }
                 if (kk.character == '*' || kk.character == '+') {
-                    keyboardAction = ACTION_PRECISION_ZOOM_OUT;
+                    keyboardActions.add(ACTION_PRECISION_ZOOM_OUT);
                 }
                 if (kk.character == '/' || kk.character == '-') {
-                    keyboardAction = ACTION_PRECISION_ZOOM_IN;
+                    keyboardActions.add(ACTION_PRECISION_ZOOM_IN);
                 }
                 if (kk.character == ' ' || kk.character == ENTER) {
-                    keyboardAction = "ACTION";
+                    keyboardActions.add("ACTION");
                 }
                 if (kk.character == 'r') {
-                    keyboardAction = ACTION_RESET;
+                    keyboardActions.add(ACTION_RESET);
                 }
                 if (kk.character == 'z' || kk.character == 26) {
-                    keyboardAction = "UNDO";
+                    keyboardActions.add("UNDO");
                 }
                 if (kk.character == 'y') {
-                    keyboardAction = "REDO";
+                    keyboardActions.add("REDO");
                 }
             }
             kk.justPressed = false;
@@ -1023,7 +1015,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void update() {
-            if (keyboardAction.equals(ACTION_RESET)) {
+            if (keyboardActions.contains(ACTION_RESET)) {
                 state = defaultState;
             }
         }
@@ -1047,13 +1039,16 @@ public abstract class JuicyGuiSketch extends PApplet {
                     return valueSpaceDelta;
                 }
             }
-            if (keyboardAction.equals(ACTION_LEFT) && horizontallyControlled) {
+            if (keyboardActions.contains(ACTION_LEFT) && horizontallyControlled) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
-            } else if (keyboardAction.equals(ACTION_RIGHT) && horizontallyControlled) {
+            }
+            if (keyboardActions.contains(ACTION_RIGHT) && horizontallyControlled) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
-            } else if (keyboardAction.equals(ACTION_UP) && !horizontallyControlled) {
+            }
+            if (keyboardActions.contains(ACTION_UP) && !horizontallyControlled) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
-            } else if (keyboardAction.equals(ACTION_DOWN) && !horizontallyControlled) {
+            }
+            if (keyboardActions.contains(ACTION_DOWN) && !horizontallyControlled) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
             }
             return 0;
@@ -1064,27 +1059,27 @@ public abstract class JuicyGuiSketch extends PApplet {
             return screenSpaceDelta * valueToScreenRatio;
         }
 
-        void displayInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value, boolean horizontal, float revealAnimationEased) {
-            float markerHeight = h * revealAnimationEased;
+        void displayInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value, boolean horizontal, float revealAnimation) {
+            float markerHeight = h * revealAnimation;
             pushMatrix();
             pushStyle();
             translate(x, y);
             noStroke();
             drawSliderBackground(w, h, !horizontal);
             float horizontalLineWeight = 3;
-            drawHorizontalLine(w, horizontalLineWeight, revealAnimationEased);
+            drawHorizontalLine(w, horizontalLineWeight, revealAnimation);
             if (!horizontal) {
                 pushMatrix();
                 scale(-1, 1);
             }
             drawMarkerLines(precision * 0.5f, 0, markerHeight * .5f,
-                    horizontalLineWeight, true, value, precision, w, h, !horizontal, revealAnimationEased);
+                    horizontalLineWeight, true, value, precision, w, h, !horizontal, revealAnimation);
             drawMarkerLines(precision * .05f, 10, markerHeight * .3f,
-                    horizontalLineWeight, false, value, precision, w, h, !horizontal, revealAnimationEased);
+                    horizontalLineWeight, false, value, precision, w, h, !horizontal, revealAnimation);
             if (!horizontal) {
                 popMatrix();
             }
-            drawValue(h, precision, value);
+            drawValue(h, precision, value, revealAnimation);
             popMatrix();
             popStyle();
         }
@@ -1162,7 +1157,7 @@ public abstract class JuicyGuiSketch extends PApplet {
             }
         }
 
-        void drawValue(float sliderHeight, float precision, float value) {
+        void drawValue(float sliderHeight, float precision, float value, float animationEased) {
             fill(grayscaleText);
             textAlign(CENTER, CENTER);
             textSize(textSize * 2);
@@ -1173,10 +1168,10 @@ public abstract class JuicyGuiSketch extends PApplet {
                 textX -= textWidth("-") * .5f;
             }
             noStroke();
-            fill(0, .5f);
+            fill(0, backgroundAlpha);
             rectMode(CENTER);
             rect(textX, textY + textSize * .33f, textWidth(text) + 20, textSize * 2 + 20);
-            fill(grayscaleTextSelected);
+            fill(grayscaleTextSelected*animationEased);
             text(text, textX, textY);
         }
 
@@ -1188,7 +1183,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     }
 
     class SliderFloat extends Slider {
-        float value, precision, defaultValue, defaultPrecision, minValue, maxValue, lastValueDelta, valueWhenMouseInteractionStarted;
+        float value, precision, defaultValue, defaultPrecision, minValue, maxValue, lastValueDelta;
         boolean constrained = false;
         private int overlayRevealAnimationStarted = -overlayRevealAnimationDuration;
 
@@ -1206,13 +1201,13 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (keyboardAction.equals(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
+            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
                 precision *= .1f;
             }
-            if (keyboardAction.equals(ACTION_PRECISION_ZOOM_IN) && precision < 100000) {
+            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 100000) {
                 precision *= 10f;
             }
-            if (keyboardAction.equals(ACTION_RESET)) {
+            if (keyboardActions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 precision = defaultPrecision;
                 value = defaultValue;
@@ -1220,13 +1215,12 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         String getState() {
-            return super.getState() + value + SEPARATOR + precision;
+            return super.getState() + value;
         }
 
         void overwriteState(String newState) {
             String[] state = newState.split(SEPARATOR);
             value = Float.parseFloat(state[2]);
-            precision = Float.parseFloat(state[3]);
         }
 
         void onOverlayShown() {
@@ -1249,21 +1243,21 @@ public abstract class JuicyGuiSketch extends PApplet {
             if (constrained) {
                 value = constrain(value, minValue, maxValue);
             }
-            float animation = easedAnimation(overlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value, true, animation);
+            float revealAnimation = easedAnimation(overlayRevealAnimationStarted, overlayRevealAnimationDuration, overlayRevealEasingFactor);
+            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value, true, revealAnimation);
         }
 
         void recordInteractionForUndo(float valueDelta) {
             if (!mouseJustPressedOutsideGui() && lastValueDelta == 0 && valueDelta != 0) {
                 pushCurrentStateToUndo();
             }
+            //TODO keyboard interaction
         }
     }
 
     class Slider2D extends Slider {
         PVector value = new PVector();
         PVector defaultValue = new PVector();
-        PVector valueWhenMouseInteractionStarted = new PVector();
         PVector lastValueDelta = new PVector();
         float precision, defaultPrecision;
         private boolean mouseWheelHorizontal = false;
@@ -1328,22 +1322,23 @@ public abstract class JuicyGuiSketch extends PApplet {
             if (mouseJustPressedOutsideGui()) {
                 pushCurrentStateToUndo();
             }
+            //TODO keyboard interaction
         }
 
         void handleKeyboardInput() {
-            if (keyboardAction.equals(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
+            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
                 precision *= .1f;
             }
-            if (keyboardAction.equals(ACTION_PRECISION_ZOOM_IN) && precision < 10000) {
+            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 10000) {
                 precision *= 10f;
             }
-            if (keyboardAction.equals(ACTION_RESET)) {
+            if (keyboardActions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 precision = defaultPrecision;
                 value.x = defaultValue.x;
                 value.y = defaultValue.y;
             }
-            if (keyboardAction.equals(ACTION_MIDDLE_MOUSE_BUTTON)) {
+            if (keyboardActions.contains(ACTION_MIDDLE_MOUSE_BUTTON)) {
                 mouseWheelHorizontal = !mouseWheelHorizontal;
             }
         }
@@ -1365,7 +1360,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (keyboardAction.equals(ACTION_RESET)) {
+            if (keyboardActions.contains(ACTION_RESET)) {
                 hue = defaultHue;
                 sat = defaultSat;
                 br = defaultBr;
@@ -1394,11 +1389,11 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         boolean canHaveOverlay() {
-            return true;
+            return false;
         }
 
         void updateOverlay() {
-
+            //TODO hue and alpha sliders, brightness/saturation grid
         }
 
     }
