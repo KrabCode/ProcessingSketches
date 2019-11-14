@@ -18,8 +18,8 @@ public abstract class JuicyGuiSketch extends PApplet {
     // scrolling down to allow unlimited group and element count
 
     // state
-    private static final String GROUP_MARKER = "GROUP_MARKER";
-    private static final String SEPARATOR = "--";
+    private static final String GROUP_MARKER = "GROUP";
+    private static final String SEPARATOR = "_!_!!!_!_";
     private static final String ACTION_MIDDLE_MOUSE_BUTTON = "MIDDLE_MOUSE_BUTTON";
     private static final String ACTION_UP = "UP";
     private static final String ACTION_DOWN = "DOWN";
@@ -28,6 +28,10 @@ public abstract class JuicyGuiSketch extends PApplet {
     private static final String ACTION_PRECISION_ZOOM_IN = "PRECISION_ZOOM_IN";
     private static final String ACTION_PRECISION_ZOOM_OUT = "PRECISION_ZOOM_OUT";
     private static final String ACTION_RESET = "RESET";
+    private static final String ACTION_CONTROL = "CONTROL";
+    private static final String ACTION_ACTIVATE = "ACTIVATE";
+    private static final String ACTION_UNDO = "UNDO";
+    private static final String ACTION_REDO = "REDO";
 
     // utils
     protected float t;
@@ -44,11 +48,16 @@ public abstract class JuicyGuiSketch extends PApplet {
     private float grayscaleText = .6f;
 
     // input
+    private int menuButtonCount = 3;
+    private static final String MENU_BUTTON_REDO = "redo";
+    private static final String MENU_BUTTON_UNDO = "undo";
+    private static final String MENU_BUTTON_HIDE = "hide";
+
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
     private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
-    private ArrayList<String> keyboardActions = new ArrayList<String>();
+    private ArrayList<String> actions = new ArrayList<String>();
+    private ArrayList<String> previousActions = new ArrayList<String>();
     private int keyboardSelectionIndex = 0;
-    private int specialButtonCount = 3;
     private int keyRepeatDelayFirst = 300;
     private int keyRepeatDelay = 40;
     private boolean pMousePressed = false;
@@ -158,6 +167,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
         updateKeyboardInput();
         pushStyle();
+        pushMatrix();
         strokeCap(SQUARE);
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
@@ -169,19 +179,18 @@ public abstract class JuicyGuiSketch extends PApplet {
             overlayOwner.updateOverlay();
         }
         popStyle();
+        popMatrix();
         pMousePressed = mousePressed;
-        keyboardActions.clear();
     }
 
     private void firstFrameSetup(boolean defaultVisibility) {
-        //the maximum text size we want to ever use needs to be called first, otherwise the font is stretched and ugly
         trayVisible = defaultVisibility;
         onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         if (!onWindows) {
             textSize *= 2;
             cell *= 2;
         }
-        textSize(textSize * 2);
+        textSize(textSize * 2); //the maximum text size needs to be called first, otherwise the font is stretched and ugly
     }
 
     // UTILS
@@ -221,12 +230,13 @@ public abstract class JuicyGuiSketch extends PApplet {
         updateSpecialRedoButton(x, y, cell * 2, cell);
     }
 
+    //TODO replace text with cute animated arrows
     private void updateSpecialHideButton(float x, float y, float w, float h) {
-        if (activated("hide/show", x, y, w, h)) {
+        if (activated(MENU_BUTTON_HIDE, x, y, w, h)) {
             trayVisible = !trayVisible;
             keyboardSelectionIndex = 0;
         }
-        fill((keyboardSelected("hide/show") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        fill((keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         if (isMouseOver(x, y, w, h) || trayVisible) {
             textSize(textSize);
             textAlign(CENTER, BOTTOM);
@@ -236,34 +246,33 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private void updateSpecialUndoButton(float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
-        if (canUndo && (activated("undo", x, y, w, h) || keyboardActions.contains("UNDO"))) {
+        if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
             pushTopUndoToRedo();
             popUndoToCurrentState();
             keyboardSelectionIndex = 1;
         }
-        textSize(textSize);
-        textAlign(CENTER, BOTTOM);
-        fill((keyboardSelected("undo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
-        text("undo", x, y, w, h);
-        textSize(textSize * .5f);
-        textAlign(CENTER, CENTER);
-        text(undoStack.size(), x + w * .9f, y + textSize * .4f);
+        drawMenuButton(MENU_BUTTON_UNDO, undoStack.size(), x, y, w, h);
     }
 
     private void updateSpecialRedoButton(float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
-        if (canRedo && (activated("redo", x, y, w, h) || keyboardActions.contains("REDO"))) {
+        if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
+            //TODO first redo click does nothing!
             pushTopRedoOntoUndo();
             popRedoToCurrentState();
             keyboardSelectionIndex = 2;
         }
+        drawMenuButton(MENU_BUTTON_REDO, redoStack.size(), x, y, w, h);
+    }
+
+    private void drawMenuButton(String text, int number, float x, float y, float w, float h) {
         textSize(textSize);
         textAlign(CENTER, BOTTOM);
-        fill((keyboardSelected("redo") || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
-        text("redo", x, y, w, h);
+        fill((keyboardSelected(MENU_BUTTON_REDO) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        text(text, x, y, w, h);
         textSize(textSize * .5f);
         textAlign(CENTER, CENTER);
-        text(redoStack.size(), x + w * .9f, y + textSize * .4f);
+        text(number, x + w * .9f, y + textSize * .4f);
     }
 
     protected void group(String name) {
@@ -327,7 +336,6 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
     }
 
-
     private void updateTrayBackground() {
         if (!trayVisible) {
             return;
@@ -372,7 +380,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     }
 
     private boolean keyboardActivated(String query) {
-        return keyboardSelected(query) && keyboardActions.contains("ACTION");
+        return keyboardSelected(query) && actions.contains(ACTION_ACTIVATE);
     }
 
     private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
@@ -401,16 +409,16 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     public void mouseReleased() {
         if (mouseButton == CENTER) {
-            keyboardActions.add(ACTION_MIDDLE_MOUSE_BUTTON);
+            actions.add(ACTION_MIDDLE_MOUSE_BUTTON);
         }
     }
 
     public void mouseWheel(MouseEvent event) {
         float direction = event.getCount();
         if (direction > 0) {
-            keyboardActions.add(ACTION_PRECISION_ZOOM_IN);
+            actions.add(ACTION_PRECISION_ZOOM_IN);
         } else if (direction < 0) {
-            keyboardActions.add(ACTION_PRECISION_ZOOM_OUT);
+            actions.add(ACTION_PRECISION_ZOOM_OUT);
         }
     }
 
@@ -426,12 +434,12 @@ public abstract class JuicyGuiSketch extends PApplet {
         if (!trayVisible) {
             keyboardSelectionIndex = 0;
         }
-        if ((query.equals("hide/show") && keyboardSelectionIndex == 0)
-                || (query.equals("undo") && keyboardSelectionIndex == 1)
-                || (query.equals("redo") && keyboardSelectionIndex == 2)) {
+        if ((query.equals(MENU_BUTTON_HIDE) && keyboardSelectionIndex == 0)
+                || (query.equals(MENU_BUTTON_UNDO) && keyboardSelectionIndex == 1)
+                || (query.equals(MENU_BUTTON_REDO) && keyboardSelectionIndex == 2)) {
             return true;
         }
-        int i = specialButtonCount;
+        int i = menuButtonCount;
         for (Group group : groups) {
             if (group.name.equals(query) && keyboardSelectionIndex == i) {
                 return true;
@@ -452,7 +460,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         for (Group group : groups) {
             elementCount += group.elements.size();
         }
-        return specialButtonCount + groups.size() + elementCount;
+        return menuButtonCount + groups.size() + elementCount;
     }
 
     public void keyPressed() {
@@ -495,12 +503,15 @@ public abstract class JuicyGuiSketch extends PApplet {
     }
 
     private void updateKeyboardInput() {
+        previousActions.clear();
+        previousActions.addAll(actions);
+        actions.clear();
         for (Key kk : keyboardKeys) {
             if (kk.coded) {
                 if (kk.character == UP) {
-                    keyboardActions.add(ACTION_UP);
-                    if (!verticalOverlayVisible && kk.repeatCheck()) {
-                        if (keyboardSelectionIndex == specialButtonCount) {
+                    actions.add(ACTION_UP);
+                    if (!upAndDownArrowsControlOverlay() && kk.repeatCheck()) {
+                        if (keyboardSelectionIndex == menuButtonCount) {
                             keyboardSelectionIndex = 0;
                         } else {
                             keyboardSelectionIndex -= hiddenElementCount(false);
@@ -509,10 +520,10 @@ public abstract class JuicyGuiSketch extends PApplet {
                     }
                 }
                 if (kk.character == DOWN) {
-                    keyboardActions.add(ACTION_DOWN);
-                    if (!verticalOverlayVisible && kk.repeatCheck()) {
-                        if (keyboardSelectionIndex < specialButtonCount) {
-                            keyboardSelectionIndex = specialButtonCount;
+                    actions.add(ACTION_DOWN);
+                    if (!upAndDownArrowsControlOverlay() && kk.repeatCheck()) {
+                        if (keyboardSelectionIndex < menuButtonCount) {
+                            keyboardSelectionIndex = menuButtonCount;
                         } else {
                             keyboardSelectionIndex += hiddenElementCount(true);
                             keyboardSelectionIndex++;
@@ -524,7 +535,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                         Group keyboardSelected = findKeyboardSelectedGroup();
                         keyboardSelected.expanded = !keyboardSelected.expanded;
                     } else {
-                        keyboardActions.add(ACTION_LEFT);
+                        actions.add(ACTION_LEFT);
                     }
                 }
                 if (kk.character == RIGHT) {
@@ -532,30 +543,35 @@ public abstract class JuicyGuiSketch extends PApplet {
                         Group keyboardSelected = findKeyboardSelectedGroup();
                         keyboardSelected.expanded = !keyboardSelected.expanded;
                     } else {
-                        keyboardActions.add(ACTION_RIGHT);
+                        actions.add(ACTION_RIGHT);
                     }
+                }
+                if (kk.character == CONTROL) {
+                    actions.add(ACTION_CONTROL);
                 }
             } else if (!kk.coded) {
                 if (!kk.justPressed) {
                     continue;
                 }
                 if (kk.character == '*' || kk.character == '+') {
-                    keyboardActions.add(ACTION_PRECISION_ZOOM_OUT);
+                    actions.add(ACTION_PRECISION_ZOOM_OUT);
                 }
                 if (kk.character == '/' || kk.character == '-') {
-                    keyboardActions.add(ACTION_PRECISION_ZOOM_IN);
+                    actions.add(ACTION_PRECISION_ZOOM_IN);
                 }
                 if (kk.character == ' ' || kk.character == ENTER) {
-                    keyboardActions.add("ACTION");
+                    actions.add(ACTION_ACTIVATE);
                 }
                 if (kk.character == 'r') {
-                    keyboardActions.add(ACTION_RESET);
+                    actions.add(ACTION_RESET);
                 }
-                if (kk.character == 'z' || kk.character == 26) {
-                    keyboardActions.add("UNDO");
+                if (kk.character == 26) {
+                    // CTRL + Z
+                    actions.add(ACTION_UNDO);
                 }
-                if (kk.character == 'y') {
-                    keyboardActions.add("REDO");
+                if (kk.character == 25) {
+                    // CTRL + Y
+                    actions.add(ACTION_REDO);
                 }
             }
             kk.justPressed = false;
@@ -569,6 +585,10 @@ public abstract class JuicyGuiSketch extends PApplet {
                 keyboardSelectionIndex = keyboardSelectableItemCount() - 1;
             }
         }
+    }
+
+    private boolean upAndDownArrowsControlOverlay() {
+        return overlayVisible && verticalOverlayVisible;
     }
 
     private float findLongestNameWidth() {
@@ -844,7 +864,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         void displayOnTray(float x, float y) {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
-            if (this.equals(overlayOwner)) {
+            if (overlayVisible && this.equals(overlayOwner)) {
                 underlineAnimation(overlayOwnershipTrayAnimationStarted, overlayOwnershipTrayAnimationDuration, x, y, true);
             }
             text(name, x, y);
@@ -1015,7 +1035,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void update() {
-            if (keyboardActions.contains(ACTION_RESET)) {
+            if (actions.contains(ACTION_RESET)) {
                 state = defaultState;
             }
         }
@@ -1039,16 +1059,16 @@ public abstract class JuicyGuiSketch extends PApplet {
                     return valueSpaceDelta;
                 }
             }
-            if (keyboardActions.contains(ACTION_LEFT) && horizontallyControlled) {
+            if (actions.contains(ACTION_LEFT) && horizontallyControlled) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
             }
-            if (keyboardActions.contains(ACTION_RIGHT) && horizontallyControlled) {
+            if (actions.contains(ACTION_RIGHT) && horizontallyControlled) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
             }
-            if (keyboardActions.contains(ACTION_UP) && !horizontallyControlled) {
+            if (actions.contains(ACTION_UP) && !horizontallyControlled) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
             }
-            if (keyboardActions.contains(ACTION_DOWN) && !horizontallyControlled) {
+            if (actions.contains(ACTION_DOWN) && !horizontallyControlled) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
             }
             return 0;
@@ -1132,8 +1152,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float grayscale = distanceFromCenterGrayscale(screenX, w);
-            fill(grayscaleTextSelected, grayscale*revealAnimationEased);
-            stroke(grayscaleTextSelected, grayscale*revealAnimationEased);
+            fill(grayscaleTextSelected, grayscale * revealAnimationEased);
+            stroke(grayscaleTextSelected, grayscale * revealAnimationEased);
             line(screenX, -markerHeight * .5f, screenX, -horizontalLineHeight * .5f);
             if (shouldDrawValue) {
                 if (flipTextHorizontally) {
@@ -1171,7 +1191,7 @@ public abstract class JuicyGuiSketch extends PApplet {
             fill(0, backgroundAlpha);
             rectMode(CENTER);
             rect(textX, textY + textSize * .33f, textWidth(text) + 20, textSize * 2 + 20);
-            fill(grayscaleTextSelected*animationEased);
+            fill(grayscaleTextSelected * animationEased);
             text(text, textX, textY);
         }
 
@@ -1201,13 +1221,13 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
+            if (actions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
                 precision *= .1f;
             }
-            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 100000) {
+            if (actions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 100000) {
                 precision *= 10f;
             }
-            if (keyboardActions.contains(ACTION_RESET)) {
+            if (actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 precision = defaultPrecision;
                 value = defaultValue;
@@ -1224,7 +1244,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onOverlayShown() {
-            if (!overlayVisible || !horizontalOverlayVisible){
+            if (!overlayVisible || !horizontalOverlayVisible) {
                 overlayRevealAnimationStarted = frameCount;
             }
             horizontalOverlayVisible = true;
@@ -1248,10 +1268,18 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void recordInteractionForUndo(float valueDelta) {
-            if (!mouseJustPressedOutsideGui() && lastValueDelta == 0 && valueDelta != 0) {
+            if (mouseJustPressedOutsideGui()) {
                 pushCurrentStateToUndo();
             }
-            //TODO keyboard interaction
+            if (keyboardInteractionJustStarted()) {
+                pushCurrentStateToUndo();
+            }
+        }
+
+        private boolean keyboardInteractionJustStarted() {
+            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) || previousActions.contains(ACTION_RIGHT);
+            boolean isKeyboardActive = actions.contains(ACTION_LEFT) || actions.contains(ACTION_RIGHT);
+            return !wasKeyboardActive && isKeyboardActive;
         }
     }
 
@@ -1290,10 +1318,10 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void onOverlayShown() {
-            if (!overlayVisible || !horizontalOverlayVisible){
+            if (!overlayVisible || !horizontalOverlayVisible) {
                 horizontalOverlayRevealAnimationStarted = frameCount;
             }
-            if(!overlayVisible || !verticalOverlayVisible){
+            if (!overlayVisible || !verticalOverlayVisible) {
                 verticalOverlayRevealAnimationStarted = frameCount;
             }
             horizontalOverlayVisible = true;
@@ -1322,23 +1350,37 @@ public abstract class JuicyGuiSketch extends PApplet {
             if (mouseJustPressedOutsideGui()) {
                 pushCurrentStateToUndo();
             }
-            //TODO keyboard interaction
+            if (keyboardInteractionJustStarted()) {
+                pushCurrentStateToUndo();
+            }
+        }
+
+        private boolean keyboardInteractionJustStarted() {
+            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) &&
+                    previousActions.contains(ACTION_RIGHT) &&
+                    previousActions.contains(ACTION_UP) &&
+                    previousActions.contains(ACTION_DOWN);
+            boolean isKeyboardActive = actions.contains(ACTION_LEFT) ||
+                    actions.contains(ACTION_RIGHT) ||
+                    actions.contains(ACTION_UP) ||
+                    actions.contains(ACTION_DOWN);
+            return !wasKeyboardActive && isKeyboardActive;
         }
 
         void handleKeyboardInput() {
-            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
+            if (actions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > .1f) {
                 precision *= .1f;
             }
-            if (keyboardActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 10000) {
+            if (actions.contains(ACTION_PRECISION_ZOOM_IN) && precision < 10000) {
                 precision *= 10f;
             }
-            if (keyboardActions.contains(ACTION_RESET)) {
+            if (actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 precision = defaultPrecision;
                 value.x = defaultValue.x;
                 value.y = defaultValue.y;
             }
-            if (keyboardActions.contains(ACTION_MIDDLE_MOUSE_BUTTON)) {
+            if (actions.contains(ACTION_MIDDLE_MOUSE_BUTTON)) {
                 mouseWheelHorizontal = !mouseWheelHorizontal;
             }
         }
@@ -1360,7 +1402,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (keyboardActions.contains(ACTION_RESET)) {
+            if (actions.contains(ACTION_RESET)) {
                 hue = defaultHue;
                 sat = defaultSat;
                 br = defaultBr;
