@@ -21,7 +21,7 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     // actions
     private static final String GROUP_MARKER = "GROUP";
-    private static final String SEPARATOR = "_!_!!!_!_";
+    private static final String SEPARATOR = "_!_";
     private static final String ACTION_MIDDLE_MOUSE_BUTTON = "MIDDLE_MOUSE_BUTTON";
     private static final String ACTION_UP = "UP";
     private static final String ACTION_DOWN = "DOWN";
@@ -75,9 +75,9 @@ public abstract class JuicyGuiSketch extends PApplet {
     private boolean horizontalOverlayVisible;
     private boolean verticalOverlayVisible;
     private Element overlayOwner = null; // do not assign directly!
-    private int overlayOwnershipTrayAnimationDuration = 10;
-    private int overlayOwnershipTrayAnimationStarted = -overlayOwnershipTrayAnimationDuration;
-    private float overlayDarkenEasingFactor = 3;
+    private int underlineTrayAnimationDuration = 10;
+    private int underlineTrayAnimationStarted = -underlineTrayAnimationDuration;
+    private float overlayEdgeDarkenEasingFactor = 3;
     private float overlayRevealAnimationDuration = 15;
     private float overlayRevealStartSkip = overlayRevealAnimationDuration * .25f;
     private float overlayRevealEasingFactor = 1;
@@ -225,14 +225,14 @@ public abstract class JuicyGuiSketch extends PApplet {
     private void updateSpecialButtons() {
         float x = 0;
         float y = 0;
-        updateSpecialHideButton(x, y, cell * 2, cell);
+        updateSpecialHideButton(x, y, cell * 2, cell*2);
         if (!trayVisible) {
             return;
         }
         x += cell * 2;
-        updateSpecialUndoButton(x, y, cell * 2, cell);
+        updateSpecialUndoButton(x, y, cell * 2, cell*2);
         x += cell * 2;
-        updateSpecialRedoButton(x, y, cell * 2, cell);
+        updateSpecialRedoButton(x, y, cell * 2, cell*2);
     }
 
     //TODO replace text with cute animated arrows
@@ -241,10 +241,14 @@ public abstract class JuicyGuiSketch extends PApplet {
             trayVisible = !trayVisible;
             keyboardSelectionIndex = 0;
         }
-        fill((keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        float grayscale = (keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected :
+                grayscaleText;
+//        stroke(grayscale);
+        noStroke();
+        fill(grayscale);
         if (isMouseOver(x, y, w, h) || trayVisible) {
             textSize(textSize);
-            textAlign(CENTER, BOTTOM);
+            textAlign(CENTER, CENTER);
             text(trayVisible ? "hide" : "show", x, y, w, h);
         }
     }
@@ -271,8 +275,8 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private void drawMenuButton(String text, int number, float x, float y, float w, float h) {
         textSize(textSize);
-        textAlign(CENTER, BOTTOM);
-        fill((keyboardSelected(MENU_BUTTON_REDO) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        textAlign(CENTER, CENTER);
+        fill((keyboardSelected(text) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
         text(text, x, y, w, h);
         textSize(textSize * .5f);
         textAlign(CENTER, CENTER);
@@ -376,7 +380,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         this.overlayOwner = overlayOwnerToSet;
         this.overlayOwner.onOverlayShown();
         overlayVisible = true;
-        overlayOwnershipTrayAnimationStarted = frameCount;
+        underlineTrayAnimationStarted = frameCount;
     }
 
     // INPUT
@@ -866,7 +870,7 @@ public abstract class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (overlayVisible && this.equals(overlayOwner)) {
-                underlineAnimation(overlayOwnershipTrayAnimationStarted, overlayOwnershipTrayAnimationDuration, x, y,
+                underlineAnimation(underlineTrayAnimationStarted, underlineTrayAnimationDuration, x, y,
                         true);
             }
             text(name, x, y);
@@ -1122,7 +1126,7 @@ public abstract class JuicyGuiSketch extends PApplet {
             for (int i = 0; i < w; i++) {
                 float iNorm = norm(i, 0, w);
                 float screenX = lerp(-w, w, iNorm);
-                stroke(grayscaleTextSelected, distanceFromCenterGrayscale(screenX, w));
+                stroke(grayscaleTextSelected, darkenEdges(screenX, w));
                 vertex(screenX, 0);
             }
             endShape();
@@ -1158,7 +1162,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                 moduloValue += precision * 2;
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
-            float grayscale = distanceFromCenterGrayscale(screenX, w);
+            float grayscale = darkenEdges(screenX, w);
             fill(grayscaleTextSelected, grayscale * revealAnimationEased);
             stroke(grayscaleTextSelected, grayscale * revealAnimationEased);
             line(screenX, -markerHeight * .5f, screenX, -horizontalLineHeight * .5f);
@@ -1202,10 +1206,10 @@ public abstract class JuicyGuiSketch extends PApplet {
             text(text, textX, textY);
         }
 
-        float distanceFromCenterGrayscale(float screenX, float w) {
+        float darkenEdges(float screenX, float w) {
             float xNorm = norm(screenX, -w, w);
             float distanceFromCenter = abs(.5f - xNorm) * 4;
-            return 1 - ease(distanceFromCenter, overlayDarkenEasingFactor);
+            return 1 - ease(distanceFromCenter, overlayEdgeDarkenEasingFactor);
         }
     }
 
