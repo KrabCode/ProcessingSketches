@@ -29,18 +29,18 @@ public class JuiceTest extends JuicyGuiSketch {
         pg.beginDraw();
         group("background");
         if (toggle("redraw", true) | button("reset once")) {
-            pg.background(sliderColor("fill", 0, 0, 0));
+            pg.background(picker("fill", 0, 0, 0));
             pg.rectMode(CENTER);
         }
         group("matrix");
-        PVector translate = slider2D("translate", 0, 0, 1000);
+        PVector translate = sliderXY("translate", 0, 0, 1000);
         pg.translate(width * .5f + translate.x, height * .5f + translate.y);
-        pg.rotate(sliderFloat("rotation", 0, 10));
+        pg.rotate(slider("rotation", 0, 10));
         group("shape");
-        pg.fill(sliderColor("fill", 0, 0, .5f));
-        pg.stroke(sliderColor("stroke", 0, 0, .8f));
-        pg.strokeWeight(sliderFloat("weight", 2, 100));
-        float size = sliderFloat("size", 150, 1000);
+        pg.fill(picker("fill", .5f, 1, .5f));
+        pg.stroke(picker("stroke", 0, 0, .8f));
+        pg.strokeWeight(slider("weight", 2, 100));
+        float size = slider("size", 150, 1000);
         pg.pushMatrix();
         pg.translate(-size * .5f, -size * .5f);
         pg.beginShape();

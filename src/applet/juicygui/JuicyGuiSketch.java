@@ -19,9 +19,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     // activation animation for extra juice
     // scrolling down to allow unlimited group and element count
 
-    // actions
-    private static final String GROUP_MARKER = "GROUP";
-    private static final String SEPARATOR = "_!_";
+    private static final String REGEX_SEPARATOR = "_!_";
     private static final String ACTION_MIDDLE_MOUSE_BUTTON = "MIDDLE_MOUSE_BUTTON";
     private static final String ACTION_UP = "UP";
     private static final String ACTION_DOWN = "DOWN";
@@ -37,57 +35,54 @@ public abstract class JuicyGuiSketch extends PApplet {
     private static final String MENU_BUTTON_REDO = "redo";
     private static final String MENU_BUTTON_UNDO = "undo";
     private static final String MENU_BUTTON_HIDE = "hide";
-    // utils
+    private static final float BACKGROUND_ALPHA = .5f;
+    private static final float GRAYSCALE_GRID = .3f;
+    private static final float GRAYSCALE_TEXT_DARK = .6f;
+    private static final float GRAYSCALE_TEXT_SELECTED = 1;
+    private static final float PRECISION_MAXIMUM = 10000;
+    private static final float PRECISION_MINIMUM = 1;
+    private static final int UNDERLINE_TRAY_ANIMATION_DURATION = 10;
+    private static final float UNDERLINE_TRAY_ANIMATION_EASING = 3;
+    private static final float SLIDER_EDGE_DARKEN_EASING = 3;
+    private static final float SLIDER_REVEAL_DURATION = 15;
+    private static final float SLIDER_REVEAL_START_SKIP = SLIDER_REVEAL_DURATION * .25f;
+    private static final float SLIDER_REVEAL_EASING = 1;
+    private static final float PICKER_REVEAL_DURATION = 15;
+    private static final float PICKER_REVEAL_EASING = 15;
+    private static final int MENU_BUTTON_COUNT = 3;
+    private static final int KEY_REPEAT_DELAY_FIRST = 300;
+    private static final int KEY_REPEAT_DELAY = 30;
+    private static final String TYPE_SATURATION = "saturation";
+    private static final String TYPE_BRIGHTNESS = "brightness";
     protected float t;
-    private int framesToCapture = 360;
-    // state
+    protected int framesToCapture = 360;
+    private int underlineTrayAnimationStarted = -UNDERLINE_TRAY_ANIMATION_DURATION;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
-    // color
-    private float backgroundAlpha = .5f;
-    private boolean onWindows;
     private ArrayList<Group> groups = new ArrayList<Group>();
     private Group currentGroup = null; // do not assign to nor read directly!
-    private float grayscaleGrid = .3f;
-    private float grayscaleTextSelected = 1;
-    private float grayscaleText = .6f;
-    // input
-    private int menuButtonCount = 3;
+    private boolean onWindows;
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
     private ArrayList<Key> keyboardKeysToRemove = new ArrayList<Key>();
     private ArrayList<String> actions = new ArrayList<String>();
     private ArrayList<String> previousActions = new ArrayList<String>();
-    private int keyboardSelectionIndex = 0;
-    private int keyRepeatDelayFirst = 300;
-    private int keyRepeatDelay = 40;
     private boolean pMousePressed = false;
-
-    // layout
+    private int keyboardSelectionIndex = 0;
     private float textSize = 24;
     private float cell = 40;
     private float minimumTrayWidth = cell * 6;
+    private float overlayHeight = cell * 2;
     private float trayWidth = minimumTrayWidth;
     private boolean trayVisible = true;
-    private float animationEasingFactor = 3;
-
-    // overlay
     private boolean overlayVisible;
     private boolean horizontalOverlayVisible;
     private boolean verticalOverlayVisible;
+    private boolean pickerOverlayVisible;
     private Element overlayOwner = null; // do not assign directly!
-    private int underlineTrayAnimationDuration = 10;
-    private int underlineTrayAnimationStarted = -underlineTrayAnimationDuration;
-    private float overlayEdgeDarkenEasingFactor = 3;
-    private float overlayRevealAnimationDuration = 15;
-    private float overlayRevealStartSkip = overlayRevealAnimationDuration * .25f;
-    private float overlayRevealEasingFactor = 1;
-
-    private float precisionMaximum = 10000;
-    private float precisionMinimum = 1;
 
     // INTERFACE
 
-    protected float sliderFloat(String name, float defaultValue, float precision) {
+    protected float slider(String name, float defaultValue, float precision) {
         Group currentGroup = getCurrentGroup();
         if (!elementExists(name, currentGroup.name)) {
             SliderFloat newElement = new SliderFloat(currentGroup, name, defaultValue, precision);
@@ -98,7 +93,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         return slider.value;
     }
 
-    protected PVector slider2D(String name, float defaultX, float defaultY, float precision) {
+    protected PVector sliderXY(String name, float defaultX, float defaultY, float precision) {
         Group currentGroup = getCurrentGroup();
         if (!elementExists(name, currentGroup.name)) {
             Slider2D newElement = new Slider2D(currentGroup, name, defaultX, defaultY, precision);
@@ -109,22 +104,22 @@ public abstract class JuicyGuiSketch extends PApplet {
         return slider.value;
     }
 
-    protected int sliderColor(String name, float hue, float sat, float br) {
-        return sliderColor(name, hue, sat, br, 1.f);
+    protected int picker(String name, float hue, float sat, float br) {
+        return picker(name, hue, sat, br, 1);
     }
 
-    protected int sliderColor(String name, float hue, float sat, float br, float alpha) {
+    protected int picker(String name, float hue, float sat, float br, float alpha) {
         Group currentGroup = getCurrentGroup();
         if (!elementExists(name, currentGroup.name)) {
-            SliderColor newElement = new SliderColor(currentGroup, name, hue, sat, br, alpha);
+            ColorPicker newElement = new ColorPicker(currentGroup, name, hue, sat, br, alpha);
             currentGroup.elements.add(newElement);
         }
-        SliderColor slider = (SliderColor) findElement(name, currentGroup.name);
+        ColorPicker slider = (ColorPicker) findElement(name, currentGroup.name);
         assert slider != null;
         return slider.value();
     }
 
-    protected String radio(String defaultValue, String... otherValues) {
+    protected String options(String defaultValue, String... otherValues) {
         Group currentGroup = getCurrentGroup();
         if (!elementExists(defaultValue, currentGroup.name)) {
             Element newElement = new Radio(currentGroup, defaultValue, otherValues);
@@ -176,7 +171,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         colorMode(HSB, 1, 1, 1, 1);
         resetMatrixInAnyRenderer();
         updateTrayBackground();
-        updateSpecialButtons();
+        updateMenuButtons();
         updateGroupsAndTheirElements();
         updateFps();
         if (overlayVisible) {
@@ -193,6 +188,8 @@ public abstract class JuicyGuiSketch extends PApplet {
         if (!onWindows) {
             textSize *= 2;
             cell *= 2;
+            minimumTrayWidth = cell * 6;
+            overlayHeight = cell * 2;
         }
         textSize(textSize * 2); //the maximum text size needs to be called first, otherwise the font is stretched and
         // ugly
@@ -222,27 +219,27 @@ public abstract class JuicyGuiSketch extends PApplet {
         surface.setTitle(this.getClass().getSimpleName() + " " + fps);
     }
 
-    private void updateSpecialButtons() {
+    private void updateMenuButtons() {
         float x = 0;
         float y = 0;
-        updateSpecialHideButton(x, y, cell * 2, cell*2);
+        updateMenuButtonHide(x, y, cell * 2, cell * 1.5f);
         if (!trayVisible) {
             return;
         }
         x += cell * 2;
-        updateSpecialUndoButton(x, y, cell * 2, cell*2);
+        updateMenuButtonUndo(x, y, cell * 2, cell * 1.5f);
         x += cell * 2;
-        updateSpecialRedoButton(x, y, cell * 2, cell*2);
+        updateMenuButtonRedo(x, y, cell * 2, cell * 1.5f);
     }
 
     //TODO replace text with cute animated arrows
-    private void updateSpecialHideButton(float x, float y, float w, float h) {
+    private void updateMenuButtonHide(float x, float y, float w, float h) {
         if (activated(MENU_BUTTON_HIDE, x, y, w, h)) {
             trayVisible = !trayVisible;
             keyboardSelectionIndex = 0;
         }
-        float grayscale = (keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected :
-                grayscaleText;
+        float grayscale = (keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? GRAYSCALE_TEXT_SELECTED :
+                GRAYSCALE_TEXT_DARK;
 //        stroke(grayscale);
         noStroke();
         fill(grayscale);
@@ -253,7 +250,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
     }
 
-    private void updateSpecialUndoButton(float x, float y, float w, float h) {
+    private void updateMenuButtonUndo(float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
         if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
             pushCurrentStateToRedo();
@@ -263,7 +260,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         drawMenuButton(MENU_BUTTON_UNDO, undoStack.size(), x, y, w, h);
     }
 
-    private void updateSpecialRedoButton(float x, float y, float w, float h) {
+    private void updateMenuButtonRedo(float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
         if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
             pushCurrentStateToUndoManually();
@@ -276,7 +273,7 @@ public abstract class JuicyGuiSketch extends PApplet {
     private void drawMenuButton(String text, int number, float x, float y, float w, float h) {
         textSize(textSize);
         textAlign(CENTER, CENTER);
-        fill((keyboardSelected(text) || isMouseOver(x, y, w, h)) ? grayscaleTextSelected : grayscaleText);
+        fill((keyboardSelected(text) || isMouseOver(x, y, w, h)) ? GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
         text(text, x, y, w, h);
         textSize(textSize * .5f);
         textAlign(CENTER, CENTER);
@@ -297,9 +294,10 @@ public abstract class JuicyGuiSketch extends PApplet {
             return;
         }
         float x = cell * .5f;
-        float y = cell * 3;
+        float y = cell * 2.5f;
         for (Group group : groups) {
-            updateGroup(group, x, y);
+            group.update(y);
+            group.drawInTray(x, y);
             if (group.expanded) {
                 x += cell * .5f;
                 for (Element el : group.elements) {
@@ -313,20 +311,9 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
     }
 
-    private void updateGroup(Group group, float x, float y) {
-        fill((keyboardSelected(group.name) ||
-                isMouseOver(0, y - cell, trayWidth, cell)) ? grayscaleTextSelected : grayscaleText);
-        textAlign(LEFT, BOTTOM);
-        textSize(textSize);
-        text(group.name, x, y);
-        if (activated(group.name, 0, y - cell, trayWidth, cell)) {
-            group.expanded = !group.expanded;
-        }
-    }
-
     private void updateElement(Group group, Element el, float x, float y) {
         float grayScale = keyboardSelected(group.name + el.name) ||
-                isMouseOver(0, y - cell, trayWidth, cell) ? grayscaleTextSelected : grayscaleText;
+                isMouseOver(0, y - cell, trayWidth, cell) ? GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK;
         fill(grayScale);
         stroke(grayScale);
         el.displayOnTray(x, y);
@@ -353,13 +340,13 @@ public abstract class JuicyGuiSketch extends PApplet {
         textSize(textSize);
         trayWidth = max(minimumTrayWidth, findLongestNameWidth() + cell * 2);
         noStroke();
-        fill(0, backgroundAlpha);
+        fill(0, BACKGROUND_ALPHA);
         rectMode(CORNER);
         rect(0, 0, trayWidth, height);
     }
 
     private void drawTrayGrid() {
-        stroke(grayscaleGrid);
+        stroke(GRAYSCALE_GRID);
         for (float x = cell; x < trayWidth; x += cell) {
             line(x, 0, x, height);
         }
@@ -425,7 +412,6 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     public void mouseWheel(MouseEvent event) {
         float direction = event.getCount();
-        println("mouse event");
         if (direction > 0) {
             actions.add(ACTION_PRECISION_ZOOM_IN);
         } else if (direction < 0) {
@@ -450,7 +436,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                 || (query.equals(MENU_BUTTON_REDO) && keyboardSelectionIndex == 2)) {
             return true;
         }
-        int i = menuButtonCount;
+        int i = MENU_BUTTON_COUNT;
         for (Group group : groups) {
             if (group.name.equals(query) && keyboardSelectionIndex == i) {
                 return true;
@@ -471,7 +457,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         for (Group group : groups) {
             elementCount += group.elements.size();
         }
-        return menuButtonCount + groups.size() + elementCount;
+        return MENU_BUTTON_COUNT + groups.size() + elementCount;
     }
 
     public void keyPressed() {
@@ -522,7 +508,7 @@ public abstract class JuicyGuiSketch extends PApplet {
                 if (kk.character == UP) {
                     actions.add(ACTION_UP);
                     if (!upAndDownArrowsControlOverlay() && kk.repeatCheck()) {
-                        if (keyboardSelectionIndex == menuButtonCount) {
+                        if (keyboardSelectionIndex == MENU_BUTTON_COUNT) {
                             keyboardSelectionIndex = 0;
                         } else {
                             keyboardSelectionIndex -= hiddenElementCount(false);
@@ -533,8 +519,8 @@ public abstract class JuicyGuiSketch extends PApplet {
                 if (kk.character == DOWN) {
                     actions.add(ACTION_DOWN);
                     if (!upAndDownArrowsControlOverlay() && kk.repeatCheck()) {
-                        if (keyboardSelectionIndex < menuButtonCount) {
-                            keyboardSelectionIndex = menuButtonCount;
+                        if (keyboardSelectionIndex < MENU_BUTTON_COUNT) {
+                            keyboardSelectionIndex = MENU_BUTTON_COUNT;
                         } else {
                             keyboardSelectionIndex += hiddenElementCount(true);
                             keyboardSelectionIndex++;
@@ -633,7 +619,7 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private Group getCurrentGroup() {
         if (currentGroup == null) {
-            Group anonymous = new Group("");
+            Group anonymous = new Group(this.getClass().getSimpleName());
             groups.add(anonymous);
             currentGroup = anonymous;
         }
@@ -761,21 +747,15 @@ public abstract class JuicyGuiSketch extends PApplet {
 
     private void overwriteState(ArrayList<String> statesToSet) {
         for (String elementState : statesToSet) {
-            if (elementState.startsWith(GROUP_MARKER)) {
-                Group group = findGroup(elementState.split(SEPARATOR)[1]);
-                group.overwriteState(elementState);
-            } else {
-                String[] splitState = elementState.split(SEPARATOR);
-                Element el = findElement(splitState[1], splitState[0]);
-                el.overwriteState(elementState);
-            }
+            String[] splitState = elementState.split(REGEX_SEPARATOR);
+            Element el = findElement(splitState[1], splitState[0]);
+            el.overwriteState(elementState);
         }
     }
 
     private ArrayList<String> getGuiState() {
         ArrayList<String> state = new ArrayList<String>();
         for (Group group : groups) {
-            state.add(group.getState());
             for (Element el : group.elements) {
                 state.add(el.getState());
             }
@@ -789,7 +769,15 @@ public abstract class JuicyGuiSketch extends PApplet {
         return ease(revealAnimationNorm, easingFactor);
     }
 
-    // GROUPS and control ELEMENTS
+    private void drawArrowAtOrigin(float arrowHeight) {
+        beginShape();
+        vertex(-arrowHeight * .25f, 0);
+        vertex(0, arrowHeight * .5f);
+        vertex(0, -arrowHeight * .5f);
+        endShape();
+    }
+
+    // classes
 
     class Key {
         boolean justPressed;
@@ -806,8 +794,8 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         boolean repeatCheck() {
             boolean shouldApply = justPressed ||
-                    (!repeatedAlready && millis() > lastRegistered + keyRepeatDelayFirst) ||
-                    (repeatedAlready && millis() > lastRegistered + keyRepeatDelay);
+                    (!repeatedAlready && millis() > lastRegistered + KEY_REPEAT_DELAY_FIRST) ||
+                    (repeatedAlready && millis() > lastRegistered + KEY_REPEAT_DELAY);
             if (shouldApply) {
                 lastRegistered = millis();
                 if (!justPressed) {
@@ -828,12 +816,18 @@ public abstract class JuicyGuiSketch extends PApplet {
             this.name = name;
         }
 
-        String getState() {
-            return GROUP_MARKER + SEPARATOR + name + SEPARATOR + expanded;
+        public void update(float y) {
+            if (activated(name, 0, y - cell, trayWidth, cell)) {
+                expanded = !expanded;
+            }
         }
 
-        void overwriteState(String newState) {
-            this.expanded = Boolean.parseBoolean(newState.split(SEPARATOR)[2]);
+        public void drawInTray(float x, float y) {
+            fill((keyboardSelected(name) || isMouseOver(0, y - cell, trayWidth, cell)) ?
+                    GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
+            textAlign(LEFT, BOTTOM);
+            textSize(textSize);
+            text(name, x, y);
         }
     }
 
@@ -847,7 +841,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         String getState() {
-            return parent.name + SEPARATOR + name + SEPARATOR;
+            return parent.name + REGEX_SEPARATOR + name + REGEX_SEPARATOR;
         }
 
         abstract void overwriteState(String newState);
@@ -862,6 +856,10 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         }
 
+        void onOverlayShown() {
+
+        }
+
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
 
         }
@@ -870,7 +868,7 @@ public abstract class JuicyGuiSketch extends PApplet {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (overlayVisible && this.equals(overlayOwner)) {
-                underlineAnimation(underlineTrayAnimationStarted, underlineTrayAnimationDuration, x, y,
+                underlineAnimation(underlineTrayAnimationStarted, UNDERLINE_TRAY_ANIMATION_DURATION, x, y,
                         true);
             }
             text(name, x, y);
@@ -884,7 +882,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         void underlineAnimation(int startFrame, int duration, float x, float y, boolean stayExtended) {
             float fullWidth = textWidth(name);
             float animation = constrain(norm(frameCount, startFrame, startFrame + duration), 0, 1);
-            float animationEased = ease(animation, animationEasingFactor);
+            float animationEased = ease(animation, UNDERLINE_TRAY_ANIMATION_EASING);
             if (!stayExtended && animation == 1) {
                 animation = 0;
             }
@@ -895,10 +893,6 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-
-        }
-
-        void onOverlayShown() {
 
         }
 
@@ -918,14 +912,14 @@ public abstract class JuicyGuiSketch extends PApplet {
         String getState() {
             StringBuilder state = new StringBuilder(super.getState() + valueIndex);
             for (String option : options) {
-                state.append(SEPARATOR);
+                state.append(REGEX_SEPARATOR);
                 state.append(option);
             }
             return state.toString();
         }
 
         void overwriteState(String newState) {
-            valueIndex = Integer.parseInt(newState.split(SEPARATOR)[2]);
+            valueIndex = Integer.parseInt(newState.split(REGEX_SEPARATOR)[2]);
         }
 
         boolean canHaveOverlay() {
@@ -1023,7 +1017,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void overwriteState(String newState) {
-            this.state = Boolean.parseBoolean(newState.split(SEPARATOR)[2]);
+            this.state = Boolean.parseBoolean(newState.split(REGEX_SEPARATOR)[2]);
         }
 
         boolean canHaveOverlay() {
@@ -1057,25 +1051,27 @@ public abstract class JuicyGuiSketch extends PApplet {
             super(parent, name);
         }
 
-        float updateInfiniteSlider(float precision, float sliderWidth, boolean horizontallyControlled,
-                                   boolean mouseWheelHorizontal) {
+        float updateInfiniteSlider(float precision, float sliderWidth, boolean horizontal, boolean reversed) {
             if (mousePressed && isMouseOutsideGui()) {
-                float screenSpaceDelta = horizontallyControlled ? -(pmouseX - mouseX) : -(pmouseY - mouseY);
+                float screenSpaceDelta = horizontal ? (pmouseX - mouseX) : (pmouseY - mouseY);
+                if (reversed) {
+                    screenSpaceDelta *= -1;
+                }
                 float valueSpaceDelta = screenDistanceToValueDistance(screenSpaceDelta, precision, sliderWidth);
                 if (valueSpaceDelta != 0) {
                     return valueSpaceDelta;
                 }
             }
-            if (actions.contains(ACTION_LEFT) && horizontallyControlled) {
+            if (actions.contains(ACTION_LEFT) && horizontal) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
             }
-            if (actions.contains(ACTION_RIGHT) && horizontallyControlled) {
+            if (actions.contains(ACTION_RIGHT) && horizontal) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
             }
-            if (actions.contains(ACTION_UP) && !horizontallyControlled) {
+            if (actions.contains(ACTION_UP) && !horizontal) {
                 return screenDistanceToValueDistance(-3, precision, sliderWidth);
             }
-            if (actions.contains(ACTION_DOWN) && !horizontallyControlled) {
+            if (actions.contains(ACTION_DOWN) && !horizontal) {
                 return screenDistanceToValueDistance(3, precision, sliderWidth);
             }
             return 0;
@@ -1113,20 +1109,21 @@ public abstract class JuicyGuiSketch extends PApplet {
             popStyle();
         }
 
-        void drawSliderBackground(float w, float h, boolean verticalCutout) {
-            fill(0, backgroundAlpha);
-            rectMode(CENTER);
-            rect(0, 0, verticalCutout ? w - h * 2 : w, h);
+        void drawSliderBackground(float w, float h, boolean horizontal) {
+            fill(0, BACKGROUND_ALPHA);
+            rectMode(CORNER);
+            float xOffset = horizontal ? h : trayWidth;
+            rect(-w * .5f + xOffset, -h * .5f, w, h);
         }
 
         void drawHorizontalLine(float w, float weight, float revealAnimation) {
-            stroke(grayscaleText);
+            stroke(GRAYSCALE_TEXT_DARK);
             beginShape();
             w *= revealAnimation;
             for (int i = 0; i < w; i++) {
                 float iNorm = norm(i, 0, w);
                 float screenX = lerp(-w, w, iNorm);
-                stroke(grayscaleTextSelected, darkenEdges(screenX, w));
+                stroke(GRAYSCALE_TEXT_SELECTED, darkenEdges(screenX, w));
                 vertex(screenX, 0);
             }
             endShape();
@@ -1150,10 +1147,10 @@ public abstract class JuicyGuiSketch extends PApplet {
             }
         }
 
-        private void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight,
-                                    float horizontalLineHeight,
-                                    float value, boolean shouldDrawValue, boolean flipTextHorizontally,
-                                    float revealAnimationEased) {
+        void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight,
+                            float horizontalLineHeight,
+                            float value, boolean shouldDrawValue, boolean flipTextHorizontally,
+                            float revealAnimationEased) {
             float moduloValue = markerValue;
             while (moduloValue > precision) {
                 moduloValue -= precision * 2;
@@ -1163,8 +1160,8 @@ public abstract class JuicyGuiSketch extends PApplet {
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float grayscale = darkenEdges(screenX, w);
-            fill(grayscaleTextSelected, grayscale * revealAnimationEased);
-            stroke(grayscaleTextSelected, grayscale * revealAnimationEased);
+            fill(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
+            stroke(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
             line(screenX, -markerHeight * .5f, screenX, -horizontalLineHeight * .5f);
             if (shouldDrawValue) {
                 if (flipTextHorizontally) {
@@ -1189,7 +1186,7 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void drawValue(float sliderHeight, float precision, float value, float animationEased) {
-            fill(grayscaleText);
+            fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
             textSize(textSize * 2);
             float textY = -cell * 2.5f;
@@ -1199,24 +1196,36 @@ public abstract class JuicyGuiSketch extends PApplet {
                 textX -= textWidth("-") * .5f;
             }
             noStroke();
-            fill(0, backgroundAlpha);
+            fill(0, BACKGROUND_ALPHA);
             rectMode(CENTER);
             rect(textX, textY + textSize * .33f, textWidth(text) + 20, textSize * 2 + 20);
-            fill(grayscaleTextSelected * animationEased);
+            fill(GRAYSCALE_TEXT_SELECTED * animationEased);
             text(text, textX, textY);
         }
 
         float darkenEdges(float screenX, float w) {
             float xNorm = norm(screenX, -w, w);
             float distanceFromCenter = abs(.5f - xNorm) * 4;
-            return 1 - ease(distanceFromCenter, overlayEdgeDarkenEasingFactor);
+            return 1 - ease(distanceFromCenter, SLIDER_EDGE_DARKEN_EASING);
+        }
+
+        void recordStateForUndo() {
+            if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
+                pushCurrentStateToUndoNaturally();
+            }
+        }
+
+        boolean keyboardInteractionJustStarted() {
+            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) || previousActions.contains(ACTION_RIGHT);
+            boolean isKeyboardActive = actions.contains(ACTION_LEFT) || actions.contains(ACTION_RIGHT);
+            return !wasKeyboardActive && isKeyboardActive;
         }
     }
 
     class SliderFloat extends Slider {
         float value, precision, defaultValue, defaultPrecision, minValue, maxValue, lastValueDelta;
         boolean constrained = false;
-        private float overlayRevealAnimationStarted = -overlayRevealAnimationDuration;
+        float sliderRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
 
         SliderFloat(Group parent, String name, float defaultValue, float precision) {
             super(parent, name);
@@ -1232,10 +1241,10 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > precisionMinimum) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > PRECISION_MINIMUM) {
                 precision *= .1f;
             }
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < precisionMaximum) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < PRECISION_MAXIMUM) {
                 precision *= 10f;
             }
             if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
@@ -1250,13 +1259,13 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void overwriteState(String newState) {
-            String[] state = newState.split(SEPARATOR);
+            String[] state = newState.split(REGEX_SEPARATOR);
             value = Float.parseFloat(state[2]);
         }
 
         void onOverlayShown() {
             if (!overlayVisible || !horizontalOverlayVisible) {
-                overlayRevealAnimationStarted = frameCount;
+                sliderRevealAnimationStarted = frameCount;
             }
             horizontalOverlayVisible = true;
             verticalOverlayVisible = false;
@@ -1268,40 +1277,27 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         void updateOverlay() {
             float valueDelta = updateInfiniteSlider(precision, width, true, true);
-            recordInteractionForUndo(valueDelta);
+            recordStateForUndo();
             value += valueDelta;
             lastValueDelta = valueDelta;
             if (constrained) {
                 value = constrain(value, minValue, maxValue);
             }
-            float revealAnimation = easedAnimation(overlayRevealAnimationStarted - overlayRevealStartSkip,
-                    overlayRevealAnimationDuration,
-                    overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value, true,
+            float revealAnimation = easedAnimation(sliderRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+                    SLIDER_REVEAL_DURATION,
+                    SLIDER_REVEAL_EASING);
+            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, overlayHeight, precision, value, true,
                     revealAnimation);
         }
 
-        void recordInteractionForUndo(float valueDelta) {
-            if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
-                pushCurrentStateToUndoNaturally();
-            }
-        }
-
-        private boolean keyboardInteractionJustStarted() {
-            boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) || previousActions.contains(ACTION_RIGHT);
-            boolean isKeyboardActive = actions.contains(ACTION_LEFT) || actions.contains(ACTION_RIGHT);
-            return !wasKeyboardActive && isKeyboardActive;
-        }
     }
 
     class Slider2D extends Slider {
         PVector value = new PVector();
         PVector defaultValue = new PVector();
-        PVector lastValueDelta = new PVector();
         float precision, defaultPrecision;
-        private boolean mouseWheelHorizontal = false;
-        private float horizontalOverlayRevealAnimationStarted = -overlayRevealAnimationDuration;
-        private float verticalOverlayRevealAnimationStarted = -overlayRevealAnimationDuration;
+        float horizontalRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
+        float verticalRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
 
 
         Slider2D(Group currentGroup, String name, float defaultX, float defaultY, float precision) {
@@ -1315,11 +1311,11 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         String getState() {
-            return super.getState() + value.x + SEPARATOR + value.y;
+            return super.getState() + value.x + REGEX_SEPARATOR + value.y;
         }
 
         void overwriteState(String newState) {
-            String[] xyz = newState.split(SEPARATOR);
+            String[] xyz = newState.split(REGEX_SEPARATOR);
             value.x = Float.parseFloat(xyz[2]);
             value.y = Float.parseFloat(xyz[3]);
         }
@@ -1330,47 +1326,45 @@ public abstract class JuicyGuiSketch extends PApplet {
 
         void onOverlayShown() {
             if (!overlayVisible || !horizontalOverlayVisible) {
-                horizontalOverlayRevealAnimationStarted = frameCount;
+                horizontalRevealAnimationStarted = frameCount;
             }
             if (!overlayVisible || !verticalOverlayVisible) {
-                verticalOverlayRevealAnimationStarted = frameCount;
+                verticalRevealAnimationStarted = frameCount;
             }
             horizontalOverlayVisible = true;
             verticalOverlayVisible = true;
         }
 
         void updateOverlay() {
-            PVector valueDelta = new PVector();
-            valueDelta.x = updateInfiniteSlider(precision, width, true, mouseWheelHorizontal);
-            float horizontalAnimation =
-                    easedAnimation(horizontalOverlayRevealAnimationStarted - overlayRevealStartSkip,
-                            overlayRevealAnimationDuration,
-                    overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, cell * 2, precision, value.x, true,
-                    horizontalAnimation);
+            recordStateForUndo();
+            value.x += updateHorizontalSlider();
+            value.y += updateVerticalSlider();
+        }
+
+        private float updateHorizontalSlider() {
+            float deltaX = updateInfiniteSlider(precision, width, true, true);
+            float horizontalAnimation = easedAnimation(horizontalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+                    SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
+            displayInfiniteSliderCenterMode(width * .5f, height - cell, width, overlayHeight,
+                    precision, value.x, true, horizontalAnimation);
+            return deltaX;
+        }
+
+        private float updateVerticalSlider() {
+            pushMatrix();
             translate(width * .5f, height * .5f);
             rotate(-HALF_PI);
             translate(-height * .5f, -width * .5f);
-            valueDelta.y = updateInfiniteSlider(precision, width, false, mouseWheelHorizontal);
-            float verticalAnimation = easedAnimation(verticalOverlayRevealAnimationStarted - overlayRevealStartSkip,
-                    overlayRevealAnimationDuration,
-                    overlayRevealEasingFactor);
-            displayInfiniteSliderCenterMode(height * .5f, width - cell, height, cell * 2, precision, value.y, false,
-                    verticalAnimation);
-            recordInteractionForUndo(valueDelta);
-            value.x += valueDelta.x;
-            value.y += valueDelta.y;
-            lastValueDelta.x = valueDelta.x;
-            lastValueDelta.y = valueDelta.y;
+            float deltaY = updateInfiniteSlider(precision, width, false, true);
+            float verticalAnimation = easedAnimation(verticalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+                    SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
+            displayInfiniteSliderCenterMode(height * .5f, width - cell, height, overlayHeight,
+                    precision, value.y, false, verticalAnimation);
+            popMatrix();
+            return deltaY;
         }
 
-        void recordInteractionForUndo(PVector valueDelta) {
-            if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
-                pushCurrentStateToUndoNaturally();
-            }
-        }
-
-        private boolean keyboardInteractionJustStarted() {
+        boolean keyboardInteractionJustStarted() {
             boolean wasKeyboardActive = previousActions.contains(ACTION_LEFT) ||
                     previousActions.contains(ACTION_RIGHT) ||
                     previousActions.contains(ACTION_UP) ||
@@ -1383,10 +1377,10 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > precisionMinimum) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > PRECISION_MINIMUM) {
                 precision *= .1f;
             }
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < precisionMaximum) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < PRECISION_MAXIMUM) {
                 precision *= 10f;
             }
             if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
@@ -1395,16 +1389,17 @@ public abstract class JuicyGuiSketch extends PApplet {
                 value.x = defaultValue.x;
                 value.y = defaultValue.y;
             }
-            if (actions.contains(ACTION_MIDDLE_MOUSE_BUTTON)) {
-                mouseWheelHorizontal = !mouseWheelHorizontal;
-            }
         }
     }
 
-    class SliderColor extends Slider {
+    class ColorPicker extends Slider {
         float hue, sat, br, alpha, defaultHue, defaultSat, defaultBr, defaultAlpha;
+        float pickerOverlayRevealAnimationStarted = -PICKER_REVEAL_DURATION;
+        float huePrecision = .5f;
+        boolean verticalSlidersChangedThisFrame = false;
+        private float tinySliderInteractionBuffer = 30;
 
-        SliderColor(Group currentGroup, String name, float hue, float sat, float br, float alpha) {
+        ColorPicker(Group currentGroup, String name, float hue, float sat, float br, float alpha) {
             super(currentGroup, name);
             this.hue = hue;
             this.sat = sat;
@@ -1426,11 +1421,11 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         String getState() {
-            return super.getState() + hue + SEPARATOR + sat + SEPARATOR + br + SEPARATOR + alpha;
+            return super.getState() + hue + REGEX_SEPARATOR + sat + REGEX_SEPARATOR + br + REGEX_SEPARATOR + alpha;
         }
 
         void overwriteState(String newState) {
-            String[] hsba = newState.split(SEPARATOR);
+            String[] hsba = newState.split(REGEX_SEPARATOR);
             hue = Float.parseFloat(hsba[2]);
             sat = Float.parseFloat(hsba[3]);
             br = Float.parseFloat(hsba[4]);
@@ -1446,13 +1441,142 @@ public abstract class JuicyGuiSketch extends PApplet {
         }
 
         boolean canHaveOverlay() {
-            return false;
+            return true;
+        }
+
+        void onOverlayShown() {
+            if (!pickerOverlayVisible) {
+                pickerOverlayRevealAnimationStarted = frameCount;
+            }
+            pickerOverlayVisible = true;
+            horizontalOverlayVisible = false;
+            verticalOverlayVisible = false;
         }
 
         void updateOverlay() {
-            //TODO hue and alpha sliders, brightness/saturation grid
+            verticalSlidersChangedThisFrame = false;
+            recordStateForUndo();
+            pushStyle();
+            colorMode(HSB, 1, 1, 1, 1);
+            float tinySliderWidth = cell * 1.5f;
+            float x = width - tinySliderWidth * 3;
+            sat = updateTinyNormalizedVerticalSlider(x, tinySliderWidth, TYPE_SATURATION);
+            x += tinySliderWidth*1.5f;
+            br = updateTinyNormalizedVerticalSlider(x, tinySliderWidth, TYPE_BRIGHTNESS);
+            float hueDelta = updateInfiniteSlider(huePrecision, width, true, false);
+            if(!verticalSlidersChangedThisFrame){
+                hue += hueDelta;
+            }
+            drawHueSlider(width, overlayHeight * .5f);
+            enforceConstraints();
+            drawValueRectangle();
+            popStyle();
         }
 
-    }
+        private void drawHueSlider(float w, float h) {
+            drawHueStripCornerMode(height - h, h * .5f, true);
+            drawHueStripCornerMode(height - h * .5f, h * .5f, false);
+        }
 
+        private void drawHueStripCornerMode(float y, float h, boolean top) {
+            beginShape(TRIANGLE_STRIP);
+            noStroke();
+            int detail = floor(width * .3f);
+            for (int i = 0; i < detail; i++) {
+                float iNorm = norm(i, 0, detail - 1);
+                float x = iNorm * width;
+                float iHue = hueModulo(hue - .5f + iNorm);
+                int iColor = color(iHue, 1, 1, 1);
+                fill(top ? 0 : iColor);
+                vertex(x, y);
+                fill(top ? iColor : 0);
+                vertex(x, y + h);
+            }
+            endShape();
+        }
+
+        private void drawValueRectangle() {
+            float x = width * .5f;
+            float y = height - cell * 2.5f;
+            noStroke();
+            fill(value());
+            rectMode(CENTER);
+            rect(x, y, cell * 2, cell * 2);
+        }
+
+        private float updateTinyNormalizedVerticalSlider(float x, float w, String type) {
+            float topY = height - cell * 5;
+            float h = cell * 3;
+
+            if(mousePressed && isMouseOver(x,topY-tinySliderInteractionBuffer, w, h+tinySliderInteractionBuffer*2)){
+                verticalSlidersChangedThisFrame = true;
+                float newValue = constrain(map(mouseY, topY, topY+h, 0, 1), 0, 1);
+                setValueByType(newValue, type);
+            }
+
+            beginShape(TRIANGLE_STRIP);
+            noStroke();
+            int detail = floor(h * .1f);
+            for (int i = 0; i < detail; i++) {
+                float iNorm = norm(i, 0, detail - 1);
+                float y = topY + h * iNorm;
+                int iColor = getTinySliderColorAt(iNorm, type);
+                fill(iColor);
+                vertex(x, y);
+                vertex(x+w, y);
+            }
+            endShape();
+
+            float currentValue = getValueOf(type);
+            float valueY = topY+h*currentValue;
+            strokeWeight(2);
+            stroke(1);
+            line(x-2,valueY, x+w+2, valueY);
+            return currentValue;
+        }
+
+        private void setValueByType(float newValue, String type) {
+            if (type.equals(TYPE_SATURATION)) {
+                sat = newValue;
+            }
+            if (type.equals(TYPE_BRIGHTNESS)) {
+                br = newValue;
+            }
+        }
+
+        private float getValueOf(String type) {
+            if (type.equals(TYPE_SATURATION)) {
+                return sat;
+            }
+            if (type.equals(TYPE_BRIGHTNESS)) {
+                return br;
+            }
+            return 0;
+        }
+
+        private int getTinySliderColorAt(float iNorm, String type) {
+            if (type.equals(TYPE_SATURATION)) {
+                return color(hue, iNorm, br, 1);
+            }
+            if (type.equals(TYPE_BRIGHTNESS)) {
+                return color(hue, sat, iNorm, 1);
+            }
+            return 0;
+        }
+
+        private void enforceConstraints() {
+            hue = hueModulo(hue);
+            sat = constrain(sat, 0, 1);
+            br = constrain(br, 0, 1);
+            alpha = constrain(alpha, 0, 1);
+        }
+
+        private float hueModulo(float hueToModify) {
+            while (hueToModify < 0) {
+                hueToModify += 1;
+            }
+            hueToModify %= 1;
+            return hueToModify;
+        }
+    }
 }
