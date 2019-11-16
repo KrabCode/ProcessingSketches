@@ -1,15 +1,16 @@
-import applet.juicygui.JuicyGuiSketch;
+import applet.GuiSketch;
+import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
  * Created by Jakub 'Krab' Rak on 2019-11-09
  */
-public class JuiceTest extends JuicyGuiSketch {
+public class JuiceTest extends HotswapGuiSketch {
     private PGraphics pg;
 
     public static void main(String[] args) {
-        JuicyGuiSketch.main("JuiceTest");
+        GuiSketch.main("JuiceTest");
     }
 
     public void settings() {
@@ -29,9 +30,13 @@ public class JuiceTest extends JuicyGuiSketch {
         pg.beginDraw();
         group("background");
         if (toggle("redraw", true) | button("reset once")) {
-            pg.background(picker("fill", 0, 0, 0));
-            pg.rectMode(CENTER);
+            pg.noStroke();
+            pg.fill(picker("fill"));
+            pg.rectMode(CORNER);
+            pg.rect(0,0,width,height);
         }
+        group("shaders");
+        alphaFade(pg);
         group("matrix");
         PVector translate = sliderXY("translate", 0, 0, 1000);
         pg.translate(width * .5f + translate.x, height * .5f + translate.y);
@@ -51,6 +56,7 @@ public class JuiceTest extends JuicyGuiSketch {
         pg.endShape(CLOSE);
         pg.popMatrix();
         pg.endDraw();
+        background(0);
         image(pg, 0, 0);
         gui();
     }
