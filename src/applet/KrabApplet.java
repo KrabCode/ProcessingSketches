@@ -72,7 +72,7 @@ public abstract class KrabApplet extends NewGuiSketch {
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("rgb mag", 100));
+        uniform(rgbSplit).set("delta", slider("rgb mag", 10));
         hotFilter(rgbSplit, pg);
     }
 

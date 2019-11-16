@@ -21,8 +21,14 @@ import java.util.stream.Collectors;
         "WeakerAccess"})
 public abstract class NewGuiSketch extends PApplet {
     //TODO:
-    // ----- Operation JUICE -----
+    // fix bug with first null group's element appearing twice, once at the top and once at the bottom
     // scrolling down to allow unlimited group and element count
+    // default names for elements
+    // pushGroup(name), popGroup();
+    // save last preferences on exit to sketch unique json, find and load them on startup
+    // record states before recording in realtime or well controlled slow-mo, play them back during actual live
+    //  recording in hard to adjust capturing slow-mo
+    // some actual minimalist animated juice...
 
     private static final String REGEX_SEPARATOR = "_!_";
     private static final String ACTION_UP = "UP";
@@ -139,6 +145,25 @@ public abstract class NewGuiSketch extends PApplet {
         return String.valueOf(floor(inputNumber)).length();
     }
 
+    protected PVector sliderXYZ(String name){
+        return sliderXYZ(name, 0,0,0,100);
+    }
+
+    protected PVector sliderXYZ(String name, float x, float y, float z, float precision){
+        Group currentGroup = getCurrentGroup();
+        if (!elementExists(name, currentGroup.name)) {
+            SliderXYZ newElement = new SliderXYZ(currentGroup, name, x,y,z, precision);
+            currentGroup.elements.add(newElement);
+        }
+        SliderXYZ slider = (SliderXYZ) findElement(name, currentGroup.name);
+        assert slider != null;
+        return slider.value;
+    }
+
+    protected PVector sliderXY(String name) {
+        return sliderXY(name, 0, 0, 100);
+    }
+
     protected PVector sliderXY(String name, float defaultX, float defaultY, float precision) {
         Group currentGroup = getCurrentGroup();
         if (!elementExists(name, currentGroup.name)) {
@@ -152,6 +177,10 @@ public abstract class NewGuiSketch extends PApplet {
 
     protected int picker(String name) {
         return picker(name, 0, 0, 0.1f, 1);
+    }
+
+    protected int picker(String name, int grayscale) {
+        return picker(name, 0, 0, grayscale);
     }
 
     protected int picker(String name, float hue, float sat, float br) {
@@ -231,6 +260,7 @@ public abstract class NewGuiSketch extends PApplet {
         popStyle();
         popMatrix();
         pMousePressed = mousePressed;
+        currentGroup = groups.get(0);
     }
 
     private void updateMouseState() {
@@ -374,7 +404,6 @@ public abstract class NewGuiSketch extends PApplet {
     private void updateMenuButtonUndo(float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
         if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
-            keyboardSelectionIndex = 1;
             pushCurrentStateToRedo();
             popUndoToCurrentState();
             undoRotationStarted = frameCount;
@@ -387,7 +416,6 @@ public abstract class NewGuiSketch extends PApplet {
     private void updateMenuButtonRedo(float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
         if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
-            keyboardSelectionIndex = 2;
             pushCurrentStateToUndoManually();
             popRedoToCurrentState();
             redoRotationStarted = frameCount;
@@ -795,9 +823,13 @@ public abstract class NewGuiSketch extends PApplet {
 
     private Group getCurrentGroup() {
         if (currentGroup == null) {
-            Group anonymous = new Group(this.getClass().getSimpleName());
-            groups.add(anonymous);
-            currentGroup = anonymous;
+            if(groups.isEmpty()){
+                Group anonymous = new Group(this.getClass().getSimpleName());
+                groups.add(anonymous);
+                currentGroup = anonymous;
+            }else{
+                return groups.get(0);
+            }
         }
         return currentGroup;
     }
@@ -1040,6 +1072,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         }
 
+
         abstract boolean canHaveOverlay();
 
         void update() {
@@ -1253,11 +1286,6 @@ public abstract class NewGuiSketch extends PApplet {
             super(parent, name);
         }
 
-        @Override
-        void reset() {
-
-        }
-
         float updateInfiniteSlider(float precision, float sliderWidth, boolean horizontal, boolean reversed) {
             if (mousePressed && isMouseOutsideGui()) {
                 float screenSpaceDelta = horizontal ? (pmouseX - mouseX) : (pmouseY - mouseY);
@@ -1456,17 +1484,18 @@ public abstract class NewGuiSketch extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else {
-                minValue = -Float.MAX_VALUE;
+            } else if(name.equals("count") || name.equals("size") || name.equals("drag")){
+                this.constrained = true;
+                minValue = 0;
                 maxValue = Float.MAX_VALUE;
             }
         }
 
         void handleKeyboardInput() {
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision > PRECISION_MINIMUM) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision < PRECISION_MAXIMUM) {
                 precision *= 10f;
             }
-            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision < PRECISION_MAXIMUM) {
+            if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision > PRECISION_MINIMUM) {
                 precision *= .1f;
             }
             if (overlayOwner != null && actions.contains(ACTION_RESET)) {
@@ -1626,6 +1655,41 @@ public abstract class NewGuiSketch extends PApplet {
             precision = defaultPrecision;
             value.x = defaultValue.x;
             value.y = defaultValue.y;
+        }
+    }
+
+    class SliderXYZ extends SliderXY{
+
+        SliderXYZ(Group currentGroup, String name, float defaultX, float defaultY, float defaultZ, float precision) {
+            super(currentGroup, name, defaultX, defaultY, precision);
+            this.defaultValue.z = defaultZ;
+            this.value.z = defaultZ;
+        }
+
+
+        void update() {
+            super.update();
+        }
+
+        void handleKeyboardInput(){
+            super.handleKeyboardInput();
+        }
+
+        String getState() {
+            return super.getState() + REGEX_SEPARATOR + value.z;
+        }
+
+        void setState(String newState) {
+            super.setState(newState);
+            value.z = Float.parseFloat(newState.split(REGEX_SEPARATOR)[4]);
+        }
+
+        void updateOverlay(){
+            super.updateOverlay();
+        }
+
+        void onOverlayShown(){
+            super.onOverlayShown();
         }
     }
 

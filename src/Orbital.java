@@ -1,4 +1,4 @@
-import applet.HotswapGuiSketch;
+import applet.KrabApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Jakub 'Krab' Rak on 2019-11-03
  */
 @SuppressWarnings("SuspiciousNameCombination")
-public class Orbital extends HotswapGuiSketch {
+public class Orbital extends KrabApplet {
     private ArrayList<P> ps = new ArrayList<P>();
     private PGraphics pg;
     private float t;
@@ -16,7 +16,7 @@ public class Orbital extends HotswapGuiSketch {
     private PVector origin = new PVector();
 
     public static void main(String[] args) {
-        HotswapGuiSketch.main("Orbital");
+        KrabApplet.main("Orbital");
     }
 
     public void settings() {
