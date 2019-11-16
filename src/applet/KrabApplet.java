@@ -10,21 +10,12 @@ import java.util.ArrayList;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * A sketch extending this class can apply changes to shaders as you edit the shader file
- *
- * - use uniform() to get a reference to the shader file in order to pass uniforms to it
- * - use hotFilter() and hotShader() to apply your last compilable shader as filter or shader respectively
- * - no need to call loadShader() manually at all
- *
- * - to see the effects you have to actually change the last modified timestamp of the file, (try CTRL+S)
- * - the results of any compilation errors will be printed to standard processing console
- * - only really supports fragment shaders, vert shader support will be shaky at best
- *
- * //TODO delve into vertex shaders and fix the prototype with shader-school
+ * Created by Jakub 'Krab' Rak on 2019-11-16
  */
-public abstract class HotswapGuiSketch extends GuiSketch {
+public abstract class KrabApplet extends NewGuiSketch {
+    //TODO make an interface for shader reloading instead of this stupid chained inheritance
 
-    ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
+    ArrayList<KrabApplet.ShaderSnapshot> snapshots = new ArrayList<KrabApplet.ShaderSnapshot>();
     int refreshRateInMillis = 36;
 
     protected void chromaticAberrationPass(PGraphics pg) {
@@ -33,15 +24,15 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         hotFilter(chromatic, pg);
     }
 
-    protected void patternPass(PGraphics pg, float t){
+    protected void patternPass(PGraphics pg, float t) {
         String pattern = "pattern.glsl";
         uniform(pattern).set("time", t);
         hotFilter(pattern, pg);
     }
 
-    protected void ceilBlack(PGraphics pg){
+    protected void ceilBlack(PGraphics pg) {
         String ceilAlpha = "ceilBlack.glsl";
-        hotFilter(ceilAlpha,pg);
+        hotFilter(ceilAlpha, pg);
     }
 
     protected void alphaFade(PGraphics pg) {
@@ -49,9 +40,9 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
         pg.noStroke();
-        pg.fill(255,slider("alpha", 0, 100,17));
+        pg.fill(255, slider("alpha", 0, 100, 17));
         pg.rectMode(CENTER);
-        pg.rect(0,0,width*2, height*2);
+        pg.rect(0, 0, width * 2, height * 2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
         pg.popStyle();
     }
@@ -59,8 +50,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     protected void noiseOffsetPass(PGraphics pg, float t) {
         String noiseOffset = "noiseOffset.glsl";
         uniform(noiseOffset).set("time", t);
-        uniform(noiseOffset).set("mixAmt", slider("mix", 0,1,.1f));
-        uniform(noiseOffset).set("mag", slider("mag", 0,.01f, .001f));
+        uniform(noiseOffset).set("mixAmt", slider("mix", 0, 1, .1f));
+        uniform(noiseOffset).set("mag", slider("mag", 0, .01f, .001f));
         uniform(noiseOffset).set("frq", slider("frq", 0, 50, 8.5f));
         hotFilter(noiseOffset, pg);
     }
@@ -81,7 +72,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("rgb mag",100));
+        uniform(rgbSplit).set("delta", slider("rgb mag", 100));
         hotFilter(rgbSplit, pg);
     }
 
@@ -92,20 +83,20 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         hotFilter(saturationVibrance, pg);
     }
 
-    protected void toonPass(PGraphics pg){
+    protected void toonPass(PGraphics pg) {
         String toonPass = "postFX/toonFrag.glsl";
         hotFilter(toonPass, pg);
     }
 
 
-    protected void brightnessContractFrag(PGraphics pg){
+    protected void brightnessContractFrag(PGraphics pg) {
         String brightnessContractPass = "postFX/brightnessContrastFrag.glsl";
         uniform(brightnessContractPass).set("brightness", slider("brightness", 1, false));
         uniform(brightnessContractPass).set("contrast", slider("contrast", 2));
         hotFilter(brightnessContractPass, pg);
     }
 
-    protected void vignettePass(PGraphics pg){
+    protected void vignettePass(PGraphics pg) {
         String vignettePass = "postFX/vignetteFrag.glsl";
         uniform(vignettePass).set("amount", slider("vignette", 5));
         uniform(vignettePass).set("falloff", slider("falloff"));
@@ -113,13 +104,13 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     }
 
     public PShader uniform(String fragPath) {
-        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        KrabApplet.ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
         snapshot = initIfNull(snapshot, fragPath, null);
         return snapshot.compiledShader;
     }
 
     public PShader uniform(String fragPath, String vertPath) {
-        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        KrabApplet.ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
         snapshot = initIfNull(snapshot, fragPath, vertPath);
         return snapshot.compiledShader;
     }
@@ -141,29 +132,30 @@ public abstract class HotswapGuiSketch extends GuiSketch {
     }
 
     public void hotShader(String fragPath, PGraphics canvas) {
-        hotShader(fragPath,null, false, canvas);
+        hotShader(fragPath, null, false, canvas);
     }
 
     public void hotShader(String fragPath) {
-        hotShader(fragPath,null, false, g);
+        hotShader(fragPath, null, false, g);
     }
 
     private void hotShader(String fragPath, String vertPath, boolean filter, PGraphics canvas) {
-        ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
+        KrabApplet.ShaderSnapshot snapshot = findSnapshotByPath(fragPath);
         snapshot = initIfNull(snapshot, fragPath, vertPath);
         snapshot.update(filter, canvas);
     }
 
-    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String fragPath, String vertPath) {
+    private KrabApplet.ShaderSnapshot initIfNull(KrabApplet.ShaderSnapshot snapshot, String fragPath,
+                                                 String vertPath) {
         if (snapshot == null) {
-            snapshot = new ShaderSnapshot(fragPath, vertPath);
+            snapshot = new KrabApplet.ShaderSnapshot(fragPath, vertPath);
             snapshots.add(snapshot);
         }
         return snapshot;
     }
 
-    private ShaderSnapshot findSnapshotByPath(String path) {
-        for (ShaderSnapshot snapshot : snapshots) {
+    private KrabApplet.ShaderSnapshot findSnapshotByPath(String path) {
+        for (KrabApplet.ShaderSnapshot snapshot : snapshots) {
             if (snapshot.fragPath.equals(path)) {
                 return snapshot;
             }
@@ -171,7 +163,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         return null;
     }
 
-    class ShaderSnapshot {
+    private class ShaderSnapshot {
         String fragPath;
         String vertPath;
         File fragFile;
@@ -183,14 +175,14 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
 
         ShaderSnapshot(String fragPath, String vertPath) {
-            if(vertPath != null){
+            if (vertPath != null) {
                 compiledShader = loadShader(fragPath, vertPath);
                 vertFile = dataFile(vertPath);
                 vertLastKnownModified = vertFile.lastModified();
                 if (!vertFile.isFile()) {
                     println("Could not find shader at " + vertFile.getPath());
                 }
-            }else{
+            } else {
                 compiledShader = loadShader(fragPath);
             }
             fragFile = dataFile(fragPath);
@@ -203,8 +195,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             this.vertPath = vertPath;
         }
 
-        long max(long a, long b){
-            if(a > b){
+        long max(long a, long b) {
+            if (a > b) {
                 return a;
             }
             return b;
@@ -213,7 +205,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
         void update(boolean filter, PGraphics pg) {
             long currentTimeMillis = currentTimeMillis();
             long lastModified = fragFile.lastModified();
-            if(vertFile != null){
+            if (vertFile != null) {
                 lastModified = max(lastModified, vertFile.lastModified());
             }
             if (compiledAtLeastOnce && currentTimeMillis < lastChecked + refreshRateInMillis) {
@@ -221,7 +213,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
                 applyShader(compiledShader, filter, pg);
                 return;
             }
-            if(!compiledAtLeastOnce && lastModified > lastKnownUncompilable){
+            if (!compiledAtLeastOnce && lastModified > lastKnownUncompilable) {
 //                println("first try");
                 tryCompileNewVersion(filter, pg, lastModified);
                 return;
@@ -230,7 +222,7 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             if (lastModified > fragLastKnownModified && lastModified > lastKnownUncompilable) {
 //                println("file changed, repeat try");
                 tryCompileNewVersion(filter, pg, lastModified);
-            } else if(compiledAtLeastOnce) {
+            } else if (compiledAtLeastOnce) {
 //                println("file didn't change, standard apply");
                 applyShader(compiledShader, filter, pg);
             }
@@ -244,15 +236,16 @@ public abstract class HotswapGuiSketch extends GuiSketch {
             }
         }
 
-        private void tryCompileNewVersion(boolean filter, PGraphics pg, long lastModified){
+        private void tryCompileNewVersion(boolean filter, PGraphics pg, long lastModified) {
             try {
                 PShader candidate;
-                if(vertFile == null){
+                if (vertFile == null) {
                     candidate = loadShader(fragPath);
-                }else{
+                } else {
                     candidate = loadShader(fragPath, vertPath);
                 }
-                // we need to call filter() or shader() here in order to catch any compilation errors and not halt the sketch
+                // we need to call filter() or shader() here in order to catch any compilation errors and not halt 
+                // the sketch
                 applyShader(candidate, filter, pg);
                 compiledShader = candidate;
                 compiledAtLeastOnce = true;

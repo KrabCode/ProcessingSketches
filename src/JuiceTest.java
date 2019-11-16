@@ -1,12 +1,12 @@
 import applet.GuiSketch;
-import applet.HotswapGuiSketch;
+import applet.KrabApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
  * Created by Jakub 'Krab' Rak on 2019-11-09
  */
-public class JuiceTest extends HotswapGuiSketch {
+public class JuiceTest extends KrabApplet {
     private PGraphics pg;
 
     public static void main(String[] args) {

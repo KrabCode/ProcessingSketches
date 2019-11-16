@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public abstract class NewGuiSketch extends PApplet {
     //TODO:
     // ----- Operation JUICE -----
-    // round slider
     // scrolling down to allow unlimited group and element count
 
     private static final String REGEX_SEPARATOR = "_!_";
@@ -1899,6 +1898,5 @@ public abstract class NewGuiSketch extends PApplet {
             hue %= 1;
             return hue;
         }
-
     }
 }
