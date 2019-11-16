@@ -3,12 +3,10 @@ import applet.HotswapGuiSketch;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.event.MouseEvent;
-import processing.opengl.PShader;
 
 
 public class Mandelbrot extends HotswapGuiSketch {
 
-    private PShader mandelbrot;
     private PVector cameraPos;
     private float scale = 1;
     private float scaleTarget = 1;
@@ -23,8 +21,8 @@ public class Mandelbrot extends HotswapGuiSketch {
     }
 
     public void settings() {
-        fullScreen(P2D);
-//        size(800, 800, P2D);
+//        fullScreen(P2D);
+        size(800, 800, P2D);
     }
 
     public void setup() {
@@ -69,6 +67,7 @@ public class Mandelbrot extends HotswapGuiSketch {
     }
 
     public void keyPressed() {
+        super.keyPressed();
         recEnd = frameCount + recLength;
     }
 
