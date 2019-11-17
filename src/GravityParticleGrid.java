@@ -18,7 +18,8 @@ public class GravityParticleGrid extends KrabApplet {
     }
 
     public void settings() {
-        size(800, 800, P3D);
+//        size(800, 800, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -33,22 +34,59 @@ public class GravityParticleGrid extends KrabApplet {
     // point rain falling on a grid of points which ripple with the 2D water effect
     public void draw() {
         pg.beginDraw();
-        group("translate");
-        PVector translate = new PVector(width, height).mult(.5f);
-        pg.translate(translate.x, translate.y, slider("translate z", 0, 100));
-        updateParticles();
-        updateMap();
-        group("shaders");
+        group("camera");
         alphaFade(pg);
-        rgbSplitPass(pg);
-        noisePass(t, pg);
+        PVector xyz = sliderXYZ("position", width/2, height/2, 0, 1000);
+        xyz.add(sliderXYZ("speed"));
+        pg.translate(xyz.x, xyz.y, xyz.z);
+        if(toggle("rotate")){
+            PVector rot = sliderXYZ("rotation");
+            pg.rotateX(rot.x);
+            pg.rotateY(rot.y);
+            pg.rotateZ(rot.z);
+        }
+
+        pg.push();
+        group("planet");
+        PVector rotate = sliderXY("rotate");
+        pg.rotateX(rotate.x);
+        pg.rotateY(rotate.y);
+        pg.rotateZ(t);
+        spiralSphere(pg);
+        pg.pop();
+
+        updateParticles();
+//        updateMap();
+        group("shaders");
+//        chromaticAberrationPass(pg);
+        rgbSplitPassUniform(pg);
         pg.endDraw();
         background(0);
         image(pg, 0, 0);
-        rec(pg);
+        rec(g);
         gui();
     }
 
+
+    private void spiralSphere(PGraphics pg) {
+        pg.beginShape(POINTS);
+        pg.stroke(255);
+        pg.strokeWeight(slider("weight", 2));
+        pg.noFill();
+        float N = slider("count", 3000);
+        float s  = 3.6f/sqrt(N);
+        float dz = 2.0f/N;
+        float lon = 0;
+        float  z = 1 - dz/2;
+        float scl = slider("scl", 500);
+        for (int k = 0; k < N; k++) {
+            float r = sqrt(1-z*z);
+            pg.vertex(cos(lon)*r*scl, sin(lon)*r*scl, z*scl);
+            z    = z - dz;
+            lon = lon + s/r;
+        }
+        pg.endShape();
+    }
 
     private void updateMap() {
         group("grid");
@@ -78,8 +116,11 @@ public class GravityParticleGrid extends KrabApplet {
     }
 
     private void updateParticles() {
-        group("particles");
-        int intendedParticleCount = floor(slider("count", 0, 1000));
+        group("particle");
+        int intendedParticleCount = floor(slider("count", 1000, 1000));
+        if(button("clear")){
+            ps.clear();
+        }
         while (ps.size() < intendedParticleCount) {
             ps.add(new P());
         }
@@ -96,37 +137,42 @@ public class GravityParticleGrid extends KrabApplet {
         PVector spd = new PVector();
 
         void update() {
-            spd.add(PVector.random3D().mult(randomGaussian() * slider("random gaussian")));
+            group("gauss");
+            PVector randomRange = sliderXYZ("xyz", 1, 10);
+            spd.add(new PVector(randomGaussian()*randomRange.x,
+                    randomGaussian()*randomRange.y,
+                    randomGaussian()*randomRange.z).mult(slider("mag")));
             PVector towardsCenter = PVector.sub(origin, pos);
+            group("particle");
             spd.add(towardsCenter.normalize().mult(1 / towardsCenter.mag()).mult(slider("gravity")));
-            group("noise");
-            noiseDetail(floor(slider("detail", 0, 100, 5)));
-            float freq = slider("frequency");
-            float n = slider("magnitude", 0) * ( 1 - 2 * noise(pos.x*freq, pos.y*freq, pos.z*freq));
-
-            group("particles");
-            PVector orbital = PVector.sub(origin, pos).normalize().mult(slider("orbital", 10));
+            PVector orbital = PVector.sub(origin, pos).normalize().mult(slider("orbital", 0, 10));
             // orbital is the normalized vector towards the center for now
             orbital.y = orbital.z;
             orbital.z = 0;
             // X and Z in 3D space need to be converted into X and Y in top-down 2D space so I can rotate it nicely
-            orbital.rotate(QUARTER_PI+n);
+            orbital.rotate(QUARTER_PI);
             // unfold it back to the 3D space
             orbital.z = orbital.y;
+            orbital.normalize().mult(slider("orbital"));
             // keep the y position near 0
             float verticalCentralizeMag = slider("vertical mag");
             orbital.y = pos.y > 0 ? -verticalCentralizeMag : verticalCentralizeMag;
 
 
-            spd.add(orbital.normalize().mult(slider("orbital")));
+            spd.add(orbital);
             spd.mult(slider("drag", 1));
-            PVector prev = new PVector().add(pos);
             pos.add(spd);
             pg.stroke(picker("stroke", 1));
-            pg.strokeWeight(slider("weight", 1));
-            pg.line(pos.x, pos.y, pos.z, prev.x, prev.y, prev.z);
-
+            pg.fill(picker("fill", 0,0));
+            pg.pushMatrix();
+            pg.translate(pos.x, pos.y, pos.z);
+            pg.rotateX(spd.x);
+            pg.rotateY(spd.y);
+            pg.rotateZ(spd.z);
+            pg.box(slider("weight", 10));
+            pg.popMatrix();
         }
 
     }
+
 }

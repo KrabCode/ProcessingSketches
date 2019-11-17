@@ -64,7 +64,7 @@ public abstract class KrabApplet extends NewGuiSketch {
         hotFilter(noise, pg);
     }
 
-    protected void rgbSplitUniformPass(PGraphics pg) {
+    protected void rgbSplitPassUniform(PGraphics pg) {
         String rgbSplit = "rgbSplitUniform.glsl";
         uniform(rgbSplit).set("delta", slider("delta", 2));
         hotFilter(rgbSplit, pg);

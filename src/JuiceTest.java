@@ -14,12 +14,12 @@ public class JuiceTest extends KrabApplet {
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        size(800, 800, P3D);
     }
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        pg = createGraphics(width, height, P2D);
+        pg = createGraphics(width, height, P3D);
         pg.noSmooth();
         pg.beginDraw();
         pg.background(0);
@@ -33,14 +33,17 @@ public class JuiceTest extends KrabApplet {
             pg.noStroke();
             pg.fill(picker("fill"));
             pg.rectMode(CORNER);
-            pg.rect(0,0,width,height);
+            pg.rect(0, 0, width, height);
         }
         group("shaders");
         alphaFade(pg);
         group("matrix");
-        PVector translate = sliderXY("translate", 0, 0, 1000);
-        pg.translate(width * .5f + translate.x, height * .5f + translate.y);
-        pg.rotate(slider("rotation", 0, 10));
+        PVector translate = sliderXYZ("translate", width * .5f, height * .5f, 0, 1000);
+        pg.translate(translate.x, translate.y, translate.z);
+        PVector rotate = sliderXYZ("rotate", 10);
+        pg.rotateX(rotate.x);
+        pg.rotateY(rotate.y);
+        pg.rotateZ(rotate.z);
         group("shape");
         pg.fill(picker("fill", .5f, 1, .5f));
         pg.stroke(picker("stroke", 0, 0, .8f));
@@ -60,4 +63,5 @@ public class JuiceTest extends KrabApplet {
         image(pg, 0, 0);
         gui();
     }
+
 }
