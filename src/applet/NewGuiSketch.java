@@ -14,6 +14,7 @@ import java.util.Arrays;
 // menu buttons: hold undo/redo to undo/redo all
 // tray hold dropdown:
 // touchscreen slider precision, reset
+// slider line to show exact value
 
 // - nice to have:
  // out of constrain markers should not be displayed
@@ -341,7 +342,7 @@ public abstract class NewGuiSketch extends PApplet {
     private void registerExitHandler() {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-//                saveStateToFile();
+                saveStateToFile();
             }
         }));
     }

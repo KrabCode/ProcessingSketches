@@ -14,7 +14,8 @@ public class JuiceTest extends KrabApplet {
     }
 
     public void settings() {
-        size(800, 800, P3D);
+//        size(800, 800, P3D);
+        fullScreen(P3D);
     }
 
     public void setup() {
@@ -40,6 +41,12 @@ public class JuiceTest extends KrabApplet {
         alphaFade(pg);
         rgbSplitPass(pg);
         group("matrix");
+        String options = options("ortho", "perspective");
+        if(options.equals("ortho")){
+            pg.ortho();
+        }else{
+            pg.perspective();
+        }
         PVector translate = sliderXYZ("translate", 1000);
         pg.translate(width*.5f + translate.x, height*.5f+ translate.y, translate.z);
         PVector rotate = sliderXYZ("rotate", 1).add(sliderXYZ("rotate speed", 1));
@@ -56,7 +63,7 @@ public class JuiceTest extends KrabApplet {
         pg.strokeWeight(slider("weight", 2, 100));
         float size = slider("size", 150, 1000);
         pg.pushMatrix();
-        String shape = options("rectangle", "ellipse", "box");
+        String shape = options("rectangle", "ellipse", "box", "sphere");
         if ("rectangle".equals(shape)) {
             pg.rectMode(CENTER);
             pg.rect(0, 0, size, size);
