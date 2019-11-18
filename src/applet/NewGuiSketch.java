@@ -2,7 +2,6 @@ package applet;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PImage;
 import processing.core.PVector;
 import processing.event.MouseEvent;
 
@@ -10,32 +9,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO:
-// features:
-// remove undo / redo stack size number, but communicate emptiness somehow
-
-// menu buttons: save and load state, hold undo/redo to undo/redo all
-
+/** TODO:
+// - must have:
+// menu buttons: hold undo/redo to undo/redo all
 // tray hold dropdown:
 // touchscreen slider precision, reset
-// options dropdown instead of horizontal enumeration for tray width reasons
 
-// record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
-// intercept esc / exit and save state first?
-// pushGroup(name), popGroup();
-// scrolling down to allow unlimited group and element count
-// more minimalist animated juice...
-// range picker (2 floats, start and end, end > start)
-// out of constrain markers must not be displayed
+// - nice to have:
+ // out of constrain markers should not be displayed
+ // record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
+ // pushGroup(name), popGroup();
+ // scrolling down to allow unlimited group and element count
+ // more minimalist animated juice...
+ // range picker (2 floats, start and end, end > start)
 
-//TODO
 // bugs:
 // space when tray hidden must close current overlay
 // first null group's element appears twice, once at the top and once at the bottom
 
-
+*/
 @SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal",
-        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
+        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess", "Convert2Lambda",})
 public abstract class NewGuiSketch extends PApplet {
     private static final String SAVE_PREFIX = "SAVE";
     private static final String STATE_BEGIN = "STATE_BEGIN";
@@ -56,9 +50,12 @@ public abstract class NewGuiSketch extends PApplet {
     private static final String ACTION_ACTIVATE = "ACTIVATE";
     private static final String ACTION_UNDO = "UNDO";
     private static final String ACTION_REDO = "REDO";
-    private static final String MENU_BUTTON_REDO = "redo";
-    private static final String MENU_BUTTON_UNDO = "undo";
+    private static final String ACTION_SAVE = "SAVE";
+    private static final int MENU_BUTTON_COUNT = 4;
     private static final String MENU_BUTTON_HIDE = "hide";
+    private static final String MENU_BUTTON_UNDO = "undo";
+    private static final String MENU_BUTTON_REDO = "redo";
+    private static final String MENU_BUTTON_SAVE = "redo";
     private static final String SATURATION = "saturation";
     private static final String BRIGHTNESS = "brightness";
     private static final String HUE = "hue";
@@ -79,7 +76,6 @@ public abstract class NewGuiSketch extends PApplet {
     private static final float PICKER_REVEAL_DURATION = 15;
     private static final float PICKER_REVEAL_EASING = 1;
     private static final float PICKER_REVEAL_START_SKIP = PICKER_REVEAL_DURATION * .25f;
-    private static final int MENU_BUTTON_COUNT = 3;
     private static final int KEY_REPEAT_DELAY_FIRST = 300;
     private static final int KEY_REPEAT_DELAY = 30;
     private static final float MENU_ROTATION_DURATION = 10;
@@ -88,11 +84,22 @@ public abstract class NewGuiSketch extends PApplet {
     private static final float DESELECTION_FADEOUT_EASING = 1;
     private static final float CHECK_ANIMATION_DURATION = 10;
     private static final float CHECK_ANIMATION_EASING = 1;
+    private final boolean onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    private final float textSize = onWindows ? 24 : 48;
+    private final float cell = onWindows ? 40 : 80;
+    private final float menuButtonSize = cell * 1.5f;
+    private final float previewTrayBoxWidth = cell * .375f;
+    private final float previewTrayBoxMargin = cell * .125f;
+    private final float previewTrayBoxOffsetY = -cell * .025f;
+    private final float minimumTrayWidth = MENU_BUTTON_COUNT * menuButtonSize;
+    private float trayWidthWhenExtended = minimumTrayWidth;
+    private float trayWidth = minimumTrayWidth;
+    private final float sliderHeight = cell * 2;
     protected String captureDir;
     protected String captureFilename;
     protected String id = regenId();
-    protected int frameRecordingEnds;
     protected int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
+    protected int frameRecordingEnds;
     protected float t;
     protected boolean mousePressedOutsideGui = false;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
@@ -106,16 +113,6 @@ public abstract class NewGuiSketch extends PApplet {
     private boolean pMousePressed = false;
     private int keyboardSelectionIndex = MENU_BUTTON_COUNT;
     private boolean keyboardActive = true;
-    private boolean onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-    private float textSize = onWindows ? 24 : 48;
-    private float cell = onWindows ? 40 : 80;
-    private float minimumTrayWidthCellCount = 6;
-    private float previewTrayBoxWidth = cell * .375f;
-    private float previewTrayBoxMargin = cell * .125f;
-    private float previewTrayBoxOffsetY = -cell * .025f;
-    private float minimumTrayWidth = cell * minimumTrayWidthCellCount;
-    private float trayWidth = minimumTrayWidth;
-    private float sliderHeight = cell * 2;
     private boolean trayVisible = true;
     private boolean overlayVisible;
     private boolean horizontalOverlayVisible;
@@ -141,8 +138,8 @@ public abstract class NewGuiSketch extends PApplet {
         return slider(name, defaultValue, numberOfDigitsInFlooredNumber(defaultValue) * 10);
     }
 
-    protected float slider(String name, float max, boolean floorOrCeil) {
-        return slider(name, floorOrCeil ? 0 : max, max * .5f);
+    protected float slider(String name, float max, boolean defaultMax) {
+        return slider(name, defaultMax ? 0 : max, max * .5f);
     }
 
     protected float slider(String name, float defaultValue, float precision) {
@@ -344,7 +341,7 @@ public abstract class NewGuiSketch extends PApplet {
     private void registerExitHandler() {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-                saveStateToFile();
+//                saveStateToFile();
             }
         }));
     }
@@ -374,12 +371,6 @@ public abstract class NewGuiSketch extends PApplet {
         return String.valueOf(floor(inputNumber)).length();
     }
 
-    ArrayList<PImage> loadImages(String folderPath) {
-        //TODO list all files without Paths.walk
-        // https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder
-        return new ArrayList<PImage>();
-    }
-
     public String regenId() {
         String newId = year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(),
                 2) + "_" + this.getClass().getSimpleName();
@@ -399,7 +390,6 @@ public abstract class NewGuiSketch extends PApplet {
     protected boolean isPointInRect(float px, float py, float rx, float ry, float rw, float rh) {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
-
 
     private float easedAnimation(float startFrame, float duration, float easingFactor) {
         float animationNormalized = constrain(norm(frameCount, startFrame,
@@ -428,20 +418,23 @@ public abstract class NewGuiSketch extends PApplet {
     private void updateMenuButtons() {
         float x = 0;
         float y = 0;
-        updateMenuButtonHide(x, y, cell * 2, cell * 1.5f);
+        float size = menuButtonSize;
+        updateMenuButtonHide(x, y, size, size);
         if (!trayVisible) {
             return;
         }
-        x += cell * 1.5f;
-        updateMenuButtonUndo(x, y, cell * 1.5f, cell * 1.5f);
-        x += cell * 1.5f;
-        updateMenuButtonRedo(x, y, cell * 1.5f, cell * 1.5f);
+        x += size;
+        updateMenuButtonUndo(x, y, size, size);
+        x += size;
+        updateMenuButtonRedo(x, y, size, size);
+        x += size;
+        updateMenuButtonSave(x, y, size, size);
     }
 
     private void updateMenuButtonHide(float x, float y, float w, float h) {
         if (activated(MENU_BUTTON_HIDE, x, y, w, h)) {
             trayVisible = !trayVisible;
-            trayWidth = trayVisible ? cell * 6 : 0;
+            trayWidth = trayVisible ? trayWidthWhenExtended : 0;
             keyboardSelectionIndex = 0;
             undoHideRotationStarted = frameCount;
         }
@@ -454,11 +447,33 @@ public abstract class NewGuiSketch extends PApplet {
             rotation += 1;
         }
         if (isMouseOver(x, y, w, h) || trayVisible) {
-            displayMenuButtonHide(x, y, w, h, rotation * PI);
+            displayMenuButtonHideShow(x, y, w, h, rotation * PI);
         }
     }
 
-    private void displayMenuButtonHide(float x, float y, float w, float h, float rotation) {
+    private void updateMenuButtonUndo(float x, float y, float w, float h) {
+        boolean canUndo = undoStack.size() > 0;
+        if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
+            pushCurrentStateToRedo();
+            popUndoToCurrentState();
+            undoRotationStarted = frameCount;
+        }
+        float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        displayUndoButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
+    }
+
+    private void updateMenuButtonRedo(float x, float y, float w, float h) {
+        boolean canRedo = redoStack.size() > 0;
+        if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
+            pushCurrentStateToUndoWithoutClearingRedo();
+            popRedoToCurrentState();
+            redoRotationStarted = frameCount;
+        }
+        float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        displayUndoButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
+    }
+
+    private void displayMenuButtonHideShow(float x, float y, float w, float h, float rotation) {
         pushMatrix();
         translate(x + w * .5f, y + h * .5f);
         rotate(rotation);
@@ -473,29 +488,26 @@ public abstract class NewGuiSketch extends PApplet {
         popMatrix();
     }
 
-    private void updateMenuButtonUndo(float x, float y, float w, float h) {
-        boolean canUndo = undoStack.size() > 0;
-        if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
-            pushCurrentStateToRedo();
-            popUndoToCurrentState();
-            undoRotationStarted = frameCount;
+    private float saveAnimationStarted = -MENU_ROTATION_DURATION;
+
+    private void updateMenuButtonSave(float x, float y, float w, float h) {
+        if(activated(MENU_BUTTON_SAVE, x,y,w,h) || actions.contains(ACTION_SAVE)){
+            saveAnimationStarted = frameCount;
+            saveStateToFile();
         }
-        float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        displayMenuButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
+        rectMode(CENTER);
+        float grayscale = (keyboardSelected(MENU_BUTTON_SAVE) || isMouseOver(x, y, w, h)) ?
+                GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK;
+        float animation = 1-easedAnimation(saveAnimationStarted, MENU_ROTATION_DURATION, 3);
+        if(animation == 0){
+            animation = 1;
+        }
+        stroke(grayscale);
+        noFill();
+        rect(x+w*.5f, y+h*.5f, w*.5f*animation, h*.5f*animation);
     }
 
-    private void updateMenuButtonRedo(float x, float y, float w, float h) {
-        boolean canRedo = redoStack.size() > 0;
-        if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
-            pushCurrentStateToUndoManually();
-            popRedoToCurrentState();
-            redoRotationStarted = frameCount;
-        }
-        float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        displayMenuButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
-    }
-
-    private void displayMenuButton(float x, float y, float w, float h, float rotation,
+    private void displayUndoButton(float x, float y, float w, float h, float rotation,
                                    boolean direction, String menuButtonType, int stackSize) {
         if (stackSize == 0) {
             return;
@@ -613,7 +625,7 @@ public abstract class NewGuiSketch extends PApplet {
             return;
         }
         textSize(textSize);
-        trayWidth = max(minimumTrayWidth, findLongestNameWidth() + cell * 2);
+        trayWidthWhenExtended = max(minimumTrayWidth, findLongestNameWidth() + cell * 2);
         noStroke();
         fill(0, BACKGROUND_ALPHA);
         rectMode(CORNER);
@@ -703,7 +715,8 @@ public abstract class NewGuiSketch extends PApplet {
         }
         if ((query.equals(MENU_BUTTON_HIDE) && keyboardSelectionIndex == 0)
                 || (query.equals(MENU_BUTTON_UNDO) && keyboardSelectionIndex == 1)
-                || (query.equals(MENU_BUTTON_REDO) && keyboardSelectionIndex == 2)) {
+                || (query.equals(MENU_BUTTON_REDO) && keyboardSelectionIndex == 2)
+                || (query.equals(MENU_BUTTON_SAVE) && keyboardSelectionIndex == 3)) {
             return true;
         }
         int i = MENU_BUTTON_COUNT;
@@ -743,7 +756,7 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     public void keyPressed() {
-        println(String.valueOf(key), keyCode, key == CODED);
+//        println((key == CODED ? "code: " + keyCode : "key: " + key));
         keyboardActive = true;
         if (key == CODED) {
             if (!isKeyPressed(keyCode, true)) {
@@ -874,7 +887,7 @@ public abstract class NewGuiSketch extends PApplet {
                 }
                 if (kk.character == 19) {
                     // CTRL + S
-                    saveStateToFile();
+                    actions.add(ACTION_SAVE);
                 }
                 if (kk.character == 12) {
                     // CTRL + L
@@ -1093,21 +1106,21 @@ public abstract class NewGuiSketch extends PApplet {
         redoStack.add(getGuiState());
     }
 
-    private void pushCurrentStateToUndoNaturally() {
+    private void pushCurrentStateToUndo() {
         redoStack.clear();
         undoStack.add(getGuiState());
     }
 
-    private void pushStateToUndoManually(ArrayList<String> state) {
+    private void pushStateToUndo(ArrayList<String> state) {
         setGuiState(state);
-        pushCurrentStateToUndoNaturally();
+        pushCurrentStateToUndo();
     }
 
-    private void pushStateToRedoManually(ArrayList<String> state) {
+    private void pushStateToRedo(ArrayList<String> state) {
         redoStack.add(state);
     }
 
-    private void pushCurrentStateToUndoManually() {
+    private void pushCurrentStateToUndoWithoutClearingRedo() {
         undoStack.add(getGuiState());
     }
 
@@ -1173,38 +1186,30 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     void saveStateToFile() {
-        if (undoStack.size() == 0 && redoStack.size() == 0) {
-            return;
-        }
-        String[] loadedLines = loadLastStateFromFile(false);
+        pushCurrentStateToUndo();
         File file = dataFile(settingsPath());
-        pushCurrentStateToUndoNaturally();
-        println("settings saved to " + file.getAbsolutePath());
-        ArrayList<String> save = new ArrayList<String>(Arrays.asList(loadedLines));
+        ArrayList<String> save = new ArrayList<String>();
         save.add(SAVE_PREFIX);
         save.add(UNDO_PREFIX);
-        for (ArrayList<String> guiStates : undoStack) {
-            save.add(STATE_BEGIN);
-            save.addAll(guiStates);
-            save.add(STATE_END);
-        }
-        save.add(REDO_PREFIX);
-        for (ArrayList<String> guiState : redoStack) {
-            save.add(STATE_BEGIN);
-            save.addAll(guiState);
-            save.add(STATE_END);
-        }
-        String[] saveArray = new String[save.size()];
-        for (int i = 0; i < save.size(); i++) {
-            saveArray[i] = save.get(i);
-        }
+        save.add(STATE_BEGIN);
+        save.addAll(undoStack.get(undoStack.size() - 1));
+        save.add(STATE_END);
+        String[] saveArray = arrayListToStringArray(save);
         saveStrings(file, saveArray);
     }
 
-    String[] loadLastStateFromFile(boolean alsoPush) {
+    private String[] arrayListToStringArray(ArrayList<String> input) {
+        String[] array = new String[input.size()];
+        for (int i = 0; i < input.size(); i++) {
+            array[i] = input.get(i);
+        }
+        return array;
+    }
+
+    void loadLastStateFromFile(boolean alsoPush) {
         File file = dataFile(settingsPath());
         if (!file.exists()) {
-            return new String[0];
+            return;
         }
         String[] lines = loadStrings(file);
         if (alsoPush) {
@@ -1224,11 +1229,11 @@ public abstract class NewGuiSketch extends PApplet {
                 } else if (line.startsWith(STATE_END)) {
                     if (pushingUndo) {
 //                        println("pushing ", concat(runningState));
-                        pushStateToUndoManually(runningState);
+                        pushStateToUndo(runningState);
                         runningState.clear();
                     } else {
 //                        println("pushing ", concat(runningState));
-                        pushStateToRedoManually(runningState);
+                        pushStateToRedo(runningState);
                         runningState.clear();
                     }
                 } else {
@@ -1237,7 +1242,6 @@ public abstract class NewGuiSketch extends PApplet {
             }
             popUndoToCurrentState();
         }
-        return lines;
     }
 
     private String concat(ArrayList<String> guiState) {
@@ -1499,7 +1503,7 @@ public abstract class NewGuiSketch extends PApplet {
         private void displayDotsOnTray(float x, float y) {
             for (int i = 0; i < options.size(); i++) {
                 float iNorm = norm(i, 0, options.size() - 1);
-                float dotX = x + i*10;
+                float dotX = x + i * 10;
                 pushStyle();
                 fill(i == valueIndex ? GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
                 noStroke();
@@ -1510,7 +1514,7 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
-            pushCurrentStateToUndoNaturally();
+            pushCurrentStateToUndo();
             valueIndex++;
             if (valueIndex >= options.size()) {
                 valueIndex = 0;
@@ -1596,7 +1600,7 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
-            pushCurrentStateToUndoNaturally();
+            pushCurrentStateToUndo();
             activationStarted = frameCount;
             checked = !checked;
         }
@@ -1608,23 +1612,25 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         protected float updateFullHorizontalSlider(float x, float y, float w, float h, float value, float precision,
-                                                   float horizontalRevealAnimationStarted, boolean alternative) {
+                                                   float horizontalRevealAnimationStarted, boolean alternative,
+                                                   float minValue, float maxValue) {
             float deltaX = updateInfiniteSlider(precision, width, true, true, alternative);
             float horizontalAnimation = easedAnimation(horizontalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
                     SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(x + width * .5f, y, w, h,
-                    precision, value, horizontalAnimation, true, true);
+                    precision, value, horizontalAnimation, true, true, minValue, maxValue);
             return deltaX;
         }
 
         @SuppressWarnings("SuspiciousNameCombination")
         protected float updateFullHeightVerticalSlider(float x, float y, float w, float h, float value, float precision,
-                                                       float verticalRevealAnimationStarted, boolean alternative) {
+                                                       float verticalRevealAnimationStarted, boolean alternative,
+                                                       float minValue, float maxValue) {
             float deltaY = updateInfiniteSlider(precision, height, false, true, alternative);
             float verticalAnimation = easedAnimation(verticalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
                     SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(x + height * .5f, y, w, h,
-                    precision, value, verticalAnimation, false, true);
+                    precision, value, verticalAnimation, false, true, minValue, maxValue);
             return deltaY;
         }
 
@@ -1673,7 +1679,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         void displayInfiniteSliderCenterMode(float x, float y, float w, float h, float precision, float value,
                                              float revealAnimation, boolean horizontal,
-                                             boolean cutout) {
+                                             boolean cutout, float minValue, float maxValue) {
             float markerHeight = h * revealAnimation;
             pushMatrix();
             pushStyle();
@@ -1693,13 +1699,13 @@ public abstract class NewGuiSketch extends PApplet {
                 scale(-1, 1);
             }
             drawMarkerLines(precision * 0.5f, 0, markerHeight * .6f, weight * revealAnimation,
-                    true, value, precision, w, h, !horizontal, revealAnimation);
+                    true, value, precision, w, h, !horizontal, revealAnimation, minValue, maxValue);
             drawMarkerLines(precision * .05f, 10, markerHeight * .3f, weight * revealAnimation,
-                    false, value, precision, w, h, !horizontal, revealAnimation);
+                    false, value, precision, w, h, !horizontal, revealAnimation, minValue, maxValue);
             if (!horizontal) {
                 popMatrix();
             }
-            drawValue(h, precision, value, revealAnimation);
+            displayValue(h, precision, value, revealAnimation);
             popMatrix();
             popStyle();
         }
@@ -1729,7 +1735,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         void drawMarkerLines(float frequency, int skipEveryNth, float markerHeight, float horizontalLineHeight,
                              boolean shouldDrawValue, float value, float precision, float w, float h,
-                             boolean flipTextHorizontally, float revealAnimationEased) {
+                             boolean flipTextHorizontally, float revealAnimationEased, float minValue, float maxValue) {
             float markerValue = -precision - value - frequency;
             int i = 0;
             while (markerValue < precision - value) {
@@ -1740,14 +1746,15 @@ public abstract class NewGuiSketch extends PApplet {
                 float markerNorm = norm(markerValue, -precision - value, precision - value);
                 drawMarkerLine(markerValue, precision, w, h, markerHeight, horizontalLineHeight, value,
                         shouldDrawValue, flipTextHorizontally,
-                        revealAnimationEased);
+                        revealAnimationEased, minValue, maxValue);
             }
         }
 
         void drawMarkerLine(float markerValue, float precision, float w, float h, float markerHeight,
                             float horizontalLineHeight,
                             float value, boolean shouldDrawValue, boolean flipTextHorizontally,
-                            float revealAnimationEased) {
+                            float revealAnimationEased, float minValue, float maxValue) {
+            //TODO pass min and max to this and don't display the markers outside the constraints
             float moduloValue = markerValue;
             while (moduloValue > precision) {
                 moduloValue -= precision * 2;
@@ -1756,6 +1763,12 @@ public abstract class NewGuiSketch extends PApplet {
                 moduloValue += precision * 2;
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
+            float displayValue = moduloValue + value;
+
+            boolean isEdgeValue =
+                    (displayValue < minValue + precision *.01 && displayValue > minValue - precision *.01f) ||
+                    (displayValue > maxValue - precision *.01 && displayValue < maxValue + precision *.01f);
+
             float grayscale = darkenEdges(screenX, w);
             fill(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
             stroke(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
@@ -1765,7 +1778,6 @@ public abstract class NewGuiSketch extends PApplet {
                     pushMatrix();
                     scale(-1, 1);
                 }
-                float displayValue = moduloValue + value;
                 String displayText = nf(displayValue, 0, 0);
                 if (displayText.equals("-0")) {
                     displayText = "0";
@@ -1782,10 +1794,10 @@ public abstract class NewGuiSketch extends PApplet {
             }
         }
 
-        void drawValue(float sliderHeight, float precision, float value, float animationEased) {
+        void displayValue(float sliderHeight, float precision, float value, float animationEased) {
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
-            textSize(textSize * 1.5f);
+            textSize(textSize * 1.2f);
             float textY = -cell * 2.5f;
             float textX = 0;
             String text = nf(value, 0, 2);
@@ -1808,7 +1820,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         void recordStateForUndo() {
             if (mouseJustPressedOutsideGui() || keyboardInteractionJustStarted()) {
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
         }
 
@@ -1859,14 +1871,14 @@ public abstract class NewGuiSketch extends PApplet {
         void handleKeyboardInput() {
             if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision < PRECISION_MAXIMUM) {
                 precision *= 10f;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision > PRECISION_MINIMUM) {
                 precision *= .1f;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
                 reset();
             }
         }
@@ -1912,20 +1924,20 @@ public abstract class NewGuiSketch extends PApplet {
                     SLIDER_REVEAL_DURATION,
                     SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision, value,
-                    revealAnimation, true, true);
+                    revealAnimation, true, true, minValue, maxValue);
         }
 
     }
 
     class SliderXY extends Slider {
-        protected float deltaX;
+        float deltaX;
+        float deltaY;
         PVector value = new PVector();
         PVector defaultValue = new PVector();
         float precision, defaultPrecision;
         float horizontalRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
         float verticalRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
         float interactionBufferMultiplier = 2.5f;
-        float deltaY;
 
         SliderXY(Group currentGroup, String name, float defaultX, float defaultY, float precision) {
             super(currentGroup, name);
@@ -1968,12 +1980,12 @@ public abstract class NewGuiSketch extends PApplet {
         void updateOverlay() {
             recordStateForUndo();
             updateXYSliders();
-            lockSlidersOnMouseOver();
+            lockOtherSlidersOnMouseOver();
             value.x += deltaX;
             value.y += deltaY;
         }
 
-        protected void lockSlidersOnMouseOver() {
+        protected void lockOtherSlidersOnMouseOver() {
             if (keyboardActive) {
                 return;
             }
@@ -1995,9 +2007,9 @@ public abstract class NewGuiSketch extends PApplet {
 
         void updateXYSliders() {
             deltaX = updateFullHorizontalSlider(0, height - cell, width, sliderHeight, value.x, precision,
-                    horizontalRevealAnimationStarted, false);
+                    horizontalRevealAnimationStarted, false, -Float.MAX_VALUE, Float.MAX_VALUE);
             deltaY = updateFullHeightVerticalSlider(0, width - cell, height, sliderHeight, value.y, precision,
-                    verticalRevealAnimationStarted, false);
+                    verticalRevealAnimationStarted, false, -Float.MAX_VALUE, Float.MAX_VALUE);
         }
 
         boolean keyboardInteractionJustStarted() {
@@ -2015,14 +2027,14 @@ public abstract class NewGuiSketch extends PApplet {
         void handleKeyboardInput() {
             if (previousActions.contains(ACTION_PRECISION_ZOOM_IN) && precision > PRECISION_MINIMUM) {
                 precision *= .1f;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (previousActions.contains(ACTION_PRECISION_ZOOM_OUT) && precision < PRECISION_MAXIMUM) {
                 precision *= 10f;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
                 reset();
             }
         }
@@ -2065,13 +2077,14 @@ public abstract class NewGuiSketch extends PApplet {
         void updateOverlay() {
             recordStateForUndo();
             deltaZ = updateInfiniteSlider(precision, height * .5f, false, true, true);
-            lockSlidersOnMouseOver();
+            lockOtherSlidersOnMouseOver();
             value.x += deltaX;
             value.y += deltaY;
             value.z += deltaZ;
             float zAnimation = easedAnimation(zRevealAnimationStarted, SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(height - height * .2f, width - sliderHeight * 2, height / 3f,
-                    sliderHeight * .8f, precision, value.z, zAnimation, false, false);
+                    sliderHeight * .8f, precision, value.z, zAnimation, false, false,
+                    -Float.MAX_VALUE, Float.MAX_VALUE);
             super.updateXYSliders();
         }
 
@@ -2080,7 +2093,7 @@ public abstract class NewGuiSketch extends PApplet {
             return isMouseOver(width - sliderHeight * 4, 0, sliderHeight * 3, height * .4f);
         }
 
-        protected void lockSlidersOnMouseOver() {
+        protected void lockOtherSlidersOnMouseOver() {
             if (isMouseOverXSlider()) {
                 deltaY = 0;
                 deltaZ = 0;
@@ -2146,11 +2159,11 @@ public abstract class NewGuiSketch extends PApplet {
             }
             if (alphaPrecision > ALPHA_PRECISION_MINIMUM && previousActions.contains(ACTION_PRECISION_ZOOM_IN)) {
                 alphaPrecision *= .1f;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (alphaPrecision < ALPHA_PRECISION_MAXIMUM && previousActions.contains(ACTION_PRECISION_ZOOM_OUT)) {
                 alphaPrecision *= 10;
-                pushCurrentStateToUndoNaturally();
+                pushCurrentStateToUndo();
             }
             if (previousActions.contains(ACTION_CONTROL)) {
                 satChanged = true;
@@ -2251,7 +2264,6 @@ public abstract class NewGuiSketch extends PApplet {
             if (saturationLocked) {
                 sat = lastSat;
             }
-
             displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, sat, SATURATION,
                     brightnessLocked);
 
@@ -2264,16 +2276,16 @@ public abstract class NewGuiSketch extends PApplet {
             if (brightnessLocked) {
                 br = lastBr;
             }
-
             displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, br, BRIGHTNESS, saturationLocked);
+
             displayInfiniteSliderCenterMode(height - height / 4f, width - sliderHeight * .5f, height / 2f, sliderHeight,
-                    alphaPrecision, alpha, revealAnimation, false, false);
+                    alphaPrecision, alpha, revealAnimation, false, false, 0, 1);
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
             textSize(textSize);
             text("alpha", width - sliderHeight * .5f, 15);
             float alphaDelta = updateInfiniteSlider(alphaPrecision, height, false, false, false);
-            boolean isMouseInTopHalf = isMouseOver(0, 0, width, height / 2);
+            boolean isMouseInTopHalf = isMouseOver(0, 0, width, height / 2f);
             if (!satChanged && !brChanged && (keyboardActive || isMouseInTopHalf)) {
                 alpha += alphaDelta;
             }
