@@ -7,27 +7,35 @@ import processing.core.PVector;
 import processing.event.MouseEvent;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 //TODO:
-// FOURTH MENU BUTTON TO SAVE STATE TO JSON, load last saved on startup
-// fix bug with first null group's element appearing twice, once at the top and once at the bottom
-// scrolling down to allow unlimited group and element count
-// pushGroup(name), popGroup();
-// record states before recording in realtime or well controlled slow-mo, play them back during actual live
-//  recording in hard to adjust capturing slow-mo
-// some actual minimalist animated juice...
+// features:
+// remove undo / redo stack size number, but communicate emptiness somehow
 
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal", "BooleanMethodIsAlwaysInverted",
-        "unused", "ConstantConditions",
-        "WeakerAccess"})
+// menu buttons: save and load state, hold undo/redo to undo/redo all
+
+// tray hold dropdown:
+// touchscreen slider precision, reset
+// options dropdown instead of horizontal enumeration for tray width reasons
+
+// record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
+// intercept esc / exit and save state first?
+// pushGroup(name), popGroup();
+// scrolling down to allow unlimited group and element count
+// more minimalist animated juice...
+// range picker (2 floats, start and end, end > start)
+// out of constrain markers must not be displayed
+
+//TODO
+// bugs:
+// space when tray hidden must close current overlay
+// first null group's element appears twice, once at the top and once at the bottom
+
+
+@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal",
+        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
 public abstract class NewGuiSketch extends PApplet {
     private static final String SAVE_PREFIX = "SAVE";
     private static final String STATE_BEGIN = "STATE_BEGIN";
@@ -61,7 +69,7 @@ public abstract class NewGuiSketch extends PApplet {
     private static final float PRECISION_MAXIMUM = 10000;
     private static final float PRECISION_MINIMUM = .1f;
     private static final float ALPHA_PRECISION_MINIMUM = .005f;
-    private static final float ALPHA_PRECISION_MAXIMUM = .5f;
+    private static final float ALPHA_PRECISION_MAXIMUM = 10;
     private static final float UNDERLINE_TRAY_ANIMATION_DURATION = 10;
     private static final float UNDERLINE_TRAY_ANIMATION_EASING = 3;
     private static final float SLIDER_EDGE_DARKEN_EASING = 3;
@@ -96,8 +104,8 @@ public abstract class NewGuiSketch extends PApplet {
     private ArrayList<String> actions = new ArrayList<String>();
     private ArrayList<String> previousActions = new ArrayList<String>();
     private boolean pMousePressed = false;
-    private int keyboardSelectionIndex = 0;
-    private boolean keyboardActive = false;
+    private int keyboardSelectionIndex = MENU_BUTTON_COUNT;
+    private boolean keyboardActive = true;
     private boolean onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     private float textSize = onWindows ? 24 : 48;
     private float cell = onWindows ? 40 : 80;
@@ -109,10 +117,11 @@ public abstract class NewGuiSketch extends PApplet {
     private float trayWidth = minimumTrayWidth;
     private float sliderHeight = cell * 2;
     private boolean trayVisible = true;
-    private boolean overlayVisible = false;
+    private boolean overlayVisible;
     private boolean horizontalOverlayVisible;
     private boolean verticalOverlayVisible;
     private boolean pickerOverlayVisible;
+    private boolean zOverlayVisible;
     private Element overlayOwner = null; // do not assign directly!
     private float underlineTrayAnimationStarted = -UNDERLINE_TRAY_ANIMATION_DURATION;
     private float undoRotationStarted = -MENU_ROTATION_DURATION;
@@ -157,10 +166,6 @@ public abstract class NewGuiSketch extends PApplet {
         return slider.value;
     }
 
-    int numberOfDigitsInFlooredNumber(float inputNumber) {
-        return String.valueOf(floor(inputNumber)).length();
-    }
-
     protected PVector sliderXY() {
         return sliderXY("xy");
     }
@@ -183,6 +188,7 @@ public abstract class NewGuiSketch extends PApplet {
     protected PVector sliderXYZ(String name, float value, float precision) {
         return sliderXYZ(name, value, value, value, precision);
     }
+
     protected PVector sliderXYZ() {
         return sliderXYZ("xyz", 0, 0, 0, 100);
     }
@@ -314,17 +320,33 @@ public abstract class NewGuiSketch extends PApplet {
         currentGroup = groups.get(0);
     }
 
+    private void handleEscape() {
+        if (isKeyPressed(ESC, false)) {
+
+            exit();
+        }
+    }
+
     private void updateMouseState() {
-        mousePressedOutsideGui = mousePressed && isMouseOutsideGui();
+        mousePressedOutsideGui = mousePressed && isMouseOutsideGui() && !overlayVisible;
     }
 
     private void guiSetup(boolean defaultVisibility) {
         if (frameCount == 1) {
             trayVisible = defaultVisibility;
             textSize(textSize * 2);
+            registerExitHandler();
         } else if (frameCount == 2) {
             loadLastStateFromFile(true);
         }
+    }
+
+    private void registerExitHandler() {
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                saveStateToFile();
+            }
+        }));
     }
 
     // UTILS
@@ -348,25 +370,14 @@ public abstract class NewGuiSketch extends PApplet {
         }
     }
 
-    public ArrayList<PImage> loadImages(String folderPath) {
-        ArrayList<PImage> images = new ArrayList<PImage>();
-        try {
-            List<File> filesInFolder = Files.walk(Paths.get(folderPath))
-                    .filter(Files::isRegularFile)
-                    .map(Path::toFile)
-                    .collect(Collectors.toList());
-            for (File file : filesInFolder) {
-                if (file.isDirectory() || (!file.getName().contains(".jpg") && !file.getName().contains(".png"))) {
-                    continue;
-                }
-                PImage frame = loadImage(Paths.get(folderPath).toAbsolutePath() + "\\" + file.getName());
-                images.add(frame);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    int numberOfDigitsInFlooredNumber(float inputNumber) {
+        return String.valueOf(floor(inputNumber)).length();
+    }
 
-        return images;
+    ArrayList<PImage> loadImages(String folderPath) {
+        //TODO list all files without Paths.walk
+        // https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder
+        return new ArrayList<PImage>();
     }
 
     public String regenId() {
@@ -485,7 +496,10 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     private void displayMenuButton(float x, float y, float w, float h, float rotation,
-                                   boolean direction, String menuButtonType, int number) {
+                                   boolean direction, String menuButtonType, int stackSize) {
+        if (stackSize == 0) {
+            return;
+        }
         textSize(textSize);
         textAlign(CENTER, CENTER);
         float grayscale = (keyboardSelected(menuButtonType) || isMouseOver(x, y, w, h)) ?
@@ -493,21 +507,19 @@ public abstract class NewGuiSketch extends PApplet {
         fill(grayscale);
         pushMatrix();
         translate(x + w * .5f, y + h * .5f);
-        if (number > 0) {
-            text(number, 0, 0);
-        }
         rotate(PI + (direction ? rotation : -rotation));
         float margin = 0;
         noFill();
         stroke(grayscale);
         strokeWeight(2);
-        arc(0, 0, w * .7f, h * .7f, margin, PI - margin);
+        float radiusMultiplier = .5f;
+        arc(0, 0, w * radiusMultiplier, h * radiusMultiplier, margin, PI - margin);
         fill(grayscale);
         stroke(grayscale);
         beginShape();
-        vertex((direction ? -1 : 1) * w * .28f, h * .1f);
-        vertex((direction ? -1 : 1) * w * .35f, 0);
-        vertex((direction ? -1 : 1) * w * .4f, h * .1f);
+        vertex((direction ? -1 : 1) * w * radiusMultiplier * .4f, h * .1f);
+        vertex((direction ? -1 : 1) * w * radiusMultiplier * .5f, 0);
+        vertex((direction ? -1 : 1) * w * radiusMultiplier * .55f, h * .1f);
         endShape();
 
         popMatrix();
@@ -525,6 +537,7 @@ public abstract class NewGuiSketch extends PApplet {
     private void updateGroupsAndTheirElements() {
         float x = cell * .5f;
         float y = cell * 2.5f;
+        boolean wasAnyElementActivated = false;
         for (Group group : groups) {
             if (group.elements.isEmpty()) {
                 continue;
@@ -540,7 +553,9 @@ public abstract class NewGuiSketch extends PApplet {
                     if (el.equals(overlayOwner)) {
                         el.handleKeyboardInput();
                     }
-                    updateElement(group, el, y);
+                    if (updateElement(group, el, y)) {
+                        wasAnyElementActivated = true;
+                    }
                     if (trayVisible) {
                         displayElement(group, el, x, y);
                     }
@@ -549,23 +564,31 @@ public abstract class NewGuiSketch extends PApplet {
             }
             y += cell;
         }
+        if (!wasAnyElementActivated && actions.contains(ACTION_ACTIVATE)) {
+            if (overlayVisible) {
+                overlayVisible = false;
+            }
+        }
     }
 
-    private void updateElement(Group group, Element el, float y) {
+    private boolean updateElement(Group group, Element el, float y) {
         el.update();
         if (activated(group.name + el.name, 0, y - cell, trayWidth, cell)) {
             if (!el.canHaveOverlay()) {
                 el.onActivationWithoutOverlay(0, y - cell, trayWidth, cell);
-                return;
+                return true;
             }
             if (!overlayVisible) {
                 setOverlayOwner(el);
+                return true;
             } else if (overlayVisible && !el.equals(overlayOwner)) {
                 setOverlayOwner(el);
+                return true;
             } else if (overlayVisible && el.equals(overlayOwner)) {
                 overlayVisible = false;
             }
         }
+        return false;
     }
 
     private void displayElement(Group group, Element el, float x, float y) {
@@ -720,6 +743,7 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     public void keyPressed() {
+        println(String.valueOf(key), keyCode, key == CODED);
         keyboardActive = true;
         if (key == CODED) {
             if (!isKeyPressed(keyCode, true)) {
@@ -1129,10 +1153,9 @@ public abstract class NewGuiSketch extends PApplet {
     private void setGuiState(ArrayList<String> statesToSet) {
         for (String state : statesToSet) {
             String[] splitState = state.split(INNER_SEPARATOR);
-//            println("line: " + concat(splitState));
             if (state.startsWith(GROUP_PREFIX)) {
                 Group group = findGroup(splitState[1]);
-                if(group == null){
+                if (group == null) {
                     //TODO lazy init here using the state data
                     continue;
                 }
@@ -1140,7 +1163,7 @@ public abstract class NewGuiSketch extends PApplet {
                 group.setState(state);
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
-                if(el == null){
+                if (el == null) {
                     continue;
                 }
 //                println("setting " + el.name + " to " + state);
@@ -1149,7 +1172,6 @@ public abstract class NewGuiSketch extends PApplet {
         }
     }
 
-
     void saveStateToFile() {
         if (undoStack.size() == 0 && redoStack.size() == 0) {
             return;
@@ -1157,7 +1179,7 @@ public abstract class NewGuiSketch extends PApplet {
         String[] loadedLines = loadLastStateFromFile(false);
         File file = dataFile(settingsPath());
         pushCurrentStateToUndoNaturally();
-        println("settings saved to: " + file.toString());
+        println("settings saved to " + file.getAbsolutePath());
         ArrayList<String> save = new ArrayList<String>(Arrays.asList(loadedLines));
         save.add(SAVE_PREFIX);
         save.add(UNDO_PREFIX);
@@ -1181,7 +1203,6 @@ public abstract class NewGuiSketch extends PApplet {
 
     String[] loadLastStateFromFile(boolean alsoPush) {
         File file = dataFile(settingsPath());
-        println(file.getPath());
         if (!file.exists()) {
             return new String[0];
         }
@@ -1191,7 +1212,7 @@ public abstract class NewGuiSketch extends PApplet {
             popAllUndo();
             int lastSaveStartIndex = findLastSaveStartIndex(lines);
             boolean pushingUndo = false;
-            ArrayList<String> runningState = new ArrayList<>();
+            ArrayList<String> runningState = new ArrayList<String>();
             for (int i = lastSaveStartIndex + 1; i < lines.length; i++) {
                 String line = lines[i];
                 if (line.startsWith(UNDO_PREFIX)) {
@@ -1235,7 +1256,6 @@ public abstract class NewGuiSketch extends PApplet {
         }
         return sb.toString();
     }
-
 
     private int findLastSaveStartIndex(String[] lines) {
         int result = 0;
@@ -1293,10 +1313,12 @@ public abstract class NewGuiSketch extends PApplet {
             this.name = name;
         }
 
-        public void update(float y) {
+        public boolean update(float y) {
             if (activated(name, 0, y - cell, trayWidth, cell)) {
                 expanded = !expanded;
+                return true;
             }
+            return false;
         }
 
         public void displayInTray(float x, float y) {
@@ -1358,13 +1380,16 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         void displayOnTray(float x, float y) {
+            displayOnTray(x, y, name);
+        }
+
+        void displayOnTray(float x, float y, String text) {
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
             if (overlayVisible && this.equals(overlayOwner)) {
-                underlineAnimation(underlineTrayAnimationStarted, UNDERLINE_TRAY_ANIMATION_DURATION,
-                        x, y, true);
+                underlineAnimation(underlineTrayAnimationStarted, UNDERLINE_TRAY_ANIMATION_DURATION, x, y, true);
             }
-            text(name, x, y);
+            text(text, x, y);
         }
 
         float trayTextWidth() {
@@ -1431,9 +1456,9 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     class Radio extends Element {
-        int valueIndex = 0;
         ArrayList<String> options = new ArrayList<String>();
-        int indexWhenOverlayShown = 0;
+        int valueIndex = 0;
+        float optionWidth = 0;
 
         Radio(Group parent, String name, String[] options) {
             super(parent, name);
@@ -1462,38 +1487,26 @@ public abstract class NewGuiSketch extends PApplet {
             return false;
         }
 
-        void onOverlayShown() {
-            indexWhenOverlayShown = valueIndex;
-        }
-
-        boolean stateChangedWhileOverlayWasShown() {
-            return valueIndex == indexWhenOverlayShown;
-        }
-
         String value() {
             return options.get(valueIndex);
         }
 
         void displayOnTray(float x, float y) {
-            textAlign(LEFT, BOTTOM);
-            textSize(textSize);
-            pushStyle();
-            float optionX = x;
+            super.displayOnTray(x, y, value());
+            displayDotsOnTray(x, y);
+        }
+
+        private void displayDotsOnTray(float x, float y) {
             for (int i = 0; i < options.size(); i++) {
-                String option = options.get(i);
-                float textWidthWithoutSeparator = textWidth(option);
-                if (i < options.size() - 1) {
-                    option += " ";
-                }
-                if (i != valueIndex) {
-                    float strikethroughY = y - textSize * .5f;
-                    strokeWeight(2);
-                    line(optionX, strikethroughY, optionX + textWidthWithoutSeparator, strikethroughY);
-                }
-                text(option, optionX, y);
-                optionX += textWidth(option);
+                float iNorm = norm(i, 0, options.size() - 1);
+                float dotX = x + i*10;
+                pushStyle();
+                fill(i == valueIndex ? GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
+                noStroke();
+                rectMode(CORNER);
+                rect(dotX + 2.5f, y, 5, 5);
+                pushStyle();
             }
-            popStyle();
         }
 
         void onActivationWithoutOverlay(int x, float y, float w, float h) {
@@ -1502,6 +1515,10 @@ public abstract class NewGuiSketch extends PApplet {
             if (valueIndex >= options.size()) {
                 valueIndex = 0;
             }
+        }
+
+        float trayTextWidth() {
+            return textWidth(value());
         }
     }
 
@@ -1618,39 +1635,39 @@ public abstract class NewGuiSketch extends PApplet {
                 if (reversed) {
                     screenSpaceDelta *= -1;
                 }
-                float valueSpaceDelta = screenDistanceToValueDistance(screenSpaceDelta, precision, sliderWidth);
+                float valueSpaceDelta = screenDistanceToValueDistance(screenSpaceDelta, precision);
                 if (valueSpaceDelta != 0) {
                     return valueSpaceDelta;
                 }
             }
-            if (alternative && previousActions.contains(ACTION_ALT)) {
-                keyboardDelta(horizontal, precision, sliderWidth);
+            if (previousActions.contains(ACTION_ALT) && previousActions.contains(ACTION_CONTROL)) {
+                return keyboardDelta(true, horizontal, precision, sliderWidth);
             }
             if ((alternative && !previousActions.contains(ACTION_ALT)) ||
                     (!alternative && previousActions.contains(ACTION_ALT))) {
                 return 0;
             }
-            return keyboardDelta(horizontal, precision, sliderWidth);
+            return keyboardDelta(false, horizontal, precision, sliderWidth);
         }
 
-        private float keyboardDelta(boolean horizontal, float precision, float sliderWidth) {
-            if (actions.contains(ACTION_LEFT) && horizontal) {
-                return screenDistanceToValueDistance(-3, precision, sliderWidth);
+        private float keyboardDelta(boolean directionless, boolean horizontal, float precision, float sliderWidth) {
+            if (actions.contains(ACTION_LEFT) && (horizontal || directionless)) {
+                return screenDistanceToValueDistance(-3, precision);
             }
-            if (actions.contains(ACTION_RIGHT) && horizontal) {
-                return screenDistanceToValueDistance(3, precision, sliderWidth);
+            if (actions.contains(ACTION_RIGHT) && (horizontal || directionless)) {
+                return screenDistanceToValueDistance(3, precision);
             }
-            if (actions.contains(ACTION_UP) && !horizontal) {
-                return screenDistanceToValueDistance(-3, precision, sliderWidth);
+            if (actions.contains(ACTION_UP) && (!horizontal || directionless)) {
+                return screenDistanceToValueDistance(-3, precision);
             }
-            if (actions.contains(ACTION_DOWN) && !horizontal) {
-                return screenDistanceToValueDistance(3, precision, sliderWidth);
+            if (actions.contains(ACTION_DOWN) && (!horizontal || directionless)) {
+                return screenDistanceToValueDistance(3, precision);
             }
             return 0f;
         }
 
-        float screenDistanceToValueDistance(float screenSpaceDelta, float precision, float sliderWidth) {
-            float valueToScreenRatio = precision / sliderWidth;
+        float screenDistanceToValueDistance(float screenSpaceDelta, float precision) {
+            float valueToScreenRatio = precision / width;
             return screenSpaceDelta * valueToScreenRatio;
         }
 
@@ -1876,6 +1893,7 @@ public abstract class NewGuiSketch extends PApplet {
             horizontalOverlayVisible = true;
             verticalOverlayVisible = false;
             pickerOverlayVisible = false;
+            zOverlayVisible = false;
         }
 
         boolean canHaveOverlay() {
@@ -1944,6 +1962,7 @@ public abstract class NewGuiSketch extends PApplet {
             horizontalOverlayVisible = true;
             verticalOverlayVisible = true;
             pickerOverlayVisible = false;
+            zOverlayVisible = false;
         }
 
         void updateOverlay() {
@@ -2051,7 +2070,7 @@ public abstract class NewGuiSketch extends PApplet {
             value.y += deltaY;
             value.z += deltaZ;
             float zAnimation = easedAnimation(zRevealAnimationStarted, SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
-            displayInfiniteSliderCenterMode(height - height / 4, width - sliderHeight * 2, height / 3f,
+            displayInfiniteSliderCenterMode(height - height * .2f, width - sliderHeight * 2, height / 3f,
                     sliderHeight * .8f, precision, value.z, zAnimation, false, false);
             super.updateXYSliders();
         }
@@ -2083,7 +2102,19 @@ public abstract class NewGuiSketch extends PApplet {
 
 
         void onOverlayShown() {
-            super.onOverlayShown();
+            if (!overlayVisible || !horizontalOverlayVisible) {
+                horizontalRevealAnimationStarted = frameCount;
+            }
+            if (!overlayVisible || !verticalOverlayVisible) {
+                verticalRevealAnimationStarted = frameCount;
+            }
+            if (!overlayVisible || !zOverlayVisible) {
+                zRevealAnimationStarted = frameCount;
+            }
+            horizontalOverlayVisible = true;
+            verticalOverlayVisible = true;
+            pickerOverlayVisible = false;
+            zOverlayVisible = true;
         }
 
     }
@@ -2191,6 +2222,7 @@ public abstract class NewGuiSketch extends PApplet {
             pickerOverlayVisible = true;
             horizontalOverlayVisible = false;
             verticalOverlayVisible = false;
+            zOverlayVisible = false;
         }
 
         void updateOverlay() {
@@ -2234,7 +2266,7 @@ public abstract class NewGuiSketch extends PApplet {
             }
 
             displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, br, BRIGHTNESS, saturationLocked);
-            displayInfiniteSliderCenterMode(height - height / 4, width - sliderHeight * .5f, height / 2f, sliderHeight,
+            displayInfiniteSliderCenterMode(height - height / 4f, width - sliderHeight * .5f, height / 2f, sliderHeight,
                     alphaPrecision, alpha, revealAnimation, false, false);
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);

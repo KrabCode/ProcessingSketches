@@ -12,11 +12,12 @@ import static java.lang.System.currentTimeMillis;
 /**
  * Created by Jakub 'Krab' Rak on 2019-11-16
  */
+@SuppressWarnings({"DuplicatedCode", "unused"})
 public abstract class KrabApplet extends NewGuiSketch {
     //TODO make an interface for shader reloading instead of this stupid chained inheritance
 
-    ArrayList<KrabApplet.ShaderSnapshot> snapshots = new ArrayList<KrabApplet.ShaderSnapshot>();
-    int refreshRateInMillis = 36;
+    private ArrayList<KrabApplet.ShaderSnapshot> snapshots = new ArrayList<KrabApplet.ShaderSnapshot>();
+    private int refreshRateInMillis = 36;
 
     protected void chromaticAberrationPass(PGraphics pg) {
         String chromatic = "postFX\\chromaticAberrationFrag.glsl";
@@ -40,7 +41,7 @@ public abstract class KrabApplet extends NewGuiSketch {
         pg.pushStyle();
         pg.blendMode(SUBTRACT);
         pg.noStroke();
-        pg.fill(255, slider("alpha", 0, 100, 17));
+        pg.fill(255, slider("alpha fade", 0, 100, 17));
         pg.rectMode(CENTER);
         pg.rect(0, 0, width * 2, height * 2);
         pg.hint(PConstants.ENABLE_DEPTH_TEST);
@@ -66,13 +67,13 @@ public abstract class KrabApplet extends NewGuiSketch {
 
     protected void rgbSplitPassUniform(PGraphics pg) {
         String rgbSplit = "rgbSplitUniform.glsl";
-        uniform(rgbSplit).set("delta", slider("delta", 2));
+        uniform(rgbSplit).set("delta", slider("RGB split", 2));
         hotFilter(rgbSplit, pg);
     }
 
     protected void rgbSplitPass(PGraphics pg) {
         String rgbSplit = "postFX/rgbSplitFrag.glsl";
-        uniform(rgbSplit).set("delta", slider("rgb mag", 10));
+        uniform(rgbSplit).set("delta", slider("RGB split", 10));
         hotFilter(rgbSplit, pg);
     }
 
@@ -163,6 +164,7 @@ public abstract class KrabApplet extends NewGuiSketch {
         return null;
     }
 
+    @SuppressWarnings("ManualMinMaxCalculation")
     private class ShaderSnapshot {
         String fragPath;
         String vertPath;
