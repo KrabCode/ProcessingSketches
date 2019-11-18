@@ -14,8 +14,8 @@ public class JuiceTest extends KrabApplet {
     }
 
     public void settings() {
-//        size(800, 800, P3D);
-        fullScreen(P3D);
+        size(800, 800, P3D);
+//        fullScreen(P3D);
     }
 
     public void setup() {
@@ -25,6 +25,7 @@ public class JuiceTest extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        recordingFrames *= 3;
     }
 
     public void draw() {
@@ -39,14 +40,8 @@ public class JuiceTest extends KrabApplet {
             pg.hint(ENABLE_DEPTH_TEST);
         }
         alphaFade(pg);
-        rgbSplitPass(pg);
+        split(pg);
         group("matrix");
-        String options = options("ortho", "perspective");
-        if(options.equals("ortho")){
-            pg.ortho();
-        }else{
-            pg.perspective();
-        }
         PVector translate = sliderXYZ("translate", 1000);
         pg.translate(width*.5f + translate.x, height*.5f+ translate.y, translate.z);
         PVector rotate = sliderXYZ("rotate", 1).add(sliderXYZ("rotate speed", 1));
@@ -77,8 +72,15 @@ public class JuiceTest extends KrabApplet {
         }
         pg.popMatrix();
         pg.endDraw();
+        rec(pg);
         background(0);
         image(pg, 0, 0);
         gui();
+    }
+
+    private void split(PGraphics pg) {
+        String radialBlur = "split.glsl";
+        uniform(radialBlur).set("delta", slider("split"));
+        hotFilter(radialBlur, pg);
     }
 }
