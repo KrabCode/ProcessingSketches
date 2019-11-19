@@ -67,30 +67,6 @@ public class Orbital extends KrabApplet {
         gui();
     }
 
-    private void spiralSphere(PGraphics pg) {
-        pg.beginShape(POINTS);
-        pg.stroke(255);
-        pg.strokeWeight(slider("pl weight", 10));
-        pg.noFill();
-        float N = slider("pl count", 3000);
-        float s  = 3.6f/sqrt(N);
-        float dz = 2.0f/N;
-        float lon = 0;
-        float  z = 1 - dz/2;
-        float scl = slider("pl scl", 260);
-        for (int k = 0; k < N; k++) {
-            float r = sqrt(1-z*z);
-            pg.vertex(cos(lon)*r*scl, sin(lon)*r*scl, z*scl);
-            z = z - dz;
-            lon = lon + s/r;
-        }
-        pg.endShape();
-        pg.noStroke();
-        pg.fill(0);
-        pg.sphereDetail(20);
-        pg.sphere(slider("pl scl") - slider("planet core", 5));
-    }
-
     private void updateParticles() {
         if (button("reset ps")) {
             ps.clear();

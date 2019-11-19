@@ -19,6 +19,12 @@ public abstract class KrabApplet extends NewGuiSketch {
     private ArrayList<KrabApplet.ShaderSnapshot> snapshots = new ArrayList<KrabApplet.ShaderSnapshot>();
     private int refreshRateInMillis = 36;
 
+    protected void splitPass(PGraphics pg) {
+        String split = "split.glsl";
+        uniform(split).set("delta", slider("split"));
+        hotFilter(split, pg);
+    }
+
     protected void chromaticAberrationPass(PGraphics pg) {
         String chromatic = "postFX\\chromaticAberrationFrag.glsl";
         uniform(chromatic).set("maxDistort", slider("chromatic", 5));

@@ -38,8 +38,7 @@ public class JuiceTest extends KrabApplet {
             pg.hint(ENABLE_DEPTH_TEST);
         }
         alphaFade(pg);
-        rgbSplitPass(pg);
-        group("matrix");
+        splitPass(pg);
         PVector translate = sliderXYZ("translate", 1000);
         pg.translate(width*.5f + translate.x, height*.5f+ translate.y, translate.z);
         PVector rotate = sliderXYZ("rotate", 1).add(sliderXYZ("rotate speed", 1));
@@ -47,7 +46,7 @@ public class JuiceTest extends KrabApplet {
         pg.rotateY(rotate.y);
         pg.rotateZ(rotate.z);
         group("shape");
-        if(toggle("nofill")){
+        if(toggle("hollow")){
             pg.noFill();
         }else{
             pg.fill(picker("fill", .5f, 1, .5f));
@@ -56,7 +55,7 @@ public class JuiceTest extends KrabApplet {
         pg.strokeWeight(slider("weight", 2, 100));
         float size = slider("size", 150, 1000);
         pg.pushMatrix();
-        String shape = options("rectangle", "ellipse", "box");
+        String shape = options("rectangle", "ellipse", "box", "spiral sphere");
         if ("rectangle".equals(shape)) {
             pg.rectMode(CENTER);
             pg.rect(0, 0, size, size);
@@ -64,9 +63,8 @@ public class JuiceTest extends KrabApplet {
             pg.ellipse(0, 0, size, size);
         } else if ("box".equals(shape)) {
             pg.box(size);
-        } else if ("sphere".equals(shape)) {
-            pg.sphereDetail(floor(slider("sphere detail", 10)));
-            pg.sphere(size);
+        }else if("spiral sphere".equals(shape)){
+            spiralSphere(pg);
         }
         pg.popMatrix();
         pg.endDraw();
@@ -74,4 +72,6 @@ public class JuiceTest extends KrabApplet {
         image(pg, 0, 0);
         gui();
     }
+
+
 }
