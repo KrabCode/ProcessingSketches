@@ -29,7 +29,7 @@ import java.util.Arrays;
  * // first null group's element appears twice, once at the top and once at the bottom
  */
 @SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal",
-        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess", "Convert2Lambda",})
+        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
 public abstract class NewGuiSketch extends PApplet {
     private static final String STATE_BEGIN = "STATE_BEGIN";
     private static final String STATE_END = "STATE_END";
@@ -50,13 +50,12 @@ public abstract class NewGuiSketch extends PApplet {
     private static final String ACTION_UNDO = "UNDO";
     private static final String ACTION_REDO = "REDO";
     private static final String ACTION_SAVE = "SAVE";
-    private static final String ACTION_LOAD = "LOAD";
-    private static final int MENU_BUTTON_COUNT = 5;
+    private static final String ACTION_LOAD = "load";
+    private static final int MENU_BUTTON_COUNT = 4;
     private static final String MENU_BUTTON_HIDE = "hide";
     private static final String MENU_BUTTON_UNDO = "undo";
     private static final String MENU_BUTTON_REDO = "redo";
-    private static final String MENU_BUTTON_SAVE = "redo";
-    private static final String MENU_BUTTON_LOAD = "redo";
+    private static final String MENU_BUTTON_SAVE = "save";
     private static final String SATURATION = "saturation";
     private static final String BRIGHTNESS = "brightness";
     private static final String HUE = "hue";
@@ -88,12 +87,12 @@ public abstract class NewGuiSketch extends PApplet {
     private final boolean onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     private final float textSize = onWindows ? 24 : 48;
     private final float cell = onWindows ? 40 : 80;
-    private final float hideButtonWidth = cell*2;
-    private final float menuButtonSize = cell;
+    private final float hideButtonWidth = cell * 2;
+    private final float menuButtonSize = cell * 1.5f;
     private final float previewTrayBoxWidth = cell * .375f;
     private final float previewTrayBoxMargin = cell * .125f;
     private final float previewTrayBoxOffsetY = -cell * .025f;
-    private final float minimumTrayWidth = hideButtonWidth + (MENU_BUTTON_COUNT-1) * menuButtonSize;
+    private final float minimumTrayWidth = hideButtonWidth + (MENU_BUTTON_COUNT - 1) * menuButtonSize;
     private final float sliderHeight = cell * 2;
     protected String captureDir;
     protected String captureFilename;
@@ -125,9 +124,12 @@ public abstract class NewGuiSketch extends PApplet {
     private float underlineTrayAnimationStarted = -UNDERLINE_TRAY_ANIMATION_DURATION;
     private float undoRotationStarted = -MENU_ROTATION_DURATION;
     private float redoRotationStarted = -MENU_ROTATION_DURATION;
-    private float undoHideRotationStarted = -MENU_ROTATION_DURATION;
+    private float hideRotationStarted = -MENU_ROTATION_DURATION;
     private float saveAnimationStarted = -MENU_ROTATION_DURATION;
     private float loadAnimationStarted = -MENU_ROTATION_DURATION;
+    private int undoHoldDuration = 0;
+    private int redoHoldDuration = 0;
+    private int menuButtonHoldThreshold = 90;
 
     // INTERFACE
     protected float slider() {
@@ -456,8 +458,6 @@ public abstract class NewGuiSketch extends PApplet {
         updateMenuButtonRedo(x, y, size, size);
         x += size;
         updateMenuButtonSave(x, y, size, size);
-        x += size;
-        updateMenuButtonLoad(x, y, size, size);
     }
 
     private void updateMenuButtonHide(float x, float y, float w, float h) {
@@ -465,13 +465,13 @@ public abstract class NewGuiSketch extends PApplet {
             trayVisible = !trayVisible;
             trayWidth = trayVisible ? trayWidthWhenExtended : 0;
             keyboardSelectionIndex = 0;
-            undoHideRotationStarted = frameCount;
+            hideRotationStarted = frameCount;
         }
         float grayscale = (keyboardSelected(MENU_BUTTON_HIDE) || isMouseOver(x, y, w, h)) ? GRAYSCALE_TEXT_SELECTED :
                 GRAYSCALE_TEXT_DARK;
         fill(grayscale);
         stroke(grayscale);
-        float rotation = easedAnimation(undoHideRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        float rotation = easedAnimation(hideRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
         if (trayVisible) {
             rotation += 1;
         }
@@ -481,25 +481,63 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     private void updateMenuButtonUndo(float x, float y, float w, float h) {
-        boolean canUndo = undoStack.size() > 0;
-        if (canUndo && (activated(MENU_BUTTON_UNDO, x, y, w, h) || actions.contains(ACTION_UNDO))) {
-            pushCurrentStateToRedo();
-            popUndoToCurrentState();
-            undoRotationStarted = frameCount;
-        }
         float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        rotation -= constrain(map(undoHoldDuration, 0, menuButtonHoldThreshold, 0, 1), 0, 1);
         displayUndoButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
+        boolean canUndo = undoStack.size() > 0;
+        if (canUndo && trayVisible) {
+            if (actions.contains(ACTION_UNDO) || isMousePressedHere(x, y, w, h)) {
+                undoHoldDuration++;
+            } else if (!mouseJustReleasedHere(x, y, w, h)) {
+                return;
+            }
+            if (mouseJustReleasedHere(x, y, w, h)) {
+                if (undoHoldDuration < menuButtonHoldThreshold) {
+                    pushCurrentStateToRedo();
+                    popUndoToCurrentState();
+                    undoRotationStarted = frameCount;
+                    undoHoldDuration = 0;
+                }
+            }
+            if (mouseJustReleasedHere(x, y, w, h) && undoHoldDuration >= menuButtonHoldThreshold) {
+                while (!undoStack.isEmpty()) {
+                    pushCurrentStateToRedo();
+                    popUndoToCurrentState();
+                }
+                undoRotationStarted = frameCount;
+                undoHoldDuration = 0;
+            }
+        }
     }
 
     private void updateMenuButtonRedo(float x, float y, float w, float h) {
-        boolean canRedo = redoStack.size() > 0;
-        if (canRedo && (activated(MENU_BUTTON_REDO, x, y, w, h) || actions.contains(ACTION_REDO))) {
-            pushCurrentStateToUndoWithoutClearingRedo();
-            popRedoToCurrentState();
-            redoRotationStarted = frameCount;
-        }
         float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        rotation -= constrain(map(redoHoldDuration, 0, menuButtonHoldThreshold, 0, 1), 0, 1);
         displayUndoButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
+        boolean canRedo = redoStack.size() > 0;
+        if (canRedo && trayVisible) {
+            if (actions.contains(ACTION_REDO) || isMousePressedHere(x, y, w, h)) {
+                redoHoldDuration++;
+            } else if (!mouseJustReleasedHere(x, y, w, h)) {
+                return;
+            }
+            if (mouseJustReleasedHere(x, y, w, h)) {
+                if (redoHoldDuration < menuButtonHoldThreshold) {
+                    pushCurrentStateToUndoWithoutClearingRedo();
+                    popRedoToCurrentState();
+                    redoRotationStarted = frameCount;
+                    redoHoldDuration = 0;
+                }
+            }
+            if (mouseJustReleasedHere(x, y, w, h) && redoHoldDuration >= menuButtonHoldThreshold) {
+                while (!redoStack.isEmpty()) {
+                    pushCurrentStateToUndoWithoutClearingRedo();
+                    popRedoToCurrentState();
+                }
+                redoRotationStarted = frameCount;
+                redoHoldDuration = 0;
+            }
+        }
     }
 
     private void displayMenuButtonHideShow(float x, float y, float w, float h, float rotation) {
@@ -535,28 +573,9 @@ public abstract class NewGuiSketch extends PApplet {
         rect(x + w * .5f, y + h * .38f, w * .25f * animation, h * .25f * animation);
     }
 
-    private void updateMenuButtonLoad(float x, float y, float w, float h) {
-        if (activated(MENU_BUTTON_LOAD, x, y, w, h) || actions.contains(ACTION_LOAD)) {
-            loadAnimationStarted = frameCount;
-            loadLastStateFromFile(true);
-        }
-        rectMode(CENTER);
-        float grayscale = (keyboardSelected(MENU_BUTTON_LOAD) || isMouseOver(x, y, w, h)) ?
-                GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK;
-        float animation = easedAnimation(loadAnimationStarted, MENU_ROTATION_DURATION, 3);
-        if (animation == 0) {
-            animation = 1;
-        }
-        stroke(grayscale);
-        noFill();
-        rect(x + w * .5f, y + h * .5f, w * .5f * animation, h * .5f * animation);
-    }
-
     private void displayUndoButton(float x, float y, float w, float h, float rotation,
                                    boolean direction, String menuButtonType, int stackSize) {
-        if (stackSize == 0) {
-            return;
-        }
+
         textSize(textSize);
         textAlign(CENTER, CENTER);
         float grayscale = (keyboardSelected(menuButtonType) || isMouseOver(x, y, w, h)) ?
@@ -569,6 +588,11 @@ public abstract class NewGuiSketch extends PApplet {
         noFill();
         stroke(grayscale);
         strokeWeight(2);
+        if (stackSize == 0) {
+            float crossSize = .08f;
+            line(-w * crossSize, -h * crossSize, w * crossSize, h * crossSize);
+            line(-w * crossSize, h * crossSize, w * crossSize, -h * crossSize);
+        }
         float radiusMultiplier = .5f;
         arc(0, 0, w * radiusMultiplier, h * radiusMultiplier, margin, PI - margin);
         fill(grayscale);
@@ -716,6 +740,10 @@ public abstract class NewGuiSketch extends PApplet {
 
     private boolean mouseJustReleased() {
         return pMousePressed && !mousePressed;
+    }
+
+    private boolean isMousePressedHere(float x, float y, float w, float h) {
+        return mousePressed && isPointInRect(mouseX, mouseY, x, y, w, h);
     }
 
     private boolean mouseJustPressed() {
@@ -903,6 +931,12 @@ public abstract class NewGuiSketch extends PApplet {
                     actions.add(ACTION_ALT);
                 }
             } else if (!kk.coded) {
+                if (kk.character == 'z') {
+                    actions.add(ACTION_UNDO);
+                }
+                if (kk.character == 'y') {
+                    actions.add(ACTION_REDO);
+                }
                 if (!kk.justPressed) {
                     continue;
                 }
@@ -920,12 +954,6 @@ public abstract class NewGuiSketch extends PApplet {
                 }
                 if (kk.character == 'h') {
                     trayVisible = !trayVisible;
-                }
-                if (kk.character == 'z') {
-                    actions.add(ACTION_UNDO);
-                }
-                if (kk.character == 'y') {
-                    actions.add(ACTION_REDO);
                 }
                 if (kk.character == 19) {
                     // CTRL + S
@@ -1166,30 +1194,16 @@ public abstract class NewGuiSketch extends PApplet {
         undoStack.add(getGuiState());
     }
 
-    private void popAllUndo() {
-        int i = undoStack.size() - 1;
-        while (undoStack.size() > 1) {
-            undoStack.remove(i--);
-        }
-    }
-
-    private void popAllRedo() {
-        int i = redoStack.size() - 1;
-        while (redoStack.size() > 1) {
-            redoStack.remove(i--);
-        }
-    }
-
     private void popUndoToCurrentState() {
-        if (undoStack.size() == 0) {
-            throw new IllegalStateException("nothing to pop in undo stack!");
+        if (undoStack.isEmpty()) {
+            return;
         }
         setGuiState(undoStack.remove(undoStack.size() - 1));
     }
 
     private void popRedoToCurrentState() {
-        if (redoStack.size() == 0) {
-            throw new IllegalStateException("nothing to pop in redo stack!");
+        if (redoStack.isEmpty()) {
+            return;
         }
         setGuiState(redoStack.remove(redoStack.size() - 1));
     }
@@ -1254,8 +1268,8 @@ public abstract class NewGuiSketch extends PApplet {
         }
         String[] lines = loadStrings(file);
         if (alsoPush) {
-            popAllRedo();
-            popAllUndo();
+            redoStack.clear();
+            undoStack.clear();
             boolean pushingUndo = false;
             ArrayList<String> runningState = new ArrayList<String>();
             for (String line : lines) {
@@ -1302,8 +1316,7 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     private String settingsPath() {
-        return "gui_settings\\" + year() + nf(month(), 2, 0) + nf(day(), 2, 0)
-                + "_" + this.getClass().getSimpleName() + ".txt";
+        return "gui_settings\\" + this.getClass().getSimpleName() + ".txt";
     }
 
 // CLASSES
@@ -1531,13 +1544,18 @@ public abstract class NewGuiSketch extends PApplet {
         private void displayDotsOnTray(float x, float y) {
             for (int i = 0; i < options.size(); i++) {
                 float iNorm = norm(i, 0, options.size() - 1);
-                float dotX = x + i * 10;
-                pushStyle();
-                fill(i == valueIndex ? GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
-                noStroke();
-                rectMode(CORNER);
-                rect(dotX + 2.5f, y, 5, 5);
-                pushStyle();
+                float size = 4;
+                float rectX = x + cell*.15f + i * size * 2.5f;
+                if (i == valueIndex) {
+                    size *= 1.8f;
+                    pushStyle();
+                    noFill();
+                }
+                rectMode(CENTER);
+                rect(rectX, y+cell*.1f, size, size);
+                if (i == valueIndex) {
+                    popStyle();
+                }
             }
         }
 
@@ -1766,8 +1784,9 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         void displayMarkerLines(float frequency, int skipEveryNth, float markerHeight, float horizontalLineHeight,
-                             boolean shoulddisplayValue, float value, float precision, float w, float h,
-                             boolean flipTextHorizontally, float revealAnimationEased, float minValue, float maxValue) {
+                                boolean shoulddisplayValue, float value, float precision, float w, float h,
+                                boolean flipTextHorizontally, float revealAnimationEased, float minValue,
+                                float maxValue) {
             float markerValue = -precision - value - frequency;
             int i = 0;
             while (markerValue < precision - value) {
@@ -1783,9 +1802,9 @@ public abstract class NewGuiSketch extends PApplet {
         }
 
         void displayMarkerLine(float markerValue, float precision, float w, float h, float markerHeight,
-                            float horizontalLineHeight,
-                            float value, boolean shouldDisplayValue, boolean flipTextHorizontally,
-                            float revealAnimationEased, float minValue, float maxValue) {
+                               float horizontalLineHeight,
+                               float value, boolean shouldDisplayValue, boolean flipTextHorizontally,
+                               float revealAnimationEased, float minValue, float maxValue) {
             //TODO pass min and max to this and don't display the markers outside the constraints
             float moduloValue = markerValue;
             while (moduloValue > precision) {
