@@ -12,10 +12,8 @@ import java.util.Arrays;
 /**
  * TODO:
  * // - must have:
- * // menu buttons: hold undo/redo to undo/redo all
- * // tray hold dropdown:
  * // touchscreen slider precision, reset
- * <p>
+ *
  * // - nice to have:
  * // out of constrain markers should not be displayed
  * // record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
@@ -23,9 +21,8 @@ import java.util.Arrays;
  * // scrolling down to allow unlimited group and element count
  * // more minimalist animated juice...
  * // range picker (2 floats, start and end, end > start)
- * <p>
- * // bugs:
- * // space when tray hidden must close current overlay
+ *
+ * // - bugs:
  * // first null group's element appears twice, once at the top and once at the bottom
  */
 @SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal",
@@ -78,8 +75,8 @@ public abstract class NewGuiSketch extends PApplet {
     private static final float PICKER_REVEAL_START_SKIP = PICKER_REVEAL_DURATION * .25f;
     private static final int KEY_REPEAT_DELAY_FIRST = 300;
     private static final int KEY_REPEAT_DELAY = 30;
-    private static final float MENU_ROTATION_DURATION = 10;
-    private static final float MENU_ROTATION_EASING = .5f;
+    private static final float MENU_ROTATION_DURATION = 20;
+    private static final float MENU_ROTATION_EASING = 2;
     private static final float DESELECTION_FADEOUT_DURATION = 10;
     private static final float DESELECTION_FADEOUT_EASING = 1;
     private static final float CHECK_ANIMATION_DURATION = 10;
@@ -126,7 +123,6 @@ public abstract class NewGuiSketch extends PApplet {
     private float redoRotationStarted = -MENU_ROTATION_DURATION;
     private float hideRotationStarted = -MENU_ROTATION_DURATION;
     private float saveAnimationStarted = -MENU_ROTATION_DURATION;
-    private float loadAnimationStarted = -MENU_ROTATION_DURATION;
     private int undoHoldDuration = 0;
     private int redoHoldDuration = 0;
     private int menuButtonHoldThreshold = 90;
@@ -394,8 +390,13 @@ public abstract class NewGuiSketch extends PApplet {
     }
 
     private float easedAnimation(float startFrame, float duration, float easingFactor) {
+        return easedAnimation(startFrame, duration, easingFactor, 0, 1);
+    }
+
+    private float easedAnimation(float startFrame, float duration, float easingFactor, float constrainMin,
+                                 float constrainMax) {
         float animationNormalized = constrain(norm(frameCount, startFrame,
-                startFrame + duration), 0, 1);
+                startFrame + duration), constrainMin, constrainMax);
         return ease(animationNormalized, easingFactor);
     }
 
@@ -482,7 +483,7 @@ public abstract class NewGuiSketch extends PApplet {
 
     private void updateMenuButtonUndo(float x, float y, float w, float h) {
         float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        rotation -= constrain(map(undoHoldDuration, 0, menuButtonHoldThreshold, 0, 1), 0, 1);
+        rotation -= constrain(norm(undoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
         displayUndoButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
         boolean canUndo = undoStack.size() > 0;
         if (canUndo && trayVisible) {
@@ -512,7 +513,7 @@ public abstract class NewGuiSketch extends PApplet {
 
     private void updateMenuButtonRedo(float x, float y, float w, float h) {
         float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        rotation -= constrain(map(redoHoldDuration, 0, menuButtonHoldThreshold, 0, 1), 0, 1);
+        rotation -= constrain(norm(redoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
         displayUndoButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
         boolean canRedo = redoStack.size() > 0;
         if (canRedo && trayVisible) {
@@ -568,9 +569,10 @@ public abstract class NewGuiSketch extends PApplet {
             animation = 1;
         }
         stroke(grayscale);
+        strokeWeight(2);
         noFill();
         rect(x + w * .5f, y + h * .5f, w * .5f * animation, h * .5f * animation);
-        rect(x + w * .5f, y + h * .38f, w * .25f * animation, h * .25f * animation);
+        rect(x + w * .5f, y + h * .5f - animation*h*.12f, w * .25f * animation, h * .25f * animation);
     }
 
     private void displayUndoButton(float x, float y, float w, float h, float rotation,
@@ -1225,7 +1227,6 @@ public abstract class NewGuiSketch extends PApplet {
             if (state.startsWith(GROUP_PREFIX)) {
                 Group group = findGroup(splitState[1]);
                 if (group == null) {
-                    //TODO lazy init here using the state data
                     continue;
                 }
 //                println("setting " + group.name + " to " + state);
@@ -1545,14 +1546,14 @@ public abstract class NewGuiSketch extends PApplet {
             for (int i = 0; i < options.size(); i++) {
                 float iNorm = norm(i, 0, options.size() - 1);
                 float size = 4;
-                float rectX = x + cell*.15f + i * size * 2.5f;
+                float rectX = x + cell * .15f + i * size * 2.5f;
                 if (i == valueIndex) {
                     size *= 1.8f;
                     pushStyle();
                     noFill();
                 }
                 rectMode(CENTER);
-                rect(rectX, y+cell*.1f, size, size);
+                rect(rectX, y + cell * .1f, size, size);
                 if (i == valueIndex) {
                     popStyle();
                 }
@@ -1641,6 +1642,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         void update() {
             if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+                pushCurrentStateToUndo();
                 reset();
             }
         }
@@ -1805,7 +1807,6 @@ public abstract class NewGuiSketch extends PApplet {
                                float horizontalLineHeight,
                                float value, boolean shouldDisplayValue, boolean flipTextHorizontally,
                                float revealAnimationEased, float minValue, float maxValue) {
-            //TODO pass min and max to this and don't display the markers outside the constraints
             float moduloValue = markerValue;
             while (moduloValue > precision) {
                 moduloValue -= precision * 2;
@@ -1815,11 +1816,12 @@ public abstract class NewGuiSketch extends PApplet {
             }
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float displayValue = moduloValue + value;
-
             boolean isEdgeValue =
                     (displayValue < minValue + precision * .01 && displayValue > minValue - precision * .01f) ||
                             (displayValue > maxValue - precision * .01 && displayValue < maxValue + precision * .01f);
-
+            if (!isEdgeValue && (displayValue > maxValue || displayValue < minValue)) {
+                return;
+            }
             float grayscale = darkenEdges(screenX, w);
             fill(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
             stroke(GRAYSCALE_TEXT_SELECTED, grayscale * revealAnimationEased);
@@ -1975,7 +1977,9 @@ public abstract class NewGuiSketch extends PApplet {
                     SLIDER_REVEAL_DURATION,
                     SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision, value,
-                    revealAnimation, true, true, minValue, maxValue);
+                    revealAnimation, true, true,
+                    constrained ? minValue : -Float.MAX_VALUE,
+                    constrained ? maxValue : Float.MAX_VALUE);
         }
 
     }
@@ -2206,6 +2210,7 @@ public abstract class NewGuiSketch extends PApplet {
 
         void handleKeyboardInput() {
             if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+                pushCurrentStateToUndo();
                 reset();
             }
             if (alphaPrecision > ALPHA_PRECISION_MINIMUM && previousActions.contains(ACTION_PRECISION_ZOOM_IN)) {
