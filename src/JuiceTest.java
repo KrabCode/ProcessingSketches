@@ -45,6 +45,7 @@ public class JuiceTest extends KrabApplet {
         pg.rotateX(rotate.x);
         pg.rotateY(rotate.y);
         pg.rotateZ(rotate.z);
+        sliderInt("integer");
         group("shape");
         if(toggle("hollow")){
             pg.noFill();
@@ -55,7 +56,7 @@ public class JuiceTest extends KrabApplet {
         pg.strokeWeight(slider("weight", 2, 100));
         float size = slider("size", 150, 1000);
         pg.pushMatrix();
-        String shape = options("rectangle", "ellipse", "box", "spiral sphere");
+        String shape = options("rectangle", "ellipse", "box");
         if ("rectangle".equals(shape)) {
             pg.rectMode(CENTER);
             pg.rect(0, 0, size, size);
@@ -63,11 +64,10 @@ public class JuiceTest extends KrabApplet {
             pg.ellipse(0, 0, size, size);
         } else if ("box".equals(shape)) {
             pg.box(size);
-        }else if("spiral sphere".equals(shape)){
-            spiralSphere(pg);
         }
         pg.popMatrix();
         pg.endDraw();
+        rec(pg);
         background(0);
         image(pg, 0, 0);
         gui();
