@@ -18,3 +18,23 @@ shape§weight§7.0§100.0
 shape§size§150.0§1000.0
 shape§rectangle§2§rectangle§ellipse§box
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§3.875§100.0
+background§split§558.375§100.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§-13.0311985§288.95374§28.387959
+background§rotate speed§1.0§-0.008749999§0.014999994§0.02
+background§integer§1.147596E-24§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END

@@ -72,6 +72,4 @@ public class JuiceTest extends KrabApplet {
         image(pg, 0, 0);
         gui();
     }
-
-
 }
