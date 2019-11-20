@@ -28,8 +28,8 @@ import static java.lang.System.currentTimeMillis;
  * - bugs:
  * first null group's element appears twice, once at the top and once at the bottom
  */
-@SuppressWarnings({"InnerClassMayBeStatic", "SameParameterValue", "FieldCanBeLocal",
-        "BooleanMethodIsAlwaysInverted", "unused", "ConstantConditions", "WeakerAccess"})
+
+@SuppressWarnings({"WeakerAccess", "SameParameterValue", "unused"})
 public abstract class KrabApplet extends PApplet {
     private static final String STATE_BEGIN = "STATE_BEGIN";
     private static final String STATE_END = "STATE_END";
@@ -193,13 +193,12 @@ public abstract class KrabApplet extends PApplet {
     protected float slider(String name, float defaultValue, float precision, boolean constrained, float min,
                            float max, boolean floored) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             SliderFloat newElement = new SliderFloat(currentGroup, name, defaultValue, precision,
                     constrained, min, max, floored);
             currentGroup.elements.add(newElement);
         }
         SliderFloat slider = (SliderFloat) findElement(name, currentGroup.name);
-        assert slider != null;
         return slider.value;
     }
 
@@ -213,12 +212,11 @@ public abstract class KrabApplet extends PApplet {
 
     protected PVector sliderXY(String name, float defaultX, float defaultY, float precision) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             SliderXY newElement = new SliderXY(currentGroup, name, defaultX, defaultY, precision);
             currentGroup.elements.add(newElement);
         }
         SliderXY slider = (SliderXY) findElement(name, currentGroup.name);
-        assert slider != null;
         return slider.value;
     }
 
@@ -240,12 +238,11 @@ public abstract class KrabApplet extends PApplet {
 
     protected PVector sliderXYZ(String name, float x, float y, float z, float precision) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             SliderXYZ newElement = new SliderXYZ(currentGroup, name, x, y, z, precision);
             currentGroup.elements.add(newElement);
         }
         SliderXYZ slider = (SliderXYZ) findElement(name, currentGroup.name);
-        assert slider != null;
         return slider.value;
     }
 
@@ -271,12 +268,11 @@ public abstract class KrabApplet extends PApplet {
 
     protected int picker(String name, float hue, float sat, float br, float alpha) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             ColorPicker newElement = new ColorPicker(currentGroup, name, hue, sat, br, alpha);
             currentGroup.elements.add(newElement);
         }
         ColorPicker slider = (ColorPicker) findElement(name, currentGroup.name);
-        assert slider != null;
         return slider.value();
     }
 
@@ -286,12 +282,11 @@ public abstract class KrabApplet extends PApplet {
 
     protected String options(String defaultValue, String... otherValues) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(defaultValue, currentGroup.name)) {
+        if (elementDoesntExist(defaultValue, currentGroup.name)) {
             Element newElement = new Radio(currentGroup, defaultValue, otherValues);
             currentGroup.elements.add(newElement);
         }
         Radio radio = (Radio) findElement(defaultValue, currentGroup.name);
-        assert radio != null;
         return radio.options.get(radio.valueIndex);
     }
 
@@ -301,7 +296,7 @@ public abstract class KrabApplet extends PApplet {
 
     protected boolean button(String name) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             Button newElement = new Button(currentGroup, name);
             currentGroup.elements.add(newElement);
         }
@@ -319,7 +314,7 @@ public abstract class KrabApplet extends PApplet {
 
     protected boolean toggle(String name, boolean defaultState) {
         Group currentGroup = getCurrentGroup();
-        if (!elementExists(name, currentGroup.name)) {
+        if (elementDoesntExist(name, currentGroup.name)) {
             Toggle newElement = new Toggle(currentGroup, name, defaultState);
             currentGroup.elements.add(newElement);
         }
@@ -363,13 +358,6 @@ public abstract class KrabApplet extends PApplet {
             return;
         }
         trayScrollOffset += mouseY - pmouseY;
-    }
-
-    private void handleEscape() {
-        if (isKeyPressed(ESC, false)) {
-
-            exit();
-        }
     }
 
     private void updateMouseState() {
@@ -707,9 +695,9 @@ public abstract class KrabApplet extends PApplet {
             }
             if (!overlayVisible) {
                 setOverlayOwner(el);
-            } else if (overlayVisible && !el.equals(overlayOwner)) {
+            } else if (!el.equals(overlayOwner)) {
                 setOverlayOwner(el);
-            } else if (overlayVisible && el.equals(overlayOwner)) {
+            } else if (el.equals(overlayOwner)) {
                 overlayVisible = false;
             }
         }
@@ -887,11 +875,11 @@ public abstract class KrabApplet extends PApplet {
 //        println((key == CODED ? "code: " + keyCode : "key: " + key));
         keyboardActive = true;
         if (key == CODED) {
-            if (!isKeyPressed(keyCode, true)) {
+            if (keyboardKeysDoesntContain(keyCode, true)) {
                 keyboardKeys.add(new Key(keyCode, true));
             }
         } else {
-            if (!isKeyPressed(key, false)) {
+            if (keyboardKeysDoesntContain(key, false)) {
                 keyboardKeys.add(new Key((int) key, false));
             }
         }
@@ -908,13 +896,13 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    private boolean isKeyPressed(int keyCode, boolean coded) {
+    private boolean keyboardKeysDoesntContain(int keyCode, boolean coded) {
         for (Key kk : keyboardKeys) {
             if (kk.character == keyCode && kk.coded == coded) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void keyReleased() {
@@ -939,7 +927,6 @@ public abstract class KrabApplet extends PApplet {
         previousActions.clear();
         previousActions.addAll(actions);
         actions.clear();
-        int lastIndex = keyboardSelectionIndex;
         for (Key kk : keyboardKeys) {
             if (kk.coded) {
                 if (kk.character == UP) {
@@ -989,10 +976,10 @@ public abstract class KrabApplet extends PApplet {
                     actions.add(ACTION_ALT);
                 }
             } else if (!kk.coded) {
-                if (kk.character == 'z') {
+                if (kk.character == 'z' || kk.character == 26) {
                     actions.add(ACTION_UNDO);
                 }
-                if (kk.character == 'y') {
+                if (kk.character == 'y' || kk.character == 25) {
                     actions.add(ACTION_REDO);
                 }
                 if (!kk.justPressed) {
@@ -1020,14 +1007,6 @@ public abstract class KrabApplet extends PApplet {
                 if (kk.character == 12) {
                     // CTRL + L
                     actions.add(ACTION_LOAD);
-                }
-                if (kk.character == 26) {
-                    // CTRL + Z
-                    actions.add(ACTION_UNDO);
-                }
-                if (kk.character == 25) {
-                    // CTRL + Y
-                    actions.add(ACTION_REDO);
                 }
             }
             kk.justPressed = false;
@@ -1088,14 +1067,14 @@ public abstract class KrabApplet extends PApplet {
     // GROUP AND ELEMENT HANDLING
     private int hiddenElementCount(boolean forwardFacing) {
         Group group = findKeyboardSelectedGroup();
-        Element element = findKeyboardSelectedElement();
         if (previousActions.contains(ACTION_ALT)) {
-            if (element != null) {
-                group = findKeyboardSelectedElement().parent;
+            if (isAnyElementKeyboardSelected()) {
+                Element el = findKeyboardSelectedElement();
+                group = el.parent;
                 if (forwardFacing) {
-                    return group.elements.size() - group.elements.indexOf(element) - 1;
+                    return group.elements.size() - group.elements.indexOf(el) - 1;
                 } else {
-                    return group.elements.indexOf(element);
+                    return group.elements.indexOf(el);
                 }
             } else {
                 if (forwardFacing) {
@@ -1174,23 +1153,6 @@ public abstract class KrabApplet extends PApplet {
         return null;
     }
 
-    private Group findNextGroup(String query) {
-        if (groups.isEmpty()) {
-            return null;
-        }
-        for (Group group : groups) {
-            if (group.name.equals(query)) {
-                int index = groups.indexOf(group);
-                if (index < groups.size() - 1) {
-                    return groups.get(index + 1);
-                } else {
-                    return null;
-                }
-            }
-        }
-        return groups.get(0);
-    }
-
     private Group findKeyboardSelectedGroup() {
         for (Group group : groups) {
             if (keyboardSelected(group.name)) {
@@ -1210,8 +1172,8 @@ public abstract class KrabApplet extends PApplet {
         return null;
     }
 
-    private boolean elementExists(String elementName, String groupName) {
-        return findElement(elementName, groupName) != null;
+    private boolean elementDoesntExist(String elementName, String groupName) {
+        return findElement(elementName, groupName) == null;
     }
 
     private Element findElement(String elementName, String groupName) {
@@ -1226,13 +1188,6 @@ public abstract class KrabApplet extends PApplet {
     }
 
     // STATE
-
-    private void popUndoAndForget() {
-        if (undoStack.size() == 0) {
-            return;
-        }
-        undoStack.remove(undoStack.size() - 1);
-    }
 
     private void pushCurrentStateToRedo() {
         redoStack.add(getGuiState());
@@ -1357,23 +1312,6 @@ public abstract class KrabApplet extends PApplet {
             popUndoToCurrentState();
         }
         return lines;
-    }
-
-    private String concat(ArrayList<String> guiState) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : guiState) {
-            sb.append(s);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
-    private String concat(String[] guiState) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : guiState) {
-            sb.append(s);
-        }
-        return sb.toString();
     }
 
     private String settingsPath() {
@@ -1564,6 +1502,7 @@ public abstract class KrabApplet extends PApplet {
             this.vertPath = vertPath;
         }
 
+        @SuppressWarnings("ManualMinMaxCalculation")
         long max(long a, long b) {
             if (a > b) {
                 return a;
@@ -1810,7 +1749,6 @@ public abstract class KrabApplet extends PApplet {
     class Radio extends Element {
         ArrayList<String> options = new ArrayList<String>();
         int valueIndex = 0;
-        float optionWidth = 0;
 
         Radio(Group parent, String name, String[] options) {
             super(parent, name);
@@ -1850,7 +1788,6 @@ public abstract class KrabApplet extends PApplet {
 
         private void displayDotsOnTray(float x, float y) {
             for (int i = 0; i < options.size(); i++) {
-                float iNorm = norm(i, 0, options.size() - 1);
                 float size = 4;
                 float rectX = x + cell * .15f + i * size * 2.5f;
                 if (i == valueIndex) {
@@ -2001,16 +1938,16 @@ public abstract class KrabApplet extends PApplet {
                 }
             }
             if (previousActions.contains(ACTION_ALT) && previousActions.contains(ACTION_CONTROL)) {
-                return keyboardDelta(true, horizontal, precision, sliderWidth);
+                return keyboardDelta(true, horizontal, precision);
             }
             if ((alternative && !previousActions.contains(ACTION_ALT)) ||
                     (!alternative && previousActions.contains(ACTION_ALT))) {
                 return 0;
             }
-            return keyboardDelta(false, horizontal, precision, sliderWidth);
+            return keyboardDelta(false, horizontal, precision);
         }
 
-        private float keyboardDelta(boolean directionless, boolean horizontal, float precision, float sliderWidth) {
+        private float keyboardDelta(boolean directionless, boolean horizontal, float precision) {
             if (actions.contains(ACTION_LEFT) && (horizontal || directionless)) {
                 return screenDistanceToValueDistance(-3, precision);
             }
@@ -2047,7 +1984,7 @@ public abstract class KrabApplet extends PApplet {
             displaySliderBackground(w, h, cutout, horizontal);
             float weight = 2;
             strokeWeight(weight);
-            displayHorizontalLine(w, weight, revealAnimation);
+            displayHorizontalLine(w, revealAnimation);
             if (!horizontal) {
                 pushMatrix();
                 scale(-1, 1);
@@ -2078,7 +2015,7 @@ public abstract class KrabApplet extends PApplet {
             rect(xOffset, 0, w, h);
         }
 
-        void displayHorizontalLine(float w, float weight, float revealAnimation) {
+        void displayHorizontalLine(float w, float revealAnimation) {
             stroke(GRAYSCALE_TEXT_DARK);
             beginShape();
             w *= revealAnimation;
@@ -2662,7 +2599,7 @@ public abstract class KrabApplet extends PApplet {
                 alpha += alphaDelta;
             }
 
-            displayHueSlider(width, sliderHeight, revealAnimation);
+            displayHueSlider(sliderHeight, revealAnimation);
             float hueDelta = updateInfiniteSlider(huePrecision, width, true, false, false);
             if (!satChanged && !brChanged && (keyboardActive || !isMouseInTopHalf)) {
                 hue += hueDelta;
@@ -2674,7 +2611,7 @@ public abstract class KrabApplet extends PApplet {
             popStyle();
         }
 
-        private void displayHueSlider(float w, float h, float revealAnimation) {
+        private void displayHueSlider(float h, float revealAnimation) {
             displayHueStripCornerMode(height + cell - h * revealAnimation, h * .5f, true, revealAnimation);
             displayHueStripCornerMode(height + cell - h * .5f * revealAnimation, h * .5f, false, revealAnimation);
         }
