@@ -1,0 +1,378 @@
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§15.893749§255.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§10.793747§255.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§60.24375§255.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§0.0§255.0
+RecursiveDrawing§stroke§0.0§0.0§0.0§1.0§1.0
+RecursiveDrawing§weight§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§21.0375§255.0
+RecursiveDrawing§stroke§0.016250003§0.0§1.0§1.0§1.0
+RecursiveDrawing§weight§5.187499§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§5.737499§255.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§1.0124997§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§5.737499§255.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§1.0124997§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§5.737499§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§6.9999995§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§5.737499§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§6.9999995§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§5.737499§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§6.9999995§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§6.9999995§10.0
+RecursiveDrawing§mirrors§27.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§6.9999995§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§5.008653E-6§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§4.9639493E-6§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.980625§0.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§8.550004§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.0378394§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§8.550004§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.23125§255.0
+RecursiveDrawing§split§-25.024998§10.0
+RecursiveDrawing§stroke§0.41811764§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§8.550004§10.0
+RecursiveDrawing§mirrors§6.999999§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§16.893734§255.0
+RecursiveDrawing§split§-268.76245§10000.0
+RecursiveDrawing§stroke§4.634765§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§8.550004§10.0
+RecursiveDrawing§mirrors§21.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§38.887497§255.0
+RecursiveDrawing§split§-268.76245§10000.0
+RecursiveDrawing§stroke§5.8319006§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.062504§10.0
+RecursiveDrawing§mirrors§21.000004§100.0
+RecursiveDrawing§dist copies§10.0§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§38.887497§255.0
+RecursiveDrawing§split§-268.76245§10000.0
+RecursiveDrawing§stroke§6.759611§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.062504§10.0
+RecursiveDrawing§mirrors§45.938675§100.0
+RecursiveDrawing§dist copies§16.999996§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§38.887497§255.0
+RecursiveDrawing§split§-268.76245§10000.0
+RecursiveDrawing§stroke§7.115141§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.062504§10.0
+RecursiveDrawing§mirrors§45.99994§100.0
+RecursiveDrawing§dist copies§16.999996§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§38.887497§255.0
+RecursiveDrawing§split§-268.76245§10000.0
+RecursiveDrawing§stroke§8.909612§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.062504§10.0
+RecursiveDrawing§mirrors§45.99994§100.0
+RecursiveDrawing§dist copies§0.0§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§38.887497§255.0
+RecursiveDrawing§split§-81.26245§10000.0
+RecursiveDrawing§stroke§9.962494§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.600002§10.0
+RecursiveDrawing§mirrors§45.999992§100.0
+RecursiveDrawing§dist copies§0.0§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§68.48749§255.0
+RecursiveDrawing§split§0.0§10.0
+RecursiveDrawing§stroke§12.751659§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.600002§10.0
+RecursiveDrawing§mirrors§12.999991§100.0
+RecursiveDrawing§dist copies§17.000004§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§103.23124§255.0
+RecursiveDrawing§split§0.8875001§10.0
+RecursiveDrawing§stroke§14.310147§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.600002§10.0
+RecursiveDrawing§mirrors§12.999998§100.0
+RecursiveDrawing§dist copies§17.000004§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§103.23124§255.0
+RecursiveDrawing§split§0.8875001§10.0
+RecursiveDrawing§stroke§15.085224§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.600002§10.0
+RecursiveDrawing§mirrors§12.999998§100.0
+RecursiveDrawing§dist copies§17.000004§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§103.23124§255.0
+RecursiveDrawing§split§0.8875001§10.0
+RecursiveDrawing§stroke§16.179716§1.0§1.0§0.98125§1.0
+RecursiveDrawing§weight§9.600002§10.0
+RecursiveDrawing§mirrors§12.999998§100.0
+RecursiveDrawing§dist copies§17.000004§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.55§255.0
+RecursiveDrawing§split§3724.6§10000.0
+RecursiveDrawing§stroke§4.6338153§1.0§0.46875§0.6237498§1.0
+RecursiveDrawing§weight§3.6250033§10.0
+RecursiveDrawing§mirrors§10.000002§100.0
+RecursiveDrawing§dist copies§100.0§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§39.84375§255.0
+RecursiveDrawing§split§-8137.9004§10000.0
+RecursiveDrawing§stroke§1.761349§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§5.525003§10.0
+RecursiveDrawing§mirrors§10.000002§100.0
+RecursiveDrawing§dist copies§4.000001§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§39.84375§255.0
+RecursiveDrawing§split§-8137.9004§10000.0
+RecursiveDrawing§stroke§2.5585818§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§5.525003§10.0
+RecursiveDrawing§mirrors§10.000002§100.0
+RecursiveDrawing§dist copies§4.000001§300.0
+RecursiveDrawing§a§100.0§0.0§0.0
+RecursiveDrawing§b§100.0§-0.0§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§39.84375§255.0
+RecursiveDrawing§split§-8137.9004§10000.0
+RecursiveDrawing§stroke§1.5085884§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§5.525003§10.0
+RecursiveDrawing§mirrors§10.000002§100.0
+RecursiveDrawing§dist copies§4.000001§300.0
+RecursiveDrawing§a§100.0§0.0§0.0
+RecursiveDrawing§b§100.0§1.15054035E-14§3.7235683E-12
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§39.84375§255.0
+RecursiveDrawing§split§-8137.9004§10000.0
+RecursiveDrawing§stroke§2.9003081§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§5.525003§10.0
+RecursiveDrawing§mirrors§11.000002§100.0
+RecursiveDrawing§dist copies§52.999992§300.0
+RecursiveDrawing§a§100.0§32.25§35.625
+RecursiveDrawing§b§100.0§8.5§17.375
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§21.675§255.0
+RecursiveDrawing§split§0.0§10.0
+RecursiveDrawing§stroke§11.839303§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§2.700005§10.0
+RecursiveDrawing§mirrors§3.0000005§100.0
+RecursiveDrawing§dist copies§69.000015§300.0
+RecursiveDrawing§a§100.0§-3.625§-35.75
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§4.4625006§25.5
+RecursiveDrawing§split§778.1125§1000.0
+RecursiveDrawing§stroke§18.911226§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§2.5000043§10.0
+RecursiveDrawing§mirrors§12.000002§100.0
+RecursiveDrawing§dist copies§84.000015§300.0
+RecursiveDrawing§a§100.0§-83.625§-230.25
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§4.4625006§25.5
+RecursiveDrawing§split§778.1125§1000.0
+RecursiveDrawing§stroke§19.54996§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§2.5000043§10.0
+RecursiveDrawing§mirrors§12.000002§100.0
+RecursiveDrawing§dist copies§84.000015§300.0
+RecursiveDrawing§a§100.0§623840.94§-793431.2
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§4.4625006§25.5
+RecursiveDrawing§split§778.1125§1000.0
+RecursiveDrawing§stroke§25.912294§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§2.5000043§10.0
+RecursiveDrawing§mirrors§8.000002§100.0
+RecursiveDrawing§dist copies§2.0000005§300.0
+RecursiveDrawing§a§100.0§162.875§-8.125
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§4.4625006§25.5
+RecursiveDrawing§split§778.1125§1000.0
+RecursiveDrawing§stroke§26.839846§0.75§0.8§0.6237498§1.0
+RecursiveDrawing§weight§2.5000043§10.0
+RecursiveDrawing§mirrors§8.000002§100.0
+RecursiveDrawing§dist copies§31.999279§300.0
+RecursiveDrawing§a§100.0§172.125§3.125
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.9962525§25.5
+RecursiveDrawing§split§154.36249§1000.0
+RecursiveDrawing§stroke§0.6759867§0.625§0.775§0.6237498§1.0
+RecursiveDrawing§weight§2.5000057§10.0
+RecursiveDrawing§mirrors§18.999996§100.0
+RecursiveDrawing§dist copies§20.999996§300.0
+RecursiveDrawing§a§100.0§427.5§437.75
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.9962525§25.5
+RecursiveDrawing§split§154.36249§1000.0
+RecursiveDrawing§stroke§1.7593275§0.625§0.775§0.6237498§1.0
+RecursiveDrawing§weight§2.5000057§10.0
+RecursiveDrawing§mirrors§18.999996§100.0
+RecursiveDrawing§dist copies§20.999996§300.0
+RecursiveDrawing§a§100.0§427.5§437.75
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RecursiveDrawing§true
+RecursiveDrawing§alpha fade§2.9962525§25.5
+RecursiveDrawing§split§154.36249§1000.0
+RecursiveDrawing§stroke§19.22574§0.625§0.775§0.6237498§1.0
+RecursiveDrawing§weight§2.5000057§10.0
+RecursiveDrawing§mirrors§18.999996§100.0
+RecursiveDrawing§dist copies§20.999996§300.0
+RecursiveDrawing§a§100.0§427.5§437.75
+STATE_END
