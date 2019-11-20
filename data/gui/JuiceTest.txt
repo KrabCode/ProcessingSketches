@@ -1,0 +1,20 @@
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§0.0§163.48865§0.0
+background§rotate speed§1.0§0.0§0.068749994§0.0
+background§integer§27.00015§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
