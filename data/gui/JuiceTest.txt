@@ -38,3 +38,421 @@ shape§weight§7.0§100.0
 shape§size§35.0§1000.0
 shape§rectangle§1§rectangle§ellipse§box
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.0§0.0§0.0§1.0§1.0
+background§alpha fade§1.875§100.0
+background§split§-4666.75§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§100.0§-73.25467§392.28455§117.9996
+background§rotate speed§1.0§-0.008749999§0.014999994§0.0075000003
+background§integer§2.8E-45§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.44375§1.0§0.5262488§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§13.5§100.0
+background§split§195.75§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§100.0§-122.347305§476.51672§160.10551
+background§rotate speed§1.0§-0.008749999§0.014999994§0.0075000003
+background§integer§2.8E-45§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§0.7650004§1.0
+background§split§70.75§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§100.0§-130.2824§490.135§166.91466
+background§rotate speed§1.0§-0.008749999§0.014999994§0.0075000003
+background§integer§2.8E-45§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§0.08250057§1.0
+background§split§3858.25§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§100.0§-134.06824§496.63635§170.16533
+background§rotate speed§1.0§-0.008749999§0.014999994§0.0075000003
+background§integer§2.8E-45§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§1.0§1000.0
+background§split§3858.25§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§100.0§-136.56007§500.91553§172.30492
+background§rotate speed§1.0§-0.008749999§0.014999994§0.0075000003
+background§integer§2.8E-45§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§35.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§0.5862503§1.0
+background§split§0.0§10.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§10.743712§0.0§0.0
+background§rotate speed§1.0§0.026249997§0.0§0.0
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§192.5§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§32.71542§0.0§0.0
+background§rotate speed§1.0§0.026249997§0.0§0.0
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§192.5§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+shape§alpha fade§0.24125016§1.0
+shape§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§0.99687505§1.0
+background§split§17.450195§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§213.30498§-52.954582§-51.809513
+background§rotate speed§1.0§0.026249997§-0.012499998§-0.012499998
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§0.7906248§1.0
+background§split§4.9501953§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§253.25005§-71.97831§-70.83359
+background§rotate speed§1.0§0.026249997§-0.012499998§-0.012499998
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.09625§0.0§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§94.311874§100.0
+background§split§1654.9502§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§-65.46588§-60.014927§62.26067
+background§rotate speed§1.0§-0.01875§-0.019999994§0.02375
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.070625715§0.3125§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§33.561874§100.0
+background§split§1804.9502§10000.0
+background§translate§1000.0§0.0§0.0§0.0
+background§rotate§1.0§-21.216705§42.844757§4.052533
+background§rotate speed§0.1§-0.006249997§0.0175§0.001249999
+background§integer§10.026215§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.070625715§0.3125§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§33.561874§100.0
+background§split§1804.9502§10000.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§32579.906§0.0§0.0
+matrix§rot x§1.0000002§1000.0
+matrix§rot y§0.0§10.0
+matrix§integer§0.0§10.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.070625715§0.3125§1.0§1.0§1.0
+shape§weight§9.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.00125§0.0§0.0§1.0§1.0
+background§alpha fade§33.561874§100.0
+background§split§4004.9502§10000.0
+GROUP§matrix§false
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§83.48096§83.48096§0.0
+matrix§rot x§1.0000002§1000.0
+matrix§rot y§1.0000002§100.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.070625715§0.41875§1.0§1.0§1.0
+shape§weight§22.25§100.0
+shape§size§91.25§1000.0
+shape§rectangle§1§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§0.0§0.0§0.0
+matrix§rot x§0.0§10.0
+matrix§rot y§0.0§10.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§0.0§0.0§0.0
+matrix§rot x§0.0§10.0
+matrix§rot y§0.0§10.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§-4.656613E-10§0.011249999§0.0
+matrix§rot x§0.0§10.0
+matrix§rot y§0.0§10.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§-4.656613E-10§12.68232§0.0
+matrix§rot x§0.0§10.0
+matrix§rot y§1.0000261§100.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§0.0§14.922506§0.0
+matrix§rot x§2.7352496E-16§100.0
+matrix§rot y§1.0000002§100.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§15.625§100.0
+background§split§549.875§10000.0
+GROUP§matrix§false
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§107.17912§-231.77353§0.0
+matrix§rot x§2.9999995§100.0
+matrix§rot y§-3.9999995§100.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§15.625§100.0
+background§split§549.875§10000.0
+GROUP§matrix§false
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§109.762054§-236.93939§0.0
+matrix§rot x§2.9999995§100.0
+matrix§rot y§-3.9999995§100.0
+matrix§integer§0.0§10.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2§rectangle§ellipse§box
+STATE_END

@@ -39,17 +39,19 @@ public class JuiceTest extends KrabApplet {
         }
         alphaFade(pg);
         splitPass(pg);
+        group("matrix");
         PVector translate = sliderXYZ("translate", 1000);
-        pg.translate(width*.5f + translate.x, height*.5f+ translate.y, translate.z);
-        PVector rotate = sliderXYZ("rotate", 1).add(sliderXYZ("rotate speed", 1));
+        pg.translate(width * .5f + translate.x, height * .5f + translate.y, translate.z);
+        PVector rotate = sliderXYZ("rotate", 1)
+                .add(sliderInt("rot x")*radians(1), sliderInt("rot y")*radians(1));
         pg.rotateX(rotate.x);
         pg.rotateY(rotate.y);
         pg.rotateZ(rotate.z);
         sliderInt("integer");
         group("shape");
-        if(toggle("hollow")){
+        if (toggle("hollow")) {
             pg.noFill();
-        }else{
+        } else {
             pg.fill(picker("fill", .5f, 1, .5f));
         }
         pg.stroke(picker("stroke", 0, 0, .8f));

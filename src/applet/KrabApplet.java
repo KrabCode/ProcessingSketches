@@ -1,7 +1,6 @@
 package applet;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.event.MouseEvent;
@@ -19,11 +18,11 @@ import static java.lang.System.currentTimeMillis;
  * touchscreen slider precision, reset
  * <p>
  * - nice to have:
- * out of constrain markers should not be displayed
  * record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
  * pushGroup(name), popGroup();
  * more minimalist animated juice...
  * range picker (2 floats, start and end, end > start)
+ * hue speed
  * <p>
  * - bugs:
  * first null group's element appears twice, once at the top and once at the bottom
@@ -132,6 +131,7 @@ public abstract class KrabApplet extends PApplet {
     private int undoHoldDuration = 0;
     private int redoHoldDuration = 0;
     private int menuButtonHoldThreshold = 60;
+    private float lastScrollOffset = 0;
     private float trayScrollOffset = 0;
     private ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     private int shaderRefreshRateInMillis = 36;
@@ -147,11 +147,11 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected int sliderInt(String name, int defaultValue) {
-        return sliderInt(name, defaultValue, numberOfDigitsInFlooredNumber(defaultValue) * 10);
+        return sliderInt(name, defaultValue, numberOfDigitsInFlooredNumber(defaultValue) * 100);
     }
 
     protected int sliderInt(String name, int max, boolean defaultMax) {
-        return sliderInt(name, defaultMax ? 0 : max, numberOfDigitsInFlooredNumber(max) * 10);
+        return sliderInt(name, defaultMax ? 0 : max, numberOfDigitsInFlooredNumber(max) * 100);
     }
 
     protected int sliderInt(String name, int defaultValue, int precision) {
@@ -159,7 +159,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected int sliderInt(String name, int min, int max, int defaultValue) {
-        return floor(slider(name, defaultValue, numberOfDigitsInFlooredNumber(max) * 10, true, min, max, true));
+        return floor(slider(name, defaultValue, numberOfDigitsInFlooredNumber(max) * 100, true, min, max, true));
     }
 
     protected int sliderInt(String name, int defaultValue, int precision, boolean constrained, int min, int max) {
@@ -251,7 +251,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected int picker(String name) {
-        return picker(name, 0, 0, 0.1f, 1);
+        return picker(name, 0, 0, 0, 1);
     }
 
     protected int picker(String name, int grayscale) {
@@ -272,8 +272,15 @@ public abstract class KrabApplet extends PApplet {
             ColorPicker newElement = new ColorPicker(currentGroup, name, hue, sat, br, alpha);
             currentGroup.elements.add(newElement);
         }
-        ColorPicker slider = (ColorPicker) findElement(name, currentGroup.name);
-        return slider.value();
+        ColorPicker picker = (ColorPicker) findElement(name, currentGroup.name);
+        return picker.value();
+    }
+
+    protected void addHue(String pickerName, float delta) {
+        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
+        if(picker != null){
+            picker.hue += delta;
+        }
     }
 
     protected String optionsABC() {
@@ -328,10 +335,7 @@ public abstract class KrabApplet extends PApplet {
 
     protected void gui(boolean defaultVisibility) {
         t += radians(1);
-        if (frameCount < 3) {
-            guiSetup(defaultVisibility);
-            return;
-        }
+        guiSetup(defaultVisibility);
         updateKeyboardInput();
         updateMouseState();
         pushStyle();
@@ -357,7 +361,10 @@ public abstract class KrabApplet extends PApplet {
         if (!(trayVisible && isMousePressedHere(0, 0, trayWidth, height))) {
             return;
         }
-        trayScrollOffset += mouseY - pmouseY;
+        lastScrollOffset = trayScrollOffset;
+        if(abs(pmouseY - mouseY) > 2){
+            trayScrollOffset += mouseY - pmouseY;
+        }
     }
 
     private void updateMouseState() {
@@ -369,7 +376,7 @@ public abstract class KrabApplet extends PApplet {
             trayVisible = defaultVisibility;
             textSize(textSize * 2);
             registerExitHandler();
-        } else if (frameCount == 2) {
+        }else if (frameCount == 2){
             loadLastStateFromFile(true);
         }
     }
@@ -394,8 +401,9 @@ public abstract class KrabApplet extends PApplet {
 
     public void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
-            println(frameCount - frameRecordingEnds + recordingFrames + " / " + (recordingFrames - 1));
-            pg.save(captureDir + frameCount + ".jpg");
+            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames));
+            println(frameNumber + " / " + (recordingFrames - 1));
+            pg.save(captureDir + frameNumber + ".jpg");
         }
     }
 
@@ -768,7 +776,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private boolean mouseJustReleasedHereScrollAware(float x, float y, float w, float h) {
-        return mouseJustReleasedHere(x, y + trayScrollOffset, w, h);
+        return mouseJustReleasedHere(x, y + trayScrollOffset, w, h) && lastScrollOffset == trayScrollOffset;
     }
 
     private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
@@ -1344,14 +1352,15 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void alphaFade(PGraphics pg) {
-        pg.hint(PConstants.DISABLE_DEPTH_TEST);
         pg.pushStyle();
+        pg.colorMode(HSB, 255, 255, 255, 255);
+        pg.hint(DISABLE_DEPTH_TEST);
         pg.blendMode(SUBTRACT);
         pg.noStroke();
-        pg.fill(255, slider("alpha fade", 0, 100, 17));
+        pg.fill(255, slider("alpha fade", 0, 255, 50));
         pg.rectMode(CENTER);
         pg.rect(0, 0, width * 2, height * 2);
-        pg.hint(PConstants.ENABLE_DEPTH_TEST);
+        pg.hint(ENABLE_DEPTH_TEST);
         pg.popStyle();
     }
 
@@ -1452,8 +1461,7 @@ public abstract class KrabApplet extends PApplet {
         snapshot.update(filter, canvas);
     }
 
-    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String fragPath,
-                                      String vertPath) {
+    private ShaderSnapshot initIfNull(ShaderSnapshot snapshot, String fragPath, String vertPath) {
         if (snapshot == null) {
             snapshot = new ShaderSnapshot(fragPath, vertPath);
             snapshots.add(snapshot);
@@ -1567,7 +1575,7 @@ public abstract class KrabApplet extends PApplet {
 
 // CLASSES
 
-    class Key {
+    private class Key {
         boolean justPressed;
         boolean repeatedAlready = false;
         boolean coded;
@@ -1595,7 +1603,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class Group {
+    private class Group {
         String name;
         boolean expanded = true;
         ArrayList<Element> elements = new ArrayList<Element>();
@@ -1630,7 +1638,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    abstract class Element {
+    private abstract class Element {
         public float lastSelected = -DESELECTION_FADEOUT_DURATION;
         Group parent;
         String name;
@@ -1746,7 +1754,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class Radio extends Element {
+    private class Radio extends Element {
         ArrayList<String> options = new ArrayList<String>();
         int valueIndex = 0;
 
@@ -1816,7 +1824,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class Button extends Element {
+    private class Button extends Element {
         boolean value;
         private float activationStarted = -CHECK_ANIMATION_DURATION * 2;
 
@@ -1851,7 +1859,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class Toggle extends Element {
+    private class Toggle extends Element {
         boolean checked, checkByDefault;
         private float activationStarted = -UNDERLINE_TRAY_ANIMATION_DURATION;
 
@@ -1897,7 +1905,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    abstract class Slider extends Element {
+    private abstract class Slider extends Element {
         Slider(Group parent, String name) {
             super(parent, name);
         }
@@ -1996,7 +2004,7 @@ public abstract class KrabApplet extends PApplet {
             if (!horizontal) {
                 popMatrix();
             }
-            displayValue(h, precision, value, revealAnimation, floored);
+            displayValue(w, h, precision, value, revealAnimation, floored);
             popMatrix();
             popStyle();
         }
@@ -2090,7 +2098,7 @@ public abstract class KrabApplet extends PApplet {
             }
         }
 
-        void displayValue(float sliderHeight, float precision, float value, float animationEased, boolean floored) {
+        void displayValue(float w, float sliderHeight, float precision, float value, float animationEased, boolean floored) {
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
             textSize(textSize * 1.2f);
@@ -2099,7 +2107,13 @@ public abstract class KrabApplet extends PApplet {
             String text;
             if (floored) {
                 text = String.valueOf(floor(value));
-            } else {
+            } else if(abs(value) < 1) {
+                if(abs(value) < precision * .001f){
+                    text = nf(value,0,0);
+                }else{
+                    text = String.valueOf(value);
+                }
+            }else{
                 text = nf(value, 0, 2);
             }
             if (text.startsWith("-")) {
@@ -2111,6 +2125,8 @@ public abstract class KrabApplet extends PApplet {
             rect(textX, textY + textSize * .2f, textWidth(text) + 20, textSize * 1.2f + 20);
             fill(GRAYSCALE_TEXT_SELECTED * animationEased);
             text(text, textX, textY);
+            stroke(GRAYSCALE_TEXT_SELECTED);
+            line(0, -5, 0, 5);
         }
 
         float darkenEdges(float screenX, float w) {
@@ -2132,7 +2148,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class SliderFloat extends Slider {
+    private class SliderFloat extends Slider {
         boolean constrained, floored;
         float value, precision, defaultValue, defaultPrecision, minValue, maxValue, lastValueDelta;
         float sliderRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
@@ -2222,7 +2238,7 @@ public abstract class KrabApplet extends PApplet {
             value += valueDelta;
             lastValueDelta = valueDelta;
             if (floored && valueDelta == 0 && lastValueDelta == 0) {
-                value = lerp(value, floor(value), .2f);
+                value = lerp(value, round(value), .2f);
             }
             if (constrained) {
                 value = constrain(value, minValue, maxValue);
@@ -2237,7 +2253,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class SliderXY extends Slider {
+    private class SliderXY extends Slider {
         float deltaX;
         float deltaY;
         PVector value = new PVector();
@@ -2355,7 +2371,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    class SliderXYZ extends SliderXY {
+    private class SliderXYZ extends SliderXY {
         private float zRevealAnimationStarted = -SLIDER_REVEAL_DURATION;
         private float deltaZ;
 
@@ -2441,7 +2457,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    class ColorPicker extends Slider {
+    private class ColorPicker extends Slider {
         float hue, sat, br, alpha, defaultHue, defaultSat, defaultBr, defaultAlpha;
         float pickerRevealStarted = -PICKER_REVEAL_DURATION;
         float huePrecision = .5f;
