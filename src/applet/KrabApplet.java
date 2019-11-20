@@ -276,10 +276,31 @@ public abstract class KrabApplet extends PApplet {
         return picker.value();
     }
 
+    protected PVector pickerVector(String pickerName){
+        Group currentGroup = getCurrentGroup();
+        if (elementDoesntExist(pickerName, currentGroup.name)) {
+            ColorPicker newElement = new ColorPicker(currentGroup, pickerName, 0, 0, 0, 0);
+            currentGroup.elements.add(newElement);
+        }
+        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
+        if(picker != null){
+            return new PVector(picker.hue, picker.sat, picker.br);
+        }
+        return new PVector();
+    }
+
+    protected float getHue(String pickerName){
+        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
+        if(picker != null){
+            return picker.hue;
+        }
+        return 0;
+    }
+
     protected void addHue(String pickerName, float delta) {
         ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
         if(picker != null){
-            picker.hue += delta;
+            picker.addHue(delta);
         }
     }
 
@@ -1257,6 +1278,8 @@ public abstract class KrabApplet extends PApplet {
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
+                    println("could not find element " + splitState[1], splitState[0]);
+                    //TODO create element based on the saved information!
                     continue;
                 }
 //                println("setting " + el.name + " to " + state);
@@ -2214,6 +2237,7 @@ public abstract class KrabApplet extends PApplet {
 
         void setState(String newState) {
             String[] split = newState.split(INNER_SEPARATOR);
+            println(name, "value", value);
             value = Float.parseFloat(split[2]);
             precision = Float.parseFloat(split[3]);
         }
@@ -2527,6 +2551,7 @@ public abstract class KrabApplet extends PApplet {
             br = Float.parseFloat(split[4]);
             alpha = Float.parseFloat(split[5]);
             alphaPrecision = Float.parseFloat(split[6]);
+            println("set hue to ", hue);
         }
 
         int value() {
@@ -2561,6 +2586,11 @@ public abstract class KrabApplet extends PApplet {
             horizontalOverlayVisible = false;
             verticalOverlayVisible = false;
             zOverlayVisible = false;
+        }
+
+        void addHue(float delta){
+            hue += delta;
+            enforceConstraints();
         }
 
         void updateOverlay() {
