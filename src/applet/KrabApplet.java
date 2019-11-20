@@ -401,8 +401,8 @@ public abstract class KrabApplet extends PApplet {
 
     public void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
-            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames));
-            println(frameNumber + " / " + (recordingFrames - 1));
+            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames))+1;
+            println(frameNumber + " / " + recordingFrames);
             pg.save(captureDir + frameNumber + ".jpg");
         }
     }
