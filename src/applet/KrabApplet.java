@@ -1278,8 +1278,9 @@ public abstract class KrabApplet extends PApplet {
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
-                    println("could not find element " + splitState[1], splitState[0]);
+//                    println("could not find element " + splitState[1], splitState[0]);
                     //TODO create element based on the saved information!
+                    // for cases when particle count is zero but their constructor still wants a slider value
                     continue;
                 }
 //                println("setting " + el.name + " to " + state);
@@ -1350,6 +1351,14 @@ public abstract class KrabApplet extends PApplet {
     }
 
     // SHADERS
+
+    protected void radialBlurPass(PGraphics pg) {
+        String radialBlur = "radialBlur.glsl";
+        group("radial");
+        uniform(radialBlur).set("delta", slider("delta", 1));
+        uniform(radialBlur).set("power", slider("power", 1));
+        hotFilter(radialBlur, pg);
+    }
 
     protected void splitPass(PGraphics pg) {
         String split = "split.glsl";
@@ -2237,7 +2246,7 @@ public abstract class KrabApplet extends PApplet {
 
         void setState(String newState) {
             String[] split = newState.split(INNER_SEPARATOR);
-            println(name, "value", value);
+//            println(name, "value", value);
             value = Float.parseFloat(split[2]);
             precision = Float.parseFloat(split[3]);
         }
@@ -2551,7 +2560,6 @@ public abstract class KrabApplet extends PApplet {
             br = Float.parseFloat(split[4]);
             alpha = Float.parseFloat(split[5]);
             alphaPrecision = Float.parseFloat(split[6]);
-            println("set hue to ", hue);
         }
 
         int value() {

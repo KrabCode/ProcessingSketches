@@ -4,12 +4,12 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public class RecursiveDrawing extends KrabApplet {
+public class MirroredParticles extends KrabApplet {
     private PVector center;
     private PGraphics pg;
     private ArrayList<Particle> particles = new ArrayList<Particle>();
     public static void main(String[] args) {
-        RecursiveDrawing.main("RecursiveDrawing");
+        MirroredParticles.main("MirroredParticles");
     }
 
     public void settings() {
@@ -24,13 +24,13 @@ public class RecursiveDrawing extends KrabApplet {
         pg.background(0);
         pg.endDraw();
         center = new PVector(width, height).mult(.5f);
-
+        recordingFrames *= 2;
     }
 
     public void draw() {
         pg.beginDraw();
         alphaFade(pg);
-//        splitPass(pg);
+        radialBlurPass(pg);
         pg.translate(center.x, center.y);
         pg.strokeWeight(slider("weight", 1));
         int mirrors = sliderInt("mirrors", 0, 100, 1);
@@ -43,7 +43,8 @@ public class RecursiveDrawing extends KrabApplet {
             pg.pushMatrix();
             pg.rotate(iNorm * TWO_PI);
             for(Particle p : particles){
-                pg.stroke((color.x + p.hueOffset*slider("hue offset range")) % 1, color.y, color.z);
+                pg.stroke((color.x + p.hueOffset*slider("hue offset")) % 1,
+                           color.y + p.satOffset*slider("sat offset " + "range"), color.z);
                 pg.line(p.pos.x-center.x, p.pos.y-center.y, p.prev.x-center.x, p.prev.y-center.y);
             }
             pg.popMatrix();
@@ -53,6 +54,7 @@ public class RecursiveDrawing extends KrabApplet {
         rec(pg);
         gui();
     }
+
 
     private void updateParticles() {
         int count = sliderInt("count", 20);
@@ -68,10 +70,11 @@ public class RecursiveDrawing extends KrabApplet {
     }
 
     class Particle{
-        PVector pos = PVector.random2D().mult(width), spd = new PVector();
+        PVector pos = new PVector(random(width), random(height)), spd = new PVector();
         PVector prev = pos.copy();
         float hueOffset = randomGaussian();
-        float dragOffset = 1+random(.2f);
+        float dragOffset = random(1);
+        float satOffset = random(1);
 
         void update(){
             PVector toCenter = PVector.sub(center, pos);
