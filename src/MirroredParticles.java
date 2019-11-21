@@ -8,13 +8,15 @@ public class MirroredParticles extends KrabApplet {
     private PVector center;
     private PGraphics pg;
     private ArrayList<Particle> particles = new ArrayList<Particle>();
+    private ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
 
     public static void main(String[] args) {
         MirroredParticles.main("MirroredParticles");
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        fullScreen(P2D);
+//        size(800, 800, P2D);
     }
 
     public void setup() {
@@ -33,6 +35,7 @@ public class MirroredParticles extends KrabApplet {
         group("effects");
         alphaFade(pg);
         radialBlurPass(pg);
+        group("particle");
         updateParticles();
         drawMirroredParticles();
         pg.endDraw();
@@ -41,9 +44,23 @@ public class MirroredParticles extends KrabApplet {
         gui();
     }
 
+    private void updateParticles() {
+        int count = sliderInt("count");
+        while (particles.size() < count) {
+            particles.add(new Particle());
+        }
+        while (particles.size() > count) {
+            particles.remove(0);
+        }
+        for (Particle p : particles) {
+            p.update();
+        }
+        particles.removeAll(particlesToRemove);
+        particlesToRemove.clear();
+    }
+
     private void drawMirroredParticles() {
         pg.translate(center.x, center.y);
-        group("particle");
         pg.strokeWeight(slider("weight", 1));
         HSBA hsba = picker("stroke");
         hsba.addHue(radians(slider("add hue")) / TWO_PI);
@@ -62,34 +79,24 @@ public class MirroredParticles extends KrabApplet {
         }
     }
 
-    private void updateParticles() {
-        int count = sliderInt("count");
-        while (particles.size() < count) {
-            particles.add(new Particle());
-        }
-        while (particles.size() > count) {
-            particles.remove(0);
-        }
-        for (Particle p : particles) {
-            p.update();
-        }
-    }
-
     class Particle {
         PVector pos = new PVector(random(width), random(height)), spd = new PVector();
         PVector prev = pos.copy();
         float hueOffset = randomGaussian();
         float satOffset = randomGaussian();
+        float toCenterOffset = 1+abs(randomGaussian());
 
         void update() {
-            group("particle");
-            PVector toCenter = PVector.sub(center, pos);
-            spd.add(toCenter.copy().rotate(HALF_PI).normalize().mult(slider("orbit")));
+            PVector toCenter = PVector.sub(center, pos).mult(toCenterOffset*slider("to center offset"));
             spd.add(toCenter.normalize().mult(slider("to center")));
+            spd.add(toCenter.copy().normalize().rotate(HALF_PI+slider("orbit angle"))).mult(slider("orbit mag"));
             spd.add(new PVector(randomGaussian(), randomGaussian()).mult(slider("gauss")));
             spd.mult(slider("drag"));
             prev = pos.copy();
             pos.add(spd);
+            if(PVector.sub(center, pos).mag() < 1){
+                particlesToRemove.add(this);
+            }
         }
     }
 }
