@@ -16,14 +16,11 @@ import static java.lang.System.currentTimeMillis;
  * TODO:
  * - must have:
  * touchscreen slider precision, reset
- * <p>
+ * try to set last known undo state to any new element
  * - nice to have:
  * record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
- * pushGroup(name), popGroup();
  * more minimalist animated juice...
  * range picker (2 floats, start and end, end > start)
- * hue speed
- * <p>
  * - bugs:
  * first null group's element appears twice, once at the top and once at the bottom
  */
@@ -32,7 +29,7 @@ import static java.lang.System.currentTimeMillis;
 public abstract class KrabApplet extends PApplet {
     private static final String STATE_BEGIN = "STATE_BEGIN";
     private static final String STATE_END = "STATE_END";
-    private static final String INNER_SEPARATOR = "§";
+    private static final String SEPARATOR = "§";
     private static final String UNDO_PREFIX = "UNDO";
     private static final String REDO_PREFIX = "REDO";
     private static final String GROUP_PREFIX = "GROUP";
@@ -350,7 +347,6 @@ public abstract class KrabApplet extends PApplet {
         popStyle();
         popMatrix();
         pMousePressed = mousePressed;
-        currentGroup = groups.get(0);
     }
 
     private void updateScrolling() {
@@ -372,12 +368,25 @@ public abstract class KrabApplet extends PApplet {
             trayVisible = defaultVisibility;
             textSize(textSize * 2);
             registerExitHandler();
-        } else if (frameCount == 2) {
+        } else if (frameCount == 3) {
             loadLastStateFromFile(true);
         }
     }
 
     // UTILS
+
+    protected void alphaFade(PGraphics pg) {
+        pg.pushStyle();
+        pg.colorMode(HSB, 255, 255, 255, 255);
+        pg.hint(DISABLE_DEPTH_TEST);
+        pg.blendMode(SUBTRACT);
+        pg.noStroke();
+        pg.fill(255, slider("alpha fade", 0, 255, 50));
+        pg.rectMode(CENTER);
+        pg.rect(0, 0, width * 2, height * 2);
+        pg.hint(ENABLE_DEPTH_TEST);
+        pg.popStyle();
+    }
 
     private void registerExitHandler() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveStateToFile));
@@ -780,7 +789,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private boolean keyboardActivated(String query) {
-        return (overlayOwner != null && (overlayOwner.parent + overlayOwner.name).equals(query) || keyboardSelected(query))
+        return (overlayOwner != null && (overlayOwner.group + overlayOwner.name).equals(query) || keyboardSelected(query))
                 && actions.contains(ACTION_ACTIVATE);
     }
 
@@ -1069,12 +1078,13 @@ public abstract class KrabApplet extends PApplet {
     }
 
     // GROUP AND ELEMENT HANDLING
+
     private int hiddenElementCount(boolean forwardFacing) {
         Group group = findKeyboardSelectedGroup();
         if (previousActions.contains(ACTION_ALT)) {
             if (isAnyElementKeyboardSelected()) {
                 Element el = findKeyboardSelectedElement();
-                group = el.parent;
+                group = el.group;
                 if (forwardFacing) {
                     return group.elements.size() - group.elements.indexOf(el) - 1;
                 } else {
@@ -1197,14 +1207,14 @@ public abstract class KrabApplet extends PApplet {
         redoStack.add(getGuiState());
     }
 
-    private void pushCurrentStateToUndo() {
-        redoStack.clear();
-        undoStack.add(getGuiState());
-    }
-
     private void pushStateToUndo(ArrayList<String> state) {
         setGuiState(state);
         pushCurrentStateToUndo();
+    }
+
+    private void pushCurrentStateToUndo() {
+        redoStack.clear();
+        undoStack.add(getGuiState());
     }
 
     private void pushStateToRedo(ArrayList<String> state) {
@@ -1242,23 +1252,19 @@ public abstract class KrabApplet extends PApplet {
 
     private void setGuiState(ArrayList<String> statesToSet) {
         for (String state : statesToSet) {
-            String[] splitState = state.split(INNER_SEPARATOR);
+            String[] splitState = state.split(SEPARATOR);
             if (state.startsWith(GROUP_PREFIX)) {
                 Group group = findGroup(splitState[1]);
                 if (group == null) {
                     continue;
                 }
-//                println("setting " + group.name + " to " + state);
                 group.setState(state);
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
-//                    println("could not find element " + splitState[1], splitState[0]);
-                    // TODO create element based on the saved information!
-                    // for cases when particle count is zero but their constructor still wants a slider value
+                    println("element does not exist", splitState[0], splitState[1]);
                     continue;
                 }
-//                println("setting " + el.name + " to " + state);
                 el.setState(state);
             }
         }
@@ -1329,46 +1335,24 @@ public abstract class KrabApplet extends PApplet {
 
     protected void radialBlurPass(PGraphics pg) {
         String radialBlur = "radialBlur.glsl";
-        group("radial");
-        uniform(radialBlur).set("delta", slider("delta", 1));
-        uniform(radialBlur).set("power", slider("power", 1));
+        uniform(radialBlur).set("delta", slider("radial delta", 1));
+        uniform(radialBlur).set("power", slider("radial power", 1));
         hotFilter(radialBlur, pg);
+
     }
 
     protected void splitPass(PGraphics pg) {
         String split = "split.glsl";
         uniform(split).set("delta", slider("split"));
         hotFilter(split, pg);
+
     }
 
     protected void chromaticAberrationPass(PGraphics pg) {
         String chromatic = "postFX\\chromaticAberrationFrag.glsl";
         uniform(chromatic).set("maxDistort", slider("chromatic", 5));
         hotFilter(chromatic, pg);
-    }
 
-    protected void patternPass(PGraphics pg, float t) {
-        String pattern = "pattern.glsl";
-        uniform(pattern).set("time", t);
-        hotFilter(pattern, pg);
-    }
-
-    protected void ceilBlack(PGraphics pg) {
-        String ceilAlpha = "ceilBlack.glsl";
-        hotFilter(ceilAlpha, pg);
-    }
-
-    protected void alphaFade(PGraphics pg) {
-        pg.pushStyle();
-        pg.colorMode(HSB, 255, 255, 255, 255);
-        pg.hint(DISABLE_DEPTH_TEST);
-        pg.blendMode(SUBTRACT);
-        pg.noStroke();
-        pg.fill(255, slider("alpha fade", 0, 255, 50));
-        pg.rectMode(CENTER);
-        pg.rect(0, 0, width * 2, height * 2);
-        pg.hint(ENABLE_DEPTH_TEST);
-        pg.popStyle();
     }
 
     protected void noiseOffsetPass(PGraphics pg, float t) {
@@ -1383,8 +1367,8 @@ public abstract class KrabApplet extends PApplet {
     protected void noisePass(float t, PGraphics pg) {
         String noise = "postFX/noiseFrag.glsl";
         uniform(noise).set("time", t);
-        uniform(noise).set("amount", slider("noise amt", 0, .24f, .05f));
-        uniform(noise).set("speed", slider("noise spd", 1));
+        uniform(noise).set("amount", slider("noise magnitude", 0, .24f, .05f));
+        uniform(noise).set("speed", slider("noise speed", 1));
         hotFilter(noise, pg);
     }
 
@@ -1636,22 +1620,22 @@ public abstract class KrabApplet extends PApplet {
         }
 
         public String getState() {
-            return GROUP_PREFIX + INNER_SEPARATOR + name + INNER_SEPARATOR + expanded;
+            return GROUP_PREFIX + SEPARATOR + name + SEPARATOR + expanded;
         }
 
         public void setState(String state) {
-            String[] split = state.split(INNER_SEPARATOR);
+            String[] split = state.split(SEPARATOR);
             expanded = Boolean.parseBoolean(split[2]);
         }
     }
 
     private abstract class Element {
         public float lastSelected = -DESELECTION_FADEOUT_DURATION;
-        Group parent;
+        Group group;
         String name;
 
-        Element(Group parent, String name) {
-            this.parent = parent;
+        Element(Group group, String name) {
+            this.group = group;
             this.name = name;
         }
 
@@ -1662,7 +1646,7 @@ public abstract class KrabApplet extends PApplet {
         abstract boolean canHaveOverlay();
 
         String getState() {
-            return parent.name + INNER_SEPARATOR + name + INNER_SEPARATOR;
+            return group.name + SEPARATOR + name + SEPARATOR;
         }
 
         void setState(String newState) {
@@ -1772,16 +1756,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         String getState() {
-            StringBuilder state = new StringBuilder(super.getState() + valueIndex);
-            for (String option : options) {
-                state.append(INNER_SEPARATOR);
-                state.append(option);
-            }
-            return state.toString();
+            return super.getState() + valueIndex;
         }
 
         void setState(String newState) {
-            valueIndex = Integer.parseInt(newState.split(INNER_SEPARATOR)[2]);
+            valueIndex = Integer.parseInt(newState.split(SEPARATOR)[2]);
         }
 
         protected void reset() {
@@ -1881,7 +1860,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         void setState(String newState) {
-            this.checked = Boolean.parseBoolean(newState.split(INNER_SEPARATOR)[2]);
+            this.checked = Boolean.parseBoolean(newState.split(SEPARATOR)[2]);
         }
 
         boolean canHaveOverlay() {
@@ -2187,6 +2166,9 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
+                if(value == 0){
+                    this.value = 1;
+                }
             } else if (name.equals("drag")) {
                 this.constrained = true;
                 minValue = 0;
@@ -2217,11 +2199,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         String getState() {
-            return super.getState() + value + INNER_SEPARATOR + precision;
+            return super.getState() + value + SEPARATOR + precision;
         }
 
         void setState(String newState) {
-            String[] split = newState.split(INNER_SEPARATOR);
+            String[] split = newState.split(SEPARATOR);
 //            println(name, "value", value);
             value = Float.parseFloat(split[2]);
             precision = Float.parseFloat(split[3]);
@@ -2283,11 +2265,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         String getState() {
-            return super.getState() + precision + INNER_SEPARATOR + value.x + INNER_SEPARATOR + value.y;
+            return super.getState() + precision + SEPARATOR + value.x + SEPARATOR + value.y;
         }
 
         void setState(String newState) {
-            String[] xyz = newState.split(INNER_SEPARATOR);
+            String[] xyz = newState.split(SEPARATOR);
             precision = Float.parseFloat(xyz[2]);
             value.x = Float.parseFloat(xyz[3]);
             value.y = Float.parseFloat(xyz[4]);
@@ -2399,12 +2381,12 @@ public abstract class KrabApplet extends PApplet {
         }
 
         String getState() {
-            return super.getState() + INNER_SEPARATOR + value.z;
+            return super.getState() + SEPARATOR + value.z;
         }
 
         void setState(String newState) {
             super.setState(newState);
-            value.z = Float.parseFloat(newState.split(INNER_SEPARATOR)[5]);
+            value.z = Float.parseFloat(newState.split(SEPARATOR)[5]);
         }
 
         void updateOverlay() {
@@ -2529,7 +2511,6 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
     private class ColorPicker extends Slider {
         HSBA hsba;
         float defaultHue, defaultSat, defaultBr, defaultAlpha;
@@ -2588,11 +2569,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         String getState() {
-            return super.getState() + hsba.hue + INNER_SEPARATOR + hsba.sat + INNER_SEPARATOR + hsba.br + INNER_SEPARATOR + hsba.alpha + INNER_SEPARATOR + alphaPrecision;
+            return super.getState() + hsba.hue + SEPARATOR + hsba.sat + SEPARATOR + hsba.br + SEPARATOR + hsba.alpha + SEPARATOR + alphaPrecision;
         }
 
         void setState(String newState) {
-            String[] split = newState.split(INNER_SEPARATOR);
+            String[] split = newState.split(SEPARATOR);
             hsba.hue = Float.parseFloat(split[2]);
             hsba.sat = Float.parseFloat(split[3]);
             hsba.br = Float.parseFloat(split[4]);
@@ -2626,6 +2607,7 @@ public abstract class KrabApplet extends PApplet {
             zOverlayVisible = false;
         }
 
+        @SuppressWarnings("SuspiciousNameCombination")
         void updateOverlay() {
             if (mouseJustReleased()) {
                 brightnessLocked = false;
@@ -2792,7 +2774,5 @@ public abstract class KrabApplet extends PApplet {
         HSBA getHSBA() {
             return hsba;
         }
-
-
     }
 }

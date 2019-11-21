@@ -30,15 +30,24 @@ public class MirroredParticles extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
+        group("effects");
         alphaFade(pg);
         radialBlurPass(pg);
+        updateParticles();
+        drawMirroredParticles();
+        pg.endDraw();
+        image(pg, 0, 0);
+        rec(pg);
+        gui();
+    }
+
+    private void drawMirroredParticles() {
         pg.translate(center.x, center.y);
-        pg.strokeWeight(slider("weight", 1));
-        int mirrors = sliderInt("mirrors", 0, 100, 1);
         group("particle");
+        pg.strokeWeight(slider("weight", 1));
         HSBA hsba = picker("stroke");
         hsba.addHue(radians(slider("add hue")) / TWO_PI);
-        updateParticles();
+        int mirrors = sliderInt("mirrors", 0, 100, 1);
         for (int i = 0; i <= mirrors; i++) {
             float iNorm = norm(i, 0, mirrors);
             pg.pushMatrix();
@@ -47,20 +56,14 @@ public class MirroredParticles extends KrabApplet {
                 pg.stroke((hsba.hue() + p.hueOffset * slider("hue offset")) % 1,
                         constrain(hsba.sat() + p.satOffset * slider("sat offset"), 0, 1),
                         hsba.br());
-                pg.stroke(hsba.clr());
                 pg.line(p.pos.x - center.x, p.pos.y - center.y, p.prev.x - center.x, p.prev.y - center.y);
             }
             pg.popMatrix();
         }
-        pg.endDraw();
-        image(pg, 0, 0);
-        rec(pg);
-        gui();
     }
 
-
     private void updateParticles() {
-        int count = sliderInt("count", 20);
+        int count = sliderInt("count");
         while (particles.size() < count) {
             particles.add(new Particle());
         }
@@ -76,15 +79,15 @@ public class MirroredParticles extends KrabApplet {
         PVector pos = new PVector(random(width), random(height)), spd = new PVector();
         PVector prev = pos.copy();
         float hueOffset = randomGaussian();
-        float dragOffset = random(1);
-        float satOffset = random(1);
+        float satOffset = randomGaussian();
 
         void update() {
+            group("particle");
             PVector toCenter = PVector.sub(center, pos);
             spd.add(toCenter.copy().rotate(HALF_PI).normalize().mult(slider("orbit")));
             spd.add(toCenter.normalize().mult(slider("to center")));
             spd.add(new PVector(randomGaussian(), randomGaussian()).mult(slider("gauss")));
-            spd.mult(slider("drag") * dragOffset);
+            spd.mult(slider("drag"));
             prev = pos.copy();
             pos.add(spd);
         }
