@@ -71,8 +71,8 @@ public class MirroredParticles extends KrabApplet {
             pg.rotate(iNorm * TWO_PI);
             for (Particle p : particles) {
                 pg.stroke((hsba.hue() + p.hueOffset * slider("hue offset")) % 1,
-                        constrain(hsba.sat() + p.satOffset * slider("sat offset"), 0, 1),
-                        hsba.br());
+                    constrain(hsba.sat() + p.satOffset * slider("sat offset"), 0, 1),
+                    hsba.br());
                 pg.line(p.pos.x - center.x, p.pos.y - center.y, p.prev.x - center.x, p.prev.y - center.y);
             }
             pg.popMatrix();

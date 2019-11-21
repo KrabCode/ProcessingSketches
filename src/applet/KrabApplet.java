@@ -128,8 +128,8 @@ public abstract class KrabApplet extends PApplet {
     private int undoHoldDuration = 0;
     private int redoHoldDuration = 0;
     private int menuButtonHoldThreshold = 60;
-    private float lastScrollOffset = 0;
     private float trayScrollOffset = 0;
+    private ArrayList<Float> scrollOffsetHistory = new ArrayList<Float>();
     private ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
     private int shaderRefreshRateInMillis = 36;
 
@@ -353,10 +353,24 @@ public abstract class KrabApplet extends PApplet {
         if (!(trayVisible && isMousePressedHere(0, 0, trayWidth, height))) {
             return;
         }
-        lastScrollOffset = trayScrollOffset;
+        scrollOffsetHistory.add(trayScrollOffset);
+        int scrollOffsetHistorySize = 3;
+        while(scrollOffsetHistory.size() > scrollOffsetHistorySize){
+            scrollOffsetHistory.remove(0);
+        }
         if (abs(pmouseY - mouseY) > 2) {
             trayScrollOffset += mouseY - pmouseY;
         }
+    }
+
+    private boolean trayHasntMovedInAWhile() {
+        boolean result = false;
+        for(Float historicalTrayOffset : scrollOffsetHistory){
+            if(historicalTrayOffset != trayScrollOffset){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updateMouseState() {
@@ -781,7 +795,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private boolean mouseJustReleasedHereScrollAware(float x, float y, float w, float h) {
-        return mouseJustReleasedHere(x, y + trayScrollOffset, w, h) && lastScrollOffset == trayScrollOffset;
+        return mouseJustReleasedHere(x, y + trayScrollOffset, w, h) && trayHasntMovedInAWhile();
     }
 
     private boolean mouseJustReleasedHere(float x, float y, float w, float h) {
