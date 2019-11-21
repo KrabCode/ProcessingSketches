@@ -1,0 +1,95 @@
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§alpha fade§50.0§255.0
+effects§radial delta§1.0§10.0
+effects§radial power§1.0§10.0
+effects§count§850.0001§10000.0
+GROUP§particle§true
+particle§orbit§0.0§10.0
+particle§to center§0.44999993§10.0
+particle§gauss§0.0§10.0
+particle§drag§0.275§10.0
+particle§weight§1.924999§10.0
+particle§stroke§0.10249999§0.38125§1.0§1.0§1.0
+particle§add hue§0.0§10.0
+particle§mirrors§8.000002§300.0
+particle§hue offset§0.29999998§10.0
+particle§sat offset§0.99999994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§alpha fade§50.0§255.0
+effects§radial delta§1.0§10.0
+effects§radial power§1.0§10.0
+effects§count§850.0001§10000.0
+GROUP§particle§true
+particle§orbit§0.0§10.0
+particle§to center§0.44999993§10.0
+particle§gauss§0.0§10.0
+particle§drag§0.275§10.0
+particle§weight§1.924999§10.0
+particle§stroke§0.7917698§1.0§1.0§1.0§1.0
+particle§add hue§0.46250015§10.0
+particle§mirrors§8.000002§300.0
+particle§hue offset§1.025§10.0
+particle§sat offset§0.6500005§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§alpha fade§50.0§255.0
+effects§radial delta§1.0§10.0
+effects§radial power§1.0§10.0
+effects§count§850.0001§10000.0
+GROUP§particle§true
+particle§orbit§0.0§10.0
+particle§to center§0.44999993§10.0
+particle§gauss§0.0§10.0
+particle§drag§0.275§10.0
+particle§weight§1.924999§10.0
+particle§stroke§0.27353987§0.5125§1.0§1.0§1.0
+particle§add hue§0.46250015§10.0
+particle§mirrors§8.000002§300.0
+particle§hue offset§1.025§10.0
+particle§sat offset§8.5875§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§alpha fade§50.0§255.0
+effects§radial delta§1.0§10.0
+effects§radial power§1.0§10.0
+effects§count§850.0001§10000.0
+GROUP§particle§true
+particle§orbit§0.125§10.0
+particle§to center§-0.012500048§10.0
+particle§gauss§1.1§10.0
+particle§drag§0.087500006§10.0
+particle§weight§1.924999§10.0
+particle§stroke§0.05224638§0.5125§1.0§1.0§1.0
+particle§add hue§-0.012500047§10.0
+particle§mirrors§1.9999998§300.0
+particle§hue offset§0.2998047§100.0
+particle§sat offset§0.8500004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§alpha fade§3.7812495§255.0
+effects§radial delta§-1.4000014§10.0
+effects§radial power§0.1500006§10.0
+effects§count§525.0001§10000.0
+GROUP§particle§true
+particle§orbit§1.0625005§10.0
+particle§to center§0.52500033§10.0
+particle§gauss§1.1§10.0
+particle§drag§0.087500006§10.0
+particle§weight§1.937499§10.0
+particle§stroke§0.86631185§0.5125§1.0§1.0§1.0
+particle§add hue§-0.012500047§10.0
+particle§mirrors§6.000001§300.0
+particle§hue offset§0.011054866§1.0
+particle§sat offset§0.09000031§1.0
+STATE_END
