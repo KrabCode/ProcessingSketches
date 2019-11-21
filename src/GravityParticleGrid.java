@@ -85,7 +85,7 @@ public class GravityParticleGrid extends KrabApplet {
         float screenX = map(x, 0, count - 1, -spread, spread);
         float screenY = map(y, 0, count - 1, -spread, spread);
         float screenZ = map(z, 0, count - 1, -spread, spread);
-        pg.stroke(picker("stroke", 1));
+        pg.stroke(picker("stroke", 1).clr());
         pg.strokeWeight(slider("weight", 1));
         pg.point(screenX, screenY, screenZ);
     }
@@ -141,8 +141,8 @@ public class GravityParticleGrid extends KrabApplet {
             spd.add(orbital);
             spd.mult(slider("drag", 1));
             pos.add(spd);
-            pg.stroke(picker("stroke", 1));
-            pg.fill(picker("fill", 0,0));
+            pg.stroke(picker("stroke", 1).clr());
+            pg.fill(picker("fill", 0,0).clr());
             pg.pushMatrix();
             pg.translate(pos.x, pos.y, pos.z);
             pg.rotateX(spd.x);

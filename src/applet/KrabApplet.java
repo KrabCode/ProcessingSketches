@@ -246,62 +246,37 @@ public abstract class KrabApplet extends PApplet {
         return slider.value;
     }
 
-    protected int picker() {
+    protected HSBA picker() {
         return picker("color");
     }
 
-    protected int picker(String name) {
+    protected HSBA picker(String name) {
         return picker(name, 0, 0, 0, 1);
     }
 
-    protected int picker(String name, int grayscale) {
+    protected HSBA picker(String name, int grayscale) {
         return picker(name, 0, 0, grayscale);
     }
 
-    protected int picker(String name, float grayscale, float alpha) {
+    protected HSBA picker(String name, float grayscale, float alpha) {
         return picker(name, 0, 0, grayscale, alpha);
     }
 
-    protected int picker(String name, float hue, float sat, float br) {
+    protected HSBA picker(String name, float hue, float sat, float br) {
         return picker(name, hue, sat, br, 1);
     }
 
-    protected int picker(String name, float hue, float sat, float br, float alpha) {
+    protected HSBA picker(String name, float hue, float sat, float br, float alpha) {
         Group currentGroup = getCurrentGroup();
         if (elementDoesntExist(name, currentGroup.name)) {
             ColorPicker newElement = new ColorPicker(currentGroup, name, hue, sat, br, alpha);
             currentGroup.elements.add(newElement);
         }
         ColorPicker picker = (ColorPicker) findElement(name, currentGroup.name);
-        return picker.value();
-    }
-
-    protected PVector pickerVector(String pickerName){
-        Group currentGroup = getCurrentGroup();
-        if (elementDoesntExist(pickerName, currentGroup.name)) {
-            ColorPicker newElement = new ColorPicker(currentGroup, pickerName, 0, 0, 0, 0);
-            currentGroup.elements.add(newElement);
+        if (picker != null) {
+            return picker.getHSBA();
         }
-        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
-        if(picker != null){
-            return new PVector(picker.hue, picker.sat, picker.br);
-        }
-        return new PVector();
-    }
-
-    protected float getHue(String pickerName){
-        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
-        if(picker != null){
-            return picker.hue;
-        }
-        return 0;
-    }
-
-    protected void addHue(String pickerName, float delta) {
-        ColorPicker picker = (ColorPicker) findElement(pickerName, currentGroup.name);
-        if(picker != null){
-            picker.addHue(delta);
-        }
+        return new HSBA();
     }
 
     protected String optionsABC() {
@@ -383,7 +358,7 @@ public abstract class KrabApplet extends PApplet {
             return;
         }
         lastScrollOffset = trayScrollOffset;
-        if(abs(pmouseY - mouseY) > 2){
+        if (abs(pmouseY - mouseY) > 2) {
             trayScrollOffset += mouseY - pmouseY;
         }
     }
@@ -397,7 +372,7 @@ public abstract class KrabApplet extends PApplet {
             trayVisible = defaultVisibility;
             textSize(textSize * 2);
             registerExitHandler();
-        }else if (frameCount == 2){
+        } else if (frameCount == 2) {
             loadLastStateFromFile(true);
         }
     }
@@ -422,7 +397,7 @@ public abstract class KrabApplet extends PApplet {
 
     public void rec(PGraphics pg) {
         if (frameCount < frameRecordingEnds) {
-            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames))+1;
+            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames)) + 1;
             println(frameNumber + " / " + recordingFrames);
             pg.save(captureDir + frameNumber + ".jpg");
         }
@@ -475,7 +450,7 @@ public abstract class KrabApplet extends PApplet {
     protected void spiralSphere(PGraphics pg) {
         group("planet");
         pg.beginShape(POINTS);
-        pg.stroke(picker("stroke"));
+        pg.stroke(picker("stroke").clr());
         pg.strokeWeight(slider("weight", 5));
         pg.noFill();
         float N = slider("count", 3000);
@@ -1279,7 +1254,7 @@ public abstract class KrabApplet extends PApplet {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
 //                    println("could not find element " + splitState[1], splitState[0]);
-                    //TODO create element based on the saved information!
+                    // TODO create element based on the saved information!
                     // for cases when particle count is zero but their constructor still wants a slider value
                     continue;
                 }
@@ -2130,7 +2105,8 @@ public abstract class KrabApplet extends PApplet {
             }
         }
 
-        void displayValue(float w, float sliderHeight, float precision, float value, float animationEased, boolean floored) {
+        void displayValue(float w, float sliderHeight, float precision, float value, float animationEased,
+                          boolean floored) {
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
             textSize(textSize * 1.2f);
@@ -2139,13 +2115,13 @@ public abstract class KrabApplet extends PApplet {
             String text;
             if (floored) {
                 text = String.valueOf(floor(value));
-            } else if(abs(value) < 1) {
-                if(abs(value) < precision * .001f){
-                    text = nf(value,0,0);
-                }else{
+            } else if (abs(value) < 1) {
+                if (abs(value) < precision * .001f) {
+                    text = nf(value, 0, 0);
+                } else {
                     text = String.valueOf(value);
                 }
-            }else{
+            } else {
                 text = nf(value, 0, 2);
             }
             if (text.startsWith("-")) {
@@ -2489,9 +2465,74 @@ public abstract class KrabApplet extends PApplet {
 
     }
 
+    public class HSBA {
+        private float hue, sat, br, alpha;
+
+        public HSBA(float hue, float sat, float br, float alpha) {
+            this.hue = hue;
+            this.sat = sat;
+            this.br = br;
+            this.alpha = alpha;
+        }
+
+        public HSBA() {
+            this.alpha = 1;
+        }
+
+        public int clr() {
+            pushStyle();
+            enforceConstraints();
+            colorMode(HSB, 1, 1, 1, 1);
+            int result = color(hue, sat, br, alpha);
+            popStyle();
+            return result;
+        }
+
+        public float hue() {
+            enforceConstraints();
+            return hue;
+        }
+
+        public void addHue(float val) {
+            hue += val;
+            enforceConstraints();
+        }
+
+        public float sat() {
+            enforceConstraints();
+            return sat;
+        }
+
+        public float br() {
+            enforceConstraints();
+            return br;
+        }
+
+        public float alpha() {
+            enforceConstraints();
+            return alpha;
+        }
+
+        private void enforceConstraints() {
+            hue = hueModulo(hue);
+            sat = constrain(sat, 0, 1);
+            br = constrain(br, 0, 1);
+            alpha = constrain(alpha, 0, 1);
+        }
+
+        private float hueModulo(float hue) {
+            while (hue < 0) {
+                hue += 1;
+            }
+            hue %= 1;
+            return hue;
+        }
+    }
+
     @SuppressWarnings("SuspiciousNameCombination")
     private class ColorPicker extends Slider {
-        float hue, sat, br, alpha, defaultHue, defaultSat, defaultBr, defaultAlpha;
+        HSBA hsba;
+        float defaultHue, defaultSat, defaultBr, defaultAlpha;
         float pickerRevealStarted = -PICKER_REVEAL_DURATION;
         float huePrecision = .5f;
         float alphaPrecision = 1;
@@ -2500,10 +2541,7 @@ public abstract class KrabApplet extends PApplet {
 
         ColorPicker(Group currentGroup, String name, float hue, float sat, float br, float alpha) {
             super(currentGroup, name);
-            this.hue = hue;
-            this.sat = sat;
-            this.br = br;
-            this.alpha = alpha;
+            this.hsba = new HSBA(hue, sat, br, alpha);
             this.defaultHue = hue;
             this.defaultSat = sat;
             this.defaultBr = br;
@@ -2526,55 +2564,47 @@ public abstract class KrabApplet extends PApplet {
             if (previousActions.contains(ACTION_CONTROL)) {
                 satChanged = true;
                 if (actions.contains(ACTION_UP)) {
-                    sat -= .01f;
+                    hsba.sat -= .01f;
                 } else if (actions.contains(ACTION_DOWN)) {
-                    sat += .01f;
+                    hsba.sat += .01f;
                 }
             }
             if (previousActions.contains(ACTION_ALT)) {
                 brChanged = true;
                 if (actions.contains(ACTION_UP)) {
-                    br -= .01f;
+                    hsba.br -= .01f;
                 } else if (actions.contains(ACTION_DOWN)) {
-                    br += .01f;
+                    hsba.br += .01f;
                 }
             }
-            enforceConstraints();
+            hsba.enforceConstraints();
         }
 
         void reset() {
-            hue = defaultHue;
-            sat = defaultSat;
-            br = defaultBr;
-            alpha = defaultAlpha;
+            hsba.hue = defaultHue;
+            hsba.sat = defaultSat;
+            hsba.br = defaultBr;
+            hsba.alpha = defaultAlpha;
         }
 
         String getState() {
-            return super.getState() + hue + INNER_SEPARATOR + sat + INNER_SEPARATOR + br + INNER_SEPARATOR + alpha + INNER_SEPARATOR + alphaPrecision;
+            return super.getState() + hsba.hue + INNER_SEPARATOR + hsba.sat + INNER_SEPARATOR + hsba.br + INNER_SEPARATOR + hsba.alpha + INNER_SEPARATOR + alphaPrecision;
         }
 
         void setState(String newState) {
             String[] split = newState.split(INNER_SEPARATOR);
-            hue = Float.parseFloat(split[2]);
-            sat = Float.parseFloat(split[3]);
-            br = Float.parseFloat(split[4]);
-            alpha = Float.parseFloat(split[5]);
+            hsba.hue = Float.parseFloat(split[2]);
+            hsba.sat = Float.parseFloat(split[3]);
+            hsba.br = Float.parseFloat(split[4]);
+            hsba.alpha = Float.parseFloat(split[5]);
             alphaPrecision = Float.parseFloat(split[6]);
-        }
-
-        int value() {
-            pushStyle();
-            colorMode(HSB, 1, 1, 1, 1);
-            int result = color(hue, sat, br, alpha);
-            popStyle();
-            return result;
         }
 
         void displayOnTray(float x, float y) {
             pushStyle();
             stroke(GRAYSCALE_TEXT_DARK);
             strokeWeight(1);
-            fill(value());
+            fill(hsba.clr());
             rectMode(CENTER);
             rect(x - previewTrayBoxMargin - previewTrayBoxWidth,
                     y - textSize * .5f, previewTrayBoxWidth, previewTrayBoxWidth);
@@ -2596,11 +2626,6 @@ public abstract class KrabApplet extends PApplet {
             zOverlayVisible = false;
         }
 
-        void addHue(float delta){
-            hue += delta;
-            enforceConstraints();
-        }
-
         void updateOverlay() {
             if (mouseJustReleased()) {
                 brightnessLocked = false;
@@ -2619,30 +2644,30 @@ public abstract class KrabApplet extends PApplet {
             float h = cell * 4;
             float tinySliderTopY =
                     height - sliderHeight * .5f - cell * tinySliderMarginCellFraction - h * revealAnimation;
-            float lastSat = sat;
-            sat = updateTinySlider(x, tinySliderTopY, tinySliderWidth, h, brightnessLocked, SATURATION);
-            if (sat != lastSat && !saturationLocked) {
+            float lastSat = hsba.sat;
+            hsba.sat = updateTinySlider(x, tinySliderTopY, tinySliderWidth, h, brightnessLocked, SATURATION);
+            if (hsba.sat != lastSat && !saturationLocked) {
                 brightnessLocked = true;
             }
             if (saturationLocked) {
-                sat = lastSat;
+                hsba.sat = lastSat;
             }
-            displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, sat, SATURATION,
+            displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, hsba.sat, SATURATION,
                     brightnessLocked);
 
             x += tinySliderWidth * 1.2f;
-            float lastBr = br;
-            br = updateTinySlider(x, tinySliderTopY, tinySliderWidth, h, saturationLocked, BRIGHTNESS);
-            if (br != lastBr && !brightnessLocked) {
+            float lastBr = hsba.br;
+            hsba.br = updateTinySlider(x, tinySliderTopY, tinySliderWidth, h, saturationLocked, BRIGHTNESS);
+            if (hsba.br != lastBr && !brightnessLocked) {
                 saturationLocked = true;
             }
             if (brightnessLocked) {
-                br = lastBr;
+                hsba.br = lastBr;
             }
-            displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, br, BRIGHTNESS, saturationLocked);
+            displayTinySlider(x, tinySliderTopY, tinySliderWidth, cell * 4, hsba.br, BRIGHTNESS, saturationLocked);
 
             displayInfiniteSliderCenterMode(height - height / 4f, width - sliderHeight * .5f, height / 2f, sliderHeight,
-                    alphaPrecision, alpha, revealAnimation, false, false, false, 0, 1);
+                    alphaPrecision, hsba.alpha, revealAnimation, false, false, false, 0, 1);
             fill(GRAYSCALE_TEXT_DARK);
             textAlign(CENTER, CENTER);
             textSize(textSize);
@@ -2650,17 +2675,17 @@ public abstract class KrabApplet extends PApplet {
             float alphaDelta = updateInfiniteSlider(alphaPrecision, height, false, false, false);
             boolean isMouseInTopHalf = isMouseOver(0, 0, width, height / 2f);
             if (!satChanged && !brChanged && (keyboardActive || isMouseInTopHalf)) {
-                alpha += alphaDelta;
+                hsba.alpha += alphaDelta;
             }
 
             displayHueSlider(sliderHeight, revealAnimation);
             float hueDelta = updateInfiniteSlider(huePrecision, width, true, false, false);
             if (!satChanged && !brChanged && (keyboardActive || !isMouseInTopHalf)) {
-                hue += hueDelta;
+                hsba.hue += hueDelta;
             }
             satChanged = false;
             brChanged = false;
-            enforceConstraints();
+            hsba.enforceConstraints();
             displayValueRectangle(sliderHeight);
             popStyle();
         }
@@ -2680,7 +2705,7 @@ public abstract class KrabApplet extends PApplet {
                 if (abs(.5f - iNorm) * 2 > revealAnimation) {
                     continue;
                 }
-                float iHue = hueModulo(hue - .5f + iNorm);
+                float iHue = hsba.hueModulo(hsba.hue - .5f + iNorm);
                 int iColor = getColorAt(iHue, HUE);
                 fill(iColor);
                 vertex(x, y);
@@ -2693,7 +2718,7 @@ public abstract class KrabApplet extends PApplet {
             float x = width * .5f;
             float y = height - hueSliderHeight - cell * 3f;
             noStroke();
-            fill(value());
+            fill(hsba.clr());
             rectMode(CENTER);
             rect(x, y, cell * 3, cell * 3);
         }
@@ -2703,9 +2728,9 @@ public abstract class KrabApplet extends PApplet {
             if (forceActive || (mousePressed && isMouseOver(x, topY - interactionBuffer, w,
                     h + interactionBuffer * 1.2f))) {
                 float newValue = constrain(map(mouseY, topY, topY + h, 0, 1), 0, 1);
-                setValue(newValue, type);
+                setTinySliderValue(newValue, type);
             }
-            return getValue(type);
+            return getTinySliderValue(type);
         }
 
         private void displayTinySlider(float x, float topY, float w, float h, float value, String type,
@@ -2731,52 +2756,43 @@ public abstract class KrabApplet extends PApplet {
 
         private int getColorAt(float value, String type) {
             if (type.equals(HUE)) {
-                return color(value, sat, br, alpha);
+                return color(value, hsba.sat, hsba.br, hsba.alpha);
             }
             if (type.equals(SATURATION)) {
-                return color(hue, value, br, alpha);
+                return color(hsba.hue, value, hsba.br, hsba.alpha);
             }
             if (type.equals(BRIGHTNESS)) {
-                return color(hue, sat, value, alpha);
+                return color(hsba.hue, hsba.sat, value, hsba.alpha);
             }
             return 0;
         }
 
 
-        private float getValue(String type) {
+        private float getTinySliderValue(String type) {
             if (type.equals(SATURATION)) {
-                return sat;
+                return hsba.sat;
             }
             if (type.equals(BRIGHTNESS)) {
-                return br;
+                return hsba.br;
             }
             return 0;
         }
 
-        private void setValue(float newValue, String type) {
+        private void setTinySliderValue(float newValue, String type) {
             if (type.equals(SATURATION)) {
-                sat = newValue;
+                hsba.sat = newValue;
                 satChanged = true;
             }
             if (type.equals(BRIGHTNESS)) {
-                br = newValue;
+                hsba.br = newValue;
                 brChanged = true;
             }
         }
 
-        private void enforceConstraints() {
-            hue = hueModulo(hue);
-            sat = constrain(sat, 0, 1);
-            br = constrain(br, 0, 1);
-            alpha = constrain(alpha, 0, 1);
+        HSBA getHSBA() {
+            return hsba;
         }
 
-        private float hueModulo(float hue) {
-            while (hue < 0) {
-                hue += 1;
-            }
-            hue %= 1;
-            return hue;
-        }
+
     }
 }

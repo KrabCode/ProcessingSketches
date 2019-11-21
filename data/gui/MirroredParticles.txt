@@ -284,3 +284,80 @@ particle§gauss§0.05000067§10.0
 particle§drag§0.5500003§10.0
 particle§hue offset range§0.95§10.0
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MirroredParticles§true
+MirroredParticles§alpha fade§50.0§255.0
+GROUP§radial§true
+radial§delta§1.0§10.0
+radial§power§1.0§10.0
+radial§weight§1.0§10.0
+radial§mirrors§1.0§300.0
+GROUP§particle§true
+particle§stroke§0.0§0.0§0.0§0.0§1.0
+particle§hue delta§0.0§10.0
+particle§count§20.0§200.0
+particle§orbit§0.0§10.0
+particle§to center§0.0§10.0
+particle§gauss§0.0§10.0
+particle§drag§0.0§10.0
+particle§hue offset§0.0§10.0
+particle§sat offset range§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MirroredParticles§true
+MirroredParticles§alpha fade§1.275§255.0
+GROUP§radial§true
+radial§delta§-2.7000122§100.0
+radial§power§0.999999§0.1
+radial§weight§2.0000012§10.0
+radial§mirrors§3.0000005§300.0
+GROUP§particle§true
+particle§stroke§0.7118746§0.35625§1.0§1.0§1.0
+particle§hue delta§-1.8626451E-9§10.0
+particle§count§450.0§20000.0
+particle§orbit§2.7250028§10.0
+particle§to center§0.24999924§10.0
+particle§gauss§1.0625001§10.0
+particle§drag§0.7624999§10.0
+particle§hue offset§0.025§10.0
+particle§sat offset range§0.05§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MirroredParticles§true
+MirroredParticles§alpha fade§1.275§255.0
+GROUP§radial§true
+radial§delta§-2.7000122§100.0
+radial§power§0.999999§0.1
+radial§weight§2.0000012§10.0
+radial§mirrors§3.0000005§300.0
+GROUP§particle§true
+particle§stroke§0.96124935§0.39375§1.0§1.0§1.0
+particle§count§450.0§20000.0
+particle§orbit§2.7250028§10.0
+particle§to center§0.24999924§10.0
+particle§gauss§1.0625001§10.0
+particle§drag§0.7624999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MirroredParticles§true
+MirroredParticles§alpha fade§1.275§255.0
+GROUP§radial§true
+radial§delta§-2.7000122§100.0
+radial§power§0.999999§0.1
+radial§weight§2.0000012§10.0
+radial§mirrors§3.0000005§300.0
+GROUP§particle§true
+particle§stroke§0.91254455§1.0§1.0§1.0§1.0
+particle§add hue§0.6625§10.0
+particle§count§450.0§20000.0
+particle§orbit§2.7250028§10.0
+particle§to center§0.24999924§10.0
+particle§gauss§1.0625001§10.0
+particle§drag§0.7624999§10.0
+particle§hue offset§0.025§10.0
+particle§sat offset§0.0§10.0
+STATE_END

@@ -32,7 +32,7 @@ public class JuiceTest extends KrabApplet {
         if (button("reset once") || toggle("redraw", true)) {
             pg.hint(DISABLE_DEPTH_TEST);
             pg.noStroke();
-            pg.fill(picker("fill"));
+            pg.fill(picker("fill").clr());
             pg.rectMode(CORNER);
             pg.rect(0, 0, width, height);
             pg.hint(ENABLE_DEPTH_TEST);
@@ -52,9 +52,9 @@ public class JuiceTest extends KrabApplet {
         if (toggle("hollow")) {
             pg.noFill();
         } else {
-            pg.fill(picker("fill", .5f, 1, .5f));
+            pg.fill(picker("fill", .5f, 1, .5f).clr());
         }
-        pg.stroke(picker("stroke", 0, 0, .8f));
+        pg.stroke(picker("stroke", 0, 0, .8f).clr());
         pg.strokeWeight(slider("weight", 2, 100));
         float size = slider("size", 150, 1000);
         pg.pushMatrix();
