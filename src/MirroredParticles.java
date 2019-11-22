@@ -27,7 +27,7 @@ public class MirroredParticles extends KrabApplet {
         pg.background(0);
         pg.endDraw();
         center = new PVector(width, height).mult(.5f);
-        recordingFrames *= 2;
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {

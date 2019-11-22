@@ -28,7 +28,7 @@ public class GravityParticleGrid extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        recordingFrames *= 2;
+        frameRecordingDuration *= 2;
     }
 
     // point rain falling on a grid of points which ripple with the 2D water effect

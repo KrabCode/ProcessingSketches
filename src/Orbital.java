@@ -31,7 +31,7 @@ public class Orbital extends KrabApplet {
         pg.background(0);
         pg.endDraw();
         center = new PVector(pg.width, pg.height).mult(.5f);
-        recordingFrames *= 2;
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
