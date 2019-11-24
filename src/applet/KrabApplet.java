@@ -331,7 +331,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        t += radians(1/(frameRecordingDuration/360f));
+        t += radians(1 / (frameRecordingDuration / 360f));
         guiSetup(defaultVisibility);
         updateKeyboardInput();
         updateMouseState();
@@ -433,12 +433,12 @@ public abstract class KrabApplet extends PApplet {
             pg.save(captureDir + "screenshot_" + screenshotsAlreadyCaptured + ".jpg");
         }
         int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
-        if(!replayStack.isEmpty()){
+        if (!replayStack.isEmpty()) {
             frameRecordingEnd = min(frameRecordingEnd, frameCount + replayStack.size());
         }
-        if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd){
+        if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd) {
             int frameNumber = frameCount - frameRecordingStarted + 1;
-            println("saved", frameNumber, "/", frameRecordingEnd-frameRecordingStarted - 1);
+            println("saved", frameNumber, "/", frameRecordingEnd - frameRecordingStarted - 1);
             pg.save(captureDir + frameNumber + ".jpg");
             loadReplay(frameNumber);
         }
@@ -451,14 +451,14 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private void loadReplay(int frameNumber) {
-        if(replayStack.isEmpty()){
+        if (replayStack.isEmpty()) {
             return;
         }
-        if(frameNumber < replayStack.size()){
+        if (frameNumber < replayStack.size()) {
             println("setting state for frame", frameNumber);
             setGuiState(replayStack.get(frameNumber));
         }
-        if(frameNumber >= replayStack.size()){
+        if (frameNumber >= replayStack.size()) {
             replayStack.clear();
         }
     }
@@ -1522,6 +1522,16 @@ public abstract class KrabApplet extends PApplet {
         return null;
     }
 
+    protected float hueModulo(float hue) {
+        while (hue < 0) {
+            hue += 1;
+        }
+        hue %= 1;
+        return hue;
+    }
+
+// CLASSES
+
     private class ShaderSnapshot {
         String fragPath;
         String vertPath;
@@ -1616,8 +1626,6 @@ public abstract class KrabApplet extends PApplet {
             }
         }
     }
-
-// CLASSES
 
     private class Key {
         boolean justPressed;
@@ -2538,9 +2546,20 @@ public abstract class KrabApplet extends PApplet {
             return sat;
         }
 
+
+        public void setSat(float val) {
+            sat = val;
+            enforceConstraints();
+        }
+
         public float br() {
             enforceConstraints();
             return br;
+        }
+
+        public void setBr(float val) {
+            br = val;
+            enforceConstraints();
         }
 
         public float alpha() {
@@ -2557,15 +2576,8 @@ public abstract class KrabApplet extends PApplet {
 
         public void setAlpha(float val) {
             alpha = val;
+            enforceConstraints();
         }
-    }
-
-    protected float hueModulo(float hue) {
-        while (hue < 0) {
-            hue += 1;
-        }
-        hue %= 1;
-        return hue;
     }
 
     private class ColorPicker extends Slider {
