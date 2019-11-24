@@ -1,0 +1,297 @@
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§1.125§0.0§223.67056
+main§alpha fade§6.0124793§255.0
+main§split§1.7125002§10.0
+main§z rotation§0.5§10.0
+GROUP§particles§true
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.0§10.0
+particles§grid pixels§567.4126§30000.0
+particles§weight§4.7124996§10.0
+particles§stroke§0.096874446§0.91875§1.0§0.9749998§1.0
+particles§z hue§0.45000035§10.0
+particles§rand hue§0.02124997§1.0
+particles§sat§0.025000792§10.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.0375002§1.0
+fbm§base amp§20.574951§1000.0
+fbm§time radius x§1.6750004§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.5000002§10.0
+fbm§distance fbm faloff§0.5875004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§1.125§0.0§225.87003
+main§alpha fade§6.0124793§255.0
+main§split§1.7125002§10.0
+main§z rotation§0.5§10.0
+GROUP§particles§true
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.0§10.0
+particles§grid pixels§567.4126§30000.0
+particles§weight§1.9§10.0
+particles§stroke§0.0§0.0§0.0§1.0§1.0
+particles§z hue§0.0§10.0
+particles§rand hue§0.0§10.0
+particles§sat§0.0§10.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§1.0§10.0
+fbm§base amp§1.0§10.0
+fbm§time radius x§0.0§10.0
+fbm§next freq§0.0§10.0
+fbm§next amp§0.0§10.0
+fbm§distance fbm faloff§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.0§10.0
+particles§weight§1.9§10.0
+particles§stroke§0.0§0.0§0.0§1.0§1.0
+particles§z hue§0.0§10.0
+particles§rand hue§0.0§10.0
+particles§sat§0.0§10.0
+GROUP§main§true
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§1.125§0.0§228.51462
+main§alpha fade§6.0124793§255.0
+main§split§1.7125002§10.0
+main§z rotation§0.5§10.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§1.0§10.0
+fbm§base amp§1.0§10.0
+fbm§time radius x§0.0§10.0
+fbm§next freq§0.0§10.0
+fbm§next amp§0.0§10.0
+fbm§distance fbm faloff§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.0§10.0
+particles§weight§4.7124996§10.0
+particles§stroke§0.7812502§1.0§1.0§0.9749998§1.0
+particles§z hue§-0.16249958§10.0
+particles§rand hue§0.033749964§1.0
+particles§sat§0.15000018§10.0
+GROUP§main§true
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§1.125§0.0§342.7264
+main§alpha fade§6.3312283§255.0
+main§split§2.687502§10.0
+main§z rotation§0.5§10.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.023750197§1.0
+fbm§base amp§58.07495§1000.0
+fbm§time radius x§1.1625009§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.40000024§10.0
+fbm§distance fbm faloff§0.33750054§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.937151E-7§10.0
+particles§weight§5.312499§10.0
+particles§stroke§0.70875007§1.0§1.0§0.9749998§1.0
+particles§z hue§-0.22499955§1.0
+particles§rand hue§0.033749964§1.0
+particles§sat§0.24000037§1.0
+GROUP§main§true
+main§translate§100.0§4.25§-48.875§0.0
+main§rotate§100.0§1.125§0.0§497.70697
+main§alpha fade§5.374978§255.0
+main§split§3.1875029§10.0
+main§z rotation§-0.5§1.0
+GROUP§fbm§false
+fbm§octaves§6.0§100.0
+fbm§base freq§0.023750197§1.0
+fbm§base amp§80.57495§1000.0
+fbm§time radius x§1.1625009§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.40000024§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.937151E-7§10.0
+particles§weight§5.312499§10.0
+particles§stroke§0.70875007§1.0§1.0§0.9749998§1.0
+particles§z hue§-0.22499955§1.0
+particles§rand hue§0.033749964§1.0
+particles§sat§0.24000037§1.0
+GROUP§main§false
+main§translate§100.0§4.25§-48.875§0.0
+main§rotate§100.0§1.125§0.0§509.7847
+main§alpha fade§5.374978§255.0
+main§split§3.1875029§10.0
+main§z rotation§0.5§10.0
+GROUP§fbm§false
+fbm§octaves§6.0§100.0
+fbm§base freq§0.023750197§1.0
+fbm§base amp§80.57495§1000.0
+fbm§time radius x§1.1625009§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.40000024§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.937151E-7§10.0
+particles§weight§5.312499§10.0
+particles§stroke§0.70875007§1.0§1.0§0.9749998§1.0
+particles§z hue§-0.22499955§1.0
+particles§rand hue§0.033749964§1.0
+particles§sat§0.24000037§1.0
+GROUP§main§true
+main§translate§100.0§4.25§-48.875§0.0
+main§rotate§100.0§1.125§0.0§560.0376
+main§alpha fade§5.374978§255.0
+main§split§3.1875029§10.0
+main§z rotation§1.0§10.0
+GROUP§fbm§false
+fbm§octaves§6.0§100.0
+fbm§base freq§0.023750197§1.0
+fbm§base amp§80.57495§1000.0
+fbm§time radius x§1.1625009§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.40000024§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§567.4126§30000.0
+particles§grid size§42.999992§100.0
+particles§reset§
+particles§average z correct§1.937151E-7§10.0
+particles§weight§5.312499§10.0
+particles§stroke§0.70875007§1.0§1.0§0.9749998§1.0
+particles§z hue§-0.22499955§1.0
+particles§rand hue§0.033749964§1.0
+particles§sat§0.24000037§1.0
+GROUP§main§true
+main§translate§100.0§4.25§-48.875§0.0
+main§rotate§100.0§1.125§0.0§563.8081
+main§alpha fade§5.374978§255.0
+main§split§3.1875029§10.0
+main§z rotation§1.0§10.0
+GROUP§fbm§false
+fbm§octaves§6.0§100.0
+fbm§base freq§0.023750197§1.0
+fbm§base amp§80.57495§1000.0
+fbm§time radius x§1.1625009§10.0
+fbm§next freq§2.5§10.0
+fbm§next amp§0.40000024§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§grid pixels§1161.1626§30000.0
+particles§grid size§42.000008§100.0
+particles§reset§
+particles§average z correct§9.164214E-7§10.0
+particles§weight§5.0000005§10.0
+particles§stroke§0.06786608§1.0§1.0§1.0§1.0
+particles§z hue§0.261463§1.0
+particles§rand hue§0.0014582103§1.0
+particles§sat§0.17125204§10.0
+GROUP§main§true
+main§translate§1000.0§4.1979165§-180.59369§0.0
+main§rotate§100.0§0.8645836§0.0§1121.4827
+main§alpha fade§6.109375§255.0
+main§split§-7.0000014§10.0
+main§z rotation§8.32822E-4§1.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.017500203§1.0
+fbm§base amp§64.94993§1000.0
+fbm§time radius x§0.28229272§10.0
+fbm§next freq§1.4427083§10.0
+fbm§next amp§0.7229166§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§673.6626§30000.0
+particles§grid size§42.000008§100.0
+particles§reset§
+particles§average z correct§9.164214E-7§10.0
+particles§weight§5.0000005§10.0
+particles§stroke§0.6972411§0.86875§1.0§1.0§1.0
+particles§z hue§-0.03978685§1.0
+particles§rand hue§0.03020821§1.0
+particles§sat§0.35875225§10.0
+GROUP§main§true
+main§translate§1000.0§12.947916§-103.09369§0.0
+main§rotate§100.0§0.8645836§0.0§1121.4827
+main§alpha fade§6.109375§255.0
+main§split§-7.0000014§10.0
+main§z rotation§8.32822E-4§1.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.017500203§1.0
+fbm§base amp§64.94993§1000.0
+fbm§time radius x§0.28229272§10.0
+fbm§next freq§1.4427083§10.0
+fbm§next amp§0.7229166§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§false
+particles§grid pixels§673.6626§30000.0
+particles§grid size§42.000008§100.0
+particles§reset§
+particles§average z correct§9.164214E-7§10.0
+particles§weight§5.0000005§10.0
+particles§stroke§0.6972411§0.86875§1.0§1.0§1.0
+particles§z hue§-0.03978685§1.0
+particles§rand hue§0.03020821§1.0
+particles§sat§0.35875225§10.0
+GROUP§main§true
+main§translate§1000.0§12.947916§-103.09369§0.0
+main§rotate§100.0§0.8645836§0.0§1121.4827
+main§alpha fade§6.109375§255.0
+main§split§-7.0000014§10.0
+main§z rotation§8.32822E-4§1.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.017500203§1.0
+fbm§base amp§64.94993§1000.0
+fbm§time radius x§0.28229272§10.0
+fbm§next freq§1.4427083§10.0
+fbm§next amp§0.7229166§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END

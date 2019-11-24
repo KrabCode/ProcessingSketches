@@ -1,0 +1,20 @@
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§11.5§4.0§-7.75
+GROUP§particles§true
+particles§count§1.0§100.0
+particles§reset§
+particles§spawn distance§0.0§10.0
+particles§max mass§0.0§10.0
+particles§y mult§0.0§10.0
+particles§weight§0.0§10.0
+particles§stroke§0.0§0.0375§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§0.0§10.0
+forces§from threshold§0.0§10.0
+forces§from mag§0.0§10.0
+forces§max force§0.0§10.0
+forces§drag§0.0§10.0
+STATE_END

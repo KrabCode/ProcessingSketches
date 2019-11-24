@@ -1,0 +1,733 @@
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§104.4625§30.0
+spawn§scale§260.0§30.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§111.999985§100.0
+particles§stroke§0.0§0.0§0.0§1.0§1.0
+particles§translate§100.0§0.0§0.0§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§109.75§30.0
+spawn§scale§267.83752§30.0
+spawn§alpha fade§14.343747§255.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§1293.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§alpha fade§50.0§255.0
+particles§translate§100.0§2.5§5.75§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§109.75§30.0
+spawn§scale§267.83752§30.0
+spawn§alpha fade§14.343747§255.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§1293.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.6374999§10.0
+particles§alpha fade§50.0§255.0
+particles§translate§100.0§2.5§5.75§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§109.75§30.0
+spawn§scale§267.83752§30.0
+spawn§alpha fade§14.343747§255.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§1293.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.6374999§10.0
+particles§alpha fade§50.0§255.0
+particles§translate§100.0§2.5§5.75§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§109.75§30.0
+spawn§scale§264.7251§30.0
+spawn§alpha fade§14.343747§255.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§1293.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§3.3625§10.0
+particles§alpha fade§7.9687495§255.0
+particles§translate§100.0§2.5§5.75§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§spawn§true
+spawn§count§109.75§30.0
+spawn§scale§264.7251§30.0
+spawn§alpha fade§14.343747§255.0
+spawn§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§1312.9998§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§4.3874993§10.0
+particles§gravity§10.675001§10.0
+particles§drag§0.91249996§10.0
+particles§alpha fade§0.63750017§255.0
+particles§translate§100.0§4.875§5.25§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§825.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§gravity§0.13750084§10.0
+particles§drag§0.68749994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§825.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§gravity§1.200001§10.0
+particles§drag§0.68749994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§825.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§drag§0.68749994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§825.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§drag§0.68749994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§0.0§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§gravity§0.0§10.0
+particles§drag§0.68749994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§0.0§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.749999§10.0
+particles§gravity§0.0§10.0
+particles§drag§0.05000008§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§2837.9995§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.5499992§10.0
+particles§gravity§-0.8375§10.0
+particles§drag§0.05000008§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§50.0§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§264.7251§30.0
+GROUP§particles§true
+particles§count§362.99994§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.5499992§10.0
+particles§gravity§0.14999998§10.0
+particles§drag§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§266.60013§30.0
+GROUP§particles§true
+particles§count§525.0001§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.9874992§10.0
+particles§gravity§0.07499994§10.0
+particles§gravity mult§0.0019999985§0.1
+particles§drag§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§spawn§true
+spawn§count§115.675§30.0
+spawn§scale§266.60013§30.0
+GROUP§particles§true
+particles§count§200.00003§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.9874992§10.0
+particles§gravity§0.21249996§10.0
+particles§gravity mult§0.0017499984§0.1
+particles§drag§0.16250019§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§500.00006§10000.0
+particles§spawn distance§1.9625001§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.9874992§10.0
+particles§gravity§2.5125005§10.0
+particles§gravity mult§0.025999995§0.1
+particles§drag§0.8125§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§462.99994§10000.0
+particles§spawn distance§223.95001§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.549999§10.0
+particles§gravity§409.1§1000.0
+particles§gravity mult§0.9856248§10.0
+particles§drag§0.45000017§10.0
+particles§max force§0.86249983§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§209.00003§100.0
+particles§spawn distance§223.95001§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.549999§10.0
+particles§gravity§206.6§1000.0
+particles§gravity mult§0.9856248§10.0
+particles§drag§0.5625001§10.0
+particles§max force§0.025000002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§312.99994§10000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.549999§10.0
+particles§gravity§191.6§1000.0
+particles§gravity mult§0.9856248§10.0
+particles§to center§2.7749999§10.0
+particles§drag§0.5625001§10.0
+particles§max force§0.025§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§312.99994§10000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.549999§10.0
+particles§gravity§191.6§1000.0
+particles§gravity mult§0.9856248§10.0
+particles§to center§2.7749999§10.0
+particles§drag§0.5625001§10.0
+particles§max force§0.0§10.0
+particles§from other§4.1000004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§225.00003§1000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+particles§to center§0.0§10.0
+particles§drag§0.94999987§10.0
+GROUP§forces§true
+forces§gravity§4.275§10.0
+forces§gravity mult§6.625§10.0
+forces§from other threshold§3.024994§1000.0
+forces§max force§0.437502§10.0
+forces§from other§5.075§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§225.00003§1000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+particles§to center§0.0§10.0
+particles§max force§0.0§10.0
+particles§drag§0.94999987§10.0
+GROUP§forces§true
+forces§gravity§4.275§10.0
+forces§gravity mult§6.625§10.0
+forces§from other threshold§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§225.00003§1000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+GROUP§forces§true
+forces§gravity§3.4375002§10.0
+forces§gravity mult§6.625§10.0
+forces§to center§0.0§10.0
+forces§max force§0.9625019§10.0
+forces§drag§0.8124997§10.0
+forces§from other threshold§0.4625§10.0
+forces§from other§0.4625§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§225.00003§1000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+GROUP§forces§true
+forces§gravity§12.774998§10.0
+forces§gravity mult§6.625§10.0
+forces§to center§9.399997§10.0
+forces§max force§1.8500024§10.0
+forces§drag§0.8124997§10.0
+forces§from other threshold§1.3875§100.0
+forces§from other§0.65§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.156243§255.0
+main§translate§10000.0§0.0§0.0§-354.375
+GROUP§particles§true
+particles§count§225.00003§1000.0
+particles§spawn distance§395.2§1000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+GROUP§forces§true
+forces§gravity§12.774998§10.0
+forces§gravity mult§6.625§10.0
+forces§max force§1.8500024§10.0
+forces§drag§0.8124997§10.0
+forces§from other threshold§1.7875001§10.0
+forces§from other§1.6749996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§199.99997§1000.0
+particles§spawn distance§1451.45§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+GROUP§forces§true
+forces§gravity§18.375011§10.0
+forces§gravity mult§5.225§10.0
+forces§max force§5.0874996§10.0
+forces§drag§0.9787499§1.0
+forces§from threshold§8.3375§10.0
+forces§from mag§3.0749996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§104.999985§1000.0
+particles§spawn distance§88.94995§10000.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.2999989§10.0
+GROUP§forces§true
+forces§gravity§7.175007§100.0
+forces§gravity mult§0.99999976§10.0
+forces§max force§3.3249998§10.0
+forces§drag§0.96624976§1.0
+forces§from threshold§13.05§10.0
+forces§from mag§1.0500015§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§61.000008§1000.0
+particles§reset§
+particles§spawn distance§88.94995§10000.0
+particles§max mass§0.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§2.5500069§100.0
+forces§gravity mult§0.99999976§10.0
+forces§max force§1.2§10.0
+forces§drag§0.8637495§1.0
+forces§from threshold§0.32500002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§61.000008§1000.0
+particles§reset§
+particles§spawn distance§88.94995§10000.0
+particles§max mass§0.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§2.5500069§100.0
+forces§gravity mult§0.99999976§10.0
+forces§max force§1.2§10.0
+forces§drag§0.8637495§1.0
+forces§from threshold§0.32500002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§61.000008§1000.0
+particles§reset§
+particles§spawn distance§88.94995§10000.0
+particles§max mass§0.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§2.5500069§100.0
+forces§gravity mult§0.99999976§10.0
+forces§max force§1.2§10.0
+forces§drag§0.8637495§1.0
+forces§from threshold§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§101.000015§1000.0
+particles§reset§
+particles§spawn distance§913.94995§10000.0
+particles§max mass§14.575004§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§21.425007§100.0
+forces§from threshold§2.5000007§10.0
+forces§gravity mult§2.5125§10.0
+forces§max force§2.375§10.0
+forces§drag§0.8637495§1.0
+forces§from mag§2.350001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§101.000015§1000.0
+particles§reset§
+particles§spawn distance§913.94995§10000.0
+particles§max mass§14.575004§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§21.425007§100.0
+forces§from threshold§2.5000007§10.0
+forces§gravity mult§2.5125§10.0
+forces§max force§2.375§10.0
+forces§drag§0.8637495§1.0
+forces§from mag§2.0875§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§101.000015§1000.0
+particles§reset§
+particles§spawn distance§913.94995§10000.0
+particles§max mass§14.575004§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§21.425007§100.0
+forces§from threshold§5.85§10.0
+forces§from mag§3.650001§10.0
+forces§gravity mult§2.5125§10.0
+forces§max force§2.375§10.0
+forces§drag§0.8637495§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§58.999992§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.000004§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§59.675007§100.0
+forces§from threshold§5.487501§10.0
+forces§from mag§3.650001§10.0
+forces§gravity mult§1.0012494§1.0
+forces§max force§2.8624997§10.0
+forces§drag§0.8874997§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§58.999992§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.000004§10.0
+particles§weight§1.2999989§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§59.675007§100.0
+forces§from threshold§5.487501§10.0
+forces§from mag§3.650001§10.0
+forces§gravity mult§1.0012494§1.0
+forces§max force§2.8624997§10.0
+forces§drag§0.8874997§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§58.999992§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§14.999998§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§100.3§100.0
+forces§from threshold§5.010009§10.0
+forces§from mag§1.0499991§10.0
+forces§gravity mult§1.0137497§1.0
+forces§max force§18.174995§10.0
+forces§drag§0.4850005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§6.6499925§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§58.999992§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§14.999998§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§100.3§100.0
+forces§from threshold§5.010009§10.0
+forces§from mag§1.0499991§10.0
+forces§gravity mult§1.0137497§1.0
+forces§max force§18.174995§10.0
+forces§drag§0.4850005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§14.343744§255.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+main§rotate speed§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§192.00003§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.100002§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§279.55§10000.0
+forces§from threshold§11.185009§10.0
+forces§from mag§12.5999975§10.0
+forces§gravity mult§1.2062495§1.0
+forces§max force§2.8499947§100.0
+forces§drag§0.8875001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§14.343744§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§192.00003§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.100002§10.0
+particles§z mult§0.0§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§279.55§10000.0
+forces§from threshold§11.185009§10.0
+forces§from mag§12.5999975§10.0
+forces§gravity mult§1.2062495§1.0
+forces§max force§2.8499947§100.0
+forces§drag§0.8875001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§14.343744§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§192.00003§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.100002§10.0
+particles§z mult§0.5999999§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§279.55§10000.0
+forces§from threshold§11.185009§10.0
+forces§from mag§12.5999975§10.0
+forces§gravity mult§1.2062495§1.0
+forces§max force§2.8499947§100.0
+forces§drag§0.8875001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§5.737494§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§192.00003§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§5.100002§10.0
+particles§y mult§0.8249999§10.0
+particles§weight§1.000248§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§117.049805§10000.0
+forces§from threshold§1.4975109§100.0
+forces§from mag§1.0875028§10.0
+forces§gravity mult§1.1199995§1.0
+forces§max force§2.3499947§100.0
+forces§drag§0.96250004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§false
+main§alpha fade§5.737494§255.0
+main§translate§100.0§0.0§0.0§0.0
+GROUP§particles§true
+particles§count§192.00003§1000.0
+particles§reset§
+particles§spawn distance§326.44995§10000.0
+particles§max mass§8.187501§10.0
+particles§y mult§0.96249986§10.0
+particles§weight§1.0031226§0.1
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§forces§true
+forces§gravity§37.049805§1000.0
+forces§from threshold§7.372511§100.0
+forces§from mag§7.250003§10.0
+forces§max force§2.3499947§100.0
+forces§drag§0.61250013§10.0
+STATE_END
