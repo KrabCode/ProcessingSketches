@@ -18,6 +18,7 @@ public class Waves extends KrabApplet {
     }
 
     public void settings() {
+//        fullScreen(P3D);
         size(800, 800, P3D);
     }
 
@@ -45,8 +46,6 @@ public class Waves extends KrabApplet {
         pg.rotateX(rot.x);
         pg.rotateY(rot.y);
         pg.rotateZ(rot.z+=radians(slider("z rotation", 1)));
-        group("main");
-        group("particles");
         updateGrid();
         pg.endDraw();
         background(0);
