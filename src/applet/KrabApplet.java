@@ -94,16 +94,20 @@ public abstract class KrabApplet extends PApplet {
     private final float minimumTrayWidth = hideButtonWidth + (MENU_BUTTON_COUNT - 1) * menuButtonSize;
     private final float sliderHeight = cell * 2;
     protected String captureDir;
-    protected String captureFilename;
-    protected String id = regenId();
-    protected int recordingFrames = 360; // assuming t += radians(1) per frame for a perfect loop
-    protected int frameRecordingEnds;
+    protected String id = regenIdAndCaptureDir();
     protected float t;
     protected boolean mousePressedOutsideGui = false;
+    protected int frameRecordingStarted = 0;
+    protected int frameRecordingDuration = 360; // assuming t += radians(1) per frame for a perfect loop
     private float trayWidthWhenExtended = minimumTrayWidth;
     private float trayWidth = minimumTrayWidth;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
+    private ArrayList<ArrayList<String>> replayStack = new ArrayList<ArrayList<String>>();
+    private boolean replayStackRecordingPaused = true;
+    private boolean captureScreenshot = false;
+    private int screenshotsAlreadyCaptured = 0;
+
     private ArrayList<Group> groups = new ArrayList<Group>();
     private Group currentGroup = null; // do not assign to nor read directly!
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
@@ -355,7 +359,7 @@ public abstract class KrabApplet extends PApplet {
         }
         scrollOffsetHistory.add(trayScrollOffset);
         int scrollOffsetHistorySize = 3;
-        while(scrollOffsetHistory.size() > scrollOffsetHistorySize){
+        while (scrollOffsetHistory.size() > scrollOffsetHistorySize) {
             scrollOffsetHistory.remove(0);
         }
         if (abs(pmouseY - mouseY) > 2) {
@@ -364,9 +368,8 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private boolean trayHasntMovedInAWhile() {
-        boolean result = false;
-        for(Float historicalTrayOffset : scrollOffsetHistory){
-            if(historicalTrayOffset != trayScrollOffset){
+        for (Float historicalTrayOffset : scrollOffsetHistory) {
+            if (historicalTrayOffset != trayScrollOffset) {
                 return false;
             }
         }
@@ -419,10 +422,41 @@ public abstract class KrabApplet extends PApplet {
     }
 
     public void rec(PGraphics pg) {
-        if (frameCount < frameRecordingEnds) {
-            int frameNumber = (frameCount - (frameRecordingEnds - recordingFrames)) + 1;
-            println(frameNumber + " / " + recordingFrames);
+        saveReplay();
+        savePGraphics(pg);
+    }
+
+    private void savePGraphics(PGraphics pg) {
+        if (captureScreenshot) {
+            captureScreenshot = false;
+            screenshotsAlreadyCaptured++;
+            pg.save(captureDir + "screenshot_" + screenshotsAlreadyCaptured + ".jpg");
+        }
+        int frameRecordingEnd = min(frameCount + replayStack.size(), frameRecordingStarted + frameRecordingDuration);
+        if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd){
+            int frameNumber = frameCount - frameRecordingStarted + 1;
+            println("saved", frameNumber, "/", min(frameRecordingDuration, replayStack.size()));
             pg.save(captureDir + frameNumber + ".jpg");
+            loadReplay(frameNumber);
+        }
+    }
+
+    private void saveReplay() {
+        if (!replayStackRecordingPaused) {
+            replayStack.add(getGuiState());
+        }
+    }
+
+    private void loadReplay(int frameNumber) {
+        if(replayStack.isEmpty()){
+            return;
+        }
+        if(frameNumber < replayStack.size()){
+            println("setting state for frame", frameNumber);
+            setGuiState(replayStack.get(frameNumber));
+        }
+        if(frameNumber >= replayStack.size()){
+            replayStack.clear();
         }
     }
 
@@ -430,11 +464,10 @@ public abstract class KrabApplet extends PApplet {
         return String.valueOf(floor(inputNumber)).length();
     }
 
-    public String regenId() {
+    public String regenIdAndCaptureDir() {
         String newId = year() + nf(month(), 2) + nf(day(), 2) + "-" + nf(hour(), 2) + nf(minute(), 2) + nf(second(),
                 2) + "_" + this.getClass().getSimpleName();
-        captureDir = "out/capture/" + id + "/";
-        captureFilename = captureDir + "####.jpg";
+        captureDir = "out/capture/" + newId + "/";
         return newId;
     }
 
@@ -910,16 +943,19 @@ public abstract class KrabApplet extends PApplet {
                 keyboardKeys.add(new Key((int) key, false));
             }
         }
+        if (key == 'j') {
+            replayStackRecordingPaused = !replayStackRecordingPaused;
+            println(replayStackRecordingPaused ? "replay recording paused" : "replay recording resumed");
+        }
         if (key == 'k') {
-            frameRecordingEnds = frameCount + recordingFrames + 1;
-            id = regenId();
+            replayStackRecordingPaused = true;
+            println("replay recording paused");
+            frameRecordingStarted = frameCount + 1;
+            id = regenIdAndCaptureDir();
         }
         if (key == 'i') {
-            frameRecordingEnds = frameCount + 2;
-            id = regenId();
-        }
-        if (key == 'c') {
-            frameRecordingEnds = frameCount - 1;
+            captureScreenshot = true;
+            id = regenIdAndCaptureDir();
         }
     }
 
@@ -2180,7 +2216,7 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
-                if(value == 0){
+                if (value == 0) {
                     this.value = 1;
                 }
             } else if (name.equals("drag")) {

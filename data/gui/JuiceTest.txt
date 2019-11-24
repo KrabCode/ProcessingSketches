@@ -456,3 +456,113 @@ shape§weight§7.0§100.0
 shape§size§150.0§1000.0
 shape§rectangle§2§rectangle§ellipse§box
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§false
+background§reset once§
+background§redraw§false
+background§fill§0.0§0.0§0.1§1.0§1.0
+background§alpha fade§27.5§100.0
+background§split§558.375§100.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§40.316895§0.0§0.0
+matrix§rot x§4.999999§100.0
+matrix§rot y§0.0§100.0
+matrix§integer§0.0§100.0
+GROUP§shape§true
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§1.0§0.08125§1.0§1.0
+background§alpha fade§62.875§100.0
+background§split§429.875§10000.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§-0.79999995§-0.02§0.0
+matrix§rot x§0.0§100.0
+matrix§rot y§0.0§100.0
+matrix§integer§0.0§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§1.0§0.08125§1.0§1.0
+background§alpha fade§62.875§100.0
+background§split§267.375§10000.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§-0.79999995§-0.02§0.0
+matrix§rot x§0.0§100.0
+matrix§rot y§0.0§100.0
+matrix§integer§0.0§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§false
+background§fill§0.0§1.0§0.08125§1.0§1.0
+background§alpha fade§62.875§100.0
+background§split§267.375§10000.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§-8.200206§-0.02§0.0
+matrix§rot x§-2.0000005§100.0
+matrix§rot y§0.0§100.0
+matrix§integer§0.0§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§background§true
+background§reset once§
+background§redraw§true
+background§fill§0.0§1.0§1.0§1.0§1.0
+background§alpha fade§62.875§100.0
+background§split§267.375§10000.0
+GROUP§matrix§true
+matrix§translate§1000.0§0.0§0.0§0.0
+matrix§rotate§1.0§53.357014§-0.02§0.0
+matrix§rot x§23.999996§100.0
+matrix§rot y§0.0§100.0
+matrix§integer§0.0§100.0
+GROUP§shape§false
+shape§hollow§true
+shape§fill§0.5§1.0§0.5§1.0§1.0
+shape§stroke§0.0§0.0§0.8§1.0§1.0
+shape§weight§7.0§100.0
+shape§size§150.0§1000.0
+shape§rectangle§2
+STATE_END
