@@ -331,7 +331,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        t += radians(1);
+        t += radians(1/(frameRecordingDuration/360f));
         guiSetup(defaultVisibility);
         updateKeyboardInput();
         updateMouseState();
@@ -432,10 +432,13 @@ public abstract class KrabApplet extends PApplet {
             screenshotsAlreadyCaptured++;
             pg.save(captureDir + "screenshot_" + screenshotsAlreadyCaptured + ".jpg");
         }
-        int frameRecordingEnd = min(frameCount + replayStack.size(), frameRecordingStarted + frameRecordingDuration);
+        int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
+        if(!replayStack.isEmpty()){
+            frameRecordingEnd = min(frameRecordingEnd, frameCount + replayStack.size());
+        }
         if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd){
             int frameNumber = frameCount - frameRecordingStarted + 1;
-            println("saved", frameNumber, "/", min(frameRecordingDuration, replayStack.size()));
+            println("saved", frameNumber, "/", frameRecordingEnd-frameRecordingStarted - 1);
             pg.save(captureDir + frameNumber + ".jpg");
             loadReplay(frameNumber);
         }
@@ -1312,7 +1315,7 @@ public abstract class KrabApplet extends PApplet {
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
-//                    println("element does not exist", splitState[0], splitState[1]);
+                    println("element does not exist", splitState[0], splitState[1]);
                     continue;
                 }
                 el.setState(state);
@@ -1340,7 +1343,7 @@ public abstract class KrabApplet extends PApplet {
         return array;
     }
 
-    String[] loadLastStateFromFile(boolean alsoPush) {
+    protected String[] loadLastStateFromFile(boolean alsoPush) {
         File file = dataFile(settingsPath());
         if (!file.exists()) {
             return new String[0];
@@ -2212,7 +2215,7 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else if (name.equals("count") || name.equals("size")) {
+            } else if (name.contains("count") || name.contains("size")) {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
@@ -2552,13 +2555,17 @@ public abstract class KrabApplet extends PApplet {
             alpha = constrain(alpha, 0, 1);
         }
 
-        private float hueModulo(float hue) {
-            while (hue < 0) {
-                hue += 1;
-            }
-            hue %= 1;
-            return hue;
+        public void setAlpha(float val) {
+            alpha = val;
         }
+    }
+
+    protected float hueModulo(float hue) {
+        while (hue < 0) {
+            hue += 1;
+        }
+        hue %= 1;
+        return hue;
     }
 
     private class ColorPicker extends Slider {
@@ -2737,7 +2744,7 @@ public abstract class KrabApplet extends PApplet {
                 if (abs(.5f - iNorm) * 2 > revealAnimation) {
                     continue;
                 }
-                float iHue = hsba.hueModulo(hsba.hue - .5f + iNorm);
+                float iHue = hueModulo(hsba.hue - .5f + iNorm);
                 int iColor = getColorAt(iHue, HUE);
                 fill(iColor);
                 vertex(x, y);

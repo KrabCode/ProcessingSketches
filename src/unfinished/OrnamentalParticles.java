@@ -1,3 +1,5 @@
+package unfinished;
+
 import applet.KrabApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -16,7 +18,7 @@ public class OrnamentalParticles extends KrabApplet {
     ArrayList<Particle> particlesToRemove = new ArrayList<>();
 
     public static void main(String[] args) {
-        KrabApplet.main("OrnamentalParticles");
+        KrabApplet.main("unfinished.OrnamentalParticles");
     }
 
     public void settings() {
