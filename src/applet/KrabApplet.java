@@ -351,6 +351,9 @@ public abstract class KrabApplet extends PApplet {
         popStyle();
         popMatrix();
         pMousePressed = mousePressed;
+        if(frameCount == 1){
+            trayVisible = elementCount() != 0;
+        }
     }
 
     private void updateScrolling() {
@@ -1170,6 +1173,14 @@ public abstract class KrabApplet extends PApplet {
         }
 
         return 0;
+    }
+
+    private int elementCount() {
+        int sum = 0;
+        for(Group group : groups){
+            sum += group.elements.size();
+        }
+        return sum;
     }
 
     private Group getCurrentGroup() {
@@ -2373,11 +2384,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         protected boolean isMouseOverXSlider() {
-            return isMouseOver(0, height - cell * interactionBufferMultiplier, width, sliderHeight);
+            return isMouseOver(0, height - cell * interactionBufferMultiplier, width, sliderHeight*2);
         }
 
         protected boolean isMouseOverYSlider() {
-            return isMouseOver(width - cell * interactionBufferMultiplier, 0, sliderHeight, height);
+            return isMouseOver(width - cell * interactionBufferMultiplier, 0, sliderHeight*2, height);
         }
 
 
