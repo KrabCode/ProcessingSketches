@@ -2,7 +2,7 @@
 Collection of some of my latest Processing sketches published often to [krabcode.eu](http://www.krabcode.eu), my [instagram](https://www.instagram.com/krabcode/) and reddit at [/r/processing](https://www.reddit.com/r/processing) under the username [/u/Simplyfire](https://www.reddit.com/user/Simplyfire).
 
 ## Project structure
-The sketches are found as standalone classes in the [src](https://github.com/KrabCode/ProcessingSketches/tree/master/src) folder, each with their own main() method based on the approach in this [Processing in Eclipse](https://processing.org/tutorials/eclipse/) tutorial.
+The sketches are found as standalone classes in the [src](https://github.com/KrabCode/ProcessingSketches/tree/master/src) folder, each with their own main() method based on the approach in this [Processing in Eclipse](https://processing.org/tutorials/eclipse/) tutorial, but IntelliJ IDEA is way better than Eclipse so I recommend using that. Just clone the project into your IDE of choice, include all of the libraries from the zip file in the project and then you can run the standalone sketches.
 
 Each sketch extends an abstract class from the [applet](https://github.com/KrabCode/ProcessingSketches/tree/master/src/applet) folder that adds some extra features to the standard Processing PApplet, mostly for faster and more comfortable iteration.
 - [GuiSketch](https://github.com/KrabCode/ProcessingSketches/blob/master/src/applet/GuiSketch.java) offers sliders, toggles and buttons in a collapsible tray and a few other utilities.
