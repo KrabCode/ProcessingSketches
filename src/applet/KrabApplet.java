@@ -18,10 +18,12 @@ import static java.lang.System.currentTimeMillis;
  * touchscreen slider precision, reset
  * try to set last known undo state to any new element
  * - nice to have:
+ * only save new state if it differs from the last
  * record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
  * more minimalist animated juice...
  * range picker (2 floats, start and end, end > start)
  * - bugs:
+ * picker stops responding after prolonged use???
  * first null group's element appears twice, once at the top and once at the bottom
  */
 
@@ -107,7 +109,6 @@ public abstract class KrabApplet extends PApplet {
     private boolean replayStackRecordingPaused = true;
     private boolean captureScreenshot = false;
     private int screenshotsAlreadyCaptured = 0;
-
     private ArrayList<Group> groups = new ArrayList<Group>();
     private Group currentGroup = null; // do not assign to nor read directly!
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
@@ -389,6 +390,9 @@ public abstract class KrabApplet extends PApplet {
             textSize(textSize * 2);
             registerExitHandler();
         } else if (frameCount == 3) {
+            if(elementCount() == 0){
+                trayVisible = false;
+            }
             loadLastStateFromFile(true);
         }
     }
@@ -1085,10 +1089,12 @@ public abstract class KrabApplet extends PApplet {
         }
         if (keyboardSelectionIndex < MENU_BUTTON_COUNT) {
             Group lastGroup = getLastGroup();
-            if (!lastGroup.expanded) {
-                keyboardSelectionIndex = keyboardSelectionLength() - lastGroup.elements.size() - 1;
-            } else {
-                keyboardSelectionIndex = keyboardSelectionLength() - 1;
+            if(lastGroup != null){
+                if (!lastGroup.expanded) {
+                    keyboardSelectionIndex = keyboardSelectionLength() - lastGroup.elements.size() - 1;
+                } else {
+                    keyboardSelectionIndex = keyboardSelectionLength() - 1;
+                }
             }
         }
 /* //debug
@@ -1201,6 +1207,9 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private Group getLastGroup() {
+        if(groups.isEmpty()){
+            return null;
+        }
         return groups.get(groups.size() - 1);
     }
 
@@ -2234,7 +2243,7 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else if (name.contains("count") || name.contains("size")) {
+            } else if (name.contains("count") || name.contains("size") || name.contains("weight")) {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;

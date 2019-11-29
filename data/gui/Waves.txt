@@ -295,3 +295,57 @@ fbm§next freq§1.4427083§10.0
 fbm§next amp§0.7229166§10.0
 fbm§distance fbm faloff§0.3375007§10.0
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§grid pixels§673.6626§30000.0
+particles§grid size§98.00001§100.0
+particles§reset§
+particles§average z correct§9.164214E-7§10.0
+particles§weight§5.0000005§10.0
+particles§stroke§0.66104233§0.86875§1.0§1.0§1.0
+particles§z hue§-0.027807726§1.0
+particles§rand hue§0.042187423§1.0
+particles§sat§0.61396074§10.0
+GROUP§main§true
+main§translate§1000.0§12.947916§-103.09369§0.0
+main§rotate§100.0§0.8645836§0.0§1096.9954
+main§alpha fade§3.1875§255.0
+main§split§-7.3437524§10.0
+main§z rotation§-0.05697963§1.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.017500203§1.0
+fbm§base amp§64.94993§1000.0
+fbm§time radius x§0.28229272§10.0
+fbm§next freq§1.4427083§10.0
+fbm§next amp§0.7229166§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§grid pixels§673.6626§30000.0
+particles§grid size§98.00001§100.0
+particles§reset§
+particles§average z correct§9.164214E-7§10.0
+particles§weight§5.0000005§10.0
+particles§stroke§0.66104233§0.86875§1.0§1.0§1.0
+particles§z hue§-0.027807726§1.0
+particles§rand hue§0.042187423§1.0
+particles§sat§0.61396074§10.0
+GROUP§main§true
+main§translate§1000.0§12.947916§-103.09369§0.0
+main§rotate§100.0§0.8645836§0.0§1096.9602
+main§alpha fade§3.1875§255.0
+main§split§-7.3437524§10.0
+main§z rotation§-0.05697963§1.0
+GROUP§fbm§true
+fbm§octaves§6.0§100.0
+fbm§base freq§0.017500203§1.0
+fbm§base amp§64.94993§1000.0
+fbm§time radius x§0.28229272§10.0
+fbm§next freq§1.4427083§10.0
+fbm§next amp§0.7229166§10.0
+fbm§distance fbm faloff§0.3375007§10.0
+STATE_END
