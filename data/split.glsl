@@ -17,9 +17,14 @@ void main() {
 	normalize(dir);
 	vec2 value =  dir * delta;
 
-	vec4 c1 = texture2D(texture, vertTexCoord.xy - value / resolution.x);
+	vec2 neighbour1 = vertTexCoord.xy - value / resolution.x;
+	neighbour1 = clamp(neighbour1, 0, 1);
+	vec2 neighbour2 = vertTexCoord.xy - value / resolution.x;
+	neighbour2 = clamp(neighbour2, 0, 1);
+
+	vec4 c1 = texture2D(texture, neighbour1);
 	vec4 c2 = texture2D(texture, vertTexCoord.xy);
-	vec4 c3 = texture2D(texture, vertTexCoord.xy + value / resolution.y);
+	vec4 c3 = texture2D(texture, neighbour2);
 
 	gl_FragColor = vec4(
 		max(max(c1.r, c2.r), c3.r),

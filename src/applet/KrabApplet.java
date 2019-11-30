@@ -519,13 +519,13 @@ public abstract class KrabApplet extends PApplet {
         pg.stroke(picker("stroke").clr());
         pg.strokeWeight(slider("weight", 5));
         pg.noFill();
-        float N = slider("count", 3000);
-        float s = 3.6f / sqrt(N);
-        float dz = 2.0f / N;
+        float count = slider("count", 3000);
+        float s = 3.6f / sqrt(count);
+        float dz = 2.0f / count;
         float lon = 0;
         float z = 1 - dz / 2;
         float scl = slider("scale", 260);
-        for (int k = 0; k < N; k++) {
+        for (int k = 0; k < count; k++) {
             float r = sqrt(1 - z * z);
             pg.vertex(cos(lon) * r * scl, sin(lon) * r * scl, z * scl);
             z = z - dz;
@@ -538,6 +538,21 @@ public abstract class KrabApplet extends PApplet {
             pg.sphereDetail(floor(slider("detail", 20)));
             pg.sphere(slider("scale") - slider("core", 5));
         }
+    }
+
+    protected ArrayList<PVector> spiralSphere(float count, float scl) {
+        ArrayList<PVector> points = new ArrayList<PVector>();
+        float s = 3.6f / sqrt(count);
+        float dz = 2.0f / count;
+        float lon = 0;
+        float z = 1 - dz / 2;
+        for (int k = 0; k < count; k++) {
+            float r = sqrt(1 - z * z);
+            points.add(new PVector(cos(lon) * r * scl, sin(lon) * r * scl, z * scl));
+            z = z - dz;
+            lon = lon + s / r;
+        }
+        return points;
     }
 
     private void updateFps() {
