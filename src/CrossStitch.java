@@ -11,6 +11,7 @@ public class CrossStitch extends KrabApplet {
     private int pixelCount;
     private int w, h;
     private int[][] pattern;
+    private ArrayList<Integer> patternColors = new ArrayList<Integer>();
     private PGraphics pg;
     private boolean posterizeSettingsChanged;
     private String colorFindMode = "";
@@ -97,6 +98,7 @@ public class CrossStitch extends KrabApplet {
         }
 
         pattern = new int[w][h];
+        patternColors.clear();
         posterized.loadPixels();
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
@@ -107,8 +109,12 @@ public class CrossStitch extends KrabApplet {
                 } else {
                     pattern[x][y] = getMostRepresentedColorInCircle(posterized, canvasX, canvasY, smoothRadius);
                 }
+                if(!patternColors.contains(pattern[x][y])){
+                    patternColors.add(pattern[x][y]);
+                }
             }
         }
+        println("colors used",patternColors.size());
     }
 
     private int getMostRepresentedColorInCircle(PImage img, int x, int y, int radius) {
