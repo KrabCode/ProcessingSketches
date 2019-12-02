@@ -52,16 +52,6 @@ public class CrossStitch extends KrabApplet {
         gui();
     }
 
-    private void colorFilter(){
-        colorFilter(g);
-    }
-
-    private void colorFilter(PGraphics pg) {
-        pg.noStroke();
-        pg.fill(picker("filter").clr());
-        pg.rect(0, 0, pg.width, pg.height);
-    }
-
     private void updateSource() {
         boolean newImageLoaded = false;
         posterizeSettingsChanged = false;

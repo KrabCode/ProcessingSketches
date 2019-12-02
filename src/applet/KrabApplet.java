@@ -395,6 +395,10 @@ public abstract class KrabApplet extends PApplet {
 
     // UTILS
 
+    protected void alphaFade(){
+        alphaFade(g);
+    }
+
     protected void alphaFade(PGraphics pg) {
         pg.pushStyle();
         pg.colorMode(HSB, 255, 255, 255, 255);
@@ -406,6 +410,16 @@ public abstract class KrabApplet extends PApplet {
         pg.rect(0, 0, width * 2, height * 2);
         pg.hint(ENABLE_DEPTH_TEST);
         pg.popStyle();
+    }
+
+    protected void colorFilter(){
+        colorFilter(g);
+    }
+
+    protected void colorFilter(PGraphics pg) {
+        pg.noStroke();
+        pg.fill(picker("filter").clr());
+        pg.rect(0, 0, pg.width, pg.height);
     }
 
     private void registerExitHandler() {
