@@ -1328,7 +1328,7 @@ public abstract class KrabApplet extends PApplet {
             } else {
                 Element el = findElement(splitState[1], splitState[0]);
                 if (el == null) {
-                    println("element does not exist", splitState[0], splitState[1]);
+//                    println("element does not exist", splitState[0], splitState[1]);
                     continue;
                 }
                 el.setState(state);
