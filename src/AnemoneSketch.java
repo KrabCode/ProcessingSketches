@@ -79,10 +79,10 @@ public class AnemoneSketch extends KrabApplet {
         private void regenTentacles() {
             tentacles.clear();
             int spawnCount = sliderInt("spawn count");
-            ArrayList<PVector> roots = spiralSphere(spawnCount, slider("scl"));
-            for (int i = 0; i < min(tentacleCount, spawnCount); i++) {
-                tentacles.add(new Tentacle(roots.get(i)));
-            }
+//            ArrayList<PVector> roots = spiralSphere(spawnCount, slider("scl"));
+//            for (int i = 0; i < min(tentacleCount, spawnCount); i++) {
+//                tentacles.add(new Tentacle(roots.get(i)));
+//            }
         }
 
         class Tentacle {

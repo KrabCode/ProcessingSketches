@@ -18,12 +18,10 @@ import static java.lang.System.currentTimeMillis;
  * touchscreen slider precision, reset
  * try to set last known undo state to any new element
  * - nice to have:
- * only save new state if it differs from the last
  * record states with frame stamp before recording in realtime or well controlled slow-mo, then play them back
  * more minimalist animated juice...
  * range picker (2 floats, start and end, end > start)
  * - bugs:
- * picker stops responding after prolonged use???
  * first null group's element appears twice, once at the top and once at the bottom
  */
 
@@ -109,6 +107,7 @@ public abstract class KrabApplet extends PApplet {
     private boolean replayStackRecordingPaused = true;
     private boolean captureScreenshot = false;
     private int screenshotsAlreadyCaptured = 0;
+
     private ArrayList<Group> groups = new ArrayList<Group>();
     private Group currentGroup = null; // do not assign to nor read directly!
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
@@ -390,9 +389,6 @@ public abstract class KrabApplet extends PApplet {
             textSize(textSize * 2);
             registerExitHandler();
         } else if (frameCount == 3) {
-            if(elementCount() == 0){
-                trayVisible = false;
-            }
             loadLastStateFromFile(true);
         }
     }
@@ -519,13 +515,13 @@ public abstract class KrabApplet extends PApplet {
         pg.stroke(picker("stroke").clr());
         pg.strokeWeight(slider("weight", 5));
         pg.noFill();
-        float count = slider("count", 3000);
-        float s = 3.6f / sqrt(count);
-        float dz = 2.0f / count;
+        float N = slider("count", 3000);
+        float s = 3.6f / sqrt(N);
+        float dz = 2.0f / N;
         float lon = 0;
         float z = 1 - dz / 2;
         float scl = slider("scale", 260);
-        for (int k = 0; k < count; k++) {
+        for (int k = 0; k < N; k++) {
             float r = sqrt(1 - z * z);
             pg.vertex(cos(lon) * r * scl, sin(lon) * r * scl, z * scl);
             z = z - dz;
@@ -538,21 +534,6 @@ public abstract class KrabApplet extends PApplet {
             pg.sphereDetail(floor(slider("detail", 20)));
             pg.sphere(slider("scale") - slider("core", 5));
         }
-    }
-
-    protected ArrayList<PVector> spiralSphere(float count, float scl) {
-        ArrayList<PVector> points = new ArrayList<PVector>();
-        float s = 3.6f / sqrt(count);
-        float dz = 2.0f / count;
-        float lon = 0;
-        float z = 1 - dz / 2;
-        for (int k = 0; k < count; k++) {
-            float r = sqrt(1 - z * z);
-            points.add(new PVector(cos(lon) * r * scl, sin(lon) * r * scl, z * scl));
-            z = z - dz;
-            lon = lon + s / r;
-        }
-        return points;
     }
 
     private void updateFps() {
@@ -1222,9 +1203,6 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private Group getLastGroup() {
-        if(groups.isEmpty()){
-            return null;
-        }
         return groups.get(groups.size() - 1);
     }
 
@@ -2258,7 +2236,7 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else if (name.contains("count") || name.contains("size") || name.contains("weight")) {
+            } else if (name.contains("count") || name.contains("size")) {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
