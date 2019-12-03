@@ -447,7 +447,9 @@ public abstract class KrabApplet extends PApplet {
         if (captureScreenshot) {
             captureScreenshot = false;
             screenshotsAlreadyCaptured++;
-            pg.save(captureDir + "screenshot_" + screenshotsAlreadyCaptured + ".jpg");
+            String filename = captureDir + "screenshot_" + screenshotsAlreadyCaptured + ".jpg";
+            println(filename + " saved");
+            pg.save(filename);
         }
         int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
         if (!replayStack.isEmpty()) {
@@ -455,7 +457,7 @@ public abstract class KrabApplet extends PApplet {
         }
         if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd) {
             int frameNumber = frameCount - frameRecordingStarted + 1;
-            println("saved", frameNumber, "/", frameRecordingEnd - frameRecordingStarted - 1);
+            println(frameNumber, "/", frameRecordingEnd - frameRecordingStarted - 1, "saved");
             pg.save(captureDir + frameNumber + ".jpg");
             loadReplay(frameNumber);
         }
@@ -2142,8 +2144,8 @@ public abstract class KrabApplet extends PApplet {
             float screenX = map(moduloValue, -precision, precision, -w, w);
             float displayValue = moduloValue + value;
             boolean isEdgeValue =
-                    (displayValue < minValue + precision * .01 && displayValue > minValue - precision * .01f) ||
-                            (displayValue > maxValue - precision * .01 && displayValue < maxValue + precision * .01f);
+                    (displayValue < minValue + precision * .1 && displayValue > minValue - precision * .1) ||
+                    (displayValue > maxValue - precision * .1 && displayValue < maxValue + precision * .1);
             if (!isEdgeValue && (displayValue > maxValue || displayValue < minValue)) {
                 return;
             }

@@ -38,7 +38,7 @@ public class CrossStitch extends KrabApplet {
         pg.background(0);
         updateSource();
         updatePattern();
-        String draw = options("pattern", "source", "poster");
+        String draw = options( "source", "poster", "pattern");
         if (draw.equals("source")) {
             pg.image(src, 0, 0, width, height);
         } else if (draw.equals("poster")) {
@@ -56,12 +56,16 @@ public class CrossStitch extends KrabApplet {
     private void updateSource() {
         boolean newImageLoaded = false;
         posterizeSettingsChanged = false;
-        if(button("load europe") || frameCount == 1){
-            src = loadImage("images/space/europe.jpg");
+        if(button("load clouds") || frameCount == 1){
+            src = loadImage("images/cloudy.jpg");
             newImageLoaded = true;
         }
         if (button("load random")) {
             src = loadImage(randomImageUrl(width, height));
+            newImageLoaded = true;
+        }
+        if(button("grayscale")){
+            src.filter(GRAY);
             newImageLoaded = true;
         }
         int intendedPosterizeLevel = sliderInt("posterize level", 2, 50, 8);
@@ -74,7 +78,7 @@ public class CrossStitch extends KrabApplet {
     }
 
     private void updatePattern() {
-        int intendedPixelCount = sliderInt("size", 100);
+        int intendedPixelCount = sliderInt("resolution", 100);
         if(pixelCount != intendedPixelCount){
             pixelCount = intendedPixelCount;
             w = pixelCount;
