@@ -20,6 +20,7 @@ public class CrossStitchAnimation extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
@@ -31,7 +32,7 @@ public class CrossStitchAnimation extends KrabApplet {
         splitPass(pg);
         pg.translate(width * .5f, height * .5f);
 //        PVector rot = sliderXYZ("rotate").add(sliderXYZ("rotate spd"));
-        PVector rot = new PVector(0, t, 0);
+        PVector rot = new PVector(0, t*2, t);
         pg.rotateX(rot.x);
         pg.rotateY(rot.y);
         pg.rotateZ(rot.z);

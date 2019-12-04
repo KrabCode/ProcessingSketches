@@ -90,6 +90,6 @@ void main(){
     vec4 color = vec4(crossColor * underlyingColor);
     float scl = 2.;
     float n = .5*fbm(uv.x*scl+uv.y*scl, id.y*100.) + .5*fbm(uv.x*scl-uv.y*scl, id.x*100.);
-    color -= .3*n;
+    color *= pow(n,0.9);
     gl_FragColor = color;
 }
