@@ -5,7 +5,7 @@ import processing.core.PImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CrossStitch extends KrabApplet {
+public class CrossStitchTemplate extends KrabApplet {
     private PImage src, posterized;
     private int posterizeLevel = 2;
     private int pixelCount;
@@ -18,7 +18,7 @@ public class CrossStitch extends KrabApplet {
     private int smoothRadius = 1;
 
     public static void main(String[] args) {
-        CrossStitch.main("CrossStitch");
+        CrossStitchTemplate.main("CrossStitchTemplate");
     }
 
     public void settings() {

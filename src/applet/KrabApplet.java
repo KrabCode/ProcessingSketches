@@ -417,9 +417,11 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void colorFilter(PGraphics pg) {
+        pg.hint(DISABLE_DEPTH_TEST);
         pg.noStroke();
-        pg.fill(picker("filter").clr());
+        pg.fill(picker("filter", 0.1f,0).clr());
         pg.rect(0, 0, pg.width, pg.height);
+        pg.hint(ENABLE_DEPTH_TEST);
     }
 
     private void registerExitHandler() {
