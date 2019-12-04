@@ -22,7 +22,7 @@ public class CrossStitch extends KrabApplet {
     }
 
     public void settings() {
-        size(1000,1000, P2D);
+        size(800,800, P2D);
     }
 
     public void setup() {
@@ -57,7 +57,7 @@ public class CrossStitch extends KrabApplet {
         boolean newImageLoaded = false;
         posterizeSettingsChanged = false;
         if(button("load clouds") || frameCount == 1){
-            src = loadImage("images/cloudy.jpg");
+            src = loadImage("images/titan.jpg");
             newImageLoaded = true;
         }
         if (button("load random")) {
