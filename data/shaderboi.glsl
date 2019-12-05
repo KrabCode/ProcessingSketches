@@ -93,5 +93,5 @@ void main(){
     vec3 final = rgb(.5+c*0.4, 1.-c*.25, pow(c, 1.5));
     final = clamp(final, 0, 1);
     final -= smoothstep(0.,25.,d);
-    gl_FragColor = vec4(final, 0.05);
+    gl_FragColor = vec4(final, 1.);
 }

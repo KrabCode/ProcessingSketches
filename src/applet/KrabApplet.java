@@ -412,6 +412,19 @@ public abstract class KrabApplet extends PApplet {
         pg.popStyle();
     }
 
+    protected void alphaAdd(PGraphics pg) {
+        pg.pushStyle();
+        pg.colorMode(HSB, 255, 255, 255, 255);
+        pg.hint(DISABLE_DEPTH_TEST);
+        pg.blendMode(ADD);
+        pg.noStroke();
+        pg.fill(255, slider("alpha add", 0, 255, 50));
+        pg.rectMode(CENTER);
+        pg.rect(0, 0, width * 2, height * 2);
+        pg.hint(ENABLE_DEPTH_TEST);
+        pg.popStyle();
+    }
+
     protected void colorFilter(){
         colorFilter(g);
     }

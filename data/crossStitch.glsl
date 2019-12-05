@@ -5,7 +5,6 @@ precision mediump int;
 
 #define pi 3.1415
 
-uniform sampler2D crossTexture;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float pixelSize;
@@ -79,17 +78,36 @@ float cubicPulse(float c, float w, float x){
     return 1.0 - x*x*(3.0-2.0*x);
 }
 
+float ease(float p, float g) {
+    if (p < 0.5)
+    return 0.5f * pow(2 * p, g);
+    else
+    return 1 - 0.5f * pow(2 * (1 - p), g);
+}
+
+vec3 cross(vec2 gv){
+    float w = 1;
+    float e = 0.8;
+    return vec3(
+    (1.-length(gv*.8)) * max(
+        ease(cubicPulse(0., w, gv.x-gv.y), e),
+        ease(cubicPulse(0., w, gv.x+gv.y), e)
+    ));
+}
+
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     uv *= pixelSize;
     vec2 id = floor(uv)/pixelSize;
-    vec2 gv = fract(uv);
-    vec4 underlyingColor = texture(texture, id);
-    vec4 crossColor = texture(crossTexture, gv);
-    crossColor.xyz -= length(gv-.5)*.5;
-    vec4 color = vec4(crossColor * underlyingColor);
-    float scl = 2.;
-    float n = .5*fbm(uv.x*scl+uv.y*scl, id.y*100.) + .5*fbm(uv.x*scl-uv.y*scl, id.x*100.);
-    color *= pow(n,0.9);
-    gl_FragColor = color;
+    vec2 gv = fract(uv)-.5;
+    vec2 step = vec2(1).xy/resolution.xy;
+    vec4 underlyingColor = vec4(mix(
+        mix(texture(texture, vec2(id.x+step.x, id.y)), texture(texture, vec2(id.x-step.x, id.y)), .5),
+        mix(texture(texture, vec2(id.x, id.y+step.y)), texture(texture, vec2(id.x, id.y-step.y)), .5), .5));
+    vec4 crossColor = vec4(cross(gv), 1.);
+    gl_FragColor =  vec4(
+        vec3(
+        step(1-crossColor.x, .5)*crossColor * underlyingColor) +
+        step(crossColor.x, .5)*.7
+    , 1);
 }
