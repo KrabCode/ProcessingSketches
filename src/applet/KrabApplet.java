@@ -2768,7 +2768,7 @@ public abstract class KrabApplet extends PApplet {
             textSize(textSize);
             text("alpha", width - sliderHeight * .5f, 15);
             float alphaDelta = updateInfiniteSlider(alphaPrecision, height, false, false, false);
-            boolean isMouseInTopHalf = isMouseOver(0, 0, width, height / 2f);
+            boolean isMouseInTopHalf = isMouseOver(width*.5f, 0, width*.5f, height / 2f);
             if (!satChanged && !brChanged && (keyboardActive || isMouseInTopHalf)) {
                 hsba.alpha += alphaDelta;
             }
