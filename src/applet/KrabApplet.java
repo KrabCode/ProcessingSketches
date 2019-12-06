@@ -405,7 +405,7 @@ public abstract class KrabApplet extends PApplet {
         pg.hint(DISABLE_DEPTH_TEST);
         pg.blendMode(SUBTRACT);
         pg.noStroke();
-        pg.fill(255, slider("alpha fade", 0, 255, 50));
+        pg.fill(255, slider("fade to black", 0, 255, 50));
         pg.rectMode(CENTER);
         pg.rect(0, 0, width * 2, height * 2);
         pg.hint(ENABLE_DEPTH_TEST);
@@ -418,7 +418,7 @@ public abstract class KrabApplet extends PApplet {
         pg.hint(DISABLE_DEPTH_TEST);
         pg.blendMode(ADD);
         pg.noStroke();
-        pg.fill(255, slider("alpha add", 0, 255, 50));
+        pg.fill(255, slider("fade to white", 0, 255, 50));
         pg.rectMode(CENTER);
         pg.rect(0, 0, width * 2, height * 2);
         pg.hint(ENABLE_DEPTH_TEST);

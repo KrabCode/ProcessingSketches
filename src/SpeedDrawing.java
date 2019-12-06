@@ -5,14 +5,14 @@ import processing.core.PVector;
 import java.util.ArrayList;
 
 public class SpeedDrawing extends KrabApplet {
+    public static void main(String[] args) {
+        SpeedDrawing.main("SpeedDrawing");
+    }
+
     int currentColor = 0;
     float currentWeight = 0;
     private PGraphics pg;
     private ArrayList<Line> lines = new ArrayList<Line>();
-
-    public static void main(String[] args) {
-        SpeedDrawing.main("SpeedDrawing");
-    }
 
     public void settings() {
         size(800, 800, P2D);
@@ -29,19 +29,21 @@ public class SpeedDrawing extends KrabApplet {
     }
 
     public void draw() {
-        if (button("clear")) {
+        if (button("clear all")) {
             reset();
         }
         pg.beginDraw();
         alphaFade(pg);
         pg.translate(0, 0);
         currentColor = picker("stroke", 1).clr();
-        currentWeight = slider("weight", 1);
+        currentWeight = slider("weight", 5);
         updateLines();
         pg.endDraw();
         background(0);
         image(pg, 0, 0);
-        rec(pg);
+        if(button("clear last line")){
+            removeLastLine();
+        }
         gui();
     }
 
@@ -80,26 +82,27 @@ public class SpeedDrawing extends KrabApplet {
         int clr;
         float weight;
         ArrayList<PVector> points = new ArrayList<PVector>();
-        private float speed = 1;
 
         Line(int clr, float weight) {
             this.clr = clr;
             this.weight = weight;
-            this.speed = speed;
         }
 
         void update() {
             if (points.isEmpty()) {
                 return;
             }
-            if (toggle("debug")) {
+            if (toggle("show lines")) {
+                pg.noFill();
                 pg.stroke(1);
-                pg.strokeWeight(1);
+                pg.strokeWeight(3);
+                pg.beginShape();
                 for (PVector p : points) {
-                    pg.point(p.x, p.y);
+                    pg.vertex(p.x, p.y);
                 }
+                pg.endShape();
             }
-            i += speed;
+            i++;
             i %= points.size();
             if (floor(i) < 1) {
                 return;
