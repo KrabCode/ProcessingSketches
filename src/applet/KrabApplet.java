@@ -1234,6 +1234,9 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private Group getLastGroup() {
+        if(groups.isEmpty()){
+            return null;
+        }
         return groups.get(groups.size() - 1);
     }
 
