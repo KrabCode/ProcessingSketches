@@ -345,7 +345,7 @@ public abstract class KrabApplet extends PApplet {
         updateScrolling();
         updateGroupsAndTheirElements();
         updateFps();
-        if (overlayVisible) {
+        if (overlayVisible && trayVisible) {
             overlayOwner.updateOverlay();
         }
         popStyle();

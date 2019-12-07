@@ -73,7 +73,8 @@ public class Parametric extends KrabApplet {
     }
 
     private PVector getVector(float u, float v) {
-        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius", "torus", "multitorus");
+        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius",
+                "torus", "multitorus", "helicoidal", "ufo", "sphere", "newShape");
         if (option.equals("russian")) {
             return russianRoof(u, v);
         } else if (option.equals("catenoid")) {
@@ -88,8 +89,54 @@ public class Parametric extends KrabApplet {
             return torus(u, v);
         } else if (option.equals("multitorus")) {
             return multitorus(u, v);
+        } else if (option.equals("helicoidal")) {
+            return helicoidal(u, v);
+        } else if (option.equals("ufo")) {
+            return ufo(u, v);
+        } else if (option.equals("sphere")) {
+            return sphere(u, v);
+        }else if (option.equals("newShape")) {
+            return newShape(u, v);
         }
         return new PVector();
+    }
+
+    private PVector newShape(float u, float v) {
+
+        return new PVector(
+            u,
+                v
+        );
+    }
+
+    private PVector sphere(float u, float v) {
+        u = -HALF_PI + u * PI;
+        v = v * TWO_PI;
+        return new PVector(
+                r * cos(u) * cos(v),
+                r * cos(u) * sin(v),
+                h * sin(u)
+        );
+    }
+
+    private PVector ufo(float u, float v) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        return new PVector(
+                r * (cos(u) / (sqrt(2) + sin(v))),
+                r * (sin(u) / (sqrt(2) + sin(v))),
+                h * (1 / (sqrt(2) + cos(v)))
+        );
+    }
+
+    private PVector helicoidal(float u, float v) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        return new PVector(
+                r * (sinh(v) * sin(u)),
+                r * (-sinh(v) * cos(u)),
+                h * (3 * u)
+        );
     }
 
     private PVector multitorus(float u, float v) {
@@ -181,5 +228,9 @@ public class Parametric extends KrabApplet {
 
     private float cosh(float n) {
         return (float) Math.cosh(n);
+    }
+
+    private float sinh(float n) {
+        return (float) Math.sinh(n);
     }
 }
