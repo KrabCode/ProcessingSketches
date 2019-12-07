@@ -3,9 +3,9 @@ import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Parametric extends KrabApplet {
+    float mtTime = 0;
     private PGraphics pg;
     private float r, h;
-    private float easing;
 
     public static void main(String[] args) {
         Parametric.main("Parametric");
@@ -22,16 +22,18 @@ public class Parametric extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        frameRecordingDuration *= 2f;
     }
 
     public void draw() {
         pg.beginDraw();
         pg.background(0);
         pg.translate(width * .5f, height * .5f);
+        group("matrix");
         PVector rot = sliderXYZ("rotation");
         pg.rotateX(rot.x);
         pg.rotateY(rot.y);
-        pg.rotateZ(rot.z + t);
+        pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
         drawParametrically();
         pg.endDraw();
         image(pg, 0, 0);
@@ -40,15 +42,16 @@ public class Parametric extends KrabApplet {
     }
 
     private void drawParametrically() {
+        group("params");
         int uMax = sliderInt("u", 1, 1000, 10);
         int vMax = sliderInt("v", 1, 1000, 10);
         r = slider("radius", 10);
         h = r * (1 + slider("height", 0));
-        easing = slider("easing", 1);
         pg.strokeWeight(slider("weight", 1));
         pg.stroke(picker("stroke", 1).clr());
         pg.fill(picker("fill", 1).clr());
         for (int uIndex = 0; uIndex <= uMax; uIndex++) {
+            group("params");
             if (toggle("points")) {
                 pg.beginShape(POINTS);
             } else {
@@ -70,7 +73,7 @@ public class Parametric extends KrabApplet {
     }
 
     private PVector getVector(float u, float v) {
-        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius", "multitorus");
+        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius", "torus", "multitorus");
         if (option.equals("russian")) {
             return russianRoof(u, v);
         } else if (option.equals("catenoid")) {
@@ -81,9 +84,49 @@ public class Parametric extends KrabApplet {
             return hexaedron(u, v);
         } else if (option.equals("moebius")) {
             return moebius(u, v);
+        } else if (option.equals("torus")) {
+            return torus(u, v);
+        } else if (option.equals("multitorus")) {
+            return multitorus(u, v);
         }
         return new PVector();
     }
+
+    private PVector multitorus(float u, float v) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        group("multitorus");
+        mtTime = t * slider("time");
+        float R3 = sliderInt("R3", 3);
+        float R = sliderInt("R", 5);
+        float N = sliderInt("N", 10);
+        float N2 = sliderInt("N2", 4);
+        group("params");
+        return new PVector(
+                r * (-sin(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
+                r * (cos(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
+                h * (multitorusF2(u - mtTime, v, N, R3, R, N2))
+        );
+    }
+
+    private float multitorusF1(float u, float v, float N, float R3, float R, float N2) {
+        return (R3 + (R / (10 * N)) * cos(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * cos(N2 * u / N + v));
+    }
+
+    private float multitorusF2(float u, float v, float N, float R3, float R, float N2) {
+        return ((R / (10 * N)) * sin(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * sin(N2 * u / N + v));
+    }
+
+    private PVector torus(float u, float v) {
+        u = u * TWO_PI;
+        v = v * TWO_PI;
+        return new PVector(
+                r * ((1 + 0.5f * cos(u)) * cos(v)),
+                r * ((1 + 0.5f * cos(u)) * sin(v)),
+                h * (0.5f * sin(u))
+        );
+    }
+
     private PVector moebius(float u, float v) {
         u = -.4f + u * .8f;
         v = v * TWO_PI;
@@ -126,6 +169,9 @@ public class Parametric extends KrabApplet {
 
     private PVector russianRoof(float u, float v) {
         u = u * TWO_PI;
+        group("russian roof");
+        float easing = slider("easing", 1);
+        group("params");
         return new PVector(
                 (r - r * ease(v, easing)) * cos(u),
                 (r - r * ease(v, easing)) * sin(u),

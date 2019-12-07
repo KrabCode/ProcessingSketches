@@ -48,6 +48,9 @@ public class SpeedDrawing extends KrabApplet {
     }
 
     private void updateLines() {
+        if(mouseJustPressedOutsideGui()){
+            lines.add(new Line(currentColor, currentWeight));
+        }
         if (mousePressedOutsideGui) {
             lines.get(lines.size() - 1).points.add(new PVector(mouseX, mouseY));
         }
@@ -71,10 +74,6 @@ public class SpeedDrawing extends KrabApplet {
 
     private void reset() {
         lines.clear();
-    }
-
-    public void mousePressed() {
-        lines.add(new Line(currentColor, currentWeight));
     }
 
     class Line {

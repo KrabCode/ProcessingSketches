@@ -889,7 +889,7 @@ public abstract class KrabApplet extends PApplet {
         return !pMousePressed && mousePressed;
     }
 
-    private boolean mouseJustPressedOutsideGui() {
+    protected boolean mouseJustPressedOutsideGui() {
         return !pMousePressed && mousePressed && isMouseOutsideGui();
     }
 
