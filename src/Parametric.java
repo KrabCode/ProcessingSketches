@@ -27,9 +27,15 @@ public class Parametric extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        pg.background(0);
-        pg.translate(width * .5f, height * .5f);
+        if(toggle("raymarch")){
+
+            String raymarch = "raymarch.glsl";
+            uniform(raymarch).set("time", t * 3);
+            hotFilter(raymarch, pg);
+        }
         group("matrix");
+        PVector translate = sliderXYZ("translate");
+        pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
         PVector rot = sliderXYZ("rotation");
         pg.rotateX(rot.x);
         pg.rotateY(rot.y);
@@ -95,7 +101,7 @@ public class Parametric extends KrabApplet {
             return ufo(u, v);
         } else if (option.equals("sphere")) {
             return sphere(u, v);
-        }else if (option.equals("newShape")) {
+        } else if (option.equals("newShape")) {
             return newShape(u, v);
         }
         return new PVector();
@@ -104,7 +110,7 @@ public class Parametric extends KrabApplet {
     private PVector newShape(float u, float v) {
 
         return new PVector(
-            u,
+                u,
                 v
         );
     }

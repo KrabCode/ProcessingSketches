@@ -333,6 +333,7 @@ public abstract class KrabApplet extends PApplet {
     protected void gui(boolean defaultVisibility) {
         t += radians(1 / (frameRecordingDuration / 360f));
         guiSetup(defaultVisibility);
+        updateFps();
         updateKeyboardInput();
         updateMouseState();
         pushStyle();
@@ -344,7 +345,6 @@ public abstract class KrabApplet extends PApplet {
         updateMenuButtons();
         updateScrolling();
         updateGroupsAndTheirElements();
-        updateFps();
         if (overlayVisible && trayVisible) {
             overlayOwner.updateOverlay();
         }
