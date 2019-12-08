@@ -3,11 +3,12 @@ precision highp int;
 
 uniform sampler2D texture;
 uniform vec2 resolution;
+uniform vec3 lightPos;
 uniform float time;
 
-const int MAX_STEPS = 1000;
-const float MAX_DISTANCE = 1000.;
-const float SURFACE_DISTANCE = 0.0001;
+const int MAX_STEPS = 100000;
+const float MAX_DISTANCE = 100000.;
+const float SURFACE_DISTANCE = 0.1;
 
 #define pi 3.14159265359
 
@@ -147,43 +148,94 @@ float norm(float value, float start, float stop){
     return map(value, start, stop, 0., 1.);
 }
 
-float getDistance(vec3 p){
-    vec3 spherePos = vec3(.15*sin(time), 2.3, 4.0);
-    vec4 sphere = vec4(spherePos.xyz, 0.1);
-    float sphereDistance = length(p-sphere.xyz) - sphere.w;
+float getCanyonDistance(vec3 p){
     float detail = 0.04;
-    float planeDistance = -.5 + p.y*3.5 + 2.*abs(fbm(
+    float canyonDistance = -.5 + p.y*3.5 + 2.*abs(fbm(
         p.x*detail,
         p.y*detail,
         p.z*detail+time*.15
     ))
     - abs(p.x)*abs(p.y);
-
-    return planeDistance;
-//    return min(sphereDistance, planeDistance);
+    return canyonDistance;
 }
 
-float raymarch(vec3 rayOrigin, vec3 rayDirection){
+float getCapsuleDistance(vec3 p, vec3 a, vec3 b, float radius){
+    vec3 ab = b-a;
+    vec3 ap = p-a;
+    float t = dot(ab, ap) / dot(ab, ab);
+    t = clamp(t, 0, 1);
+    vec3 c = a + t*ab;
+    float d = length(p-c)-radius;
+    return d;
+}
+
+float getSphereDistance(vec3 p, vec3 pos, float r){
+    vec4 sphere = vec4(pos.xyz, r);
+    return length(p-sphere.xyz) - sphere.w;
+}
+
+float getTorusDistance(vec3 p, vec2 r){
+    float x = length(p.xz)-r.x;
+    return length(vec2(x, p.y))-r.y;
+}
+
+float getDistance(vec3 p){
+//    float sphereDistance = getSphereDistance(p, vec3(0., 3.5, 10.0), 1.5);
+    //    float capsuleDistance = getCapsuleDistance(p, vec3(-0.2, 2.5, 10.0), vec3(0.2, 4.5, 10.0), 1.);
+    float planeDistance = p.y;
+    float torusDistance = getTorusDistance(p-vec3(0,2,20), vec2(5.0, 0.5));
+    return min(torusDistance, planeDistance);
+}
+
+float rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
+    float lowestDistance = MAX_DISTANCE;
     for (int i = 0; i < MAX_STEPS; i++){
         vec3 p = rayOrigin+rayDirection*distance;
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
+        if(distance < lowestDistance){
+            lowestDistance = distance;
+        }
         if (distance > MAX_DISTANCE || distanceToScene < SURFACE_DISTANCE){
             break;
         }
     }
-    return distance;
+    return max(distance, lowestDistance*1.);
 }
+
+vec3 getNormal(vec3 p){
+    float d = getDistance(p);
+    vec2 offset = vec2(0.01, 0.);
+    vec3 normal = d - vec3(
+        getDistance(p-offset.xyy),
+        getDistance(p-offset.yxy),
+        getDistance(p-offset.yyx)
+    );
+    return normalize(normal);
+}
+
+float getDiffuseLight(vec3 p){
+    vec3 lightDir = normalize(lightPos-p);
+    vec3 normal = getNormal(p);
+    float diffuseLight = dot(normal, lightDir);
+    float shadowRay = rayMarch(p+normal*SURFACE_DISTANCE, lightDir);
+    if(shadowRay < length(lightPos-p)){
+        diffuseLight *= .5;
+    }
+    return diffuseLight;
+}
+
 
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 rayOrigin = vec3(0, 2., 0.);
-    float lookDown = -.2;
-    vec3 rayDirection0 = normalize(vec3(uv.x, uv.y-lookDown, 1));
-    float d = raymarch(rayOrigin, rayDirection0);
-    d *= .02;
-    vec3 col = rgb(smoothstep(0., 2.8, d), 1-pow(d,1.), smoothstep(0.,0.4,d));
-    col -= smoothstep(0.,1.8,abs(uv.x));
-    gl_FragColor = vec4(col, 1.);
+    vec3 rayOrigin = vec3(0, 5., 0.);
+    float lookDown = .2;
+    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1));
+    float d = rayMarch(rayOrigin, rayDirection);
+    d *= 0.99999;
+    vec3 intersection = rayOrigin + rayDirection * d;
+    float diffuseLight = getDiffuseLight(intersection);
+    float pct = getDiffuseLight(intersection);
+    gl_FragColor = vec4(rgb(.5+pct*.5, 1.-pct, pct), 1.);
 }

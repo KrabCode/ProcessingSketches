@@ -28,10 +28,7 @@ public class Parametric extends KrabApplet {
     public void draw() {
         pg.beginDraw();
         if(toggle("raymarch")){
-
-            String raymarch = "raymarch.glsl";
-            uniform(raymarch).set("time", t * 3);
-            hotFilter(raymarch, pg);
+            rayMarchPass(pg);
         }
         group("matrix");
         PVector translate = sliderXYZ("translate");

@@ -25,9 +25,8 @@ public class Raymarch extends KrabApplet {
     }
 
     public void draw() {
-        String raymarch = "raymarch.glsl";
-        uniform(raymarch).set("time", t*3);
-        hotFilter(raymarch,pg);
+        pg.beginDraw();
+        rayMarchPass(pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
