@@ -8,8 +8,8 @@ uniform vec3 origin;
 uniform float time;
 
 const int MAX_STEPS = 1000;
-const float MAX_DISTANCE = 1000.;
-const float SURFACE_DISTANCE = 0.1;
+const float MAX_DISTANCE = 100.;
+const float SURFACE_DISTANCE = 0.01;
 
 #define pi 3.14159265359
 
@@ -149,14 +149,46 @@ float norm(float value, float start, float stop){
     return map(value, start, stop, 0., 1.);
 }
 
-float getIsosurface(vec3 p){
+vec3 repeat(vec3 p, vec3 c){
+    return mod(p+0.5*c,c)-0.5*c;
+}
+
+float isosurface(vec3 p){
     float x = p.x;
     float y = p.y;
     float z = p.z;
     return sin(x)*sin(y)*sin(z)+sin(x)*cos(y)*cos(z)+cos(x)*sin(y)*cos(z)+cos(x)*cos(y)*sin(z)-0.07*(cos(4*x)+cos(4*y)+cos(4*z))+1.17;
 }
 
-float getCanyonDistance(vec3 p){
+float octahedron(vec3 p, float s){
+    p = repeat(p, vec3(2.));
+    p = abs(p);
+    return (p.x+p.y+p.z-s)*0.57735027;
+}
+
+float prism( vec3 p, vec2 h ){
+    p = repeat(p, vec3(2.));
+    vec3 q = abs(p);
+    return max(q.z-h.y,max(q.x*0.866025+p.y*0.5,-p.y)-h.x*0.5);
+}
+
+float pyramid(vec3 p, float h){
+    p = repeat(p, vec3(2.));
+    float m2 = h*h + 0.25;
+    p.xz = abs(p.xz);
+    p.xz = (p.z>p.x) ? p.zx : p.xz;
+    p.xz -= 0.5;
+    vec3 q = vec3( p.z, h*p.y - 0.5*p.x, h*p.x + 0.5*p.y);
+    float s = max(-q.x,0.0);
+    float t = clamp( (q.y-0.5*p.z)/(m2+0.25), 0.0, 1.0 );
+    float a = m2*(q.x+s)*(q.x+s) + q.y*q.y;
+    float b = m2*(q.x+0.5*t)*(q.x+0.5*t) + (q.y-m2*t)*(q.y-m2*t);
+    float d2 = min(q.y,-q.x*m2-q.y*0.5) > 0.0 ? 0.0 : min(a,b);
+    float pyramid = sqrt( (d2+q.z*q.z)/m2 ) * sign(max(q.z,-p.y));
+    return pyramid;
+}
+
+float canyon(vec3 p){
     float detail = 0.04;
     float canyonDistance = -.5 + p.y*3.5 + 2.*abs(fbm(
     p.x*detail,
@@ -167,7 +199,7 @@ float getCanyonDistance(vec3 p){
     return canyonDistance;
 }
 
-float getCapsuleDistance(vec3 p, vec3 a, vec3 b, float radius){
+float capsule(vec3 p, vec3 a, vec3 b, float radius){
     vec3 ab = b-a;
     vec3 ap = p-a;
     float t = dot(ab, ap) / dot(ab, ab);
@@ -177,22 +209,21 @@ float getCapsuleDistance(vec3 p, vec3 a, vec3 b, float radius){
     return d;
 }
 
-float getSphereDistance(vec3 p, vec3 pos, float r){
+float sphere(vec3 p, vec3 pos, float r){
     vec4 sphere = vec4(pos.xyz, r);
     return length(p-sphere.xyz) - sphere.w;
 }
 
-float getTorusDistance(vec3 p, vec2 r){
+float torus(vec3 p, vec2 r){
     float x = length(p.xz)-r.x;
     return length(vec2(x, p.y))-r.y;
 }
 
+
 float getDistance(vec3 p){
-    //    float sphereDistance = getSphereDistance(p, vec3(0., 3.5, 10.0), 1.5);
-//    float capsuleDistance = getCapsuleDistance(p, vec3(-0.2, 2.5, 10.0), vec3(0.2, 4.5, 10.0), 1.);
-//    float torusDistance = getTorusDistance(p-vec3(0, 2, 20), vec2(5.0, 0.5));
-//    float plane = p.y;
-    return getIsosurface(p);
+    float plane = p.y;
+    return pyramid(p, 0.8);
+    return prism(p, vec2(0.5, 0.5));
 }
 
 float rayMarch(vec3 rayOrigin, vec3 rayDirection){
@@ -229,7 +260,7 @@ float getDiffuseLight(vec3 p){
     float diffuseLight = dot(normal, lightDir);
     float shadowRay = rayMarch(p+normal*SURFACE_DISTANCE, lightDir);
     if (shadowRay < length(lightPos-p)){
-        diffuseLight *= 0.2;
+        diffuseLight *= 0.8;
     }
     return diffuseLight;
 }
@@ -238,11 +269,12 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float lookDown = 0.0;
-    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 0.05));
+    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.0));
     float d = rayMarch(rayOrigin, rayDirection);
+//    d = clamp(d,0, MAX_DISTANCE*.5);
     vec3 intersection = rayOrigin + rayDirection * d;
-//    float diffuseLight = getDiffuseLight(intersection);
-//    float pct = getDiffuseLight(intersection);
-    float pct = d*.001*d;
-    gl_FragColor = vec4(rgb(.5+pct*0.8, 1.-pct, pct), 1.);
+    //    float diffuseLight = getDiffuseLight(intersection);
+    //    float pct = getDiffuseLight(intersection);
+    float pct = smoothstep(0, 60., d);
+    gl_FragColor = vec4(rgb(.5+pct*0.3, 1.-pct, pct), 1.);
 }
