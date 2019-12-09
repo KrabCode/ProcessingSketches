@@ -7,9 +7,9 @@ uniform vec3 lightPos;
 uniform vec3 origin;
 uniform float time;
 
-const int MAX_STEPS = 1000;
-const float MAX_DISTANCE = 100.;
-const float SURFACE_DISTANCE = 0.01;
+const int MAX_STEPS = 100;
+const float MAX_DISTANCE = 1000.;
+const float SURFACE_DISTANCE = 0.05;
 
 #define pi 3.14159265359
 
@@ -221,9 +221,8 @@ float torus(vec3 p, vec2 r){
 
 
 float getDistance(vec3 p){
-    float plane = p.y;
-    return pyramid(p, 0.8);
-    return prism(p, vec2(0.5, 0.5));
+    float plane = p.y+.1;
+    return max(pyramid(p, 0.5), plane);
 }
 
 float rayMarch(vec3 rayOrigin, vec3 rayDirection){
@@ -269,12 +268,12 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float lookDown = 0.0;
-    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.0));
+    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.));
     float d = rayMarch(rayOrigin, rayDirection);
 //    d = clamp(d,0, MAX_DISTANCE*.5);
     vec3 intersection = rayOrigin + rayDirection * d;
-    //    float diffuseLight = getDiffuseLight(intersection);
-    //    float pct = getDiffuseLight(intersection);
-    float pct = smoothstep(0, 60., d);
-    gl_FragColor = vec4(rgb(.5+pct*0.3, 1.-pct, pct), 1.);
+    float diffuseLight = getDiffuseLight(intersection);
+    float pct = getDiffuseLight(intersection);
+    pct = smoothstep(0, 1., pct);
+    gl_FragColor = vec4(vec3(pct), 1.);
 }
