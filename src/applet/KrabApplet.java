@@ -1437,6 +1437,7 @@ public abstract class KrabApplet extends PApplet {
         String raymarch = "raymarch.glsl";
         uniform(raymarch).set("time", t*3);
         uniform(raymarch).set("lightPos", sliderXYZ("light pos", 0, 20, 0, 100));
+        uniform(raymarch).set("origin", sliderXYZ("translate", 0, 0, 0, 100).add(sliderXYZ("speed")));
         hotFilter(raymarch,pg);
     }
 

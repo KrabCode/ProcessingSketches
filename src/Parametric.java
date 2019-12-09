@@ -27,21 +27,19 @@ public class Parametric extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-
         group("matrix");
-        PVector translate = sliderXYZ("translate");
-        pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
-        PVector rot = sliderXYZ("rotation");
-        pg.rotateX(rot.x);
-        pg.rotateY(rot.y);
-        pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
-
         if(toggle("raymarch")){
             rayMarchPass(pg);
         }else{
             alphaFade(pg);
             splitPass(pg);
         }
+        PVector translate = sliderXYZ("translate");
+        pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
+        PVector rot = sliderXYZ("rotation");
+        pg.rotateX(rot.x);
+        pg.rotateY(rot.y);
+        pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
         drawParametrically();
         pg.endDraw();
         image(pg, 0, 0);
@@ -57,7 +55,7 @@ public class Parametric extends KrabApplet {
         h = r * (1 + slider("height", 0));
         pg.strokeWeight(slider("weight", 1));
         pg.stroke(picker("stroke", 1).clr());
-        pg.fill(picker("fill", 1).clr());
+        pg.fill(picker("fill", 0).clr());
         for (int uIndex = 0; uIndex <= uMax; uIndex++) {
             group("params");
             if (toggle("points")) {
@@ -82,7 +80,7 @@ public class Parametric extends KrabApplet {
 
     private PVector getVector(float u, float v) {
         String option = options("russian", "catenoid", "screw", "hexaedron", "moebius",
-                "torus", "multitorus", "helicoidal", "ufo", "sphere", "newShape");
+                "torus", "multitorus", "helicoidal", "ufo", "sphere");
         if (option.equals("russian")) {
             return russianRoof(u, v);
         } else if (option.equals("catenoid")) {
@@ -103,8 +101,6 @@ public class Parametric extends KrabApplet {
             return ufo(u, v);
         } else if (option.equals("sphere")) {
             return sphere(u, v);
-        } else if (option.equals("newShape")) {
-            return newShape(u, v);
         }
         return new PVector();
     }

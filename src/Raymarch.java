@@ -21,7 +21,7 @@ public class Raymarch extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 3;
+//        frameRecordingDuration *= 3;
     }
 
     public void draw() {
