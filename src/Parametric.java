@@ -22,14 +22,12 @@ public class Parametric extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 2f;
+//        frameRecordingDuration *= 2f;
     }
 
     public void draw() {
         pg.beginDraw();
-        if(toggle("raymarch")){
-            rayMarchPass(pg);
-        }
+
         group("matrix");
         PVector translate = sliderXYZ("translate");
         pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
@@ -37,6 +35,13 @@ public class Parametric extends KrabApplet {
         pg.rotateX(rot.x);
         pg.rotateY(rot.y);
         pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
+
+        if(toggle("raymarch")){
+            rayMarchPass(pg);
+        }else{
+            alphaFade(pg);
+            splitPass(pg);
+        }
         drawParametrically();
         pg.endDraw();
         image(pg, 0, 0);
