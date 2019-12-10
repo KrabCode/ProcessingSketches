@@ -9,7 +9,7 @@ uniform float time;
 
 const int MAX_STEPS = 100;
 const float MAX_DISTANCE = 100.;
-const float SURFACE_DISTANCE = 0.0001;
+const float SURFACE_DISTANCE = 0.001;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -151,49 +151,69 @@ float norm(float value, float start, float stop){
 }
 
 vec3 repeat(vec3 p, vec3 c){
-    return mod(p+0.5*c,c)-0.5*c;
+    return mod(p+0.5*c, c)-0.5*c;
 }
 
-float sdBox( vec3 p, vec3 b ){
+float sdBox(vec3 p, vec3 b){
     vec3 q = abs(p) - b;
-    return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+    return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
 
 float maxcomp(vec2 p) {
     return max(p.x, p.y);
 }
 
-float sdCross( in vec3 p ){
+float sdCross(in vec3 p){
     float da = maxcomp(abs(p.xy));
     float db = maxcomp(abs(p.yz));
     float dc = maxcomp(abs(p.zx));
-    return min(da,min(db,dc))-1.0;
+    return min(da, min(db, dc))-1.0;
 }
 
-vec3 map(vec3 p ){
-    float d = sdBox(p,vec3(1.0));
-    vec3 res = vec3( d, 1.0, 0.0);
+vec3 mengerSponge(vec3 p){
+    float d = sdBox(p, vec3(1.0));
+    vec3 res = vec3(d, 1.0, 0.0);
 
     float s = 1.0;
-    for( int m=0; m<4; m++ )
+    for (int m=0; m<4; m++)
     {
-        vec3 a = mod( p*s, 2.0 )-1.0;
+        vec3 a = mod(p*s, 2.0)-1.0;
         s *= 3.0;
         vec3 r = abs(1.0 - 3.0*abs(a));
 
-        float da = max(r.x,r.y);
-        float db = max(r.y,r.z);
-        float dc = max(r.z,r.x);
-        float c = (min(da,min(db,dc))-1.0)/s;
+        float da = max(r.x, r.y);
+        float db = max(r.y, r.z);
+        float dc = max(r.z, r.x);
+        float c = (min(da, min(db, dc))-1.0)/s;
 
-        if( c>d )
+        if (c>d)
         {
             d = c;
-            res = vec3( d, 0.2*da*db*dc, (1.0+float(m))/4.0);
+            res = vec3(d, 0.2*da*db*dc, (1.0+float(m))/4.0);
         }
     }
 
     return res;
+}
+
+float mandelbulb(vec3 p){
+    float power = time*0.1;
+    vec3 z = p;
+    float dr = 1.;
+    float r;
+    for (int i = 0; i < 15; i++){
+        r = length(z);
+        if (r > 2){
+            break;
+        }
+        float theta = acos(z.z / r) * power;
+        float phi = atan(z.y, z.x) * power;
+        float zr = pow(r, power);
+        dr = pow(r, power-1) * power * dr + 1;
+        z = zr * vec3(sin (theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
+        z += p;
+    }
+    return .5*log(r) * (r / dr);
 }
 
 float isosurface(vec3 p){
@@ -209,25 +229,25 @@ float octahedron(vec3 p, float s){
     return (p.x+p.y+p.z-s)*0.57735027;
 }
 
-float prism( vec3 p, vec2 h ){
+float prism(vec3 p, vec2 h){
     p = repeat(p, vec3(2.));
     vec3 q = abs(p);
-    return max(q.z-h.y,max(q.x*0.866025+p.y*0.5,-p.y)-h.x*0.5);
+    return max(q.z-h.y, max(q.x*0.866025+p.y*0.5, -p.y)-h.x*0.5);
 }
 
 float pyramid(vec3 p, float h){
-//    p = repeat(p, vec3(2.));
+    //    p = repeat(p, vec3(2.));
     float m2 = h*h + 0.25;
     p.xz = abs(p.xz);
     p.xz = (p.z>p.x) ? p.zx : p.xz;
     p.xz -= 0.5;
-    vec3 q = vec3( p.z, h*p.y - 0.5*p.x, h*p.x + 0.5*p.y);
-    float s = max(-q.x,0.0);
-    float t = clamp( (q.y-0.5*p.z)/(m2+0.25), 0.0, 1.0 );
+    vec3 q = vec3(p.z, h*p.y - 0.5*p.x, h*p.x + 0.5*p.y);
+    float s = max(-q.x, 0.0);
+    float t = clamp((q.y-0.5*p.z)/(m2+0.25), 0.0, 1.0);
     float a = m2*(q.x+s)*(q.x+s) + q.y*q.y;
     float b = m2*(q.x+0.5*t)*(q.x+0.5*t) + (q.y-m2*t)*(q.y-m2*t);
-    float d2 = min(q.y,-q.x*m2-q.y*0.5) > 0.0 ? 0.0 : min(a,b);
-    float pyramid = sqrt( (d2+q.z*q.z)/m2 ) * sign(max(q.z,-p.y));
+    float d2 = min(q.y, -q.x*m2-q.y*0.5) > 0.0 ? 0.0 : min(a, b);
+    float pyramid = sqrt((d2+q.z*q.z)/m2) * sign(max(q.z, -p.y));
     return pyramid;
 }
 
@@ -264,7 +284,7 @@ float torus(vec3 p, vec2 r){
 }
 
 float getDistance(vec3 p){
-    return sphere(p, vec3(0), 1);
+    return mandelbulb(p);
 }
 
 vec3 getNormal(vec3 p){
@@ -286,12 +306,7 @@ float rayMarch(vec3 rayOrigin, vec3 rayDirection){
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
         lowestDistance = min(distance, lowestDistance);
-        if (distanceToScene < SURFACE_DISTANCE){
-            rayOrigin = p;
-            rayDirection = getNormal(p);
-            distance = SURFACE_DISTANCE;
-        }
-        if(distance > MAX_DISTANCE){
+        if (distanceToScene < SURFACE_DISTANCE || (distance > MAX_DISTANCE)){
             break;
         }
     }
@@ -304,7 +319,7 @@ float getDiffuseLight(vec3 p){
     float diffuseLight = dot(normal, lightDir);
     float shadowRay = rayMarch(p+normal*SURFACE_DISTANCE, lightDir);
     if (shadowRay < length(lightPos-p)){
-        diffuseLight *= 0.8;
+        diffuseLight *= 0.5;
     }
     return diffuseLight;
 }
@@ -315,10 +330,12 @@ void main(){
     float lookDown = 0.0;
     vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.));
     float d = rayMarch(rayOrigin, rayDirection);
-//    d = clamp(d,0, MAX_DISTANCE*.5);
-    vec3 intersection = rayOrigin + rayDirection * d;
-    float diffuseLight = getDiffuseLight(intersection);
-    float pct = getDiffuseLight(intersection);
-//    pct = smoothstep(0., 30., d);
-    gl_FragColor = vec4(rgb(.5+1.*pct, 0., pct*2.), 1.);
+    if(d > MAX_DISTANCE * .5){
+        d = 0;
+    }
+    //    vec3 intersection = rayOrigin + rayDirection * d;
+    //    float diffuseLight = getDiffuseLight(intersection);
+    //    float pct = getDiffuseLight(intersection);
+    float pct = smoothstep(0., 6., d);
+    gl_FragColor = vec4(rgb(.5+5.*pct, 1.-pct, pct*1.5), 1.);
 }
