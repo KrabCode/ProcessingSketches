@@ -7,11 +7,12 @@ uniform vec3 lightPos;
 uniform vec3 origin;
 uniform float time;
 
-const int MAX_STEPS = 10;
+const int MAX_STEPS = 100;
 const float MAX_DISTANCE = 100.;
-const float SURFACE_DISTANCE = 0.2;
+const float SURFACE_DISTANCE = 0.0001;
 
 #define pi 3.14159265359
+#define inf 9999.
 
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
 float permute(float x){ return floor(mod(((x*34.0)+1.0)*x, 289.0)); }
@@ -153,6 +154,48 @@ vec3 repeat(vec3 p, vec3 c){
     return mod(p+0.5*c,c)-0.5*c;
 }
 
+float sdBox( vec3 p, vec3 b ){
+    vec3 q = abs(p) - b;
+    return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+}
+
+float maxcomp(vec2 p) {
+    return max(p.x, p.y);
+}
+
+float sdCross( in vec3 p ){
+    float da = maxcomp(abs(p.xy));
+    float db = maxcomp(abs(p.yz));
+    float dc = maxcomp(abs(p.zx));
+    return min(da,min(db,dc))-1.0;
+}
+
+vec3 map(vec3 p ){
+    float d = sdBox(p,vec3(1.0));
+    vec3 res = vec3( d, 1.0, 0.0);
+
+    float s = 1.0;
+    for( int m=0; m<4; m++ )
+    {
+        vec3 a = mod( p*s, 2.0 )-1.0;
+        s *= 3.0;
+        vec3 r = abs(1.0 - 3.0*abs(a));
+
+        float da = max(r.x,r.y);
+        float db = max(r.y,r.z);
+        float dc = max(r.z,r.x);
+        float c = (min(da,min(db,dc))-1.0)/s;
+
+        if( c>d )
+        {
+            d = c;
+            res = vec3( d, 0.2*da*db*dc, (1.0+float(m))/4.0);
+        }
+    }
+
+    return res;
+}
+
 float isosurface(vec3 p){
     float x = p.x;
     float y = p.y;
@@ -173,7 +216,7 @@ float prism( vec3 p, vec2 h ){
 }
 
 float pyramid(vec3 p, float h){
-    p = repeat(p, vec3(2.));
+//    p = repeat(p, vec3(2.));
     float m2 = h*h + 0.25;
     p.xz = abs(p.xz);
     p.xz = (p.z>p.x) ? p.zx : p.xz;
@@ -210,6 +253,7 @@ float capsule(vec3 p, vec3 a, vec3 b, float radius){
 }
 
 float sphere(vec3 p, vec3 pos, float r){
+    p = repeat(p, vec3(10.));
     vec4 sphere = vec4(pos.xyz, r);
     return length(p-sphere.xyz) - sphere.w;
 }
@@ -219,26 +263,8 @@ float torus(vec3 p, vec2 r){
     return length(vec2(x, p.y))-r.y;
 }
 
-
 float getDistance(vec3 p){
-    return isosurface(p);
-}
-
-float rayMarch(vec3 rayOrigin, vec3 rayDirection){
-    float distance = 0.;
-    float lowestDistance = MAX_DISTANCE;
-    for (int i = 0; i < MAX_STEPS; i++){
-        vec3 p = rayOrigin+rayDirection*distance;
-        float distanceToScene = getDistance(p);
-        distance += distanceToScene;
-        if (distance < lowestDistance){
-            lowestDistance = distance;
-        }
-        if (distance > MAX_DISTANCE || distanceToScene < SURFACE_DISTANCE){
-            break;
-        }
-    }
-    return max(distance, lowestDistance*1.);
+    return sphere(p, vec3(0), 1);
 }
 
 vec3 getNormal(vec3 p){
@@ -250,6 +276,26 @@ vec3 getNormal(vec3 p){
     getDistance(p-offset.yyx)
     );
     return normalize(normal);
+}
+
+float rayMarch(vec3 rayOrigin, vec3 rayDirection){
+    float distance = 0.;
+    float lowestDistance = MAX_DISTANCE;
+    for (int i = 0; i < MAX_STEPS; i++){
+        vec3 p = rayOrigin+rayDirection*distance;
+        float distanceToScene = getDistance(p);
+        distance += distanceToScene;
+        lowestDistance = min(distance, lowestDistance);
+        if (distanceToScene < SURFACE_DISTANCE){
+            rayOrigin = p;
+            rayDirection = getNormal(p);
+            distance = SURFACE_DISTANCE;
+        }
+        if(distance > MAX_DISTANCE){
+            break;
+        }
+    }
+    return max(distance, lowestDistance*1.);
 }
 
 float getDiffuseLight(vec3 p){
@@ -267,12 +313,12 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float lookDown = 0.0;
-    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, .1));
+    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.));
     float d = rayMarch(rayOrigin, rayDirection);
 //    d = clamp(d,0, MAX_DISTANCE*.5);
     vec3 intersection = rayOrigin + rayDirection * d;
     float diffuseLight = getDiffuseLight(intersection);
     float pct = getDiffuseLight(intersection);
-    pct = smoothstep(0., 30., d);
-    gl_FragColor = vec4(rgb(.5+1.*pct, 1.-pct, pct*2.), 1.);
+//    pct = smoothstep(0., 30., d);
+    gl_FragColor = vec4(rgb(.5+1.*pct, 0., pct*2.), 1.);
 }

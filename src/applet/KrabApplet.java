@@ -1439,7 +1439,7 @@ public abstract class KrabApplet extends PApplet {
         uniform(raymarch).set("lightPos", sliderXYZ("light pos", 0, 20, 0, 100));
         uniform(raymarch).set("origin", PVector.add(
                 sliderXYZ("translate", 0, 0, 0, 100),
-                sliderXYZ("speed", 0, 0, 1, 1).copy().mult(t)));
+                sliderXYZ("speed", 0, 0, 0, 1).copy().mult(t)));
         hotFilter(raymarch,pg);
     }
 
