@@ -324,6 +324,8 @@ float getDiffuseLight(vec3 p){
     return diffuseLight;
 }
 
+//read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
+
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
