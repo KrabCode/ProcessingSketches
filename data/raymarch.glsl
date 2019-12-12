@@ -9,8 +9,8 @@ uniform float time;
 
 const int MAX_REFLECTIONS = 0;
 const int MAX_STEPS = 100;
-const float MAX_DISTANCE = 200.;
-const float SURFACE_DISTANCE = 0.001;
+const float MAX_DISTANCE = 100.;
+const float SURFACE_DISTANCE = 0.0001;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -291,8 +291,8 @@ float getDiffuseLight(vec3 p, vec3 lightOrigin){
     return diffuseLight;
 }
 
-//read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
-
+// read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
+// study evvvvil on shadertoy
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
@@ -305,7 +305,7 @@ void main(){
     vec3 lightOrigin = vec3(lightPos.xyz);
     lightOrigin.xz *= rotate2d(t);
     float pct = getDiffuseLight(intersection.xyz, lightOrigin);
-    if (intersection.w > MAX_DISTANCE * .8){
+    if (intersection.w > MAX_DISTANCE * .9){
         pct = 0;
     }
     gl_FragColor = vec4(vec3(pct), 1.);
