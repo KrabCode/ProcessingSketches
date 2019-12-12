@@ -7,10 +7,10 @@ uniform vec3 lightPos;
 uniform vec3 origin;
 uniform float time;
 
-const int MAX_REFLECTIONS = 2;
+const int MAX_REFLECTIONS = 0;
 const int MAX_STEPS = 100;
-const float MAX_DISTANCE = 80.;
-const float SURFACE_DISTANCE = 0.001;
+const float MAX_DISTANCE = 1000.;
+const float SURFACE_DISTANCE = 0.000001;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -156,7 +156,6 @@ vec3 repeat(vec3 p, vec3 c){
 }
 
 float cube(vec3 p, vec3 b){
-    p = repeat(p, vec3(2.));
     vec3 q = abs(p) - b;
     return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
@@ -165,11 +164,11 @@ float maxcomp(vec2 p) {
     return max(p.x, p.y);
 }
 
-float sdCross(in vec3 p){
+float sdCross(in vec3 p, float w){
     float da = maxcomp(abs(p.xy));
     float db = maxcomp(abs(p.yz));
     float dc = maxcomp(abs(p.zx));
-    return min(da, min(db, dc))-1.0;
+    return min(da, min(db, dc))-w;
 }
 
 vec3 mengerSponge(vec3 p){
@@ -220,19 +219,16 @@ float isosurface(vec3 p){
 }
 
 float octahedron(vec3 p, float s){
-    p = repeat(p, vec3(2.));
     p = abs(p);
     return (p.x+p.y+p.z-s)*0.57735027;
 }
 
 float prism(vec3 p, vec2 h){
-    p = repeat(p, vec3(2.));
     vec3 q = abs(p);
     return max(q.z-h.y, max(q.x*0.866025+p.y*0.5, -p.y)-h.x*0.5);
 }
 
 float pyramid(vec3 p, float h){
-    //    p = repeat(p, vec3(2.));
     float m2 = h*h + 0.25;
     p.xz = abs(p.xz);
     p.xz = (p.z>p.x) ? p.zx : p.xz;
@@ -269,7 +265,6 @@ float capsule(vec3 p, vec3 a, vec3 b, float radius){
 }
 
 float sphere(vec3 p, vec3 pos, float r){
-    p = repeat(p, vec3(10.));
     vec4 sphere = vec4(pos.xyz, r);
     return length(p-sphere.xyz) - sphere.w;
 }
@@ -280,7 +275,8 @@ float torus(vec3 p, vec2 r){
 }
 
 float getDistance(vec3 p){
-    return sphere(p, vec3(0), 2.5);
+    float n = 2.;
+    return sdCross(repeat(p+vec3(n), vec3(n*2)), n*0.1);
 }
 
 vec3 getNormal(vec3 p){
@@ -296,6 +292,7 @@ vec3 getNormal(vec3 p){
 
 vec4 rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
+    float maxDistance = MAX_DISTANCE;
     float lowestDistance = MAX_DISTANCE;
     int reflections = 0;
     vec3 p;
@@ -304,14 +301,13 @@ vec4 rayMarch(vec3 rayOrigin, vec3 rayDirection){
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
         lowestDistance = min(distance, lowestDistance);
-        if(distanceToScene < SURFACE_DISTANCE){
+        if (distanceToScene < SURFACE_DISTANCE){
             reflections++;
             rayDirection = getNormal(p)*-1;
             rayOrigin = p + rayDirection;
-//            distance = 0;
-//            lowestDistance = 0;
+//            maxDistance -= lowestDistance;
         }
-        if (reflections > MAX_REFLECTIONS || distance > MAX_DISTANCE){
+        if (reflections > MAX_REFLECTIONS || distance > maxDistance){
             break;
         }
     }
@@ -324,7 +320,7 @@ float getDiffuseLight(vec3 p){
     float diffuseLight = dot(normal, lightDir);
     float shadowRay = rayMarch(p+normal*SURFACE_DISTANCE, lightDir).w;
     if (shadowRay < length(lightPos-p)){
-        diffuseLight *= 0.99;
+        diffuseLight *= 0.5;
     }
     return diffuseLight;
 }
@@ -335,14 +331,12 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float lookDown = 0.0;
-    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, 1.));
+    vec3 rayDirection = normalize(vec3(uv.x, uv.y-lookDown, .2));
     vec4 intersection = rayMarch(rayOrigin, rayDirection);
-    float pct = getDiffuseLight(intersection.xyz);
-    if(intersection.w > MAX_DISTANCE * 0.8){
+    float pct = intersection.w * .02;
+//    float pct = getDiffuseLight(intersection.xyz);
+    if (intersection.w > MAX_DISTANCE * .9){
         pct = 0;
     }
-
-//    float pct = getDiffuseLight(intersection);
-    pct = smoothstep(0., 1.1, pct);
-    gl_FragColor = vec4(rgb(0.,0., pct), 1.);
+    gl_FragColor = vec4(rgb(.65+.5*pct, 1.-pct, pct), 0.5);
 }
