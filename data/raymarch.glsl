@@ -6,10 +6,13 @@ uniform vec2 resolution;
 uniform vec3 lightPos;
 uniform vec3 origin;
 uniform float time;
+uniform float diffuse;
+uniform float specular;
+uniform float shininess;
 
-const int MAX_REFLECTIONS = 0;
-const int MAX_STEPS = 100;
-const float MAX_DISTANCE = 100.;
+
+const int MAX_STEPS = 500;
+const float MAX_DISTANCE = 80.;
 const float SURFACE_DISTANCE = 0.0001;
 
 #define pi 3.14159265359
@@ -89,16 +92,19 @@ float snoise(vec3 v){
     dot(p2, x2), dot(p3, x3)));
 }
 
-const int OCTAVES = 6;
+const int OCTAVES = 3;
 float fbm(vec3 p){
+    p.y *= 1.;
+    p.y -= time*1.*p.y*.00001+time*5.;
     float freq = 0.1;
-    float amp = 1.0;
-    float sum = 0.;
+    float amp = 0.015;
+    float sum = -0.0001;
     for (int i = 0; i < OCTAVES; i++){
         float n = snoise(p*freq);
         sum += n*amp;
         amp *= .5;
-        freq *= 2.5;
+        freq *= 3.5;
+        p += vec3(pi*1.2, pi*.2, pi*3.);
     }
     return sum;
 }
@@ -241,7 +247,12 @@ float torus(vec3 p, vec2 r){
 
 float getDistance(vec3 p){
     float n = fbm(vec3(p.x, p.y, p.z));
-    float shape = sphere(p, vec3(0,0,0), 6.);
+    float shape = capsule(p, vec3(0, -1, 0), vec3(0, 10, 0), 2.);
+    p.y += 3.;
+    p.x *= 0.2;
+    p.z *= 0.2;
+    float pyramid = pyramid(p, 8.);
+    shape = max(shape, pyramid);
     return max(n, shape);
 }
 
@@ -260,42 +271,30 @@ vec4 rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
     float maxDistance = MAX_DISTANCE;
     float lowestDistance = MAX_DISTANCE;
-    int reflections = 0;
     vec3 p;
     for (int i = 0; i < MAX_STEPS; i++){
         p = rayOrigin+rayDirection*distance;
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
         lowestDistance = min(distance, lowestDistance);
-        if (distanceToScene < SURFACE_DISTANCE){
-            reflections++;
-            rayDirection = getNormal(p)*-1;
-            rayOrigin = p + rayDirection;
-            //            maxDistance -= lowestDistance;
-        }
-        if (reflections > MAX_REFLECTIONS || distance > maxDistance){
+        if (distanceToScene < SURFACE_DISTANCE || distance > maxDistance){
             break;
         }
     }
     return vec4(p, max(distance, lowestDistance));
 }
 
-float getDiffuseLight(vec3 p, vec3 lightOrigin){
-    vec3 lightDir = normalize(lightOrigin-p);
-    vec3 normal = getNormal(p);
-    float diffuseLight = dot(normal, lightDir);
-    float shadowRay = rayMarch(p+normal*SURFACE_DISTANCE, lightDir).w;
-    if (shadowRay < length(lightOrigin-p)){
-        diffuseLight *= 0.5;
-    }
+float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
+    float diffuseLight = max(dot(normal, -lightDir), 0.0);
     return diffuseLight;
 }
 
 float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
-    vec3 reflDir = reflect(-lightDir, normal);
-    float specAngle = max(dot(reflDir, d), 0.0);
-    return pow(specAngle, shininess/4.0);
+    vec3 reflectionDirection = reflect(-lightDir, normal);
+    float specularAngle = max(dot(reflectionDirection, d), 0.0);
+    return pow(specularAngle, shininess/4.0);
 }
+
 
 // read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
 // study evvvvil on shadertoy
@@ -307,12 +306,19 @@ void main(){
     vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1.));
     rayDirection.xz *= rotate2d(t);
     vec4 intersection = rayMarch(rayOrigin, rayDirection);
-//        float pct = intersection.w * .1;
+    vec3 normal = getNormal(intersection.xyz);
     vec3 lightOrigin = vec3(lightPos.xyz);
     lightOrigin.xz *= rotate2d(t);
-    float pct = getDiffuseLight(intersection.xyz, lightOrigin);
-    if (intersection.w > MAX_DISTANCE * .9){
+    vec3 lightDir = normalize(intersection.xyz - lightOrigin);
+    float diffuseLight = getDiffuseLight(intersection.xyz, lightOrigin, lightDir, normal);
+    float specularLight = getSpecularLight(intersection.xyz, rayDirection, lightDir, normal);
+    float pct = 0.1 + diffuseLight * diffuse + specularLight * specular;
+    if (intersection.w > MAX_DISTANCE * .99){
         pct = 0;
     }
-    gl_FragColor = vec4(vec3(pct), 1.);
+    gl_FragColor = vec4(rgb(
+        .85-.02*intersection.y+0.3*pct,
+        1.-pct*.3,
+        smoothstep(0, 1., pct))
+    , 1.0);
 }
