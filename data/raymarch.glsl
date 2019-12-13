@@ -291,6 +291,12 @@ float getDiffuseLight(vec3 p, vec3 lightOrigin){
     return diffuseLight;
 }
 
+float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
+    vec3 reflDir = reflect(-lightDir, normal);
+    float specAngle = max(dot(reflDir, d), 0.0);
+    return pow(specAngle, shininess/4.0);
+}
+
 // read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
 // study evvvvil on shadertoy
 void main(){
