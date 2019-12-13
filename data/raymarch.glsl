@@ -92,18 +92,16 @@ float snoise(vec3 v){
     dot(p2, x2), dot(p3, x3)));
 }
 
-const int OCTAVES = 3;
+const int OCTAVES = 6;
 float fbm(vec3 p){
-    p.y *= 1.;
-    p.y -= time*1.*p.y*.00001+time*5.;
-    float freq = 0.1;
-    float amp = 0.015;
-    float sum = -0.0001;
+    float freq = 1.;
+    float amp = 0.0001;
+    float sum = 0.;
     for (int i = 0; i < OCTAVES; i++){
         float n = snoise(p*freq);
         sum += n*amp;
         amp *= .5;
-        freq *= 3.5;
+        freq *= 2.5;
         p += vec3(pi*1.2, pi*.2, pi*3.);
     }
     return sum;
@@ -246,23 +244,19 @@ float torus(vec3 p, vec2 r){
 }
 
 float getDistance(vec3 p){
-    float n = fbm(vec3(p.x, p.y, p.z));
-    float shape = capsule(p, vec3(0, -1, 0), vec3(0, 10, 0), 2.);
-    p.y += 3.;
-    p.x *= 0.2;
-    p.z *= 0.2;
-    float pyramid = pyramid(p, 8.);
-    shape = max(shape, pyramid);
-    return max(n, shape);
+    float inner = sphere(p, vec3(0), 1.);
+    float outer = sphere(p, vec3(0), 1.03);
+    float n = 100.*fbm(p);
+    return min(inner, max(outer, n));
 }
 
 vec3 getNormal(vec3 p){
     float d = getDistance(p);
     vec2 offset = vec2(0.01, 0.);
     vec3 normal = d - vec3(
-    getDistance(p-offset.xyy),
-    getDistance(p-offset.yxy),
-    getDistance(p-offset.yyx)
+        getDistance(p-offset.xyy),
+        getDistance(p-offset.yxy),
+        getDistance(p-offset.yyx)
     );
     return normalize(normal);
 }
@@ -317,8 +311,8 @@ void main(){
         pct = 0;
     }
     gl_FragColor = vec4(rgb(
-        .85-.02*intersection.y+0.3*pct,
-        1.-pct*.3,
-        smoothstep(0, 1., pct))
+        0.,
+        0.,
+        smoothstep(0., 1., pct))
     , 1.0);
 }
