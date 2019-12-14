@@ -11,9 +11,9 @@ uniform float specular;
 uniform float shininess;
 
 
-const int MAX_STEPS = 500;
-const float MAX_DISTANCE = 80.;
-const float SURFACE_DISTANCE = 0.0001;
+const int MAX_STEPS = 800;
+const float MAX_DISTANCE = 100.;
+const float SURFACE_DISTANCE = 0.00001;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -92,7 +92,7 @@ float snoise(vec3 v){
     dot(p2, x2), dot(p3, x3)));
 }
 
-const int OCTAVES = 6;
+const int OCTAVES = 4;
 float fbm(vec3 p){
     float freq = 1.;
     float amp = 0.0001;
@@ -100,11 +100,18 @@ float fbm(vec3 p){
     for (int i = 0; i < OCTAVES; i++){
         float n = snoise(p*freq);
         sum += n*amp;
-        amp *= .5;
-        freq *= 2.5;
+        amp *= .4;
+        freq *= 4.;
         p += vec3(pi*1.2, pi*.2, pi*3.);
     }
     return sum;
+}
+
+float ease(float p, float g) {
+    if (p < 0.5){
+        return 0.5f * pow(2 * p, g);
+    }
+    return 1 - 0.5f * pow(2 * (1 - p), g);
 }
 
 vec3 rgb(float h, float s, float b){
@@ -242,12 +249,34 @@ float torus(vec3 p, vec2 r){
     float x = length(p.xz)-r.x;
     return length(vec2(x, p.y))-r.y;
 }
-
+/*
+// planet
 float getDistance(vec3 p){
     float inner = sphere(p, vec3(0), 1.);
     float outer = sphere(p, vec3(0), 1.03);
     float n = 100.*fbm(p);
     return min(inner, max(outer, n));
+}
+*/
+
+float getDistance(vec3 p){
+    float inner = sphere(p, vec3(0), 1.);
+    float outer = sphere(p, vec3(0), 1.005);
+/*
+    float cloudBottom = sphere(p, vec3(0), 1.1);
+    float cloudTop = sphere(p, vec3(0), 1.12);
+    float cloud = min(cloudBottom, cloudTop);
+    cloud = max(cloud, 100.*fbm(p+vec3(100,100, 100)+time));
+*/
+    float n = 100.*fbm(p);
+    return min(inner, max(outer, n));
+
+}
+
+vec3 getHueSatSpecular(vec4 intersection){
+    float d = length(intersection.xyz)-1.;
+    float aboveWater = 1.-step(d, .0005);
+    return vec3(0.56-d*50.-50*aboveWater*fbm(intersection.xyz+vec3(1.))*20., ease(clamp(1.-abs(intersection.y), 0, 1), 5.), max(0., 1.-d*300.));
 }
 
 vec3 getNormal(vec3 p){
@@ -292,6 +321,7 @@ float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
 
 // read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
 // study evvvvil on shadertoy
+
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
@@ -304,15 +334,16 @@ void main(){
     vec3 lightOrigin = vec3(lightPos.xyz);
     lightOrigin.xz *= rotate2d(t);
     vec3 lightDir = normalize(intersection.xyz - lightOrigin);
+    vec3 hueSatSpec = getHueSatSpecular(intersection);
     float diffuseLight = getDiffuseLight(intersection.xyz, lightOrigin, lightDir, normal);
     float specularLight = getSpecularLight(intersection.xyz, rayDirection, lightDir, normal);
-    float pct = 0.1 + diffuseLight * diffuse + specularLight * specular;
+    float pct = diffuseLight * diffuse + specularLight * specular * hueSatSpec.z;
     if (intersection.w > MAX_DISTANCE * .99){
         pct = 0;
     }
     gl_FragColor = vec4(rgb(
-        0.,
-        0.,
+        hueSatSpec.x,
+        hueSatSpec.y,
         smoothstep(0., 1., pct))
     , 1.0);
 }
