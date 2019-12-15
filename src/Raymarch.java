@@ -30,7 +30,7 @@ public class Raymarch extends KrabApplet {
     }
 
     public void draw() {
-        int intendedScaledown = sliderInt("scaledown", 8);
+        int intendedScaledown = sliderInt("scaledown", 1);
         if(intendedScaledown > 0 && intendedScaledown != scaledown){
             scaledown = intendedScaledown;
             resetPGraphics();

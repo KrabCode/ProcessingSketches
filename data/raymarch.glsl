@@ -11,9 +11,9 @@ uniform float specular;
 uniform float shininess;
 
 
-const int MAX_STEPS = 800;
-const float MAX_DISTANCE = 100.;
-const float SURFACE_DISTANCE = 0.00001;
+const int MAX_STEPS = 1000;
+const float MAX_DISTANCE = 200.;
+const float SURFACE_DISTANCE = 0.000001;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -151,7 +151,7 @@ float maxcomp(vec2 p) {
     return max(p.x, p.y);
 }
 
-float sdCross(in vec3 p, float w){
+float cross(in vec3 p, float w){
     float da = maxcomp(abs(p.xy));
     float db = maxcomp(abs(p.yz));
     float dc = maxcomp(abs(p.zx));
@@ -258,25 +258,39 @@ float getDistance(vec3 p){
     return min(inner, max(outer, n));
 }
 */
+float opSmoothUnion( float d1, float d2, float k ) {
+    float h = clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 );
+    return mix( d2, d1, h ) - k*h*(1.0-h); }
+
+float opSmoothSubtraction( float d1, float d2, float k ) {
+    float h = clamp( 0.5 - 0.5*(d2+d1)/k, 0.0, 1.0 );
+    return mix( d2, -d1, h ) + k*h*(1.0-h); }
+
+float opSmoothIntersection( float d1, float d2, float k ) {
+    float h = clamp( 0.5 - 0.5*(d2-d1)/k, 0.0, 1.0 );
+    return mix( d2, d1, h ) + k*h*(1.0-h); }
+
+float opUnion( float d1, float d2 ) { return min(d1,d2); }
+
+float opSubtraction( float d1, float d2 ) { return max(-d1,d2); }
+
+float opIntersection( float d1, float d2 ) { return max(d1,d2); }
 
 float getDistance(vec3 p){
-    float inner = sphere(p, vec3(0), 1.);
-    float outer = sphere(p, vec3(0), 1.005);
-/*
-    float cloudBottom = sphere(p, vec3(0), 1.1);
-    float cloudTop = sphere(p, vec3(0), 1.12);
-    float cloud = min(cloudBottom, cloudTop);
-    cloud = max(cloud, 100.*fbm(p+vec3(100,100, 100)+time));
-*/
-    float n = 100.*fbm(p);
-    return min(inner, max(outer, n));
-
+    float size = 0.8;
+    float c = cube(p, vec3(size));
+    float w = 0.5;
+    float smoothness = .02;
+    c = opSmoothSubtraction(cube(p, vec3(size-w*.5, size+w*.5, size-w*.5)), c, smoothness);
+    c = opSmoothSubtraction(cube(p, vec3(size+w*.5, size-w*.5, size-w*.5)), c, smoothness);
+    c = opSmoothSubtraction(cube(p, vec3(size-w*.5, size-w*.5, size+w*.5)), c, smoothness);
+    float bigCube = cube(p, vec3(size*1.));
+    c = opSmoothIntersection(bigCube, c, smoothness);
+    return c;
 }
 
 vec3 getHueSatSpecular(vec4 intersection){
-    float d = length(intersection.xyz)-1.;
-    float aboveWater = 1.-step(d, .0005);
-    return vec3(0.56-d*50.-50*aboveWater*fbm(intersection.xyz+vec3(1.))*20., ease(clamp(1.-abs(intersection.y), 0, 1), 5.), max(0., 1.-d*300.));
+    return vec3(0,0,1);
 }
 
 vec3 getNormal(vec3 p){
@@ -325,7 +339,7 @@ float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
-    float t = time;
+    float t = time*.2;
     rayOrigin.xz *= rotate2d(t);
     vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1.));
     rayDirection.xz *= rotate2d(t);
