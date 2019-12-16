@@ -1439,7 +1439,7 @@ public abstract class KrabApplet extends PApplet {
         uniform(raymarch).set("diffuse", slider("diffuse", 1));
         uniform(raymarch).set("specular", slider("specular", 1));
         uniform(raymarch).set("shininess", slider("shininess", 5));
-        uniform(raymarch).set("lightPos", sliderXYZ("light pos", 20, 20, -20, 100));
+        uniform(raymarch).set("lightPos", sliderXYZ("light pos", 0,0, -20, 100));
         uniform(raymarch).set("origin", PVector.add(
                 sliderXYZ("translate", 0, 0, -15, 100),
                 sliderXYZ("speed", 0, 0, 0, 1).copy().mult(t)));
@@ -1998,7 +1998,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         void update() {
-            if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+            if (overlayVisible && overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 reset();
             }
@@ -2307,7 +2307,7 @@ public abstract class KrabApplet extends PApplet {
                 precision *= .1f;
                 pushCurrentStateToUndo();
             }
-            if (overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+            if (overlayVisible && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 reset();
             }
@@ -2468,7 +2468,7 @@ public abstract class KrabApplet extends PApplet {
                 precision *= 10f;
                 pushCurrentStateToUndo();
             }
-            if (overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+            if (overlayVisible && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 reset();
             }
@@ -2658,7 +2658,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         void handleKeyboardInput() {
-            if (overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
+            if (overlayVisible && overlayOwner != null && overlayOwner.equals(this) && actions.contains(ACTION_RESET)) {
                 pushCurrentStateToUndo();
                 reset();
             }

@@ -10,17 +10,18 @@ uniform float diffuse;
 uniform float specular;
 uniform float shininess;
 
-
-const int MAX_STEPS = 1000;
-const float MAX_DISTANCE = 200.;
-const float SURFACE_DISTANCE = 0.000001;
+const int MAX_STEPS = 100;
+const float MAX_DISTANCE = 110.;
+const float SURFACE_DISTANCE = 0.0001;
 
 #define pi 3.14159265359
 #define inf 9999.
 
-//	Simplex 3D Noise
-//	by Ian McEwan, Ashima Arts
-//
+struct hit{
+     vec3 p;
+     float d;
+};
+
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
 vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }
 float snoise(vec3 v){
@@ -113,7 +114,6 @@ float ease(float p, float g) {
     }
     return 1 - 0.5f * pow(2 * (1 - p), g);
 }
-
 vec3 rgb(float h, float s, float b){
     vec3 c = vec3(h, s, b);
     vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0, 4.0, 2.0), 6.0)-3.0)-1.0, 0.0, 1.0);
@@ -249,6 +249,7 @@ float torus(vec3 p, vec2 r){
     float x = length(p.xz)-r.x;
     return length(vec2(x, p.y))-r.y;
 }
+
 /*
 // planet
 float getDistance(vec3 p){
@@ -258,44 +259,47 @@ float getDistance(vec3 p){
     return min(inner, max(outer, n));
 }
 */
-float opSmoothUnion( float d1, float d2, float k ) {
-    float h = clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 );
-    return mix( d2, d1, h ) - k*h*(1.0-h); }
 
-float opSmoothSubtraction( float d1, float d2, float k ) {
-    float h = clamp( 0.5 - 0.5*(d2+d1)/k, 0.0, 1.0 );
-    return mix( d2, -d1, h ) + k*h*(1.0-h); }
+float opSmoothUnion(float d1, float d2, float k) {
+    float h = clamp(0.5 + 0.5*(d2-d1)/k, 0.0, 1.0);
+    return mix(d2, d1, h) - k*h*(1.0-h); }
 
-float opSmoothIntersection( float d1, float d2, float k ) {
-    float h = clamp( 0.5 - 0.5*(d2-d1)/k, 0.0, 1.0 );
-    return mix( d2, d1, h ) + k*h*(1.0-h); }
+float opSmoothSubtraction(float d1, float d2, float k) {
+    float h = clamp(0.5 - 0.5*(d2+d1)/k, 0.0, 1.0);
+    return mix(d2, -d1, h) + k*h*(1.0-h); }
 
-float opUnion( float d1, float d2 ) { return min(d1,d2); }
+float opSmoothIntersection(float d1, float d2, float k) {
+    float h = clamp(0.5 - 0.5*(d2-d1)/k, 0.0, 1.0);
+    return mix(d2, d1, h) + k*h*(1.0-h); }
 
-float opSubtraction( float d1, float d2 ) { return max(-d1,d2); }
+float opUnion(float d1, float d2) { return min(d1, d2); }
 
-float opIntersection( float d1, float d2 ) { return max(d1,d2); }
+float opSubtraction(float d1, float d2) { return max(-d1, d2); }
 
-float getDistance(vec3 p){
-    float size = 0.8;
+float opIntersection(float d1, float d2) { return max(d1, d2); }
+
+float cubeOutline(vec3 p){
+    float size = 1.;
+    float w = 0.3;
+    float smoothness = .01;
     float c = cube(p, vec3(size));
-    float w = 0.5;
-    float smoothness = .02;
     c = opSmoothSubtraction(cube(p, vec3(size-w*.5, size+w*.5, size-w*.5)), c, smoothness);
     c = opSmoothSubtraction(cube(p, vec3(size+w*.5, size-w*.5, size-w*.5)), c, smoothness);
     c = opSmoothSubtraction(cube(p, vec3(size-w*.5, size-w*.5, size+w*.5)), c, smoothness);
-    float bigCube = cube(p, vec3(size*1.));
-    c = opSmoothIntersection(bigCube, c, smoothness);
     return c;
 }
 
-vec3 getHueSatSpecular(vec4 intersection){
-    return vec3(0,0,1);
+float getDistance(vec3 p){
+    return cubeOutline(p);
+}
+
+vec4 getHueSatBrSpecular(hit h){
+    return vec4(1.,0,h.d*h.d*.00000002,0.);
 }
 
 vec3 getNormal(vec3 p){
     float d = getDistance(p);
-    vec2 offset = vec2(0.01, 0.);
+    vec2 offset = vec2(0.001, 0.);
     vec3 normal = d - vec3(
         getDistance(p-offset.xyy),
         getDistance(p-offset.yxy),
@@ -304,21 +308,23 @@ vec3 getNormal(vec3 p){
     return normalize(normal);
 }
 
-vec4 rayMarch(vec3 rayOrigin, vec3 rayDirection){
+hit rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
     float maxDistance = MAX_DISTANCE;
     float lowestDistance = MAX_DISTANCE;
+    float aggregateLowestDistance = 0;
     vec3 p;
     for (int i = 0; i < MAX_STEPS; i++){
         p = rayOrigin+rayDirection*distance;
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
-        lowestDistance = min(distance, lowestDistance);
+        lowestDistance = max(distance, lowestDistance);
+        aggregateLowestDistance += lowestDistance*2;
         if (distanceToScene < SURFACE_DISTANCE || distance > maxDistance){
             break;
         }
     }
-    return vec4(p, max(distance, lowestDistance));
+    return hit(p, aggregateLowestDistance);
 }
 
 float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
@@ -326,12 +332,11 @@ float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
     return diffuseLight;
 }
 
-float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
+float getSpecularLight(vec3 p, vec3 rayDirection, vec3 lightDir, vec3 normal) {
     vec3 reflectionDirection = reflect(-lightDir, normal);
-    float specularAngle = max(dot(reflectionDirection, d), 0.0);
+    float specularAngle = max(dot(reflectionDirection, rayDirection), 0.);
     return pow(specularAngle, shininess/4.0);
 }
-
 
 // read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
 // study evvvvil on shadertoy
@@ -339,25 +344,24 @@ float getSpecularLight(vec3 p, vec3 d, vec3 lightDir, vec3 normal) {
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
-    float t = time*.2;
+    float t = time;
     rayOrigin.xz *= rotate2d(t);
     vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1.));
     rayDirection.xz *= rotate2d(t);
-    vec4 intersection = rayMarch(rayOrigin, rayDirection);
-    vec3 normal = getNormal(intersection.xyz);
+    hit marchResult = rayMarch(rayOrigin, rayDirection);
+    vec3 p = marchResult.p;
+    vec3 normal = getNormal(p);
     vec3 lightOrigin = vec3(lightPos.xyz);
     lightOrigin.xz *= rotate2d(t);
-    vec3 lightDir = normalize(intersection.xyz - lightOrigin);
-    vec3 hueSatSpec = getHueSatSpecular(intersection);
-    float diffuseLight = getDiffuseLight(intersection.xyz, lightOrigin, lightDir, normal);
-    float specularLight = getSpecularLight(intersection.xyz, rayDirection, lightDir, normal);
-    float pct = diffuseLight * diffuse + specularLight * specular * hueSatSpec.z;
-    if (intersection.w > MAX_DISTANCE * .99){
-        pct = 0;
-    }
+    vec3 lightDir = normalize(p - lightOrigin);
+    vec4 hueSatBrSpec = getHueSatBrSpecular(marchResult);
+    float diffuseLight = getDiffuseLight(p, lightOrigin, lightDir, normal);
+    float specularLight = getSpecularLight(p, rayDirection, lightDir, normal);
+    float pct = diffuseLight * diffuse + specularLight * specular;
+    pct = pct*step(length(p), MAX_DISTANCE*.2);
     gl_FragColor = vec4(rgb(
-        hueSatSpec.x,
-        hueSatSpec.y,
-        smoothstep(0., 1., pct))
-    , 1.0);
+        hueSatBrSpec.x,
+        hueSatBrSpec.y,
+        hueSatBrSpec.z + pct),
+    1.0);
 }
