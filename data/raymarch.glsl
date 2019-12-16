@@ -10,9 +10,10 @@ uniform float diffuse;
 uniform float specular;
 uniform float shininess;
 
-const int MAX_STEPS = 100;
-const float MAX_DISTANCE = 110.;
-const float SURFACE_DISTANCE = 0.0001;
+const int MAX_STEPS = 1000;
+const float MAX_DISTANCE = 200.;
+const float SURFACE_DISTANCE = 0.0000001;
+const int MAX_REFLECTIONS = 0;
 
 #define pi 3.14159265359
 #define inf 9999.
@@ -20,6 +21,7 @@ const float SURFACE_DISTANCE = 0.0001;
 struct hit{
      vec3 p;
      float d;
+     int steps;
 };
 
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -280,7 +282,7 @@ float opIntersection(float d1, float d2) { return max(d1, d2); }
 
 float cubeOutline(vec3 p){
     float size = 1.;
-    float w = 0.3;
+    float w = 0.4;
     float smoothness = .01;
     float c = cube(p, vec3(size));
     c = opSmoothSubtraction(cube(p, vec3(size-w*.5, size+w*.5, size-w*.5)), c, smoothness);
@@ -290,11 +292,15 @@ float cubeOutline(vec3 p){
 }
 
 float getDistance(vec3 p){
-    return cubeOutline(p);
+    return sphere(p, vec3(0., 0., 1.), 1.);
 }
 
 vec4 getHueSatBrSpecular(hit h){
-    return vec4(1.,0,h.d*h.d*.00000002,0.);
+    return vec4(1.,0,1.,0.);
+}
+
+float getGlow(hit h){
+    return 0.;
 }
 
 vec3 getNormal(vec3 p){
@@ -310,21 +316,27 @@ vec3 getNormal(vec3 p){
 
 hit rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
+    int reflections = 0;
+    int stepCount = 0;
     float maxDistance = MAX_DISTANCE;
-    float lowestDistance = MAX_DISTANCE;
-    float aggregateLowestDistance = 0;
+    float closestDistance = MAX_DISTANCE;
     vec3 p;
     for (int i = 0; i < MAX_STEPS; i++){
+        stepCount++;
         p = rayOrigin+rayDirection*distance;
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
-        lowestDistance = max(distance, lowestDistance);
-        aggregateLowestDistance += lowestDistance*2;
-        if (distanceToScene < SURFACE_DISTANCE || distance > maxDistance){
+        closestDistance = min(distanceToScene, closestDistance);
+        //        if(distanceToScene < SURFACE_DISTANCE){
+//            reflections++;
+//            rayDirection = getNormal(p);
+//            rayOrigin = p+rayDirection*.5;
+//        }
+        if (distance > maxDistance || reflections > MAX_REFLECTIONS ){
             break;
         }
     }
-    return hit(p, aggregateLowestDistance);
+    return hit(p, closestDistance, stepCount);
 }
 
 float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
@@ -345,23 +357,24 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float t = time;
-    rayOrigin.xz *= rotate2d(t);
+//    rayOrigin.xz *= rotate2d(t);
     vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1.));
-    rayDirection.xz *= rotate2d(t);
-    hit marchResult = rayMarch(rayOrigin, rayDirection);
-    vec3 p = marchResult.p;
+//    rayDirection.xz *= rotate2d(t);
+    hit h = rayMarch(rayOrigin, rayDirection);
+    vec3 p = h.p;
     vec3 normal = getNormal(p);
     vec3 lightOrigin = vec3(lightPos.xyz);
-    lightOrigin.xz *= rotate2d(t);
+//    lightOrigin.xz *= rotate2d(t);
     vec3 lightDir = normalize(p - lightOrigin);
-    vec4 hueSatBrSpec = getHueSatBrSpecular(marchResult);
+    vec4 hueSatBrSpec = getHueSatBrSpecular(h);
     float diffuseLight = getDiffuseLight(p, lightOrigin, lightDir, normal);
     float specularLight = getSpecularLight(p, rayDirection, lightDir, normal);
     float pct = diffuseLight * diffuse + specularLight * specular;
-    pct = pct*step(length(p), MAX_DISTANCE*.2);
+    float glow = getGlow(h);
     gl_FragColor = vec4(rgb(
         hueSatBrSpec.x,
         hueSatBrSpec.y,
-        hueSatBrSpec.z + pct),
+        hueSatBrSpec.z * pct + glow
+    ),
     1.0);
 }
