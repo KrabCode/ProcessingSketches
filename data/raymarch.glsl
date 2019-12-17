@@ -10,18 +10,17 @@ uniform float diffuse;
 uniform float specular;
 uniform float shininess;
 
-const int MAX_STEPS = 1000;
-const float MAX_DISTANCE = 200.;
-const float SURFACE_DISTANCE = 0.0000001;
-const int MAX_REFLECTIONS = 0;
+const int MAX_STEPS = 500;
+const float MAX_DISTANCE = 1000.;
+const float SURFACE_DISTANCE = 0.01;
 
 #define pi 3.14159265359
 #define inf 9999.
 
 struct hit{
-     vec3 p;
-     float d;
-     int steps;
+    vec3 p;
+    float d;
+    int steps;
 };
 
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -242,8 +241,8 @@ float capsule(vec3 p, vec3 a, vec3 b, float radius){
     return d;
 }
 
-float sphere(vec3 p, vec3 pos, float r){
-    vec4 sphere = vec4(pos.xyz, r);
+float sphere(vec3 p, float r){
+    vec4 sphere = vec4(vec3(0), r);
     return length(p-sphere.xyz) - sphere.w;
 }
 
@@ -292,31 +291,30 @@ float cubeOutline(vec3 p){
 }
 
 float getDistance(vec3 p){
-    return sphere(p, vec3(0., 0., 1.), 1.);
+    return min(sphere(p, .5), pyramid(p-vec3(0, 0, 3), 2.));
 }
 
 vec4 getHueSatBrSpecular(hit h){
-    return vec4(1.,0,1.,0.);
+    return vec4(1., 0, 1., 0.);
 }
 
 float getGlow(hit h){
-    return 0.;
+    return clamp(1.-h.d*10., 0, 1);
 }
 
 vec3 getNormal(vec3 p){
     float d = getDistance(p);
     vec2 offset = vec2(0.001, 0.);
     vec3 normal = d - vec3(
-        getDistance(p-offset.xyy),
-        getDistance(p-offset.yxy),
-        getDistance(p-offset.yyx)
+    getDistance(p-offset.xyy),
+    getDistance(p-offset.yxy),
+    getDistance(p-offset.yyx)
     );
     return normalize(normal);
 }
 
 hit rayMarch(vec3 rayOrigin, vec3 rayDirection){
     float distance = 0.;
-    int reflections = 0;
     int stepCount = 0;
     float maxDistance = MAX_DISTANCE;
     float closestDistance = MAX_DISTANCE;
@@ -327,12 +325,11 @@ hit rayMarch(vec3 rayOrigin, vec3 rayDirection){
         float distanceToScene = getDistance(p);
         distance += distanceToScene;
         closestDistance = min(distanceToScene, closestDistance);
-        //        if(distanceToScene < SURFACE_DISTANCE){
-//            reflections++;
-//            rayDirection = getNormal(p);
-//            rayOrigin = p+rayDirection*.5;
-//        }
-        if (distance > maxDistance || reflections > MAX_REFLECTIONS ){
+        if (distanceToScene < SURFACE_DISTANCE){
+            rayOrigin = p;
+            rayDirection = getNormal(p)*-1.;
+        }
+        if (distance > maxDistance){
             break;
         }
     }
@@ -347,7 +344,7 @@ float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
 float getSpecularLight(vec3 p, vec3 rayDirection, vec3 lightDir, vec3 normal) {
     vec3 reflectionDirection = reflect(-lightDir, normal);
     float specularAngle = max(dot(reflectionDirection, rayDirection), 0.);
-    return pow(specularAngle, shininess/4.0);
+    return pow(specularAngle, shininess);
 }
 
 // read http://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/
@@ -357,24 +354,24 @@ void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 rayOrigin = vec3(origin.x, -origin.y, origin.z);
     float t = time;
-//    rayOrigin.xz *= rotate2d(t);
+    //    rayOrigin.xz *= rotate2d(t);
     vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1.));
-//    rayDirection.xz *= rotate2d(t);
+    //    rayDirection.xz *= rotate2d(t);
     hit h = rayMarch(rayOrigin, rayDirection);
     vec3 p = h.p;
     vec3 normal = getNormal(p);
     vec3 lightOrigin = vec3(lightPos.xyz);
-//    lightOrigin.xz *= rotate2d(t);
+    //    lightOrigin.xz *= rotate2d(t);
     vec3 lightDir = normalize(p - lightOrigin);
     vec4 hueSatBrSpec = getHueSatBrSpecular(h);
     float diffuseLight = getDiffuseLight(p, lightOrigin, lightDir, normal);
     float specularLight = getSpecularLight(p, rayDirection, lightDir, normal);
-    float pct = diffuseLight * diffuse + specularLight * specular;
+    float pct = specularLight * specular;
     float glow = getGlow(h);
     gl_FragColor = vec4(rgb(
-        hueSatBrSpec.x,
-        hueSatBrSpec.y,
-        hueSatBrSpec.z * pct + glow
+    hueSatBrSpec.x,
+    hueSatBrSpec.y,
+    hueSatBrSpec.z * pct
     ),
     1.0);
 }
