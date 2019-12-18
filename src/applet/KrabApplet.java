@@ -1436,13 +1436,9 @@ public abstract class KrabApplet extends PApplet {
     protected void rayMarchPass(PGraphics pg) {
         String raymarch = "raymarch.glsl";
         uniform(raymarch).set("time", t);
-        uniform(raymarch).set("diffuse", slider("diffuse", 1));
-        uniform(raymarch).set("specular", slider("specular", 1));
-        uniform(raymarch).set("shininess", slider("shininess", 5));
-        uniform(raymarch).set("lightPos", sliderXYZ("light pos", 0,0, -20, 100));
-        uniform(raymarch).set("origin", PVector.add(
-                sliderXYZ("translate", 0, 0, -15, 100),
-                sliderXYZ("speed", 0, 0, 0, 1).copy().mult(t)));
+        uniform(raymarch).set("translate", sliderXYZ("translate"));
+        uniform(raymarch).set("rotate", slider("rotate") + radians(frameCount)*slider("rotate speed", .5f));
+        uniform(raymarch).set("distFOV", slider("distFOV", 1));
         hotFilter(raymarch,pg);
     }
 
