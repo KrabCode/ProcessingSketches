@@ -85,13 +85,13 @@ float noise(vec3 p){
 
 float fbm (vec3 p) {
     float value = 0.0;
-    float amplitude = 0.1;
-    float frequency = 7;
+    float amplitude = 0.08;
+    float frequency = 10;
     // Loop of octaves
     for (int i = 0; i < 6; i++) {
         float n = noise(p*frequency);
         value += amplitude * n;
-        frequency *= 2.5;
+        frequency *= 3.0;
         amplitude *= .5;
     }
     return value;
@@ -101,14 +101,17 @@ float fbm (vec3 p) {
 float sphere(vec3 p, float r){
     vec4 sphere = vec4(vec3(0), r);
     float d = length(p-sphere.xyz) - sphere.w;
-    float n = fbm(p)*(1.-d*r*(15.+5.*sin(time)));
-    return max(d, n);
+    if(d < sphere.w){
+        float n = fbm(vec3(7)-p)*(2.+.9*sin(d*10-time*10.));
+        return max(d, n);
+    }
+    return d;
 }
 
 dc getDistanceAndColor(vec3 p){
     float distanceToSphere = sphere(p-vec3(0), 1.);
     float d = distanceToSphere;
-    vec3 color = step(d, SURFACE_DIST) * (step(distanceToSphere, SURFACE_DIST*2.) * sphereColor.xyz);
+    vec3 color = step(d, SURFACE_DIST) * (step(distanceToSphere, SURFACE_DIST) * sphereColor.xyz);
     return dc(d, sphereColor);
 }
 
