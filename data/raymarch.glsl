@@ -1,25 +1,41 @@
 uniform vec2 resolution;
 uniform vec3 translate;
+uniform vec3 lightDirection;
+uniform float diffuseMag;
+uniform float specularMag;
 uniform float distFOV;
 uniform float rotate;
 uniform float time;
+uniform float shininess;
 
 int MAX_STEPS = 100;
 float MAX_DIST = 100.;
-float SURFACE_DIST = .001;
-vec3 sphereColor = vec3(0.0, 0.5, 1.);
+float SURFACE_DIST = .0001;
 
 struct ray{
     vec3 hit;
-    vec3 hitColor;
+    float hue;
+    float sat;
     float distClosest;
     float distSum;
 };
 
 struct dc{
     float d;
-    vec3 c;
+    float hue;
+    float sat;
 };
+
+float getDiffuseLight(vec3 p, vec3 lightDir, vec3 normal){
+    float diffuseLight = max(dot(normal, -lightDir), 0.0);
+    return diffuseLight;
+}
+
+float getSpecularLight(vec3 p, vec3 lightDir, vec3 rayDirection, vec3 normal) {
+    vec3 reflectionDirection = reflect(-lightDir, normal);
+    float specularAngle = max(dot(reflectionDirection, rayDirection), 0.);
+    return pow(specularAngle, shininess);
+}
 
 vec3 rgb(in vec3 hsb){
     vec3 rgb = clamp(abs(mod(hsb.x*6.0+
@@ -27,13 +43,6 @@ vec3 rgb(in vec3 hsb){
     rgb = rgb*rgb*(3.0-2.0*rgb);
     return hsb.z * mix(vec3(1.0), rgb, hsb.y);
 }
-
-/*
-float getDiffuseLight(vec3 p, vec3 lightPos, vec3 lightDir, vec3 normal){
-    float diffuseLight = max(dot(normal, -lightDir), 0.0);
-    return diffuseLight;
-}
-*/
 
 float opSmoothUnion(float d1, float d2, float k) {
     float h = clamp(0.5 + 0.5*(d2-d1)/k, 0.0, 1.0);
@@ -58,9 +67,9 @@ mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
+float mod289(float x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 mod289(vec4 x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 perm(vec4 x){ return mod289(((x * 34.0) + 1.0) * x); }
 
 float noise(vec3 p){
     vec3 a = floor(p);
@@ -88,7 +97,6 @@ float fbm (vec3 p) {
     float value = 0.0;
     float amplitude = 0.08;
     float frequency = 10;
-    // Loop of octaves
     for (int i = 0; i < 6; i++) {
         float n = noise(p*frequency);
         value += amplitude * n;
@@ -98,27 +106,18 @@ float fbm (vec3 p) {
     return value;
 }
 
-
 float sphere(vec3 p, float r){
-    vec4 sphere = vec4(vec3(0), r);
-    float d = length(p-sphere.xyz) - sphere.w;
-    if(d < sphere.w){
-        float n = fbm(vec3(7)-p)*(2.+.9*sin(d*10-time*10.));
-        return max(d, n);
-    }
-    return d;
+    return length(p) - r;
 }
 
 dc getDistanceAndColor(vec3 p){
-    float distanceToSphere = sphere(p-vec3(0), 1.);
-    float d = distanceToSphere;
-    vec3 color = step(d, SURFACE_DIST) * (step(distanceToSphere, SURFACE_DIST) * sphereColor.xyz);
-    return dc(d, sphereColor);
+    float s = sphere(p, 1.);
+    return dc(s, .55, 1.);
 }
 
 ray raymarch(vec3 rayOrigin, vec3 dir){
     float distanceTraveled = 0.;
-    dc distColor = dc(0., vec3(0));
+    dc distColor = dc(0., 0., 0.);
     vec3 p;
     float distClosest = MAX_DIST;
     for (int i = 0; i < MAX_STEPS; i++){
@@ -130,7 +129,7 @@ ray raymarch(vec3 rayOrigin, vec3 dir){
         }
         distanceTraveled += distColor.d;
     }
-    return ray(p, distColor.c, distClosest, distanceTraveled);
+    return ray(p, distColor.hue, distColor.sat, distClosest, distanceTraveled);
 }
 
 vec3 getNormal(vec3 p){
@@ -144,7 +143,6 @@ vec3 getNormal(vec3 p){
     return normalize(normal);
 }
 
-
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
@@ -153,6 +151,13 @@ void main(){
     vec3 rayDirection = normalize(vec3(cv.xy, distFOV));
     rayDirection.xz *= rotate2d(rotate);
     ray r = raymarch(rayOrigin, rayDirection);
-    vec3 col = vec3(r.hitColor*clamp(1.-r.distClosest*6., 0, 1));
+    vec3 normal = getNormal(r.hit);
+    vec3 lightDir = normalize(lightDirection);
+    lightDir.xz *= rotate2d(rotate);
+    float diffuse = getDiffuseLight(r.hit, lightDir, normal);
+    float specular = getSpecularLight(r.hit,lightDir,  rayDirection, normal);
+    vec3 hsb = vec3(r.hue, r.sat, diffuse*diffuseMag + specular*specularMag);
+    vec3 col = rgb(hsb);
+    col = step(r.distSum, MAX_DIST)*col;
     gl_FragColor = vec4(col, 1);
 }
