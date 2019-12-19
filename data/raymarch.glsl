@@ -1,3 +1,8 @@
+//TODO
+// soft shadows https://www.shadertoy.com/view/Xds3zN
+// cheap fbm https://www.shadertoy.com/view/XslGRr
+// acos(-1) = pi
+
 uniform vec2 resolution;
 uniform vec3 translate;
 uniform vec3 lightDirection;
