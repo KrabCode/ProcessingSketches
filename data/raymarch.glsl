@@ -13,9 +13,9 @@ uniform float rotate;
 uniform float time;
 uniform float shininess;
 
-int MAX_STEPS = 100;
-float MAX_DIST = 100.;
-float SURFACE_DIST = .0001;
+uniform int maxSteps = 100;
+uniform float maxDist = 100.;
+uniform float surfaceDist = .0001;
 
 struct ray{
     vec3 hit;
@@ -72,41 +72,58 @@ mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-float mod289(float x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 mod289(vec4 x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 perm(vec4 x){ return mod289(((x * 34.0) + 1.0) * x); }
 
-float noise(vec3 p){
-    vec3 a = floor(p);
-    vec3 d = p - a;
-    d = d * d * (3.0 - 2.0 * d);
-
-    vec4 b = a.xxyy + vec4(0.0, 1.0, 0.0, 1.0);
-    vec4 k1 = perm(b.xyxy);
-    vec4 k2 = perm(k1.xyxy + b.zzww);
-
-    vec4 c = k2 + a.zzzz;
-    vec4 k3 = perm(c);
-    vec4 k4 = perm(c + 1.0);
-
-    vec4 o1 = fract(k3 * (1.0 / 41.0));
-    vec4 o2 = fract(k4 * (1.0 / 41.0));
-
-    vec4 o3 = o2 * d.z + o1 * (1.0 - d.z);
-    vec2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
-
-    return o4.y * d.y + o4.x * (1.0 - d.y);
+mediump vec4 permute(in mediump vec4 x){return mod(x*x*34.+x,289.);}
+mediump float snoise(in mediump vec3 v){
+    const mediump vec2 C = vec2(0.16666666666,0.33333333333);
+    const mediump vec4 D = vec4(0,.5,1,2);
+    mediump vec3 i  = floor(C.y*(v.x+v.y+v.z) + v);
+    mediump vec3 x0 = C.x*(i.x+i.y+i.z) + (v - i);
+    mediump vec3 g = step(x0.yzx, x0);
+    mediump vec3 l = (1. - g).zxy;
+    mediump vec3 i1 = min( g, l );
+    mediump vec3 i2 = max( g, l );
+    mediump vec3 x1 = x0 - i1 + C.x;
+    mediump vec3 x2 = x0 - i2 + C.y;
+    mediump vec3 x3 = x0 - D.yyy;
+    i = mod(i,289.);
+    mediump vec4 p = permute( permute( permute(
+    i.z + vec4(0., i1.z, i2.z, 1.))
+    + i.y + vec4(0., i1.y, i2.y, 1.))
+    + i.x + vec4(0., i1.x, i2.x, 1.));
+    mediump vec3 ns = .142857142857 * D.wyz - D.xzx;
+    mediump vec4 j = -49. * floor(p * ns.z * ns.z) + p;
+    mediump vec4 x_ = floor(j * ns.z);
+    mediump vec4 x = x_ * ns.x + ns.yyyy;
+    mediump vec4 y = floor(j - 7. * x_ ) * ns.x + ns.yyyy;
+    mediump vec4 h = 1. - abs(x) - abs(y);
+    mediump vec4 b0 = vec4( x.xy, y.xy );
+    mediump vec4 b1 = vec4( x.zw, y.zw );
+    mediump vec4 sh = -step(h, vec4(0));
+    mediump vec4 a0 = b0.xzyw + (floor(b0)*2.+ 1.).xzyw*sh.xxyy;
+    mediump vec4 a1 = b1.xzyw + (floor(b1)*2.+ 1.).xzyw*sh.zzww;
+    mediump vec3 p0 = vec3(a0.xy,h.x);
+    mediump vec3 p1 = vec3(a0.zw,h.y);
+    mediump vec3 p2 = vec3(a1.xy,h.z);
+    mediump vec3 p3 = vec3(a1.zw,h.w);
+    mediump vec4 norm = inversesqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+    p0 *= norm.x;
+    p1 *= norm.y;
+    p2 *= norm.z;
+    p3 *= norm.w;
+    mediump vec4 m = max(.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.);
+    return .5 + 12. * dot( m * m * m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) );
 }
 
 float fbm (vec3 p) {
     float value = 0.0;
-    float amplitude = 0.08;
-    float frequency = 10;
-    for (int i = 0; i < 6; i++) {
-        float n = noise(p*frequency);
+    float amplitude = 0.001;
+    float frequency = 1.;
+    for (int i = 0; i < 4; i++) {
+        float n = snoise(p*frequency);
         value += amplitude * n;
         frequency *= 3.0;
-        amplitude *= .5;
+        amplitude *= 0.5;
     }
     return value;
 }
@@ -116,20 +133,21 @@ float sphere(vec3 p, float r){
 }
 
 dc getDistanceAndColor(vec3 p){
-    float s = sphere(p, 1.);
-    return dc(s, .55, 1.);
+    float n = fbm(p);
+    float s = sphere(p, 4.5);
+    return dc(opSmoothIntersection(s, n, 2.), n*500.-time*.5, n*500);
 }
 
 ray raymarch(vec3 rayOrigin, vec3 dir){
     float distanceTraveled = 0.;
     dc distColor = dc(0., 0., 0.);
     vec3 p;
-    float distClosest = MAX_DIST;
-    for (int i = 0; i < MAX_STEPS; i++){
+    float distClosest = maxDist;
+    for (int i = 0; i < maxSteps; i++){
         p = rayOrigin+dir*distanceTraveled;
         distColor = getDistanceAndColor(p);
         distClosest = min(distClosest, distColor.d);
-        if (distColor.d < SURFACE_DIST || distanceTraveled > MAX_DIST){
+        if (distColor.d < surfaceDist || distanceTraveled > maxDist){
             break;
         }
         distanceTraveled += distColor.d;
@@ -163,6 +181,6 @@ void main(){
     float specular = getSpecularLight(r.hit,lightDir,  rayDirection, normal);
     vec3 hsb = vec3(r.hue, r.sat, diffuse*diffuseMag + specular*specularMag);
     vec3 col = rgb(hsb);
-    col = step(r.distSum, MAX_DIST)*col;
+    col = step(r.distSum, maxDist)*col;
     gl_FragColor = vec4(col, 1);
 }

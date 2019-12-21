@@ -18,6 +18,7 @@ public class Raymarch extends KrabApplet {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
+        surface.setLocation(1920-820, 20);
         resetPGraphics();
         frameRecordingDuration *= 2;
     }
