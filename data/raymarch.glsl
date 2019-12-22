@@ -15,7 +15,7 @@ uniform float shininess;
 
 uniform int maxSteps = 100;
 uniform float maxDist = 100.;
-uniform float surfaceDist = .0001;
+uniform float surfaceDist = 0.000001;
 
 struct ray{
     vec3 hit;
@@ -25,10 +25,9 @@ struct ray{
     float distSum;
 };
 
-struct dc{
+struct dist{
     float d;
-    float hue;
-    float sat;
+    int maxRefractions;
 };
 
 float getDiffuseLight(vec3 p, vec3 lightDir, vec3 normal){
@@ -67,11 +66,9 @@ float opSubtraction(float d1, float d2) { return max(-d1, d2); }
 
 float opIntersection(float d1, float d2) { return max(d1, d2); }
 
-
 mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
-
 
 mediump vec4 permute(in mediump vec4 x){return mod(x*x*34.+x,289.);}
 mediump float snoise(in mediump vec3 v){
@@ -128,47 +125,65 @@ float fbm (vec3 p) {
     return value;
 }
 
+float octahedron(vec3 p, float s){
+    p = abs(p);
+    return (p.x+p.y+p.z-s)*0.57735027;
+}
+
 float sphere(vec3 p, float r){
     return length(p) - r;
 }
 
-dc getDistanceAndColor(vec3 p){
-    float n = fbm(p);
-    float s = sphere(p, 4.5);
-    return dc(opSmoothIntersection(s, n, 2.), n*500.-time*.5, n*500);
+vec3 repeat(vec3 p, vec3 c){
+    return mod(p+0.5*c, c)-0.5*c;
 }
 
-ray raymarch(vec3 rayOrigin, vec3 dir){
-    float distanceTraveled = 0.;
-    dc distColor = dc(0., 0., 0.);
-    vec3 p;
-    float distClosest = maxDist;
-    for (int i = 0; i < maxSteps; i++){
-        p = rayOrigin+dir*distanceTraveled;
-        distColor = getDistanceAndColor(p);
-        distClosest = min(distClosest, distColor.d);
-        if (distColor.d < surfaceDist || distanceTraveled > maxDist){
-            break;
-        }
-        distanceTraveled += distColor.d;
+dist getDistance(vec3 p){
+    float s = sphere(p, 1.0);
+    float c = octahedron(repeat(p, vec3(10.)), 1.);
+    int refract = 0;
+    if(s < c){
+        refract = 2;
     }
-    return ray(p, distColor.hue, distColor.sat, distClosest, distanceTraveled);
+    return dist(min(c, s), refract);
 }
 
 vec3 getNormal(vec3 p){
-    dc d0 = getDistanceAndColor(p);
+    dist d0 = getDistance(p);
     float d = d0.d;
     vec2 offset = vec2(0.001, 0.);
-    dc d1 = getDistanceAndColor(p-offset.xyy);
-    dc d2 = getDistanceAndColor(p-offset.yxy);
-    dc d3 = getDistanceAndColor(p-offset.yyx);
+    dist d1 = getDistance(p-offset.xyy);
+    dist d2 = getDistance(p-offset.yxy);
+    dist d3 = getDistance(p-offset.yyx);
     vec3 normal = d - vec3(d1.d, d2.d, d3.d);
     return normalize(normal);
 }
 
-void main(){
-    vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+ray raymarch(vec3 rayOrigin, vec3 dir){
+    float distanceTraveled = 0.;
+    dist d = dist(0., 0);
+    vec3 p;
+    float distClosest = maxDist;
+    int refractions = 0;
+    for (int i = 0; i < maxSteps; i++){
+        p = rayOrigin+dir*distanceTraveled;
+        d = getDistance(p);
+        distClosest = min(distClosest, d.d);
+        if(d.d < surfaceDist && refractions < d.maxRefractions){
+            vec3 n = getNormal(p);
+            dir = refract(normalize(dir), normalize(n), 0.7);
+            rayOrigin = p+dir;
+            refractions++;
+        }
+        if (distanceTraveled > maxDist){
+            break;
+        }
+        distanceTraveled += d.d;
+    }
+    return ray(p, 0.5+distanceTraveled*.003, distanceTraveled*.01, distClosest, distanceTraveled);
+}
+
+vec3 render(vec2 cv){
     vec3 rayOrigin = vec3(translate.xyz);
     rayOrigin.xz *= rotate2d(rotate);
     vec3 rayDirection = normalize(vec3(cv.xy, distFOV));
@@ -182,5 +197,16 @@ void main(){
     vec3 hsb = vec3(r.hue, r.sat, diffuse*diffuseMag + specular*specularMag);
     vec3 col = rgb(hsb);
     col = step(r.distSum, maxDist)*col;
-    gl_FragColor = vec4(col, 1);
+    return col;
+}
+
+void main(){
+    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    float off = (1./resolution.x)/4.;
+    vec3 colA = render(cv+vec2(off, off));
+    vec3 colB = render(cv+vec2(-off, off));
+    vec3 colC = render(cv+vec2(off, -off));
+    vec3 colD = render(cv+vec2(-off, -off));
+    vec3 mixed = (colA+colB+colC+colD)/4.;
+    gl_FragColor = vec4(mixed, 1);
 }
