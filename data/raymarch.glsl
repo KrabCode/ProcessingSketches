@@ -13,8 +13,8 @@ uniform float rotate;
 uniform float time;
 uniform float shininess;
 
-uniform int maxSteps = 100;
-uniform float maxDist = 100.;
+uniform int maxSteps = 300;
+uniform float maxDist = 300.;
 uniform float surfaceDist = 0.000001;
 
 struct ray{
@@ -113,13 +113,13 @@ mediump float snoise(in mediump vec3 v){
 }
 
 float fbm (vec3 p) {
-    float value = 0.0;
-    float amplitude = 0.001;
-    float frequency = 1.;
-    for (int i = 0; i < 4; i++) {
+    float value = 0.;
+    float amplitude = 0.5;
+    float frequency = 0.1;
+    for (int i = 0; i < 2; i++) {
         float n = snoise(p*frequency);
         value += amplitude * n;
-        frequency *= 3.0;
+        frequency *= 2.5;
         amplitude *= 0.5;
     }
     return value;
@@ -140,10 +140,10 @@ vec3 repeat(vec3 p, vec3 c){
 
 dist getDistance(vec3 p){
     float s = sphere(p, 1.0);
-    float c = octahedron(repeat(p, vec3(10.)), 1.);
+    float c = .5+.5*fbm(p);
     int refract = 0;
     if(s < c){
-        refract = 2;
+        refract = 1;
     }
     return dist(min(c, s), refract);
 }
@@ -200,13 +200,17 @@ vec3 render(vec2 cv){
     return col;
 }
 
-void main(){
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+vec3 antiAlias(vec2 cv){
     float off = (1./resolution.x)/4.;
     vec3 colA = render(cv+vec2(off, off));
     vec3 colB = render(cv+vec2(-off, off));
     vec3 colC = render(cv+vec2(off, -off));
     vec3 colD = render(cv+vec2(-off, -off));
     vec3 mixed = (colA+colB+colC+colD)/4.;
-    gl_FragColor = vec4(mixed, 1);
+    return mixed;
+}
+
+void main(){
+    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    gl_FragColor = vec4(render(cv), 1);
 }
