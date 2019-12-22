@@ -3,6 +3,8 @@
 // cheap fbm https://www.shadertoy.com/view/XslGRr
 // acos(-1) = pi
 
+precision lowp float;
+
 uniform vec2 resolution;
 uniform vec3 translate;
 uniform vec3 lightDirection;
@@ -13,9 +15,11 @@ uniform float rotate;
 uniform float time;
 uniform float shininess;
 
-uniform int maxSteps = 300;
-uniform float maxDist = 300.;
-uniform float surfaceDist = 0.000001;
+uniform int maxSteps = 1000;
+uniform float maxDist = 1000.;
+uniform float surfaceDist = .0001;
+
+#define pi 3.14159265359
 
 struct ray{
     vec3 hit;
@@ -114,9 +118,9 @@ mediump float snoise(in mediump vec3 v){
 
 float fbm (vec3 p) {
     float value = 0.;
-    float amplitude = 0.5;
+    float amplitude = 1;
     float frequency = 0.1;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         float n = snoise(p*frequency);
         value += amplitude * n;
         frequency *= 2.5;
@@ -134,18 +138,23 @@ float sphere(vec3 p, float r){
     return length(p) - r;
 }
 
+float doubleHelix(vec3 p){
+    float r = 1.;
+    float frq = 0.25;
+    float w = 0.6;
+    float helixA = length(vec2(p.x+r*sin(p.z*frq), p.y+r*cos(p.z*frq)))-w;
+    float helixB = length(vec2(p.x+r*sin(pi+p.z*frq), p.y+r*cos(pi+p.z*frq)))-w;
+    return min(helixA, helixB);
+}
+
 vec3 repeat(vec3 p, vec3 c){
     return mod(p+0.5*c, c)-0.5*c;
 }
 
 dist getDistance(vec3 p){
-    float s = sphere(p, 1.0);
-    float c = .5+.5*fbm(p);
     int refract = 0;
-    if(s < c){
-        refract = 1;
-    }
-    return dist(min(c, s), refract);
+    float d = doubleHelix(p);
+    return dist(d, refract);
 }
 
 vec3 getNormal(vec3 p){
@@ -171,7 +180,7 @@ ray raymarch(vec3 rayOrigin, vec3 dir){
         distClosest = min(distClosest, d.d);
         if(d.d < surfaceDist && refractions < d.maxRefractions){
             vec3 n = getNormal(p);
-            dir = refract(normalize(dir), normalize(n), 0.7);
+            dir = refract(normalize(dir), normalize(n), 0.8);
             rayOrigin = p+dir;
             refractions++;
         }
@@ -180,7 +189,7 @@ ray raymarch(vec3 rayOrigin, vec3 dir){
         }
         distanceTraveled += d.d;
     }
-    return ray(p, 0.5+distanceTraveled*.003, distanceTraveled*.01, distClosest, distanceTraveled);
+    return ray(p, 0, 0, distClosest, distanceTraveled);
 }
 
 vec3 render(vec2 cv){
@@ -200,7 +209,7 @@ vec3 render(vec2 cv){
     return col;
 }
 
-vec3 antiAlias(vec2 cv){
+vec3 antiAliasRender(vec2 cv){
     float off = (1./resolution.x)/4.;
     vec3 colA = render(cv+vec2(off, off));
     vec3 colB = render(cv+vec2(-off, off));
