@@ -1,7 +1,3 @@
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
 
 #define pi 3.1415
 
@@ -77,7 +73,7 @@ float cubicPulse(float c, float w, float x){
     x /= w;
     return 1.0 - x*x*(3.0-2.0*x);
 }
-
+/*
 void main(){
     float t = time*6.;
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
@@ -94,4 +90,11 @@ void main(){
     final = clamp(final, 0, 1);
     final -= smoothstep(0.,25.,d);
     gl_FragColor = vec4(final, 1.);
+}*/
+
+void main(){
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    uv = fract(uv*5);
+    vec3 col = vec3(length(uv));
+    gl_FragColor = vec4(col, 1.);
 }

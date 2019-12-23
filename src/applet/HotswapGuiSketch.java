@@ -107,8 +107,8 @@ public abstract class HotswapGuiSketch extends GuiSketch {
 
     protected void vignettePass(PGraphics pg){
         String vignettePass = "postFX/vignetteFrag.glsl";
-        uniform(vignettePass).set("amount", slider("vignette", 5));
-        uniform(vignettePass).set("falloff", slider("falloff"));
+        uniform(vignettePass).set("amount", 5);
+        uniform(vignettePass).set("falloff", 1);
         hotFilter(vignettePass, pg);
     }
 

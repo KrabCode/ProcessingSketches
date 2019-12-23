@@ -25,7 +25,10 @@ public class CameraGrid extends HotswapGuiSketch {
         updateCamera();
         drawGridAroundPlayer();
         drawPlayer();
-        playerPos.add(new PVector(noise(t), noise(10+t)).setMag(3));
+        if (mousePressed) {
+            PVector toMouse = new PVector(mouseX-width*.5f, mouseY-height*.5f).normalize().mult(5);
+            playerPos.add(toMouse);
+        }
     }
 
     private void updateCamera() {
