@@ -12,6 +12,7 @@ public class Raymarch extends KrabApplet {
     private ArrayList<P> ps = new ArrayList<P>();
     private ArrayList<P> psBin = new ArrayList<P>();;
     private PGraphics pg;
+    private PGraphics snowPg;
 
     public static void main(String[] args) {
         KrabApplet.main("Raymarch");
@@ -30,9 +31,8 @@ public class Raymarch extends KrabApplet {
 
     private void resetPGraphics() {
         pg = createGraphics(width / scaledown, height / scaledown, P2D);
-        pg.beginDraw();
-        pg.background(0);
-        pg.endDraw();
+        snowPg = createGraphics(width*2, height*2, P2D);
+
     }
 
     public void draw() {
@@ -43,10 +43,24 @@ public class Raymarch extends KrabApplet {
         }
         pg.beginDraw();
         rayMarchPass(pg);
-        updateParticles();
         pg.endDraw();
         image(pg, 0, 0, width, height);
-        rec(pg);
+        if(toggle("snow", false)){
+            snowPg.beginDraw();
+            snowPg.clear();
+            updateParticles();
+            snowPg.endDraw();
+            translate(width/2f, height/2f);
+            int mirrors = sliderInt("mirrors");
+            for(int i = 0; i < mirrors; i++){
+                float a = map(i, 0, mirrors-1, 0, TAU);
+                pushMatrix();
+                rotate(a);
+                image(snowPg, -width, -height,width, height);
+                popMatrix();
+            }
+        }
+        rec();
         gui();
     }
 
@@ -70,9 +84,9 @@ public class Raymarch extends KrabApplet {
 
         P() {
             pos = new PVector(
-                    random(-width*2,width),
-                    -50-random(height),
-                    random(width)
+                    random(-snowPg.width*2,snowPg.width),
+                    -50-random(snowPg.height),
+                    random(snowPg.width)
             );
             spd = new PVector();
         }
@@ -89,14 +103,14 @@ public class Raymarch extends KrabApplet {
             spd.add(acc);
             pos.add(spd);
             spd.mult(slider("drag"));
-            if(pos.y > height || pos.x > width*2 || pos.x < -width){
+            if(pos.y > snowPg.height*2 || pos.x > snowPg.width*2 || pos.x < -snowPg.width*2){
                 psBin.add(this);
             }
             float zDarken = norm(pos.z, 0, width);
             float w = slider("weight");
-            pg.strokeWeight(constrain(w-zDarken, 1, 10));
-            pg.stroke(255-zDarken*slider("darken"));
-            pg.point(pos.x, pos.y, pos.z);
+            snowPg.strokeWeight(constrain(w-zDarken, 1, 10));
+            snowPg.stroke(255-zDarken*slider("darken"));
+            snowPg.point(pos.x, pos.y, pos.z);
         }
     }
 

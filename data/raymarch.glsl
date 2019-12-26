@@ -16,7 +16,7 @@ uniform float time;
 uniform float shininess;
 
 const int maxSteps = 100;
-const float maxDist = 500.;
+const float maxDist = 5000.;
 const float surfaceDist = 0.00000000001;
 
 #define pi 3.14159265359
@@ -161,8 +161,8 @@ float noise(vec2 P){
 
 float fbm (vec2 p) {
     float value = .0;
-    float amplitude = 10;
-    float frequency = 0.05;
+    float amplitude = 1;
+    float frequency = 0.25;
     for (int i = 0; i < 10; i++) {
         float n = noise(p*frequency);
         value += amplitude * n;
@@ -205,15 +205,19 @@ float sdDoubleHelix(vec3 p){
     return min(helixA, helixB);
 }
 
+float sdCylinder(vec3 p, float w){
+    return length(p.xy) - w;
+}
+
 vec3 repeat(vec3 p, vec3 c){
     return mod(p+0.5*c, c)-0.5*c;
 }
 
 dist getDistance(vec3 p){
-    vec3 center = vec3(0., 10., 1.);
-    float m = 1-length(p-center);
-    float f = fbm(vec2(p.x, p.z));
-    float d = p.y-m*.6-f*.5;
+    p.x += 2.5*sin(p.z*0.1);
+    p.y += 2.5*cos(p.z*0.1);
+    float d = -sdCylinder(p, 10);
+    d -= .5*fbm(p.xz);
     return dist(d, 0);
 }
 
@@ -281,14 +285,19 @@ vec3 render(vec2 cv){
     vec3 normal = getNormal(r.hit);
     vec3 lightDir = normalize(lightDirection);
     lightDir.xz *= rotate2d(rotate);
+    /*
     float diffuse = getDiffuseLight(r.hit, lightDir, normal, true);
     float specular = getSpecularLight(r.hit, lightDir, rayDirection, normal);
+    */
+    /*
     ray shadow = getShadow(r.hit, normal, lightDir);
     if (shadow.distSum < maxDist){
         diffuse *= .95;
         specular *= 0.;
     }
-    vec3 hsb = vec3(r.hue, r.sat, diffuse*diffuseMag + specular*specularMag);
+    */
+//    vec3 hsb = vec3(r.hue, r.sat, diffuse*diffuseMag + specular*specularMag);
+    vec3 hsb = vec3(r.hue, r.sat, r.distSum*.01);
     vec3 col = rgb(hsb);
     col = step(r.distSum, maxDist)*col;
     return col;
