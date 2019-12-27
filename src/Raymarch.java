@@ -26,7 +26,7 @@ public class Raymarch extends KrabApplet {
         surface.setAlwaysOnTop(true);
         surface.setLocation(1920 - 820, 20);
         resetPGraphics();
-        frameRecordingDuration *= 2.1;
+        frameRecordingDuration *= 2;
     }
 
     private void resetPGraphics() {
@@ -45,6 +45,7 @@ public class Raymarch extends KrabApplet {
         rayMarchPass(pg);
         pg.endDraw();
         image(pg, 0, 0, width, height);
+        /*
         if(toggle("snow", false)){
             snowPg.beginDraw();
             snowPg.clear();
@@ -60,7 +61,8 @@ public class Raymarch extends KrabApplet {
                 popMatrix();
             }
         }
-        rec();
+        */
+        rec(pg);
         gui();
     }
 
