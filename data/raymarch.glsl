@@ -372,6 +372,10 @@ vec3 render(vec2 cv){
     return col;
 }
 
+vec3 srgb(vec3 col){
+    return col = pow(col,vec3(0.45));
+}
+
 vec3 aarender(vec2 cv){
     float off = (1./resolution.x)/4.;
     vec3 colA = render(cv+vec2(off, off));
@@ -384,5 +388,5 @@ vec3 aarender(vec2 cv){
 
 void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    gl_FragColor = vec4(render(cv), 1.);
+    gl_FragColor = vec4(srgb(render(cv)), 1.);
 }
