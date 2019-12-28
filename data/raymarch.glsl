@@ -15,10 +15,10 @@ uniform float rotate;
 uniform float time;
 uniform float shininess;
 
-const int maxSteps = 100;
-const float maxDist = 400.;
-const float surfaceDist = 0.00001;
-const float normalOffset = 0.5;
+const int maxSteps = 500;
+const float maxDist = 6000.;
+const float surfaceDist = 0.001;
+const float normalOffset = 0.15;
 
 #define pi 3.14159265359
 
@@ -111,17 +111,21 @@ float value4D(vec4 P)
 }
 
 float fbm (vec4 p, float ampOffset) {
-    p += vec4(0);
+    p += vec4(13);
     float value = .0;
-    float amplitude = 0.8+ampOffset;
-    float frequency = 0.1;
-    for (int i = 0; i < 10; i++) {
+    float amplitude = 0.90+ampOffset;
+    float frequency = 0.0403;
+    for (int i = 0; i < 6; i++) {
         float n = value4D(p*frequency);
         value += amplitude * n;
-        frequency *= 2.8;
-        amplitude *= 0.5;
+        frequency *= 2.2;
+        amplitude *= 0.45;
     }
     return value;
+}
+
+float fbm(vec3 p, float offset, float ampOffset){
+    return fbm(vec4(p, offset), ampOffset);
 }
 
 float simplex(vec3 p){
@@ -271,17 +275,14 @@ vec3 repeat(vec3 p, vec3 c){
 
 dist getDistance(vec3 p){
     bool lit = true;
-    float ampMag = 0.7;
-    if(p.y > 5.){
-        ampMag = 0.1;
-        lit = false;
-    }
-    float plane = opSmoothUnion(p.y, 10-p.y, 0.1);
-    float ampOffset = ampMag*pow(abs(sin((p.x*2.+p.z*1.5)*.1+time*1.5)), 3.);
-    float f = fbm(vec4(p, time*.8), ampOffset);
-    float d = plane-f;
-    float hue = .5+.6*abs(5-p.y);
-    float sat = 1.-hue;
+    p = repeat(p, vec3(20));
+    float tunnel = length(p.xy) - 1.5;
+//    float ampOffset = ampMag*pow(abs(sin((p.x*1.+p.z*1.)*.1+time*1.5)), 3.);
+    float ampOffset = sin(p.z)*.075;
+    float f = fbm(vec4(p*1.5, time*0.5), ampOffset);
+    float d = tunnel-f;
+    float hue = .95+f*.01;
+    float sat = tunnel;
     return dist(d, 0, lit, hue, sat);
 }
 
