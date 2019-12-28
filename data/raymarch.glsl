@@ -39,6 +39,12 @@ struct dist{
     float sat;
 };
 
+float cubicPulse(float c, float w, float x){
+    x = abs(x - c);
+    if (x>w) return 0.0;
+    x /= w;
+    return 1.0 - x*x*(3.0-2.0*x);
+}
 
 vec3 rgb(in vec3 hsb){
     vec3 rgb = clamp(abs(mod(hsb.x*6.0+
@@ -262,22 +268,22 @@ float sdCylinder(vec3 p, float w){
 vec3 repeat(vec3 p, vec3 c){
     return mod(p+0.5*c, c)-0.5*c;
 }
-/*
-mirror sea
+
 dist getDistance(vec3 p){
     bool lit = true;
     if(p.y > 5.){
         lit = false;
     }
     float plane = opSmoothUnion(p.y, 10-p.y, 0.1);
-    float ampOffset = 0.5*pow(abs(sin((p.x*2.+p.z*2.5)*.1+time*3)), 3.);
+    float ampOffset = 0.5*pow(abs(sin((p.x*2.+p.z*2.5)*.1+time*1.5)), 3.);
     float f = fbm(vec4(p, time*.7), ampOffset);
     float d = plane-f;
     float hue = .65-0.05*ampOffset;
     float sat = .4;
     return dist(d, 0, lit, hue, sat);
 }
-*/
+
+/*
 dist getDistance(vec3 p){
     float d = sdSphere(p, 1);
     bool lit = true;
@@ -285,7 +291,7 @@ dist getDistance(vec3 p){
     float sat = .0;
     return dist(d, 0, lit, hue, sat);
 }
-
+*/
 
 vec3 getNormal(vec3 p){
     dist d0 = getDistance(p);
@@ -378,5 +384,5 @@ vec3 aarender(vec2 cv){
 
 void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    gl_FragColor = vec4(aarender(cv), 1.);
+    gl_FragColor = vec4(render(cv), 1.);
 }
