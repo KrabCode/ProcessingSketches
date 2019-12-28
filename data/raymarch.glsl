@@ -271,15 +271,17 @@ vec3 repeat(vec3 p, vec3 c){
 
 dist getDistance(vec3 p){
     bool lit = true;
+    float ampMag = 0.7;
     if(p.y > 5.){
+        ampMag = 0.1;
         lit = false;
     }
     float plane = opSmoothUnion(p.y, 10-p.y, 0.1);
-    float ampOffset = 0.5*pow(abs(sin((p.x*2.+p.z*2.5)*.1+time*1.5)), 3.);
-    float f = fbm(vec4(p, time*.7), ampOffset);
+    float ampOffset = ampMag*pow(abs(sin((p.x*2.+p.z*1.5)*.1+time*1.5)), 3.);
+    float f = fbm(vec4(p, time*.8), ampOffset);
     float d = plane-f;
-    float hue = .65-0.05*ampOffset;
-    float sat = .4;
+    float hue = .5+.6*abs(5-p.y);
+    float sat = 1.-hue;
     return dist(d, 0, lit, hue, sat);
 }
 
