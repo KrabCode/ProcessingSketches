@@ -15,10 +15,10 @@ uniform float rotate;
 uniform float time;
 uniform float shininess;
 
-const int maxSteps = 500;
-const float maxDist = 6000.;
+const int maxSteps = 100;
+const float maxDist = 100.;
 const float surfaceDist = 0.001;
-const float normalOffset = 0.15;
+const float normalOffset = 0.05;
 
 #define pi 3.14159265359
 
@@ -75,8 +75,7 @@ mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-float value4D(vec4 P)
-{
+float value4D(vec4 P){
     //  https://github.com/BrianSharpe/Wombat/blob/master/Value4D.glsl
 
     // establish our grid cell and unit position
@@ -110,25 +109,7 @@ float value4D(vec4 P)
     return dot(res0, blend.zxzx * blend.wwyy);
 }
 
-float fbm (vec4 p, float ampOffset) {
-    p += vec4(13);
-    float value = .0;
-    float amplitude = 0.90+ampOffset;
-    float frequency = 0.0403;
-    for (int i = 0; i < 6; i++) {
-        float n = value4D(p*frequency);
-        value += amplitude * n;
-        frequency *= 2.2;
-        amplitude *= 0.45;
-    }
-    return value;
-}
-
-float fbm(vec3 p, float offset, float ampOffset){
-    return fbm(vec4(p, offset), ampOffset);
-}
-
-float simplex(vec3 p){
+float simplex3D(vec3 p){
     //  https://github.com/BrianSharpe/Wombat/blob/master/SimplexPerlin3D.glsl
 
     //  simplex math constants
@@ -191,7 +172,7 @@ float simplex(vec3 p){
     return dot(kernel_weights, grad_results) * FINAL_NORMALIZATION;
 }
 
-float noise(vec2 P){
+float noise2D(vec2 P){
     //  https://github.com/BrianSharpe/Wombat/blob/master/Perlin2D.glsl
 
     // establish our grid cell and unit position
@@ -219,12 +200,40 @@ float noise(vec2 P){
     return dot(grad_results, blend2.zxzx * blend2.wwyy);
 }
 
+float fbm (vec4 p, int octaves, float amp, float ampMult, float freq,  float freqMult) {
+    p += vec4(13);
+    float value = .0;
+    float amplitude = amp;
+    float frequency = freq;
+    for (int i = 0; i < octaves; i++) {
+        float n = value4D(p*frequency);
+        value += abs(amplitude * n);
+        frequency *= freqMult;
+        amplitude *= ampMult;
+    }
+    return value;
+}
+
+float fbm (vec3 p, int octaves, float amp, float ampMult, float freq,  float freqMult) {
+    p += vec3(13);
+    float value = .0;
+    float amplitude = amp;
+    float frequency = freq;
+    for (int i = 0; i < octaves; i++) {
+        float n = simplex3D(p*frequency);
+        value += abs(amplitude * n);
+        frequency *= freqMult;
+        amplitude *= ampMult;
+    }
+    return value;
+}
+
 float fbm (vec2 p) {
     float value = .0;
     float amplitude = 1.5;
     float frequency = 0.05;
     for (int i = 0; i < 1; i++) {
-        float n = noise(p*frequency);
+        float n = noise2D(p*frequency);
         value += amplitude * n;
         frequency *= 2.5;
         amplitude *= 0.5;
@@ -275,14 +284,9 @@ vec3 repeat(vec3 p, vec3 c){
 
 dist getDistance(vec3 p){
     bool lit = true;
-    p = repeat(p, vec3(20));
-    float tunnel = length(p.xy) - 1.5;
-//    float ampOffset = ampMag*pow(abs(sin((p.x*1.+p.z*1.)*.1+time*1.5)), 3.);
-    float ampOffset = sin(p.z)*.075;
-    float f = fbm(vec4(p*1.5, time*0.5), ampOffset);
-    float d = tunnel-f;
-    float hue = .95+f*.01;
-    float sat = tunnel;
+    float d = opSmoothUnion(sdCube(p, vec3(0.5)),sdSphere(p, 0.5), 0.5);
+    float hue = .6;
+    float sat = .999;
     return dist(d, 0, lit, hue, sat);
 }
 
