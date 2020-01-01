@@ -17,8 +17,8 @@ uniform float shininess;
 
 const int maxSteps = 100;
 const float maxDist = 100.;
-const float surfaceDist = 0.001;
-const float normalOffset = 0.05;
+const float surfaceDist = 0.0000001;
+const float normalOffset = 0.001;
 
 #define pi 3.14159265359
 
@@ -284,21 +284,13 @@ vec3 repeat(vec3 p, vec3 c){
 
 dist getDistance(vec3 p){
     bool lit = true;
-    float d = opSmoothUnion(sdCube(p, vec3(0.5)),sdSphere(p, 0.5), 0.5);
-    float hue = .6;
-    float sat = .999;
+    // (vec3 p, int octaves, float amp, float ampMult, float freq,  float freqMult)
+    float s = 0.05*cos((cos(p.y*p.z) + cos(p.x*p.y) + cos(p.y*p.z))*1.5+time*8);
+    float d = sdSphere(p, 8)-s;
+    float hue = .7+.9*s;
+    float sat = .85;
     return dist(d, 0, lit, hue, sat);
 }
-
-/*
-dist getDistance(vec3 p){
-    float d = sdSphere(p, 1);
-    bool lit = true;
-    float hue = .0;
-    float sat = .0;
-    return dist(d, 0, lit, hue, sat);
-}
-*/
 
 vec3 getNormal(vec3 p){
     dist d0 = getDistance(p);
