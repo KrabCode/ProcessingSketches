@@ -40,6 +40,15 @@ public class WaterRipple extends KrabApplet {
         uniform(cellular).set("a", a);
         uniform(cellular).set("b", pg);
         hotFilter(cellular, pg);
+        drawToPg();
+        pg.endDraw();
+        image(pg, 0, 0);
+        rec(pg);
+        updateBuffers();
+        gui();
+    }
+
+    private void drawToPg() {
         float baseR = slider("r", 10);
         int count = sliderInt("count", 10);
         float rAmp = slider("r amp", 1);
@@ -57,11 +66,7 @@ public class WaterRipple extends KrabApplet {
                 pg.ellipse(r * cos(a), r * sin(a), size, size);
             }
         }
-        pg.endDraw();
-        image(pg, 0, 0);
-        rec(pg);
-        updateBuffers();
-        gui();
+
     }
 
     private void updateBuffers() {
