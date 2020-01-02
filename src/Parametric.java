@@ -28,12 +28,11 @@ public class Parametric extends KrabApplet {
     public void draw() {
         pg.beginDraw();
         group("matrix");
-        if(toggle("raymarch")){
-            rayMarchPass(pg);
-        }else{
-            alphaFade(pg);
-            splitPass(pg);
-        }
+        alphaFade(pg);
+        splitPass(pg);
+        pg.lights();
+        pg.shininess(slider("shine"));
+        hotShader("PhongFrag.glsl", "PhongVert.glsl", pg);
         PVector translate = sliderXYZ("translate");
         pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
         PVector rot = sliderXYZ("rotation");
@@ -55,8 +54,11 @@ public class Parametric extends KrabApplet {
         h = r * (1 + slider("height", 0));
         pg.strokeWeight(slider("weight", 1));
         pg.stroke(picker("stroke", 1).clr());
+        if(toggle("no stroke")){
+            pg.noStroke();
+        }
         pg.fill(picker("fill", 0).clr());
-        for (int uIndex = 0; uIndex <= uMax; uIndex++) {
+        for (int uIndex = 0; uIndex < uMax; uIndex++) {
             group("params");
             if (toggle("points")) {
                 pg.beginShape(POINTS);
