@@ -568,9 +568,6 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private void updateFps() {
-        if (!trayVisible) {
-            return;
-        }
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
         String fps = nonFlickeringFrameRate + " fps";
         surface.setTitle(this.getClass().getSimpleName() + " " + fps);
