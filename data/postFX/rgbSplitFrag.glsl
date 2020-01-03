@@ -23,6 +23,8 @@ void main() {
 
 	//remove extra green because I hate green
 	c2.g = c2.g*smoothstep(0., 2.5, c1.a + c2.a + c3.b);
+	//remove extra blue because I hate blue too
+	c2.b = c2.b*smoothstep(0., 4.5, c1.a + c2.a + c3.b);
 
 	gl_FragColor = vec4(c1.r, c2.g, c3.b, c1.a + c2.a + c3.b);
 }
