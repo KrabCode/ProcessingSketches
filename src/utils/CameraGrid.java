@@ -1,11 +1,13 @@
 package utils;
 
 import applet.HotswapGuiSketch;
+import processing.core.PImage;
 import processing.core.PVector;
 
 public class CameraGrid extends HotswapGuiSketch {
     private PVector cameraOffset;
     private PVector playerPos = new PVector();
+    private PImage img;
 
     public static void main(String[] args) {
         HotswapGuiSketch.main("utils.CameraGrid");
@@ -16,17 +18,22 @@ public class CameraGrid extends HotswapGuiSketch {
     }
 
     public void setup() {
-        cameraOffset = new PVector(width / 2, height / 2);
+        cameraOffset = new PVector(width * .5f, height * .5f);
+        img = loadImage(randomImageUrl(800));
     }
 
     public void draw() {
-        float t = radians(frameCount);
         background(150);
         updateCamera();
-        drawGridAroundPlayer();
+        image(img, -100, -100);
+//        drawGridAroundPlayer();
+        updatePlayer();
         drawPlayer();
+    }
+
+    private void updatePlayer() {
         if (mousePressed) {
-            PVector toMouse = new PVector(mouseX-width*.5f, mouseY-height*.5f).normalize().mult(5);
+            PVector toMouse = new PVector(mouseX - width * .5f, mouseY - height * .5f).normalize().mult(5);
             playerPos.add(toMouse);
         }
     }
@@ -40,12 +47,12 @@ public class CameraGrid extends HotswapGuiSketch {
 
     private void drawGridAroundPlayer() {
         float cellSize = 40;
-        float bufferZone = cellSize*2;  //set this to -cellSize*2 to see how it works
-        float xEdge = width*.5f+bufferZone;
-        float yEdge = height*.5f+bufferZone;
+        float bufferZone = cellSize * 2;  //set this to -cellSize*2 to see how it works
+        float xEdge = width * .5f + bufferZone;
+        float yEdge = height * .5f + bufferZone;
         pushMatrix();
-        PVector gridOffset = new PVector(playerPos.x%cellSize, playerPos.y%cellSize);
-        translate(playerPos.x-gridOffset.x, playerPos.y-gridOffset.y);
+        PVector gridOffset = new PVector(playerPos.x % cellSize, playerPos.y % cellSize);
+        translate(playerPos.x - gridOffset.x, playerPos.y - gridOffset.y);
         for (float x = -xEdge; x <= xEdge; x += cellSize) {
             line(x, -yEdge, x, yEdge);
         }
