@@ -29,14 +29,19 @@ public class ReactionDiffusion extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        if (frameCount < 5 || button("new seed")) {
+        group("seed");
+        if (button("new seed") || frameCount < 5) {
             drawSeed();
         }
         if (button("new image")) {
             img = loadImage(randomImageUrl(800));
             pg.image(img, 0, 0, width, height);
         }
-        reactionDiffusionPass();
+        group("rd");
+        int passes = sliderInt("passes");
+        for (int i = 0; i < passes; i++) {
+            reactionDiffusionPass();
+        }
         pg.endDraw();
         bw.beginDraw();
         bw.image(pg, 0, 0, width, height);
@@ -52,8 +57,19 @@ public class ReactionDiffusion extends KrabApplet {
         pg.background(red);
         pg.strokeWeight(5);
         pg.stroke(blue);
-        for (int i = 0; i < 100; i++) {
-            pg.point(width * .5f + randomGaussian() * width, height * .5f + randomGaussian() * height);
+        pg.noFill();
+        pg.translate(width*.5f, height*.5f);
+        int count = sliderInt("count", 1);
+        float size = slider("sq size", 30);
+        float r = slider("r", 200);
+        for (int i = 0; i <= count; i++) {
+            float a = map(i, 0, count, 0, TAU);
+            pg.pushMatrix();
+            pg.rotate(a);
+            pg.translate(r, 0);
+            pg.rect(0, 0, size, size);
+            pg.rectMode(CENTER);
+            pg.popMatrix();
         }
     }
 
