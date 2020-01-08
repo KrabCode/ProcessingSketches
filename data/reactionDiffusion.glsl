@@ -63,8 +63,8 @@ vec3 laplacianNeighborhoodColor(vec2 uv){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float angle = tau*noise(30.+cv*3., time*.2);
-    float r = 0.05/resolution.x;
+    float angle = pi*.5+pi*noise(cv*1+noise(cv*10., time),time);
+    float r = 0.1/resolution.x;
     uv += vec2(r*cos(angle), r*sin(angle));
     vec3 prev = texture(texture, uv).rgb;
     float a = prev.r;

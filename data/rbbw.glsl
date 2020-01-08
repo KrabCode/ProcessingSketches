@@ -12,7 +12,7 @@ void main() {
     vec3 tex = texture(texture, uv).rgb;
     float pct = smoothstep(0., 0.35, tex.b);
 //    float pct = tex.b;
-    vec3 clr = rgb(vec3(.57, 1-pct*.5, pct));
-    clr -= smoothstep(0, 1.2, length(cv));
+    vec3 clr = rgb(vec3(.4+pct*0.5, 1-pct*.5, pct));
+    clr -= smoothstep(0.3, 1.0, length(cv));
     gl_FragColor = vec4(clr, 1.);
 }
