@@ -50,7 +50,7 @@ public class ReactionDiffusion extends KrabApplet {
         pg.endDraw();
         bw.beginDraw();
         bw.image(pg, 0, 0, width, height);
-        String redBlueToBlackWhite = "rbbw.glsl";
+        String redBlueToBlackWhite = "rbToColor.glsl";
         hotFilter(redBlueToBlackWhite, bw);
         bw.endDraw();
         image(bw, 0, 0, width, height);
@@ -62,10 +62,21 @@ public class ReactionDiffusion extends KrabApplet {
         pg.pushMatrix();
         pg.stroke(blue);
         pg.strokeWeight(slider("weight"));
-        float step = slider("step", 5);
-        for (int x = 0; x < width; x += step) {
-            for (int y = 0; y < height; y += step) {
-                pg.point(x, y);
+        String type = options("grid", "circle");
+        if (type.equals("grid")) {
+            float step = slider("step", 5);
+            for (int x = 0; x < width; x += step) {
+                for (int y = 0; y < height; y += step) {
+                    pg.point(x, y);
+                }
+            }
+        } else if (type.equals("circle")) {
+            pg.translate(width * .5f, height * .5f);
+            int count = sliderInt("count");
+            float r = slider("radius");
+            for (int i = 0; i <= count; i++) {
+                float angle = map(i, 0, count, 0, TAU);
+                pg.point(r * cos(angle), r * sin(angle));
             }
         }
         pg.popMatrix();
