@@ -6,10 +6,14 @@ import processing.core.PImage;
 
 public class ReactionDiffusion extends KrabApplet {
     PImage img;
-    int blue = color(0, 0, 255);
-    int red = color(255, 0, 0);
+    private int blue = color(0, 0, 255);
+    private int red = color(255, 0, 0);
+    private int black = color(0);
+    private int white = color(255);
     private PGraphics pg;
     private PGraphics bw;
+    private PGraphics raymarchPG;
+    private String algorithm = "";
 
     public static void main(String[] args) {
         KrabApplet.main("ReactionDiffusion");
@@ -24,7 +28,9 @@ public class ReactionDiffusion extends KrabApplet {
         surface.setLocation(1920 - 820, 20);
         pg = createGraphics(width, height, P2D);
         bw = createGraphics(width, height, P2D);
+        raymarchPG = createGraphics(width, height, P2D);
         frameRecordingDuration *= 2;
+        img = loadImage(randomImageUrl(800));
     }
 
 
@@ -35,32 +41,48 @@ public class ReactionDiffusion extends KrabApplet {
             img = loadImage(randomImageUrl(800));
             pg.image(img, 0, 0, width, height);
         }
+
         if (toggle("keep seed")) {
-            drawSeed();
+            drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
         if (button("new seed") || frameCount < 5) {
-            pg.background(red);
-            drawSeed();
+            pg.background(algorithm.equals("gray-scott")?red:black);
+            drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
         group("rd");
+        algorithm = options("gray-scott", "blur-sharpen");
         int passes = sliderInt("passes", 1);
         for (int i = 0; i < passes; i++) {
-            reactionDiffusionPass();
+            if (algorithm.equals("gray-scott")) {
+                reactionDiffusionGrayScottPass();
+            } else {
+                reactionDiffusionBlurSharpenPass(i);
+            }
         }
         pg.endDraw();
         bw.beginDraw();
+        bw.noTint();
         bw.image(pg, 0, 0, width, height);
-        String redBlueToBlackWhite = "rbToColor.glsl";
-        hotFilter(redBlueToBlackWhite, bw);
+        if (algorithm.equals("gray-scott")) {
+            String redBlueToBlackWhite = "rbToColor.glsl";
+            hotFilter(redBlueToBlackWhite, bw);
+        }
         bw.endDraw();
-        image(bw, 0, 0, width, height);
         rec(bw);
+        if(toggle("keep image") && img != null){
+            bw.beginDraw();
+            bw.tint(255,255,255,slider("image alpha"));
+            bw.image(img, 0, 0, width, height);
+            bw.endDraw();
+        }
+
+        image(bw, 0, 0, width, height);
         gui();
     }
 
-    private void drawSeed() {
+    private void drawSeed(int clr) {
         pg.pushMatrix();
-        pg.stroke(blue);
+        pg.stroke(clr);
         pg.strokeWeight(slider("weight"));
         String type = options("grid", "circle");
         if (type.equals("grid")) {
@@ -82,13 +104,22 @@ public class ReactionDiffusion extends KrabApplet {
         pg.popMatrix();
     }
 
-    private void reactionDiffusionPass() {
-        String rd = "reactionDiffusion.glsl";
+    private void reactionDiffusionGrayScottPass() {
+        String rd = "reactionDiffusionGrayScott.glsl";
         uniform(rd).set("time", t);
-        uniform(rd).set("dA", slider("diffusion a", 0, 1, 1.f));
-        uniform(rd).set("dB", slider("diffusion b", 0, 1, .5f));
+        if(img != null){
+            uniform(rd).set("parameterMap", img);
+        }
+        uniform(rd).set("diffA", slider("diffusion a", 0, 1, 1.f));
+        uniform(rd).set("diffB", slider("diffusion b", 0, 1, .5f));
         uniform(rd).set("feed", slider("feed", 0, .1f, .055f));
         uniform(rd).set("kill", slider("kill", 0, .1f, .062f));
+        hotFilter(rd, pg);
+    }
+
+    private void reactionDiffusionBlurSharpenPass(int passIndex) {
+        String rd = "reactionDiffusionBlurSharpen.glsl";
+        uniform(rd).set("passIndex", passIndex);
         hotFilter(rd, pg);
     }
 }

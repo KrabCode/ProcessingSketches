@@ -2282,7 +2282,7 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else if (name.contains("count") || name.contains("size")) {
+            } else if (name.contains("count") || name.contains("size") || name.contains("step")) {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;

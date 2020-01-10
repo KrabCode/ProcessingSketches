@@ -1,10 +1,12 @@
 uniform sampler2D texture;
+uniform sampler2D parameterMap;
 uniform vec2 resolution;
 uniform float time;
-uniform float dA;
-uniform float dB;
+uniform float diffA;
+uniform float diffB;
 uniform float feed;
 uniform float kill;
+uniform bool calculateEachColor;
 
 #define pi  3.14159
 #define tau 6.28318
@@ -63,11 +65,16 @@ vec3 laplacianNeighborhoodColor(vec2 uv){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float dist = sin(1.-length(cv*50.));
-    float angle = atan(cv.y, cv.x);
-    float mag = .1 * sin(dist);
+    vec2 flipUV = vec2(uv.x, 1.-uv.y);
+//    vec3 p = (1-2*(texture(parameterMap, flipUV).rgb));
+/*
+    float dist = 1.*sin(1.-length(cv*15.));
+    float angle = atan(cv.y, cv.x)+dist*1.;
+    float mag = .1*sin(dist);
     float r = mag/resolution.x;
     uv += vec2(r*cos(angle), r*sin(angle));
+*/
+    vec3 col;
     vec3 prev = texture(texture, uv).rgb;
     float a = prev.r;
     float b = prev.b;
@@ -76,10 +83,13 @@ void main(){
     float lb = lap.b;
     float t = 1.;
     float d = 1.-length(cv);
-    float f = feed;
-    float k = kill;
+//    float pBright = (p.r+p.g+p.b)/3.;
+    float f = feed;//+.001*pBright;
+    float k = kill;//-.05*pBright;
+    float dA = diffA;// + .1*pBright;
+    float dB = diffB;// + .1*pBright;
     a += ((dA*la)-(a*b*b)+f*(1-a))*t;
     b += ((dB*lb)+(a*b*b)-(k+f)*b)*t;
-    vec3 col = vec3(a, 0., b);
+    col = vec3(a, 0., b);
     gl_FragColor = vec4(col, 1.);
 }
