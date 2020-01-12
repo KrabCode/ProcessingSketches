@@ -11,10 +11,10 @@ void main() {
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 tex = texture(texture, uv).rgb;
     float pct = smoothstep(0., 0.7, tex.b);
-    /*
-    vec3 clr = rgb(vec3(.72, 1-pct, pct*1.5));
-    clr -= smoothstep(0.5, 1.0, length(cv));
-    */
-    vec3 clr = vec3(pct);
+    float d = length(cv);
+    vec3 clr = rgb(vec3(.6+d*.1, 0.4, pct));
+    clr -= smoothstep(0.3, 0.8, length(cv));
+
+//    vec3 clr = vec3(pct);
     gl_FragColor = vec4(clr, 1.);
 }

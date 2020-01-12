@@ -33,12 +33,11 @@ public class Feedback extends KrabApplet {
             pg.image(img, 0, 0);
             pg.noTint();
         }
-        String fb = "feedback.glsl";
-        uniform(fb).set("time", t);
-        hotFilter(fb, pg);
+        feedbackMovePass(pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
         gui();
     }
+
 }

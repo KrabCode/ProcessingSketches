@@ -45,7 +45,7 @@ public class ReactionDiffusion extends KrabApplet {
         if (toggle("keep seed")) {
             drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
-        if (button("new seed") || frameCount < 5) {
+        if (button("new seed")) {
             pg.background(algorithm.equals("gray-scott")?red:black);
             drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
@@ -59,6 +59,7 @@ public class ReactionDiffusion extends KrabApplet {
                 reactionDiffusionBlurSharpenPass(i);
             }
         }
+        feedbackMovePass(pg);
         pg.endDraw();
         bw.beginDraw();
         bw.noTint();

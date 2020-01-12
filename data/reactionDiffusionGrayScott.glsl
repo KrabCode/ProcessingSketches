@@ -65,15 +65,15 @@ vec3 laplacianNeighborhoodColor(vec2 uv){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec2 flipUV = vec2(uv.x, 1.-uv.y);
-//    vec3 p = (1-2*(texture(parameterMap, flipUV).rgb));
-/*
-    float dist = 1.*sin(1.-length(cv*15.));
-    float angle = atan(cv.y, cv.x)+dist*1.;
-    float mag = .1*sin(dist);
-    float r = mag/resolution.x;
-    uv += vec2(r*cos(angle), r*sin(angle));
-*/
+//    vec2 flipUV = vec2(uv.x, 1.-uv.y);
+    //    vec3 p = (1-2*(texture(parameterMap, flipUV).rgb));
+    /*
+        float dist = 1.*sin(1.-length(cv*15.));
+        float angle = atan(cv.y, cv.x)+dist*1.;
+        float mag = .1*sin(dist);
+        float r = mag/resolution.x;
+        uv += vec2(r*cos(angle), r*sin(angle));
+    */
     vec3 col;
     vec3 prev = texture(texture, uv).rgb;
     float a = prev.r;
@@ -82,12 +82,12 @@ void main(){
     float la = lap.r;
     float lb = lap.b;
     float t = 1.;
-    float d = 1.-length(cv);
+    float d = length(cv)*1.0;
 //    float pBright = (p.r+p.g+p.b)/3.;
-    float f = feed;//+.001*pBright;
-    float k = kill;//-.05*pBright;
-    float dA = diffA;// + .1*pBright;
-    float dB = diffB;// + .1*pBright;
+    float f = feed;// - d*.02;//+.001*pBright;
+    float k = kill;// + d*.05;//-.05*pBright;
+    float dA = diffA-d*0.25;// + .1*pBright;
+    float dB = diffB-d*.1;// + .1*pBright;
     a += ((dA*la)-(a*b*b)+f*(1-a))*t;
     b += ((dB*lb)+(a*b*b)-(k+f)*b)*t;
     col = vec3(a, 0., b);
