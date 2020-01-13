@@ -69,9 +69,10 @@ vec3 move(vec2 uv, float mag, float angle){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float angle = pi*fbm(uv.x, uv.y, time*0.5);
+    float angle = atan(cv.y, cv.x)+pi*.5+time;
     float d = length(cv);
-    float mag = 3.*smoothstep(0.5, 0.7, 1.-d);
-    vec3 col = move(uv, mag, angle);
+    float mag = smoothstep(0.0, 0.5, d);
+    vec2 tv = vec2(d*cos(angle), vec2(d*sin(angle)))+.5;
+    vec3 col = texture(texture, tv).rgb;
     gl_FragColor = vec4(col, 1.);
 }

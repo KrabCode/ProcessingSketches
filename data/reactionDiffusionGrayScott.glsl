@@ -83,11 +83,10 @@ void main(){
     float lb = lap.b;
     float t = 1.;
     float d = length(cv)*1.0;
-//    float pBright = (p.r+p.g+p.b)/3.;
-    float f = feed;// - d*.02;//+.001*pBright;
-    float k = kill;// + d*.05;//-.05*pBright;
-    float dA = diffA-d*0.25;// + .1*pBright;
-    float dB = diffB-d*.1;// + .1*pBright;
+    float f = feed;
+    float k = kill;
+    float dA = diffA;
+    float dB = diffB;
     a += ((dA*la)-(a*b*b)+f*(1-a))*t;
     b += ((dB*lb)+(a*b*b)-(k+f)*b)*t;
     col = vec3(a, 0., b);

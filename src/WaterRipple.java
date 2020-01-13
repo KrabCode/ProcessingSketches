@@ -2,7 +2,7 @@ import applet.KrabApplet;
 import processing.core.PGraphics;
 
 public class WaterRipple extends KrabApplet {
-    String cellular = "waterRipple.glsl";
+    String waterRipple = "waterRipple.glsl";
 
     PGraphics pg;
     PGraphics a;
@@ -36,10 +36,10 @@ public class WaterRipple extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        uniform(cellular).set("damp", slider("damp", .99f));
-        uniform(cellular).set("a", a);
-        uniform(cellular).set("b", pg);
-        hotFilter(cellular, pg);
+        uniform(waterRipple).set("damp", slider("damp", .99f));
+        uniform(waterRipple).set("a", a);
+        uniform(waterRipple).set("b", pg);
+        hotFilter(waterRipple, pg);
         drawToPg();
         pg.endDraw();
         image(pg, 0, 0);

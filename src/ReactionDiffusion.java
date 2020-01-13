@@ -59,7 +59,9 @@ public class ReactionDiffusion extends KrabApplet {
                 reactionDiffusionBlurSharpenPass(i);
             }
         }
-        feedbackMovePass(pg);
+        if(toggle("feedback move")){
+            feedbackMovePass(pg);
+        }
         pg.endDraw();
         bw.beginDraw();
         bw.noTint();

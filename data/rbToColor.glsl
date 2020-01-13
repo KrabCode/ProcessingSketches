@@ -13,8 +13,7 @@ void main() {
     float pct = smoothstep(0., 0.7, tex.b);
     float d = length(cv);
     vec3 clr = rgb(vec3(.6+d*.1, 0.4, pct));
-    clr -= smoothstep(0.3, 0.8, length(cv));
-
+//    clr -= smoothstep(0.3, 0.8, length(cv));
 //    vec3 clr = vec3(pct);
-    gl_FragColor = vec4(clr, 1.);
+    gl_FragColor = vec4(clr, 0.1);
 }
