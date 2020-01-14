@@ -1,4 +1,3 @@
-
 uniform mat4 transform;
 
 attribute vec4 position;

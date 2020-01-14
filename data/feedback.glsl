@@ -9,7 +9,6 @@ precision mediump int;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
-uniform float mag;
 uniform float baseAngle;
 uniform float angleVariation;
 uniform float timeSpeed;
@@ -175,10 +174,9 @@ float map(float x, float a1, float a2, float b1, float b2){
     return b1 + (b2-b1) * (x-a1) / (a2-a1);
 }
 
-vec3 move(vec2 uv, float mag, float angle){
+vec3 move(vec2 uv, float angle){
     vec3 orig = texture(texture, uv).rgb;
-    mag *= (orig.r+orig.g+orig.b)/3.;
-    float texel = mag/resolution.x;
+    float texel = 0.5/resolution.x;
     vec2 off = vec2(texel*cos(angle), texel*sin(angle));
     return texture(texture, uv+off).rgb;
 }
@@ -186,7 +184,10 @@ vec3 move(vec2 uv, float mag, float angle){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float angle = baseAngle+angleVariation*pi*fbm(uv.x, uv.y, time*timeSpeed);
-    vec3 col = move(uv, mag, angle);
+    float toCenter = atan(cv.y, cv.x)+pi;
+    float t = time;
+    float n = baseAngle+angleVariation*fbm(cv.x, cv.y, t);
+    float angle = toCenter+n;
+    vec3 col = move(uv, angle);
     gl_FragColor = vec4(col, 1.);
 }

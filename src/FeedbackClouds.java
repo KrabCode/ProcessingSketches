@@ -1,16 +1,13 @@
 import applet.KrabApplet;
-import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-public class ImmediateLivedExperience extends KrabApplet {
+public class FeedbackClouds extends KrabApplet {
     private PGraphics pg;
-    private PFont henrik;
-    private float henrikSize = 40;
     PImage img;
 
     public static void main(String[] args) {
-        ImmediateLivedExperience.main("ImmediateLivedExperience");
+        FeedbackClouds.main("FeedbackClouds");
     }
 
     public void settings() {
@@ -20,7 +17,6 @@ public class ImmediateLivedExperience extends KrabApplet {
     public void setup() {
         surface.setAlwaysOnTop(true);
         img = loadImage("images/yellow_clouds_crop.jpg");
-        henrik = createFont("fonts\\Henrik-Regular.otf", henrikSize);
         pg = createGraphics(width, height, P2D);
         frameRecordingDuration *= 4;
     }
