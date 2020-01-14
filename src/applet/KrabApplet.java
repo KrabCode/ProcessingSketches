@@ -1437,6 +1437,14 @@ public abstract class KrabApplet extends PApplet {
     protected void feedbackMovePass(PGraphics pg) {
         String fb = "feedback.glsl";
         uniform(fb).set("time", t);
+        uniform(fb).set("mag", slider("magnitude", 0));
+        uniform(fb).set("baseAngle", slider("base angle", 0));
+        uniform(fb).set("angleVariation", slider("angle variation", 1));
+        uniform(fb).set("timeSpeed", slider("time speed", 1));
+        uniform(fb).set("baseFrequency", slider("base frequency", .5f));
+        uniform(fb).set("baseAmp", slider("base amplitude", 1));
+        uniform(fb).set("freqMult", slider("freq mult", 2));
+        uniform(fb).set("ampMult", slider("amp mult", .5f));
         hotFilter(fb, pg);
     }
 

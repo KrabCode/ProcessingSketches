@@ -9,6 +9,14 @@ precision mediump int;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
+uniform float mag;
+uniform float baseAngle;
+uniform float angleVariation;
+uniform float timeSpeed;
+uniform float baseFrequency;
+uniform float baseAmp;
+uniform float freqMult;
+uniform float ampMult;
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
@@ -146,14 +154,14 @@ float noise(vec3 p){
 
 float fbm(float x, float y, float z){
     vec3 v = vec3(x, y, z);
-    float freq = 0.5;
-    float amp = 1.;
+    float freq = baseFrequency;
+    float amp = baseAmp;
     float sum = 0.;
     for (int i = 0; i < 8; i++){
         float n = noise(vec3(v.x*freq, v.y*freq, v.z*freq));
         sum += n*amp;
-        amp *= .5;
-        freq *= 2.;
+        amp *= ampMult;
+        freq *= freqMult;
 //        v.xy += vec2(51.212, 12.312);
     }
     return sum;
@@ -178,7 +186,7 @@ vec3 move(vec2 uv, float mag, float angle){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float angle = tau*fbm(uv.x, uv.y, time*10.);
-    vec3 col = move(uv, 10., angle);
+    float angle = baseAngle+angleVariation*pi*fbm(uv.x, uv.y, time*timeSpeed);
+    vec3 col = move(uv, mag, angle);
     gl_FragColor = vec4(col, 1.);
 }
