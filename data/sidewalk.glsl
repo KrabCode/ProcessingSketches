@@ -1,15 +1,7 @@
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
-
 uniform sampler2D texture;
 uniform vec2 resolution;
-uniform vec2 res;
 uniform float time;
 
-#define pi 3.1415926535
-#define two_pi 6.283185
 
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
 float permute(float x){ return floor(mod(((x*34.0)+1.0)*x, 289.0)); }
@@ -120,12 +112,24 @@ float fbm(vec4 p){
 }
 
 void main(){
-    vec2 uv = (gl_FragCoord.xy-.5*res.xy) / res.y;
-    uv *= 0.8;
-    float t = time * .05;
-    uv += 1.*vec2(snoise(vec4(t, 0., 0., 0.)), snoise(vec4(20.+t, 0., 0., 0.)));
-    float pct = .5+.5*fbm(vec4(uv.xy, t, 0.));
-    vec3 col = vec3(pct);
-    col += cubicPulse(sin(pct*20.), .2, pct);
-    gl_FragColor = vec4(col, -.1+pct);
+    float t = time*.2;
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    cv *= 60.;
+//    cv.y += time*6.;
+    vec2 gv = fract(cv)-.5;
+    vec2 absId = abs(floor(cv)+.5);
+    vec2 id = floor(cv)+.5;
+    float d = length(absId);
+    float theta = atan(absId.y, absId.x)*8.;
+    gv *= .4;
+    float n = .5+.5*fbm(vec4(gv.x+id.x, gv.y+id.y, 0., 0.));
+    float sinOffset = 2.8;
+    float idMultiplier = 0.21;
+    float white = sin(sinOffset+absId.x*idMultiplier)*sin(sinOffset+absId.y*idMultiplier);
+    vec3 color = vec3(n*step(white, 0.));
+    if(length(color) == 0.){
+        color = vec3(n*.25);
+    }
+    gl_FragColor = vec4(color, 1.);
 }
