@@ -659,3 +659,55 @@ fbm§amplitude mod§0.8124998§10.0
 fbm§rotation variation§0.74479014§10.0
 fbm§fbm mag§1.4374994§10.0
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§fade to black§2.390625§255.0
+effects§radial delta§-0.40119568§100.0
+effects§radial power§1.0010418§10.0
+GROUP§particle§true
+particle§count§62.999992§10000.0
+particle§to center§1.2083335§10.0
+particle§drag§0.608334§10.0
+particle§weight§1.8083315§10.0
+particle§stroke§0.59316456§0.78125§1.0§1.0§1.0
+particle§add hue§6.2864274E-9§1.0
+particle§mirrors§15.000002§300.0
+particle§fade in duration§10.281253§100.0
+particle§hue offset§0.017304853§1.0
+particle§sat offset§0.359584§1.0
+GROUP§fbm§true
+fbm§amplitude§-0.9187477§10.0
+fbm§frequence§9.345419§10.0
+fbm§octaves§16.000004§100.0
+fbm§frequence mod§2.4000006§10.0
+fbm§amplitude mod§0.8124998§10.0
+fbm§rotation variation§0.74479014§10.0
+fbm§fbm mag§1.4374994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§effects§true
+effects§fade to black§2.390625§255.0
+effects§radial delta§-0.40119568§100.0
+effects§radial power§1.0010418§10.0
+GROUP§particle§true
+particle§count§62.999992§10000.0
+particle§to center§1.2083335§10.0
+particle§drag§0.608334§10.0
+particle§weight§1.8083315§10.0
+particle§stroke§0.59316456§0.78125§1.0§1.0§1.0
+particle§add hue§6.2864274E-9§1.0
+particle§mirrors§15.000002§300.0
+particle§fade in duration§10.281253§100.0
+particle§hue offset§0.017304853§1.0
+particle§sat offset§0.359584§1.0
+GROUP§fbm§true
+fbm§amplitude§-0.9187477§10.0
+fbm§frequence§9.345419§10.0
+fbm§octaves§16.000004§100.0
+fbm§frequence mod§2.4000006§10.0
+fbm§amplitude mod§0.8124998§10.0
+fbm§rotation variation§0.74479014§10.0
+fbm§fbm mag§1.4374994§10.0
+STATE_END

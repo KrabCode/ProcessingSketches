@@ -194,21 +194,13 @@ float angularDiameter(float r, float size) {
 }
 
 void main(){
-    float t = time*0.05;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 uv = gl_FragCoord.xy / resolution.xy;
+    float t = time*10.;
+    vec2 gv = fract(vec2(cv.x*10., cv.y*10.*(1.+uv.y)))-.5;
     float d = length(cv)*1.;
-    cv *= 5.;
-    cv.x += d*(1.-2*fbm(d-t));
-    cv.y += d*(1.-2*fbm(10.+d-t));
-    float theta = map(atan(cv.y, cv.x), -pi, pi, 0, 1);
     vec3 color = vec3(0.);
-    float r = .4;
-    color += cubicPulse(r, .01, d);
-    int count = 80;
-    for(int i = 0; i <= count; i++){
-        float inorm = map(i, 0., count, 0., 1.);
-        color += step(d, r)*cubicPulse(theta, angularDiameter(d, .001), inorm);
-    }
+    float x = cubicPulse(.1*sin(gv.x*pi*2.+t), 0.1+(1.-uv.y)*.01, gv.y);
+    color += x;
     gl_FragColor = vec4(color, 1.);
 }
