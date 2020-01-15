@@ -1750,7 +1750,13 @@ public abstract class KrabApplet extends PApplet {
                     GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
-            text(name, x, y);
+            String lchar;
+            if (expanded) {
+                lchar = "v ";
+            } else {
+                lchar = "> ";
+            }
+            text(lchar+name, x, y);
         }
 
         public String getState() {
