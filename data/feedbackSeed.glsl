@@ -17,15 +17,27 @@ float cubicPulse( float c, float w, float x ){
     return 1.0 - x*x*(3.0-2.0*x);
 }
 
+float ease(float p, float g) {
+    if (p < 0.5){
+        return 0.5f * pow(2 * p, g);
+    }
+    return 1 - 0.5f * pow(2 * (1 - p), g);
+}
+
 void main(){
+    float t = time*0.5;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     float d = length(cv);
-    float pct = cubicPulse(0., 1., d);
-    vec3 orig = texture2D(texture, uv).rgb;
-    float hue = atan(cv.y, cv.x)+d-time*.5;
-    float sat = 1.1;
-    vec3 altered = rgb(vec3(.5+.4*abs(sin(hue)), sat, pct)).rgb;
-    vec3 final = mix(orig, altered, alpha);
-    gl_FragColor = vec4(final, 1.);
+    vec3 color = vec3(0.);
+    cv *= 100.;
+    vec2 gv = fract(cv)-.5;
+    vec2 id = abs(floor(cv)+0.5);
+    float idd = length(id);
+    gv.x += .2*cos(t*idd);
+    gv.y += .2*sin(t*idd);
+    color += 1.-ease(length(gv)*2.5, 5.);
+    vec3 old = texture2D(texture, uv).rgb;
+    color = mix(old, color, alpha);
+    gl_FragColor = vec4(color, alpha);
 }

@@ -4,6 +4,7 @@
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
+uniform float alpha;
 
 vec3 rgb(float r, float g, float b){
     vec3 c = vec3(r, g, b);
@@ -13,6 +14,13 @@ vec3 rgb(float r, float g, float b){
 
 mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+}
+
+float map(float value, float start1, float stop1, float start2, float stop2){
+    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+}
+float norm(float value, float start, float stop){
+    return map(value, start, stop, 0., 1.);
 }
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
@@ -157,11 +165,9 @@ float fbm (float x, float y, float z) {
     float amplitude = 1;
     float frequency = .1;
     // Loop of octaves
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         float n = noise(vec3(st.x*frequency, st.y*frequency, st.z));
         value += amplitude * n;
-        st.xy *= rotate2d(amplitude+frequency);
-        //        st += pi;
         frequency *= 5.;
         amplitude *= .45;
     }
@@ -183,12 +189,26 @@ float ease(float p, float g) {
     return 1 - 0.5f * pow(2 * (1 - p), g);
 }
 
+float angularDiameter(float r, float size) {
+    return atan(2 * (size / (2 * r)));
+}
+
 void main(){
+    float t = time*0.05;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-//    cv += 30.;
-    float tr = 0.5;
-    float t = time;
-//    float n = ease(.5+.5*fbm(vec4(cv.xy,tr*cos(t),tr*sin(t))), 1.);
-    vec3 col = vec3(step(sin(length(cv*100.)), -0.8));
-    gl_FragColor = vec4(col, 1.);
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    float d = length(cv)*1.;
+    cv *= 5.;
+    cv.x += d*(1.-2*fbm(d-t));
+    cv.y += d*(1.-2*fbm(10.+d-t));
+    float theta = map(atan(cv.y, cv.x), -pi, pi, 0, 1);
+    vec3 color = vec3(0.);
+    float r = .4;
+    color += cubicPulse(r, .01, d);
+    int count = 80;
+    for(int i = 0; i <= count; i++){
+        float inorm = map(i, 0., count, 0., 1.);
+        color += step(d, r)*cubicPulse(theta, angularDiameter(d, .001), inorm);
+    }
+    gl_FragColor = vec4(color, 1.);
 }

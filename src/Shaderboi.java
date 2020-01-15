@@ -28,9 +28,10 @@ public class Shaderboi extends KrabApplet {
         pg.beginDraw();
         String shaderboi = "shaderboi.glsl";
         uniform(shaderboi).set("time", t);
+        uniform(shaderboi).set("alpha", slider("alpha"));
         hotFilter(shaderboi, pg);
         splitPass(pg);
-        feedbackMovePass(pg);
+//        feedbackMovePass(pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
