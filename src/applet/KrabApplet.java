@@ -83,6 +83,8 @@ public abstract class KrabApplet extends PApplet {
     private static final float DESELECTION_FADEOUT_EASING = 1;
     private static final float CHECK_ANIMATION_DURATION = 10;
     private static final float CHECK_ANIMATION_EASING = 1;
+    private static final float GROUP_TOGGLE_ANIMATION_EASING = 1;
+    private static final int GROUP_TOGGLE_ANIMATION_DURATION = 10;
     private final boolean onWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     private final float textSize = onWindows ? 24 : 48;
     private final float cell = onWindows ? 40 : 80;
@@ -1730,6 +1732,7 @@ public abstract class KrabApplet extends PApplet {
 
     private class Group {
         String name;
+        int animationStarted = -GROUP_TOGGLE_ANIMATION_DURATION;
         boolean expanded = true;
         ArrayList<Element> elements = new ArrayList<Element>();
 
@@ -1740,6 +1743,7 @@ public abstract class KrabApplet extends PApplet {
         public boolean update(float y) {
             if (activated(name, 0, y - cell, trayWidth, cell)) {
                 expanded = !expanded;
+                animationStarted = frameCount;
                 return true;
             }
             return false;
@@ -1750,11 +1754,19 @@ public abstract class KrabApplet extends PApplet {
                     GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
-            String lchar = "v ";
-            if (!expanded) {
-                lchar = "> ";
+            float animation = easedAnimation(animationStarted, GROUP_TOGGLE_ANIMATION_DURATION,
+                    GROUP_TOGGLE_ANIMATION_EASING);
+            if(!expanded){
+                animation = 1-animation;
             }
-            text(lchar+name, x, y);
+            pushMatrix();
+            translate(cell*.3f, y-textSize*.55f);
+            rotate(animation*HALF_PI);
+            float size = cell*0.08f;
+            line(-size, size, size, 0);
+            line(-size, -size, size, 0);
+            popMatrix();
+            text(name, x, y);
         }
 
         public String getState() {
