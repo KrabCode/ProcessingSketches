@@ -540,6 +540,10 @@ public abstract class KrabApplet extends PApplet {
             return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
+    public float angularDiameter(float r, float size) {
+        return atan(2 * (size / (2 * r)));
+    }
+
     // TRAY
 
     protected void spiralSphere(PGraphics pg) {
@@ -772,7 +776,7 @@ public abstract class KrabApplet extends PApplet {
                     }
                     updateElement(group, el, y);
                     if (trayVisible) {
-                        displayElement(group, el, x, y);
+                        displayElement(group, el, x, y, group.elementAlpha);
                     }
                 }
                 x -= cell * .5f;
@@ -799,7 +803,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    private void displayElement(Group group, Element el, float x, float y) {
+    private void displayElement(Group group, Element el, float x, float y, float alpha) {
         boolean isSelected = keyboardSelected(group.name + el.name) ||
                 isMouseOverScrollAware(0, y - cell, trayWidth, cell);
         float grayScale;
@@ -811,8 +815,8 @@ public abstract class KrabApplet extends PApplet {
                     DESELECTION_FADEOUT_EASING);
             grayScale = lerp(GRAYSCALE_TEXT_DARK, GRAYSCALE_TEXT_SELECTED, 1 - deselectionFadeout);
         }
-        fill(grayScale);
-        stroke(grayScale);
+        fill(grayScale, alpha);
+        stroke(grayScale, alpha);
         el.displayOnTray(x, y);
     }
 
@@ -1735,6 +1739,7 @@ public abstract class KrabApplet extends PApplet {
         int animationStarted = -GROUP_TOGGLE_ANIMATION_DURATION;
         boolean expanded = true;
         ArrayList<Element> elements = new ArrayList<Element>();
+        float elementAlpha = 1;
 
         Group(String name) {
             this.name = name;
@@ -1759,6 +1764,7 @@ public abstract class KrabApplet extends PApplet {
             if(!expanded){
                 animation = 1-animation;
             }
+            elementAlpha = animation;
             pushMatrix();
             translate(cell*.3f, y-textSize*.55f);
             rotate(animation*HALF_PI);
