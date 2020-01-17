@@ -389,7 +389,6 @@ public abstract class KrabApplet extends PApplet {
         if (frameCount == 1) {
             trayVisible = defaultVisibility;
             textSize(textSize * 2);
-            registerExitHandler();
         } else if (frameCount == 3) {
             loadLastStateFromFile(true);
         }
@@ -437,10 +436,6 @@ public abstract class KrabApplet extends PApplet {
         pg.fill(picker("filter", 0.1f,0).clr());
         pg.rect(0, 0, pg.width, pg.height);
         pg.hint(ENABLE_DEPTH_TEST);
-    }
-
-    private void registerExitHandler() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::saveStateToFile));
     }
 
     protected void resetGui() {
@@ -584,15 +579,16 @@ public abstract class KrabApplet extends PApplet {
         float y = 0;
         float size = menuButtonSize;
         updateMenuButtonHide(x, y, hideButtonWidth, size);
+        boolean hide = false;
         if (!trayVisible) {
-            return;
+            hide = true;
         }
         x += hideButtonWidth;
-        updateMenuButtonUndo(x, y, size, size);
+        updateMenuButtonUndo(hide, x, y, size, size);
         x += size;
-        updateMenuButtonRedo(x, y, size, size);
+        updateMenuButtonRedo(hide, x, y, size, size);
         x += size;
-        updateMenuButtonSave(x, y, size, size);
+        updateMenuButtonSave(hide, x, y, size, size);
     }
 
     private void updateMenuButtonHide(float x, float y, float w, float h) {
@@ -615,10 +611,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    private void updateMenuButtonUndo(float x, float y, float w, float h) {
-        float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        rotation -= constrain(norm(undoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
-        displayStateButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
+    private void updateMenuButtonUndo(boolean hide, float x, float y, float w, float h) {
         boolean canUndo = undoStack.size() > 0;
         if (canUndo && trayVisible) {
             if (actions.contains(ACTION_UNDO) || isMousePressedHere(x, y, w, h)) {
@@ -640,12 +633,15 @@ public abstract class KrabApplet extends PApplet {
                 undoHoldDuration = 0;
             }
         }
+        if(hide){
+            return;
+        }
+        float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        rotation -= constrain(norm(undoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
+        displayStateButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
     }
 
-    private void updateMenuButtonRedo(float x, float y, float w, float h) {
-        float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
-        rotation -= constrain(norm(redoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
-        displayStateButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
+    private void updateMenuButtonRedo(boolean hide, float x, float y, float w, float h) {
         boolean canRedo = redoStack.size() > 0;
         if (canRedo && trayVisible) {
             if (actions.contains(ACTION_REDO) || isMousePressedHere(x, y, w, h)) {
@@ -667,6 +663,12 @@ public abstract class KrabApplet extends PApplet {
                 redoHoldDuration = 0;
             }
         }
+        if(hide){
+            return;
+        }
+        float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        rotation -= constrain(norm(redoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
+        displayStateButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
     }
 
     private void displayMenuButtonHideShow(float x, float y, float w, float h, float rotation) {
@@ -684,10 +686,14 @@ public abstract class KrabApplet extends PApplet {
         popMatrix();
     }
 
-    private void updateMenuButtonSave(float x, float y, float w, float h) {
+    private void updateMenuButtonSave(boolean hide, float x, float y, float w, float h) {
         if (activated(MENU_BUTTON_SAVE, x, y, w, h) || actions.contains(ACTION_SAVE)) {
             saveAnimationStarted = frameCount;
             saveStateToFile();
+            println("saved");
+        }
+        if(hide){
+            return;
         }
         rectMode(CENTER);
         float animation = 1 - easedAnimation(saveAnimationStarted, MENU_ROTATION_DURATION, 3);
@@ -2320,6 +2326,9 @@ public abstract class KrabApplet extends PApplet {
                 maxValue = 255;
             } else if (name.contains("count") || name.contains("size") || name.contains("step")) {
                 this.constrained = true;
+                if(name.contains("count") && defaultValue == 0){
+                    defaultValue = 1;
+                }
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
                 if (value == 0) {
