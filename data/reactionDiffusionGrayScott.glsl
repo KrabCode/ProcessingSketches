@@ -3,9 +3,13 @@ uniform sampler2D parameterMap;
 uniform vec2 resolution;
 uniform float time;
 uniform float diffA;
+uniform float distA;
 uniform float diffB;
+uniform float distB;
 uniform float feed;
+uniform float distFeed;
 uniform float kill;
+uniform float distKill;
 uniform bool calculateEachColor;
 
 #define pi  3.14159
@@ -65,15 +69,7 @@ vec3 laplacianNeighborhoodColor(vec2 uv){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-//    vec2 flipUV = vec2(uv.x, 1.-uv.y);
-    //    vec3 p = (1-2*(texture(parameterMap, flipUV).rgb));
-    /*
-        float dist = 1.*sin(1.-length(cv*15.));
-        float angle = atan(cv.y, cv.x)+dist*1.;
-        float mag = .1*sin(dist);
-        float r = mag/resolution.x;
-        uv += vec2(r*cos(angle), r*sin(angle));
-    */
+    float dist = length(cv);
     vec3 col;
     vec3 prev = texture(texture, uv).rgb;
     float a = prev.r;
@@ -83,10 +79,10 @@ void main(){
     float lb = lap.b;
     float t = 1.;
     float d = length(cv)*1.0;
-    float f = feed;
-    float k = kill;
-    float dA = diffA;
-    float dB = diffB;
+    float f = feed+dist*distFeed;
+    float k = kill+dist*distKill;
+    float dA = diffA+dist*distA;
+    float dB = diffB+dist*distB;
     a += ((dA*la)-(a*b*b)+f*(1-a))*t;
     b += ((dB*lb)+(a*b*b)-(k+f)*b)*t;
     col = vec3(a, 0., b);

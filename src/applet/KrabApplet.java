@@ -63,7 +63,7 @@ public abstract class KrabApplet extends PApplet {
     private static final float INT_PRECISION_MAXIMUM = 10000;
     private static final float INT_PRECISION_MINIMUM = 10f;
     private static final float FLOAT_PRECISION_MAXIMUM = 10000;
-    private static final float FLOAT_PRECISION_MINIMUM = .1f;
+    private static final float FLOAT_PRECISION_MINIMUM = .01f;
     private static final float ALPHA_PRECISION_MINIMUM = .005f;
     private static final float ALPHA_PRECISION_MAXIMUM = 10;
     private static final float UNDERLINE_TRAY_ANIMATION_DURATION = 10;

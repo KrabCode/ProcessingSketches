@@ -37,6 +37,7 @@ public class ReactionDiffusion extends KrabApplet {
     public void draw() {
         pg.beginDraw();
         group("seed");
+        boolean newSeed = button("new seed");
         if (button("new image")) {
             img = loadImage(randomImageUrl(800));
             pg.image(img, 0, 0, width, height);
@@ -45,7 +46,7 @@ public class ReactionDiffusion extends KrabApplet {
         if (toggle("keep seed")) {
             drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
-        if (button("new seed")) {
+        if (newSeed) {
             pg.background(algorithm.equals("gray-scott")?red:black);
             drawSeed(algorithm.equals("gray-scott")?blue:white);
         }
@@ -60,8 +61,10 @@ public class ReactionDiffusion extends KrabApplet {
             }
         }
         if(toggle("feedback move")){
+            group("feedback");
             feedbackMovePass(pg);
         }
+        group("rd");
         pg.endDraw();
         bw.beginDraw();
         bw.noTint();
@@ -89,6 +92,7 @@ public class ReactionDiffusion extends KrabApplet {
         pg.strokeWeight(slider("weight"));
         String type = options("grid", "circle");
         if (type.equals("grid")) {
+            group("grid");
             float step = slider("step", 5);
             for (int x = 0; x < width; x += step) {
                 for (int y = 0; y < height; y += step) {
@@ -96,6 +100,7 @@ public class ReactionDiffusion extends KrabApplet {
                 }
             }
         } else if (type.equals("circle")) {
+            group("circle");
             pg.translate(width * .5f, height * .5f);
             int count = sliderInt("count");
             float r = slider("radius");
@@ -115,8 +120,12 @@ public class ReactionDiffusion extends KrabApplet {
         }
         uniform(rd).set("diffA", slider("diffusion a", 0, 1, 1.f));
         uniform(rd).set("diffB", slider("diffusion b", 0, 1, .5f));
-        uniform(rd).set("feed", slider("feed", 0, .1f, .055f));
-        uniform(rd).set("kill", slider("kill", 0, .1f, .062f));
+        uniform(rd).set("feed", slider("feed", 0, .2f, .055f));
+        uniform(rd).set("kill", slider("kill", 0, .2f, .062f));
+        uniform(rd).set("distA", slider("distance a", -1, 1, 0));
+        uniform(rd).set("distB", slider("distance b", -1, 1, 0));
+        uniform(rd).set("distFeed", slider("distance feed", -.2f, .2f, 0));
+        uniform(rd).set("distKill", slider("distance kill", -.2f, .2f, 0));
         hotFilter(rd, pg);
     }
 

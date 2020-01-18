@@ -1,6 +1,5 @@
 import applet.GuiSketch;
 import processing.core.PVector;
-import processing.opengl.PShader;
 
 public class LogSpiral extends GuiSketch {
 
@@ -9,7 +8,6 @@ public class LogSpiral extends GuiSketch {
     private float saveDuration = 0;
     private float armCount;
     private float e = 2.71828182845904523536028747135266249775724709369995f;
-    private PShader rgbSplit;
     private boolean keyWasPressed;
 
 
@@ -22,7 +20,7 @@ public class LogSpiral extends GuiSketch {
     }
 
     public void setup() {
-        rgbSplit = loadShader("rgbSplit.glsl");
+
     }
 
     public void draw() {
@@ -60,10 +58,6 @@ public class LogSpiral extends GuiSketch {
             popMatrix();
         }
         endShape();
-
-        rgbSplit.set("strength", slider("strength", .02f));
-        rgbSplit.set("easing", slider("easing", 2));
-        filter(rgbSplit);
 
         if (saveStarts > 0 && frameCount < saveStarts + saveDuration) {
             saveFrame(captureFilename);
