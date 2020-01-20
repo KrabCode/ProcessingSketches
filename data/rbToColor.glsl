@@ -14,7 +14,7 @@ void main() {
     float d = length(cv);
     float a = tex.r;
     float b = tex.b;
-    vec3 clr = vec3(b-a);
+    vec3 clr = vec3(pow(b-a, 0.5));
 //    vec3 clr = rgb(vec3(.6+d*.1, 0.4, pct));
 //    clr -= smoothstep(0.3, 0.8, length(cv));
 //    vec3 clr = vec3(pct);

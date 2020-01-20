@@ -337,7 +337,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        t += radians(1 / (frameRecordingDuration / 360f));
+        t += radians(1);
         guiSetup(defaultVisibility);
         updateFps();
         updateKeyboardInput();

@@ -1,21 +1,26 @@
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
-
-#define pi  3.14159
-#define tau 6.28318
-
+uniform sampler2D iChannel0;
+uniform sampler2D iChannel1;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
-uniform float baseAngle;
-uniform float angleVariation;
-uniform float timeSpeed;
-uniform float baseFrequency;
-uniform float baseAmp;
-uniform float freqMult;
-uniform float ampMult;
+
+
+#define pi 3.1415926535
+#define two_pi 6.283185
+
+// rendering params
+const float windspeed=.15;// speed of wind flow
+const float steps= 120.;// number of steps for the volumetric rendering
+const float stepsize=.8;
+const float brightness= 0.9;
+const float fade=.0002;//fade by distance
+
+// fractal params
+const int iterations= 9;
+//const vec3 offset=vec3(2.8, 0.9, -1.5);
+//const vec3 offset = vec3(1.1, -1.8, -2.8);
+vec3 offset = vec3(0);
+
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
@@ -103,91 +108,33 @@ float snoise(vec4 v){
     m1 = m1 * m1;
     return 49.0 * ( dot(m0*m0, vec3( dot( p0, x0 ), dot( p1, x1 ), dot( p2, x2 )))
     + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
-
 }
 
-float cubicPulse( float c, float w, float x ){
-    x = abs(x - c);
-    if( x>w ) return 0.0;
-    x /= w;
-    return 1.0 - x*x*(3.0-2.0*x);
-}
 
-float fbm(vec4 p){
-    float amp = 1.;
-    float frq = 0.5;
-    float sum = 0.;
-    for(int i = 0; i < 6; i++){
-        sum += amp*snoise(p*frq);
-        amp *= .4;
-        frq *= 2.6;
-        p += 9.;
+float wind(vec3 p) {
+    float fractparam= .567415+sin(time)*.005;
+    p *= 0.1;
+    float d = max(0., -max(0., length(p)));
+    p += vec3(0, 0, time*windspeed);
+    p = abs(fract((p+offset)*.058)-.5);
+    for (int i=0; i<iterations; i++) {
+        p = abs(p)/dot(p, p)-fractparam;
     }
-    return sum;
-}
-
-float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
-float noise(vec3 p){
-    vec3 a = floor(p);
-    vec3 d = p - a;
-    d = d * d * (3.0 - 2.0 * d);
-
-    vec4 b = a.xxyy + vec4(0.0, 1.0, 0.0, 1.0);
-    vec4 k1 = perm(b.xyxy);
-    vec4 k2 = perm(k1.xyxy + b.zzww);
-
-    vec4 c = k2 + a.zzzz;
-    vec4 k3 = perm(c);
-    vec4 k4 = perm(c + 1.0);
-
-    vec4 o1 = fract(k3 * (1.0 / 41.0));
-    vec4 o2 = fract(k4 * (1.0 / 41.0));
-
-    vec4 o3 = o2 * d.z + o1 * (1.0 - d.z);
-    vec2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
-
-    return o4.y * d.y + o4.x * (1.0 - d.y);
-}
-
-float fbm(float x, float y, float z){
-    vec3 v = vec3(x, y, z);
-    float freq = baseFrequency;
-    float amp = baseAmp;
-    float sum = 0.;
-    for (int i = 0; i < 8; i++){
-        float n = noise(vec3(v.x*freq, v.y*freq, v.z*freq));
-        sum += n*amp;
-        amp *= ampMult;
-        freq *= freqMult;
-//        v.xy += vec2(51.212, 12.312);
-    }
-    return sum;
-}
-
-vec2 offset(float x, float y){
-    return vec2(x / resolution.x, y / resolution.y);
-}
-
-float map(float x, float a1, float a2, float b1, float b2){
-    return b1 + (b2-b1) * (x-a1) / (a2-a1);
-}
-
-vec3 move(vec2 uv, float angle){
-    vec3 orig = texture(texture, uv).rgb;
-    float texel = 0.5/resolution.x;
-    vec2 off = vec2(texel*cos(angle), texel*sin(angle));
-    return texture(texture, uv+off).rgb;
+    return length(p)*(1.+d)+d;
 }
 
 void main(){
-    vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-//    float toCenter = atan(cv.y, cv.x)+pi;
-    float t = time;
-    float n = baseAngle+angleVariation*fbm(cv.x, cv.y, t);
-    float angle = n;
-    vec3 col = move(uv, angle);
-    gl_FragColor = vec4(col, 1.);
+    vec2 uv = gl_FragCoord.xy / resolution.xy-.5;
+    vec3 dir=vec3(uv, 1.);
+    dir.x*=resolution.x/resolution.y;
+    vec3 origin = vec3(0);
+    float v=0.;
+    for (float r= 0.; r<steps; r++) {
+        vec3 p= origin + r*dir*stepsize;
+        v+=min(10., wind(p))*max(0., 1.-r*fade);
+    }
+    v/=steps; v*=brightness;
+    vec3 col= vec3(pow(v, 10.));
+    col *= 1.-length(pow(abs(uv), vec2(5.)))*15.;// vignette (kind of)
+    gl_FragColor = vec4(col, 1.0);
 }

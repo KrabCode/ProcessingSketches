@@ -12,7 +12,6 @@ public class ReactionDiffusion extends KrabApplet {
     private int white = color(255);
     private PGraphics pg;
     private PGraphics bw;
-    private PGraphics raymarchPG;
     private String algorithm = "";
 
     public static void main(String[] args) {
@@ -28,7 +27,6 @@ public class ReactionDiffusion extends KrabApplet {
         surface.setLocation(1920 - 820, 20);
         pg = createGraphics(width, height, P2D);
         bw = createGraphics(width, height, P2D);
-        raymarchPG = createGraphics(width, height, P2D);
         frameRecordingDuration *= 2;
         img = loadImage(randomImageUrl(800));
     }
