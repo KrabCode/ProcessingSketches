@@ -16,6 +16,7 @@ public class Worley extends KrabApplet {
     }
 
     public void setup() {
+        frameRecordingDuration *= 3;
         surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();

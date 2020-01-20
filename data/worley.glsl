@@ -157,14 +157,37 @@ vec2 worley(vec3 P, float jitter, bool manhattanDistance) {
     d11.y = min(d11.y,d12.z); // Only two more to go
     d11.y = min(d11.y,d11.z); // Done! (Phew!)
     return sqrt(d11.xy); // F1, F2
+}
 
+float ease(float p, float g) {
+    if (p < 0.5) return 0.5f * pow(2 * p, g);
+    return 1 - 0.5f * pow(2 * (1 - p), g);
+}
+
+vec3 rgb( in vec3 c ){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
+    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
+}
+
+vec2 fbm(vec3 p, float jitter, bool manhattanDistance){
+    float amp = 1.;
+    float frq = 1.;
+    vec2 sum = vec2(0);
+    for(int i = 0; i < 10; i++){
+        sum += amp*worley(p*frq, jitter, manhattanDistance);
+        amp *= .5;
+        frq *= 2.0;
+        p += vec3(3.123, 2.456, 1.121);
+    }
+    return sum;
 }
 
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 col = vec3(0);
-    uv *= 10.1;
-    vec2 w = worley(vec3(uv.xy, time), 1.2, false);
-    col += w.x;
+    float t = time*.02;
+    uv += vec2(2.6, -0.5+t);
+    float n = fbm(vec3(uv.xy, t), 1.0, false).x;
+    float pct = pow(1.-ease(n, 1.0), 0.6);
+    vec3 col = vec3(pct);
     gl_FragColor = vec4(col, 1.);
 }
