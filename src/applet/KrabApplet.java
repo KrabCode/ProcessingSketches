@@ -257,6 +257,10 @@ public abstract class KrabApplet extends PApplet {
         return picker(name, 0, 0, .5f, 1);
     }
 
+    protected HSBA picker(String name, float grayscale) {
+        return picker(name, 0, 0, grayscale);
+    }
+
     protected HSBA picker(String name, int grayscale) {
         return picker(name, 0, 0, grayscale);
     }
