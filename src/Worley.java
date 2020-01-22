@@ -27,7 +27,7 @@ public class Worley extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        String worley = "worley.glsl";
+        String worley = "worley2.glsl";
         uniform(worley).set("time", t);
         hotFilter(worley, pg);
         pg.endDraw();
