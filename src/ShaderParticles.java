@@ -1,14 +1,11 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 
-/**
- * Created by Jakub 'Krab' Rak on 2020-01-20
- */
-public class Worley extends KrabApplet {
+public class ShaderParticles extends KrabApplet {
     private PGraphics pg;
 
     public static void main(String[] args) {
-        KrabApplet.main("Worley");
+        ShaderParticles.main("ShaderParticles");
     }
 
     public void settings() {
@@ -16,9 +13,8 @@ public class Worley extends KrabApplet {
     }
 
     public void setup() {
-        frameRecordingDuration *= 3;
         surface.setAlwaysOnTop(true);
-        surface.setLocation(1920-820,20);
+        surface.setLocation(1920 - 820, 20);
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);
@@ -27,9 +23,10 @@ public class Worley extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        String worley = "worley.glsl";
-        uniform(worley).set("time", t);
-        hotFilter(worley, pg);
+        pg.background(0);
+        String particles = "particles.glsl";
+        uniform(particles).set("time", t);
+        hotFilter(particles, pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);

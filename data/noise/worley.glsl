@@ -11,16 +11,16 @@ vec3 permute(vec3 x) {
     return mod((34.0 * x + 1.0) * x, 289.0);
 }
 
-vec3 dist(vec3 x, vec3 y, vec3 z, bool manhattanDistance) {
+vec3 dist(vec3 x, vec3 y, vec3 z,  bool manhattanDistance) {
     return manhattanDistance ?  abs(x) + abs(y) + abs(z) :  (x * x + y * y + z * z);
 }
 
 vec2 worley(vec3 P, float jitter, bool manhattanDistance) {
-    float K = 0.142857142857;// 1/7
-    float Ko = 0.428571428571;// 1/2-K/2
-    float  K2 = 0.020408163265306;// 1/(7*7)
-    float Kz = 0.166666666667;// 1/6
-    float Kzo = 0.416666666667;// 1/2-1/6*2
+    float K = 0.142857142857; // 1/7
+    float Ko = 0.428571428571; // 1/2-K/2
+    float  K2 = 0.020408163265306; // 1/(7*7)
+    float Kz = 0.166666666667; // 1/6
+    float Kzo = 0.416666666667; // 1/2-1/6*2
 
     vec3 Pi = mod(floor(P), 289.0);
     vec3 Pf = fract(P) - 0.5;
@@ -48,7 +48,7 @@ vec2 worley(vec3 P, float jitter, bool manhattanDistance) {
 
     vec3 ox11 = fract(p11*K) - Ko;
     vec3 oy11 = mod(floor(p11*K), 7.0)*K - Ko;
-    vec3 oz11 = floor(p11*K2)*Kz - Kzo;// p11 < 289 guaranteed
+    vec3 oz11 = floor(p11*K2)*Kz - Kzo; // p11 < 289 guaranteed
 
     vec3 ox12 = fract(p12*K) - Ko;
     vec3 oy12 = mod(floor(p12*K), 7.0)*K - Ko;
@@ -130,33 +130,33 @@ vec2 worley(vec3 P, float jitter, bool manhattanDistance) {
 
     vec3 d1a = min(d11, d12);
     d12 = max(d11, d12);
-    d11 = min(d1a, d13);// Smallest now not in d12 or d13
+    d11 = min(d1a, d13); // Smallest now not in d12 or d13
     d13 = max(d1a, d13);
-    d12 = min(d12, d13);// 2nd smallest now not in d13
+    d12 = min(d12, d13); // 2nd smallest now not in d13
     vec3 d2a = min(d21, d22);
     d22 = max(d21, d22);
-    d21 = min(d2a, d23);// Smallest now not in d22 or d23
+    d21 = min(d2a, d23); // Smallest now not in d22 or d23
     d23 = max(d2a, d23);
-    d22 = min(d22, d23);// 2nd smallest now not in d23
+    d22 = min(d22, d23); // 2nd smallest now not in d23
     vec3 d3a = min(d31, d32);
     d32 = max(d31, d32);
-    d31 = min(d3a, d33);// Smallest now not in d32 or d33
+    d31 = min(d3a, d33); // Smallest now not in d32 or d33
     d33 = max(d3a, d33);
-    d32 = min(d32, d33);// 2nd smallest now not in d33
+    d32 = min(d32, d33); // 2nd smallest now not in d33
     vec3 da = min(d11, d21);
     d21 = max(d11, d21);
-    d11 = min(da, d31);// Smallest now in d11
-    d31 = max(da, d31);// 2nd smallest now not in d31
+    d11 = min(da, d31); // Smallest now in d11
+    d31 = max(da, d31); // 2nd smallest now not in d31
     d11.xy = (d11.x < d11.y) ? d11.xy : d11.yx;
-    d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx;// d11.x now smallest
-    d12 = min(d12, d21);// 2nd smallest now not in d21
-    d12 = min(d12, d22);// nor in d22
-    d12 = min(d12, d31);// nor in d31
-    d12 = min(d12, d32);// nor in d32
-    d11.yz = min(d11.yz, d12.xy);// nor in d12.yz
-    d11.y = min(d11.y, d12.z);// Only two more to go
-    d11.y = min(d11.y, d11.z);// Done! (Phew!)
-    return sqrt(d11.xy);// F1, F2
+    d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx; // d11.x now smallest
+    d12 = min(d12, d21); // 2nd smallest now not in d21
+    d12 = min(d12, d22); // nor in d22
+    d12 = min(d12, d31); // nor in d31
+    d12 = min(d12, d32); // nor in d32
+    d11.yz = min(d11.yz,d12.xy); // nor in d12.yz
+    d11.y = min(d11.y,d12.z); // Only two more to go
+    d11.y = min(d11.y,d11.z); // Done! (Phew!)
+    return sqrt(d11.xy); // F1, F2
 }
 
 float ease(float p, float g) {
@@ -164,18 +164,18 @@ float ease(float p, float g) {
     return 1 - 0.5f * pow(2 * (1 - p), g);
 }
 
-vec3 rgb(in vec3 c){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0, 4.0, 2.0), 6.0)-3.0)-1.0, 0.0, 1.0);
+vec3 rgb( in vec3 c ){
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
     rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
 }
 
-vec2 fbm(vec3 p){
-    float amp = 0.5;
-    float frq = 0.2;
+vec2 fbm(vec3 p, float jitter, bool manhattanDistance){
+    float amp = 1.;
+    float frq = 1.;
     vec2 sum = vec2(0);
-    for (int i = 0; i < 5; i++){
-        sum += amp*worley(p*frq, 1., false);
-        amp *= .45;
+    for(int i = 0; i < 10; i++){
+        sum += amp*worley(p*frq, jitter, manhattanDistance);
+        amp *= .5;
         frq *= 2.0;
         p += vec3(3.123, 2.456, 1.121);
     }
@@ -183,12 +183,9 @@ vec2 fbm(vec3 p){
 }
 
 void main(){
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float a = cos(atan(cv.y, cv.x)*10.);
-    float t = time;
-    float d = length(cv*10.);
-    vec2 clouds = fbm(vec3(d-t, a, t));
-    float pct = smoothstep(.3, 0.6, clouds.x);
-    vec3 col = rgb(vec3(.5+.6*pct, 1.-pct, pct));
+    vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    float t = time*.1;
+    float n = fbm(vec3(uv.xy, t), 1.0, false).x;
+    vec3 col = vec3(1.-n);
     gl_FragColor = vec4(col, 1.);
 }
