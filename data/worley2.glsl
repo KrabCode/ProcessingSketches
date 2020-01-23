@@ -170,8 +170,8 @@ vec3 rgb(in vec3 c){
 }
 
 vec2 fbm(vec3 p){
-    float amp = 0.6;
-    float frq = 0.2;
+    float amp = 0.8;
+    float frq = 0.05;
     vec2 sum = vec2(0);
     for (int i = 0; i < 5; i++){
         sum += amp*worley(p*frq, 1., false);
@@ -182,14 +182,28 @@ vec2 fbm(vec3 p){
     return sum;
 }
 
+vec3 srgb(vec3 col){
+    return col = pow(col,vec3(0.45));
+}
+
+vec3 power(vec3 p, float amt){
+    return vec3(pow(p.x, amt), pow(p.y, amt), pow(p.z, amt));
+}
+
 void main(){
-    vec2 cv = gl_FragCoord.xy / resolution.xy;
-    float a = cos(atan(cv.y, cv.x)*10.);
-    float t = time;
-    float scl = 30.;
-    vec2 off = vec2(cos(cv.x*scl), sin(cv.y*scl));
-    vec2 clouds = fbm(vec3(off, t));
-    float pct = smoothstep(.2, 1.0, clouds.x*clouds.y);
-    vec3 col = rgb(vec3(.5+.5*pct, 1.-pct, pct));
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    float a = cos(atan(cv.y, cv.x)*14.);
+    float t = time*2.;
+    float d = length(cv);
+    float scl = 40.+d*30.;
+    vec2 p = vec2(d*scl-t, a);
+    float r = fbm(vec3(p, t)).x;
+    float g = fbm(vec3(p+20., t)).x;
+    float b = fbm(vec3(p+40., t)).x;
+    vec3 col = vec3(r,g,b);
+    col = power(col, 6.);
+    col = clamp(col, 0, 2);
+    col = min(col, smoothstep(0.0, 0.5, 1.-d));
     gl_FragColor = vec4(col, 1.);
 }
