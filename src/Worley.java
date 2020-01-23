@@ -13,6 +13,7 @@ public class Worley extends KrabApplet {
 
     public void settings() {
         size(800, 800, P2D);
+//        fullScreen(P2D, 2);
     }
 
     public void setup() {
@@ -27,7 +28,7 @@ public class Worley extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        String worley = "worley2.glsl";
+        String worley = "worley3.glsl";
         uniform(worley).set("time", t);
         hotFilter(worley, pg);
         pg.endDraw();
