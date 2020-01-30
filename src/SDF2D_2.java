@@ -1,15 +1,12 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 
-/**
- * Created by Jakub 'Krab' Rak on 2020-01-19
- */
-public class Experiment extends KrabApplet {
-    private PGraphics pg;
-
+public class SDF2D_2 extends KrabApplet {
     public static void main(String[] args) {
-        KrabApplet.main("Experiment");
+        SDF2D_2.main("SDF2D_2");
     }
+
+    private PGraphics pg;
 
     public void settings() {
         size(800, 800, P2D);
@@ -17,19 +14,18 @@ public class Experiment extends KrabApplet {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        surface.setLocation(1920-820,20);
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 3;
     }
 
     public void draw() {
         pg.beginDraw();
-        String sdf2D = "sdf2d.glsl";
-        uniform(sdf2D).set("time", t);
-        hotFilter(sdf2D, pg);
+        pg.background(0);
+        String logSpiralShader = "sdf2d_2.glsl";
+        uniform(logSpiralShader).set("time", t);
+        hotFilter(logSpiralShader, pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
