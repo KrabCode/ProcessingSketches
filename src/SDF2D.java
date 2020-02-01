@@ -1,9 +1,9 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 
-public class SDF2D_2 extends KrabApplet {
+public class SDF2D extends KrabApplet {
     public static void main(String[] args) {
-        SDF2D_2.main("SDF2D_2");
+        SDF2D.main("SDF2D");
     }
 
     private PGraphics pg;
@@ -23,7 +23,7 @@ public class SDF2D_2 extends KrabApplet {
     public void draw() {
         pg.beginDraw();
         pg.background(0);
-        String logSpiralShader = "sdf2d_2.glsl";
+        String logSpiralShader = "sdf2d.glsl";
         uniform(logSpiralShader).set("time", t);
         hotFilter(logSpiralShader, pg);
         pg.endDraw();

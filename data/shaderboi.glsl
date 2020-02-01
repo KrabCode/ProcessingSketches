@@ -200,7 +200,6 @@ void main(){
     vec2 gv = fract(vec2(cv.x*10., cv.y*10.*(1.+uv.y)))-.5;
     float d = length(cv)*1.;
     float theta = atan(cv.y, cv.x)/(pi*2.);
-    
-    vec3 color = vec3(pulse);
+    vec3 color = vec3(theta);
     gl_FragColor = vec4(color, 1.);
 }

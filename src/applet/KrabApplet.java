@@ -105,8 +105,6 @@ public abstract class KrabApplet extends PApplet {
     private float trayWidth = minimumTrayWidth;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
-    private ArrayList<ArrayList<String>> replayStack = new ArrayList<ArrayList<String>>();
-    private boolean replayStackRecordingPaused = true;
     private boolean captureScreenshot = false;
     private int screenshotsAlreadyCaptured = 0;
 
@@ -455,7 +453,6 @@ public abstract class KrabApplet extends PApplet {
     }
 
     public void rec(PGraphics pg) {
-        saveReplay();
         savePGraphics(pg);
     }
 
@@ -468,33 +465,10 @@ public abstract class KrabApplet extends PApplet {
             pg.save(filename);
         }
         int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
-        if (!replayStack.isEmpty()) {
-            frameRecordingEnd = min(frameRecordingEnd, frameCount + replayStack.size());
-        }
         if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd) {
             int frameNumber = frameCount - frameRecordingStarted + 1;
             println(frameNumber, "/", frameRecordingEnd - frameRecordingStarted - 1, "saved");
             pg.save(captureDir + frameNumber + ".jpg");
-            loadReplay(frameNumber);
-        }
-    }
-
-    private void saveReplay() {
-        if (!replayStackRecordingPaused) {
-            replayStack.add(getGuiState());
-        }
-    }
-
-    private void loadReplay(int frameNumber) {
-        if (replayStack.isEmpty()) {
-            return;
-        }
-        if (frameNumber < replayStack.size()) {
-            println("setting state for frame", frameNumber);
-            setGuiState(replayStack.get(frameNumber));
-        }
-        if (frameNumber >= replayStack.size()) {
-            replayStack.clear();
         }
     }
 
@@ -993,12 +967,7 @@ public abstract class KrabApplet extends PApplet {
                 keyboardKeys.add(new Key((int) key, false));
             }
         }
-        if (key == 'j') {
-            replayStackRecordingPaused = !replayStackRecordingPaused;
-            println(replayStackRecordingPaused ? "replay recording paused" : "replay recording resumed");
-        }
         if (key == 'k') {
-            replayStackRecordingPaused = true;
             println("replay recording paused");
             frameRecordingStarted = frameCount + 1;
             id = regenIdAndCaptureDir();
