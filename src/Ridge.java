@@ -7,13 +7,13 @@ import java.util.ArrayList;
 /**
  * Created by Jakub 'Krab' Rak on 2020-02-01
  */
-public class Mountain2D extends KrabApplet {
+public class Ridge extends KrabApplet {
     ArrayList<Line> lines = new ArrayList<>();
     private PGraphics pg;
     private float boundsRadius = 300;
 
     public static void main(String[] args) {
-        KrabApplet.main("Mountain2D");
+        KrabApplet.main("Ridge");
     }
 
     public void settings() {
