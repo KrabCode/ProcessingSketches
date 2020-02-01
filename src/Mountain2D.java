@@ -11,7 +11,6 @@ public class Mountain2D extends KrabApplet {
     ArrayList<Line> lines = new ArrayList<>();
     private PGraphics pg;
     private float boundsRadius = 300;
-    private PVector center = new PVector();
 
     public static void main(String[] args) {
         KrabApplet.main("Mountain2D");
@@ -28,16 +27,19 @@ public class Mountain2D extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 1.1f;
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
         pg.beginDraw();
-        pg.background(0);
+        if(frameCount < 5){
+            pg.background(0);
+        }
         pg.translate(width * .5f, height * .5f);
         updateLines();
         pg.stroke(picker("ellipse stroke").clr());
         pg.strokeWeight(slider("ellipse weight"));
+        pg.noFill();
         pg.ellipse(0, 0, boundsRadius * 2, boundsRadius * 2);
         pg.endDraw();
         image(pg, 0, 0);
@@ -51,9 +53,10 @@ public class Mountain2D extends KrabApplet {
         int count = sliderInt("count", 60);
         if (button("clear")) {
             lines.clear();
+            pg.background(0);
         }
 
-        if (lines.size() < count && frameCount % 2 == 0) {
+        if (lines.size() < count && frameCount % 3 == 0) {
             float ridgeFreq = slider("ridge freq");
             float ridgeAmp = slider("ridge amp");
             float y = map(lines.size(), 0, count, mountainTop, mountainBottom);
@@ -72,16 +75,19 @@ public class Mountain2D extends KrabApplet {
                 float n = amp * (1 - 2 * noise(end.x * freq, end.y * freq));
                 float d = abs(origin.x - end.x);
                 float dNorm = norm(d, 0, boundsRadius);
-                float dEase = ease(dNorm, slider("slope ease"));
+                float dEase = ease(dNorm, slider("slope ease", 1));
                 if(Float.isNaN(dEase)){
                     dEase = 1;
                 }
                 float angle = map(dEase, 0, 1, line.slopeAngle, line.endAngle);
                 PVector continuation = PVector.fromAngle(angle + n);
                 continuation.mult(vertexSpeed);
-                line.vertices.add(end.copy().add(continuation));
+                continuation = end.copy().add(continuation);
+                pg.strokeWeight(slider("line weight", 1));
+                pg.stroke(255);
+                pg.line(end.x, end.y, continuation.x, continuation.y);
+                line.vertices.add(continuation);
             }
-            line.display();
         }
     }
 
@@ -98,17 +104,5 @@ public class Mountain2D extends KrabApplet {
             this.slopeAngle = slopeAngle;
             this.endAngle = endAngle;
         }
-
-        void display() {
-            pg.beginShape();
-            pg.strokeWeight(slider("weight"));
-            pg.stroke(picker("stroke").clr());
-            pg.noFill();
-            for (PVector v : vertices) {
-                pg.vertex(v.x, v.y);
-            }
-            pg.endShape();
-        }
     }
-
 }
