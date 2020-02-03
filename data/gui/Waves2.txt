@@ -1,0 +1,194 @@
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§alpha fade§50.0§255.0
+Waves2§count§30.000095§100.0
+Waves2§grid scale§148.7625§100.0
+Waves2§stroke§0.0§0.0§0.9875§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§-49.0§34.375§1.0
+Waves2§rotate speed§10.0§0.0§0.0§0.0
+Waves2§alpha fade§14.300013§255.0
+Waves2§count§55.999992§100.0
+Waves2§grid scale§166.38751§1000.0
+Waves2§stroke§0.0§0.0§0.9875§1.0§1.0
+Waves2§weight§2.275§10.0
+Waves2§sin mag§3.9750004§10.0
+Waves2§dist sin freq§0.1375003§10.0
+Waves2§time freq§3.3000002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§-49.25§34.125§6.2999973
+Waves2§rotate speed§100.0§0.0§0.0§0.0
+Waves2§alpha fade§14.300013§255.0
+Waves2§count§59.999992§100.0
+Waves2§grid scale§166.38751§1000.0
+Waves2§stroke§0.0§0.0§0.9875§1.0§1.0
+Waves2§weight§2.0250003§10.0
+Waves2§sin mag§2.924998§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.912501§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§-49.25§34.125§6.2999973
+Waves2§rotate speed§100.0§0.0§0.0§0.0
+Waves2§alpha fade§14.300013§255.0
+Waves2§count§59.999992§100.0
+Waves2§grid scale§166.38751§1000.0
+Waves2§stroke§0.0§0.0§0.9875§1.0§1.0
+Waves2§weight§2.0250003§10.0
+Waves2§sin mag§2.924998§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.912501§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§8.562512§255.0
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§1.25§6.125§69.84614
+Waves2§rotate speed§0.1§0.0§0.0§0.0023750002
+Waves2§split§0.7124993§10.0
+Waves2§count§88.000015§100.0
+Waves2§grid scale§362.6375§1000.0
+Waves2§stroke§0.69749993§0.0§0.9875§1.0§1.0
+Waves2§weight§1.9624993§10.0
+Waves2§sin mag§2.9124968§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.5500007§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§54.143757§255.0
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§1.25§6.125§73.26051
+Waves2§rotate speed§0.1§0.0§0.0§0.0023750002
+Waves2§split§0.7124993§10.0
+Waves2§count§79.999985§100.0
+Waves2§grid scale§362.6375§1000.0
+Waves2§stroke§0.69749993§0.0§1.0§1.0§1.0
+Waves2§sin mag§2.2999969§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.9375005§10.0
+Waves2§hue z§0.45000002§10.0
+Waves2§weight§1.9624993§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§54.143757§255.0
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§1.25§6.125§80.87939
+Waves2§rotate speed§0.1§0.0§0.0§0.0023750002
+Waves2§split§0.7124993§10.0
+Waves2§count§79.999985§100.0
+Waves2§grid scale§362.6375§1000.0
+Waves2§sin mag§2.2999969§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.9375005§10.0
+Waves2§stroke§0.7431248§1.0§1.0§1.0§1.0
+Waves2§hue z§0.050499976§0.1
+Waves2§weight§1.9624993§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§35.656254§255.0
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§1.25§6.125§106.23688
+Waves2§rotate speed§0.1§0.0§0.0§0.0023750002
+Waves2§split§156.66248§1000.0
+Waves2§count§79.999985§100.0
+Waves2§grid scale§241.38751§1000.0
+Waves2§sin mag§2.2999969§10.0
+Waves2§dist sin freq§0.10750025§1.0
+Waves2§time freq§4.9375005§10.0
+Waves2§stroke§0.8862491§1.0§1.0§1.0§1.0
+Waves2§hue z§0.11524999§0.1
+Waves2§sat z§1.0§10.0
+Waves2§weight§3.624999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§6.9687366§255.0
+Waves2§translate§100.0§0.0§-10.75§0.0
+Waves2§rotate§100.0§1.25§6.125§144.45996
+Waves2§rotate speed§0.1§0.0§0.0§0.0015000002
+Waves2§split§5.887497§100.0
+Waves2§count§100.000015§100.0
+Waves2§grid scale§317.6375§1000.0
+Waves2§sin mag§6.6124973§10.0
+Waves2§dist sin freq§0.02375028§1.0
+Waves2§time freq§1.687501§10.0
+Waves2§stroke§0.8306245§0.775§1.0§1.0§1.0
+Waves2§hue z§0.017374797§1.0
+Waves2§sat offset§0.13750021§10.0
+Waves2§weight§2.6000001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§6.9687366§255.0
+Waves2§translate§100.0§0.0§-10.75§0.0
+Waves2§rotate§100.0§1.25§6.125§151.3805
+Waves2§rotate speed§0.1§0.0§0.0§0.0015000002
+Waves2§split§5.887497§100.0
+Waves2§count§100.000015§100.0
+Waves2§grid scale§317.6375§1000.0
+Waves2§sin mag§6.6124973§10.0
+Waves2§dist sin freq§0.02375028§1.0
+Waves2§time freq§5.0000024§10.0
+Waves2§stroke§0.8306245§0.7375§1.0§1.0§1.0
+Waves2§hue z§0.017374797§1.0
+Waves2§sat offset§0.0937502§1.0
+Waves2§weight§3.349998§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§6.9687366§255.0
+Waves2§translate§100.0§0.0§-10.75§0.0
+Waves2§rotate§100.0§1.25§6.125§151.67209
+Waves2§rotate speed§0.1§0.0§0.0§0.0015000002
+Waves2§split§5.887497§100.0
+Waves2§count§100.000015§100.0
+Waves2§grid scale§317.6375§1000.0
+Waves2§sin mag§6.6124973§10.0
+Waves2§dist sin freq§0.02375028§1.0
+Waves2§time freq§5.0000024§10.0
+Waves2§stroke§0.8306245§0.7375§1.0§1.0§1.0
+Waves2§hue z§0.017374797§1.0
+Waves2§sat offset§0.0937502§1.0
+Waves2§weight§3.349998§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Waves2§true
+Waves2§alpha fade§5.578125§255.0
+Waves2§translate§100.0§0.0§0.0§0.0
+Waves2§rotate§100.0§34.076538§173.05092§2649.3557
+Waves2§rotate speed§0.1§9.00036E-9§0.0017187535§0.0017699096
+Waves2§split§18.001741§10.0
+Waves2§count§40.999992§1000.0
+Waves2§grid scale§304.61694§1000.0
+Waves2§sin mag§8.902605§100.0
+Waves2§dist sin freq§0.011247652§1.0
+Waves2§time freq§5.0000024§10.0
+Waves2§stroke§0.6824469§0.73125§0.8875§1.0§1.0
+Waves2§hue z§0.010603977§1.0
+Waves2§sat offset§0.6166672§1.0
+Waves2§weight§3.1406243§10.0
+STATE_END

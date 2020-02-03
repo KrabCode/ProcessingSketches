@@ -1,0 +1,96 @@
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§56.056248§255.0
+main§split§0.23750001§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§1.0§100.0
+tentacles§spawn count§1.0§100.0
+tentacles§scl§0.975§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§56.056248§255.0
+main§split§0.23750001§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§1.0§100.0
+tentacles§spawn count§1.0§100.0
+tentacles§scl§0.975§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§56.056248§255.0
+main§split§0.23750001§10.0
+main§translate§10000.0§0.0§0.0§-3245.875
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§1.0§100.0
+tentacles§spawn count§1.0§100.0
+tentacles§scl§0.975§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.374977§255.0
+main§split§0.23750001§10.0
+main§translate§10000.0§0.0§0.0§-3245.875
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§167.00003§100.0
+tentacles§spawn count§499.99994§1000.0
+tentacles§scl§192.325§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.374977§255.0
+main§split§1.0249997§0.1
+main§translate§10000.0§0.0§0.0§-3245.875
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§409.99994§100.0
+tentacles§spawn count§499.00006§1000.0
+tentacles§scl§210.45§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.374977§255.0
+main§split§1.0249997§0.1
+main§translate§10000.0§0.0§0.0§-3245.875
+main§rotate§100.0§15.0§26.25§0.0
+GROUP§tentacles§true
+tentacles§count§445.99994§100.0
+tentacles§spawn count§594.00006§1000.0
+tentacles§scl§210.45§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.374977§255.0
+main§split§1.0249997§0.1
+main§translate§10000.0§0.0§0.0§-3245.875
+main§rotate§100.0§15.0§26.25§0.0
+GROUP§tentacles§true
+tentacles§count§402.93787§100.0
+tentacles§spawn count§631.9999§1000.0
+tentacles§scl§210.45§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.374977§255.0
+main§split§1.0249997§0.1
+main§translate§10000.0§0.0§150.0§-83.375
+main§rotate§100.0§4.375§3.0§0.0
+GROUP§tentacles§true
+tentacles§count§186.99997§100.0
+tentacles§spawn count§597.9999§1000.0
+tentacles§scl§234.325§100.0
+STATE_END

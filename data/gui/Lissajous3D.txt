@@ -1,0 +1,84 @@
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.0049999654§1.0
+Lissajous3D§fade to black§50.0§255.0
+Lissajous3D§count§39.000008§100.0
+Lissajous3D§amplitude§1000.0§100.0§100.0§100.0
+Lissajous3D§frequence§10.0§1.0§1.0§1.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.0049999654§1.0
+Lissajous3D§fade to black§50.0§255.0
+Lissajous3D§count§39.000008§100.0
+Lissajous3D§amplitude§1000.0§100.0§100.0§100.0
+Lissajous3D§frequence§10.0§1.0§1.0§1.0
+Lissajous3D§weight§0.0§10.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.12250003§1.0
+Lissajous3D§fade to black§7.606244§255.0
+Lissajous3D§translate§1000.0§0.0§0.0§-155.375
+Lissajous3D§rotation§100.0§67.06408§129.61922§8.151543
+Lissajous3D§rotation speed§0.1§0.0049999533§0.0011250001§0.001
+Lissajous3D§count§500.99994§1000.0
+Lissajous3D§amplitude§1000.0§260.0§300.0§202.5
+Lissajous3D§frequence§100.0§3.0250049§0.31249923§2.4874954
+Lissajous3D§weight§2.75§100.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.5225002§10.0
+Lissajous3D§fade to black§2.2312493§255.0
+Lissajous3D§translate§1000.0§0.0§0.0§-155.375
+Lissajous3D§rotation§100.0§97.61729§244.21013§14.268015
+Lissajous3D§rotation speed§0.1§0.0§0.0018752671§0.0
+Lissajous3D§count§519.9999§10000.0
+Lissajous3D§amplitude§1000.0§271.25§208.75§180.0
+Lissajous3D§frequence§1.0§1.0000049§1.0062494§1.699996
+Lissajous3D§weight§1.9624985§10.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+Lissajous3D§taus§15.000002§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.5225002§10.0
+Lissajous3D§fade to black§10.2§255.0
+Lissajous3D§RGB split§0.47500023§20.0
+Lissajous3D§split§1.3124993§10.0
+Lissajous3D§translate§1000.0§8.75§-15.0§-309.875
+Lissajous3D§rotation§10.0§-1.4749985§4.100003§4.049999
+Lissajous3D§rotation speed§100.0§0.0§0.0§0.0
+Lissajous3D§count§425.00006§10000.0
+Lissajous3D§amplitude§1000.0§190.0§273.75§-241.25
+Lissajous3D§frequence§10.0§1.8125002§1.8375001§1.0249997
+Lissajous3D§weight§2.0874987§10.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+Lissajous3D§taus§12.000002§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Lissajous3D§true
+Lissajous3D§t§0.5225002§10.0
+Lissajous3D§fade to black§2.2312508§255.0
+Lissajous3D§RGB split§0.19999991§20.0
+Lissajous3D§split§0.4624987§10.0
+Lissajous3D§translate§1000.0§8.75§-15.0§-309.875
+Lissajous3D§rotation§10.0§-6.831141§10.301734§16.837515
+Lissajous3D§rotation speed§0.1§1.0186341E-9§1.1117663E-8§-2.4214387E-8
+Lissajous3D§count§463.00006§10000.0
+Lissajous3D§amplitude§1000.0§123.75§366.25§353.75
+Lissajous3D§frequence§10.0§0.56249964§0.28750217§0.4999999
+Lissajous3D§weight§2.0874987§10.0
+Lissajous3D§stroke§0.0§0.0§1.0§1.0§1.0
+Lissajous3D§taus§99.999985§100.0
+STATE_END

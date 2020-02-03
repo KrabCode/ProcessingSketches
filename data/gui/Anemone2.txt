@@ -1,0 +1,36 @@
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.012501§255.0
+main§split§1.025§10.0
+main§translate§100.0§16.375§-23.0§15.125
+main§rotate§100.0§-6.625§3.5§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§6.012501§255.0
+main§split§1.025§10.0
+main§translate§100.0§16.375§-23.0§15.125
+main§rotate§100.0§-6.625§3.5§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§15.575001§255.0
+main§split§1.025§10.0
+main§translate§100.0§0.104166664§0.0§0.0
+main§rotate§100.0§-6.625§3.5§0.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§15.575001§255.0
+main§split§1.025§10.0
+main§translate§100.0§0.104166664§0.0§0.0
+main§rotate§100.0§-6.625§3.5§0.0
+GROUP§tentacles§true
+tentacles§count§1.0§100.0
+tentacles§spawn count§1.0§100.0
+tentacles§scl§0.0§10.0
+STATE_END

@@ -1,0 +1,291 @@
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§count§8.999998§100.0
+generators§freq at birth§5.3249993§10.0
+generators§freq at death§6.875§100.0
+generators§amp at birth§0.57500005§10.0
+generators§amp at death§1.8124999§10.0
+generators§speed§100.0§-0.75§0.75
+generators§debug§true
+GROUP§particles§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§add generator§
+generators§death margin§-0.66249996§10.0
+generators§freq at birth§0.0§10.0
+generators§freq at death§0.0§10.0
+generators§amp at birth§0.0§10.0
+generators§amp at death§0.0§10.0
+generators§speed§100.0§0.0§0.0
+generators§debug§true
+GROUP§particles§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§magnitude§1.0§10.0
+generators§speed§100.0§0.0§0.0
+generators§debug§true
+GROUP§particles§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§1.1624997§10.0
+generators§angle variation§1.3375009§10.0
+generators§speed§100.0§-0.375§1.0
+generators§debug§true
+GROUP§particles§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§-0.17500001§10.0
+generators§freq§0.18750001§10.0
+generators§angle variation§1.0750002§10.0
+generators§speed§100.0§-0.25§0.375
+generators§debug§true
+generators§particle spawn modulo§2.9999995§200.0
+GROUP§particles§true
+particles§death margin§0.112500004§10.0
+particles§lifespan§124.82501§1000.0
+particles§ease heading§0.8500002§10.0
+particles§speed§1.6125§10.0
+particles§weight§1.4499987§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§100.0§0.0§0.0
+generators§debug§false
+generators§particle spawn modulo§10.0§200.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§0.0§10.0
+particles§ease heading§0.0§10.0
+particles§speed§0.8624999§10.0
+particles§weight§1.8000002§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§100.0§0.0§0.0
+generators§debug§false
+generators§particle spawn modulo§10.0§200.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§4.125§10.0
+particles§ease heading§0.0§10.0
+particles§speed§0.8624999§10.0
+particles§weight§1.8000002§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§1.2624998§10.0
+generators§angle variation§0.0§10.0
+generators§speed§100.0§0.0§0.0
+generators§debug§true
+generators§particle spawn modulo§10.0§200.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§51.600002§20.0
+particles§ease heading§0.7625001§10.0
+particles§speed§0.91250044§10.0
+particles§weight§1.1874999§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§100.0§-1.0§0.875
+generators§debug§false
+generators§particle spawn modulo§35.000008§1000.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§50.0§20.0
+particles§ease heading§1.2375§10.0
+particles§speed§1.5625§10.0
+particles§weight§1.4375§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§100.0§0.75§2.75
+generators§debug§false
+generators§particle spawn modulo§28.000082§100.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§50.0§20.0
+particles§ease heading§0.0§10.0
+particles§freq§0.0§10.0
+particles§angle variation§0.0§10.0
+particles§speed§1.2749999§10.0
+particles§weight§1.1374998§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+GROUP§generators§false
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§10.0§0.0§1.0
+generators§debug§false
+generators§particle spawn modulo§1.0§10.0
+GROUP§particles§false
+particles§death margin§0.0§10.0
+particles§lifespan§50.0§20.0
+particles§ease heading§0.0§10.0
+particles§freq§0.0625§10.0
+particles§angle variation§1.7750008§10.0
+particles§speed§1.0§10.0
+particles§weight§1.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+general§clear§
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.1§10.0
+generators§angle variation§0.67499995§10.0
+generators§speed§10.0§0.6999999§0.61249995
+generators§debug§false
+generators§particle spawn modulo§11.000002§100.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§50.0§20.0
+particles§ease heading§0.0§10.0
+particles§freq§0.2§10.0
+particles§angle variation§1.0§10.0
+particles§speed§0.35§10.0
+particles§weight§0.5625002§10.0
+particles§stroke§0.0025§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+general§clear§
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.112500004§10.0
+generators§angle variation§0.675§10.0
+generators§speed§10.0§0.425§1.2625003
+generators§debug§false
+generators§particle spawn modulo§5.999999§100.0
+GROUP§particles§true
+particles§death margin§0.26249996§10.0
+particles§lifespan§50.0§20.0
+particles§ease heading§1.0375003§10.0
+particles§freq§1.0124999§10.0
+particles§angle variation§1.5374998§10.0
+particles§speed§1.0§10.0
+particles§weight§1.7375002§10.0
+particles§stroke§0.99249995§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+general§clear§
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§10.0§0.5874999§0.7250001
+generators§debug§false
+generators§particle spawn modulo§1.0§10.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§150.0§30.0
+particles§ease heading§1.1875§10.0
+particles§freq§0.2§10.0
+particles§angle variation§0.8500001§10.0
+particles§speed§1.0§10.0
+particles§weight§1.0§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+particles§destroy radius§130.38751§30.0
+particles§destroy check skip§61.999992§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§true
+general§clear§
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.0§10.0
+generators§angle variation§0.0§10.0
+generators§speed§10.0§0.0§1.0
+generators§debug§false
+generators§particle spawn modulo§14.000002§100.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§150.0§30.0
+particles§ease heading§0.0§10.0
+particles§freq§0.2§10.0
+particles§angle variation§1.0§10.0
+particles§speed§1.0§10.0
+particles§weight§1.0§10.0
+particles§stroke§0.0§0.0§0.5§1.0§1.0
+particles§destroy radius§150.0§30.0
+particles§destroy check skip§10.0§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§general§false
+general§clear§
+GROUP§generators§true
+generators§death margin§0.0§10.0
+generators§freq§0.04999997§10.0
+generators§angle variation§1.0125§10.0
+generators§speed§10000.0§0.10000018§1.2250005
+generators§debug§false
+generators§particle spawn modulo§9.999998§100.0
+GROUP§particles§true
+particles§death margin§0.0§10.0
+particles§lifespan§150.0§30.0
+particles§ease heading§0.0§10.0
+particles§freq§0.2§10.0
+particles§angle variation§1.0§10.0
+particles§speed§1.0§10.0
+particles§weight§1.7000002§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§destroy radius§164.36255§300.0
+particles§destroy check skip§10.000002§200.0
+STATE_END
