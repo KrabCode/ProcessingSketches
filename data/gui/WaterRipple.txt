@@ -1,0 +1,20 @@
+STATE_BEGIN
+UNDO
+GROUP§WaterRipple§true
+WaterRipple§damp§0.99§10.0
+WaterRipple§r§158.75§200.0
+WaterRipple§count§10.0§200.0
+WaterRipple§r amp§49.9375§100.0
+WaterRipple§r freq§1.0000007§10.0
+WaterRipple§size§13.825001§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§WaterRipple§true
+WaterRipple§damp§0.99§10.0
+WaterRipple§r§158.75§200.0
+WaterRipple§count§10.0§200.0
+WaterRipple§r amp§49.9375§100.0
+WaterRipple§r freq§1.0000007§10.0
+WaterRipple§size§13.825001§100.0
+STATE_END

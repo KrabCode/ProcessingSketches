@@ -1,0 +1,310 @@
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§0.5§10.0
+spiral§spiral distance cap§0.0§10.0
+spiral§count§1.0§100.0
+spiral§max angle§12.566371§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§0.5§10.0
+spiral§spiral distance cap§0.0§10.0
+spiral§count§1.0§100.0
+spiral§max angle§12.566371§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§0.5§10.0
+spiral§spiral distance cap§0.0§10.0
+spiral§count§1.0§100.0
+spiral§max angle§12.566371§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§1.9249998§10.0
+spiral§spiral distance cap§0.84999985§10.0
+spiral§easing§5.0000005§10.0
+spiral§count§208.99997§10000.0
+spiral§max angle§12.566371§20.0
+spiral§draw spiral§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§40.000008§100.0
+grid§offset§-16.699997§100.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§1.9249998§10.0
+spiral§spiral distance cap§0.84999985§10.0
+spiral§easing§5.0000005§10.0
+spiral§count§208.99997§10000.0
+spiral§spiral speed§1.0012497§1.0
+spiral§max angle§12.566371§20.0
+spiral§draw spiral§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§60.999992§100.0
+grid§offset§167.79999§10000.0
+grid§local rotation radius§25.00001§10.0
+grid§local rotation speed§0.9625§10.0
+grid§weight§3.2375§10.0
+GROUP§spiral§true
+spiral§a§1.4500031§10.0
+spiral§spiral distance cap§2.2874997§10.0
+spiral§easing§1.0750015§10.0
+spiral§count§208.99997§10000.0
+spiral§spiral speed§1.0000005§1.0
+spiral§max angle§9.191372§20.0
+spiral§draw spiral§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§60.999992§100.0
+grid§margin§0.0§10.0
+grid§weight§3.2375§10.0
+grid§amp§9.162499§10.0
+grid§theta frequency§1.9999976§10.0
+grid§distance frequency§0.033749796§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§104.999985§100.0
+grid§margin§99.9§100.0
+grid§weight§4.0000014§10.0
+grid§spiral speed§-1.0024998§1.0
+grid§amp§24.562504§10.0
+grid§time speed§-5.401671E-8§0.1
+grid§theta frequency§2.0000007§1.0
+grid§distance frequency§0.02874998§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§104.999985§100.0
+grid§margin§99.9§100.0
+grid§weight§4.0000014§10.0
+grid§spiral speed§-1.0024998§1.0
+grid§amp§24.562504§10.0
+grid§time speed§1.0001241§0.1
+grid§theta frequency§2.0000007§1.0
+grid§distance§0.031000003§0.1
+grid§stroke speed§1.9999995§1.0
+grid§stroke distance§0.033750013§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§104.999985§100.0
+grid§margin§99.9§100.0
+grid§spiral speed§-1.0024998§1.0
+grid§amp§24.562504§10.0
+grid§rotate speed§1.0§10.0
+grid§theta frequency§2.0000007§1.0
+grid§distance§0.031000003§0.1
+grid§stroke speed§-4.997499§10.0
+grid§stroke distance§0.012500004§1.0
+grid§min weight§1.3500004§10.0
+grid§max weight§5.112499§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§104.999985§100.0
+grid§margin§99.9§100.0
+grid§spiral speed§-1.9999986§1.0
+grid§amp§24.562504§10.0
+grid§rotate speed§1.9999999§10.0
+grid§theta frequency§2.0000007§1.0
+grid§distance§0.032125004§0.1
+grid§stroke speed§5.002502§10.0
+grid§stroke distance§0.02125§1.0
+grid§min weight§1.5000013§10.0
+grid§max weight§4.0000024§10.0
+grid§min stroke§0.65§10.0
+grid§max stroke§0.975§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§84.999985§100.0
+grid§margin§99.9§100.0
+grid§spiral speed§-1.0016217§10.0
+grid§amp§12.162506§100.0
+grid§rotate speed§1.9997485§10.0
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.040875006§0.1
+grid§stroke speed§5.002502§10.0
+grid§stroke distance§0.031249994§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.65§10.0
+grid§max stroke§0.97499996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§50.000008§10.0
+grid§margin§99.9§100.0
+grid§spiral speed§-1.0016217§10.0
+grid§amp§12.162506§100.0
+grid§rotate speed§1.9997387§1.0
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.031874944§1.0
+grid§stroke speed§5.002502§10.0
+grid§stroke distance§0.017499994§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.65§10.0
+grid§max stroke§0.97499996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.000015§100.0
+grid§margin§100.025§100.0
+grid§spiral speed§-1.0016217§10.0
+grid§amp§21.537506§100.0
+grid§rotate speed§1.9997387§1.0
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.026874933§1.0
+grid§stroke speed§3.5024993§10.0
+grid§stroke distance§0.0175§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.65§10.0
+grid§max stroke§0.97499996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.000015§100.0
+grid§margin§100.025§100.0
+grid§spiral speed§-1.0016217§10.0
+grid§amp§21.537506§100.0
+grid§rotate speed§1.9997387§1.0
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.029374942§1.0
+grid§stroke speed§3.5024993§10.0
+grid§stroke distance§0.0175§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.65§10.0
+grid§max stroke§0.97499996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.000015§100.0
+grid§margin§100.025§100.0
+grid§spiral speed§-1.0016217§10.0
+grid§amp§0.10000609§1.0
+grid§rotate speed§1.9997387§1.0
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.029374942§1.0
+grid§stroke speed§1.0037484§1.0
+grid§stroke distance§0.022499997§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.4625001§10.0
+grid§max stroke§1.0012494§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.00003§100.0
+grid§margin§99.649994§1000.0
+grid§spiral speed§-1.0003715§1.0
+grid§amp§0.10000609§1.0
+grid§rotate speed§1.0001131§0.1
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.029374942§1.0
+grid§stroke speed§3.9975§1.0
+grid§stroke distance§0.009999989§1.0
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.4625001§10.0
+grid§max stroke§1.0012494§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.00003§100.0
+grid§margin§99.649994§1000.0
+grid§spiral speed§-1.0003715§1.0
+grid§amp§0.0998811§1.0
+grid§rotate speed§1.0001131§0.1
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.028124942§1.0
+grid§stroke speed§3.9975§1.0
+grid§stroke distance§4.999896E-4§0.1
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.4625001§10.0
+grid§max stroke§1.0012494§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.00003§100.0
+grid§margin§99.649994§1000.0
+grid§spiral speed§-0.99999636§0.1
+grid§amp§0.0998811§1.0
+grid§rotate speed§1.0001132§0.1
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.028124942§1.0
+grid§stroke speed§3.9999993§0.1
+grid§stroke distance§4.999896E-4§0.1
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.4625001§10.0
+grid§max stroke§1.0012494§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§grid§true
+grid§count§100.00003§100.0
+grid§margin§99.649994§1000.0
+grid§spiral speed§-1.9999963§0.1
+grid§amp§0.0998811§1.0
+grid§rotate speed§1.0001132§0.1
+grid§theta frequency§2.0000055§1.0
+grid§distance§0.028124942§1.0
+grid§stroke speed§3.9999993§0.1
+grid§stroke distance§0.00237499§0.1
+grid§min weight§2.0000026§10.0
+grid§max weight§5.000002§100.0
+grid§min stroke§0.4625001§10.0
+grid§max stroke§1.0012494§1.0
+STATE_END

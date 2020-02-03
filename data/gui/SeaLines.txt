@@ -1,0 +1,151 @@
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§50.0§255.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§2.1375008§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§10.0§20.0
+lines§y§400.0§30.0
+lines§weight§1.9374996§10.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§300.00006§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§2.1375008§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§12.000012§20.0
+lines§y§400.0§30.0
+lines§weight§1.9374996§10.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§300.00006§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§2.1375008§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§12.000012§20.0
+lines§y§400.0§30.0
+lines§weight§1.9374996§10.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§300.00006§300.0
+lines§octaves§1.0§100.0
+lines§freq§10.0§0.05000003§0.049999814
+lines§amp§3.4250004§10.0
+lines§amp mult§0.5249999§10.0
+lines§freq mult§1.8625003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§5.0000005§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§8.625023§20.0
+lines§y§400.0§30.0
+lines§weight§1.9862506§1.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§264.00006§3000.0
+lines§octaves§4.000001§100.0
+lines§freq§1.0§0.0037500595§-0.018750248
+lines§amp§5.8749986§10.0
+lines§amp mult§0.66625005§1.0
+lines§freq mult§2.112501§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§5.0000005§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§11.750031§20.0
+lines§y§400.0§30.0
+lines§weight§1.9862506§1.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§321.99994§3000.0
+lines§octaves§4.000001§100.0
+lines§freq§1.0§0.0025000595§-0.010000252
+lines§amp§6.9999957§10.0
+lines§amp mult§0.57375§1.0
+lines§freq mult§2.6624966§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§5.0000005§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§11.750031§20.0
+lines§y§400.0§30.0
+lines§weight§1.9862506§1.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§321.99994§3000.0
+lines§octaves§4.999999§100.0
+lines§freq§0.1§-0.004999944§0.0021247377
+lines§amp§9.999993§10.0
+lines§amp mult§0.525§10.0
+lines§freq mult§2.2999947§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§5.0000005§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§11.750031§20.0
+lines§y§400.0§30.0
+lines§weight§1.9862506§1.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§detail§262.99994§3000.0
+lines§octaves§5.0000057§100.0
+lines§freq§0.1§-0.001999942§-0.0090002725
+lines§amp§14.999992§10.0
+lines§amp mult§0.42499998§10.0
+lines§freq mult§3.312496§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§255.0§2550.0
+GROUP§border§true
+border§diameter§642.0§300.0
+border§weight§5.0000005§10.0
+border§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§lines§true
+lines§y step§11.750031§20.0
+lines§y§400.0§30.0
+lines§weight§1.9862506§1.0
+lines§stroke§0.0§0.0§1.0§1.0§1.0
+lines§margin§75.2625§100.0
+lines§detail§300.99994§3000.0
+lines§octaves§5.000001§100.0
+lines§freq§0.1§-0.001999942§-0.0090002725
+lines§amp§14.999992§10.0
+lines§amp mult§0.42499998§10.0
+lines§freq mult§3.312496§10.0
+STATE_END

@@ -1,0 +1,280 @@
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§257.77502§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§false
+Feedback§alpha§16.149994§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§82.77501§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§1153.1748§20000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§-0.20000076§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§99.05§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§-4.724991§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§11.275002§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§5.125§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§20.525011§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§179.70001§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§17.505007§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§41.250004§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§-2.3000216§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§308.47498§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+Feedback§size§1710.6876§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§new image§
+Feedback§draw image§true
+Feedback§alpha§50.0§20.0
+Feedback§size§3016.25§3000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§base angle§2.4374995§10.0
+Feedback§angle variation§6.0000005§10.0
+Feedback§time speed§1.0§10.0
+Feedback§base frequency§-4.4499984§10.0
+Feedback§base amplitude§4.1375§10.0
+Feedback§freq mult§2.0§10.0
+Feedback§amp mult§0.5§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.79650587§2.0000002
+Feedback§base angle§0.72499907§10.0
+Feedback§angle variation§0.010000104§1.0
+Feedback§time speed§1.0§10.0
+Feedback§base frequency§0.5§10.0
+Feedback§base amplitude§1.0§10.0
+Feedback§freq mult§2.0§10.0
+Feedback§amp mult§0.5§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.24150635§2.0000002
+Feedback§base angle§3.0462496§1.0
+Feedback§angle variation§1.1125003§10.0
+Feedback§time speed§0.04999999§10.0
+Feedback§base frequency§0.7625068§10.0
+Feedback§base amplitude§3.4375012§10.0
+Feedback§freq mult§14.474999§10.0
+Feedback§amp mult§0.56250036§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.119006336§2.0000002
+Feedback§base angle§3.0462496§1.0
+Feedback§angle variation§1.1125003§10.0
+Feedback§time speed§0.04999999§10.0
+Feedback§base frequency§0.7625068§10.0
+Feedback§base amplitude§3.4375012§10.0
+Feedback§freq mult§14.474999§10.0
+Feedback§amp mult§0.56250036§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.091506325§2.0000002
+Feedback§base angle§3.0462496§1.0
+Feedback§angle variation§1.1125003§10.0
+Feedback§time speed§0.04999999§10.0
+Feedback§base frequency§0.7625068§10.0
+Feedback§base amplitude§3.4375012§10.0
+Feedback§freq mult§14.474999§10.0
+Feedback§amp mult§0.56250036§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.0064558014§2.0000002
+Feedback§base angle§0.0§10.0
+Feedback§angle variation§0.0077489945§0.1
+Feedback§time speed§1.85§10.0
+Feedback§base frequency§5.1625056§10.0
+Feedback§base amplitude§3.3000019§10.0
+Feedback§freq mult§2.0§10.0
+Feedback§amp mult§0.5§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§9.557586E-4§0.20000003
+Feedback§base angle§1.2875009§10.0
+Feedback§angle variation§0.49025035§10.0
+Feedback§time speed§1.0012475§1.0
+Feedback§base frequency§1.2375036§10.0
+Feedback§base amplitude§5.5624986§10.0
+Feedback§freq mult§2.4125018§10.0
+Feedback§amp mult§0.5062492§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.0091250045§0.1
+Feedback§base angle§-0.4000007§10.0
+Feedback§angle variation§0.5124999§10.0
+Feedback§time speed§6.975§10.0
+Feedback§base frequency§4.2125015§10.0
+Feedback§base amplitude§2.8875022§10.0
+Feedback§freq mult§5.4624987§10.0
+Feedback§amp mult§0.7374999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.0091250045§0.1
+Feedback§base angle§-0.4000007§10.0
+Feedback§angle variation§0.5124999§10.0
+Feedback§time speed§6.975§10.0
+Feedback§base frequency§4.2125015§10.0
+Feedback§base amplitude§2.8875022§10.0
+Feedback§freq mult§5.4624987§10.0
+Feedback§amp mult§0.7374999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.0091250045§0.1
+Feedback§base angle§-0.4000007§10.0
+Feedback§angle variation§0.5124999§10.0
+Feedback§time speed§6.975§10.0
+Feedback§base frequency§4.2125015§10.0
+Feedback§base amplitude§2.8875022§10.0
+Feedback§freq mult§5.4624987§10.0
+Feedback§amp mult§0.7374999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Feedback§true
+Feedback§alpha§0.13299908§1.0
+Feedback§base angle§-2.0375004§10.0
+Feedback§angle variation§0.5124999§10.0
+Feedback§time speed§0.2500002§10.0
+Feedback§base frequency§1.8500001§10.0
+Feedback§base amplitude§3.425§10.0
+Feedback§freq mult§5.274999§10.0
+Feedback§amp mult§0.7624999§10.0
+STATE_END

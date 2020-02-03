@@ -1,0 +1,870 @@
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchAnimation§true
+CrossStitchAnimation§stroke§0.0§0.4875§0.7625§0.61874986§1.0
+CrossStitchAnimation§w§5.6375§10.0
+CrossStitchAnimation§r§214.51251§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchAnimation§true
+CrossStitchAnimation§stroke§0.0§0.4875§0.7625§0.61874986§1.0
+CrossStitchAnimation§fill§0.0§0.0§0.0§1.0§1.0
+CrossStitchAnimation§w§5.6375§10.0
+CrossStitchAnimation§r§214.51251§30.0
+CrossStitchAnimation§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§1.7124999§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§5.7874956§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§5.4499974§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§2.912501§10.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+GROUP§draw§false
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+cross§noise magnitude§0.14420001§0.24
+cross§noise speed§-0.39999956§10.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+cross§noise magnitude§0.24§0.24
+cross§noise speed§6.325§10.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§6.9999905§10.0
+cross§stroke§0.0§0.0§1.0§1.0§1.0
+cross§margin§4.9999995§1.0
+GROUP§draw§true
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§12.624989§10.0
+cross§stroke§0.0§0.54375§0.00625§1.0§1.0
+cross§margin§8.262498§10.0
+GROUP§draw§false
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§10.524999§10.0
+GROUP§draw§false
+draw§stroke§0.0§0.0§0.0§1.0§1.0
+draw§fill§0.0§0.0§0.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§200.0§30.0
+draw§shader§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§10.524999§10.0
+GROUP§draw§true
+draw§stroke§0.99875§0.0§0.89375§1.0§1.0
+draw§fill§0.0§0.0§1.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§202.73753§30.0
+draw§pixelate§97.48749§1000.0
+draw§pixel size§55.925003§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§10.524999§10.0
+GROUP§draw§true
+draw§stroke§0.99875§0.0§0.89375§1.0§1.0
+draw§fill§0.0§0.0§1.0§1.0§1.0
+draw§w§0.0§10.0
+draw§r§202.73753§30.0
+draw§pixel size§55.925003§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§10.524999§10.0
+GROUP§draw§true
+draw§alpha fade§28.050003§255.0
+draw§split§29.4375§100.0
+draw§rotate§100.0§46.177914§28.474045§45.834248
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.7987498§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§0.0§1.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+draw§stitch§true
+draw§pixel size§61.80001§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§10.524999§10.0
+GROUP§draw§true
+draw§alpha fade§28.050003§255.0
+draw§split§29.4375§100.0
+draw§rotate§100.0§46.48409§28.657787§46.140423
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.7987498§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§0.0§1.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+draw§stitch§true
+draw§pixel size§61.80001§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§16.362495§10.0
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§85.67452§52.17683§85.33086
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+draw§stitch§true
+draw§pixel size§64.74988§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§16.362495§10.0
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§86.14316§52.45807§85.79949
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+draw§stitch§true
+draw§pixel size§64.74988§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§16.362495§10.0
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§88.448845§53.841763§88.10518
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+draw§stitch§true
+draw§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§16.362495§10.0
+cross§stitch§true
+cross§preview§true
+cross§pixel size§49.899994§20.0
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§93.26017§56.729145§92.916504
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§16.362495§10.0
+cross§stitch§true
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§95.45963§58.04909§95.11597
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§19.312494§10.0
+cross§stitch§true
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§105.201004§63.895103§104.85734
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§true
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§154.89668§93.7291§154.5526
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§true
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§156.71095§94.817665§156.36687
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.999986§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§true
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§28.6875§100.0
+draw§rotate§100.0§158.83803§96.09391§158.49394
+draw§rotate spd§1.0§0.0062499996§0.00375§0.0062499996
+draw§stroke§0.8018745§1.0§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§12.074991§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§false
+cross§pixel size§49.899994§20.0
+cross§preview§false
+GROUP§draw§true
+draw§alpha fade§13.387501§255.0
+draw§split§15.3125§100.0
+draw§rotate§100.0§-42.705§43.703323§0.0
+draw§rotate spd§0.1§-0.00999999§0.015125004§0.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§12.074991§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§false
+cross§pixel size§49.899994§20.0
+cross§preview§false
+cross§filter§0.99562496§0.0§0.0§0.033749998§1.0
+GROUP§draw§false
+draw§alpha fade§13.387501§255.0
+draw§split§15.3125§100.0
+draw§rotate§100.0§-46.70433§49.753433§0.0
+draw§rotate spd§0.1§-0.00999999§0.015125004§0.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§12.074991§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§11.12499§10.0
+cross§stitch§false
+cross§pixel size§49.899994§20.0
+cross§preview§true
+GROUP§draw§true
+draw§filter§0.0§0.0§0.71875§0.17625001§1.0
+draw§alpha fade§13.387501§255.0
+draw§split§15.3125§100.0
+draw§rotate§100.0§-57.892452§66.67794§0.0
+draw§rotate spd§0.1§-0.00999999§0.015125004§0.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§11.212496§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§12.79999§10.0
+cross§stitch§true
+cross§pixel size§79.97501§20.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.575§1.0§0.48125§0.10000005§1.0
+draw§alpha fade§5.737501§255.0
+draw§split§39.9375§100.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§11.212496§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§12.79999§10.0
+cross§stitch§true
+cross§pixel size§79.97501§20.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.575§1.0§0.48125§0.10000005§1.0
+draw§alpha fade§5.737501§255.0
+draw§split§39.9375§100.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§11.212496§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§12.79999§10.0
+cross§stitch§true
+cross§pixel size§79.97501§20.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.575§1.0§0.48125§0.10000005§1.0
+draw§alpha fade§5.737501§255.0
+draw§split§39.9375§100.0
+draw§stroke§0.6899998§0.40625§1.0§1.0§1.0
+draw§fill§0.47187504§0.0§1.0§0.0§1.0
+draw§w§18.800003§1000.0
+draw§r§245.82513§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.399976§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§true
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.6181251§0.69375§1.0§0.61500025§1.0
+draw§alpha fade§2.23125§255.0
+draw§split§26.6875§100.0
+draw§stroke§0.9231254§0.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§0.0§1.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.524979§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§true
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.6181251§0.7625§1.0§0.18500002§1.0
+draw§alpha fade§0.0§255.0
+draw§split§14.9375§100.0
+draw§stroke§0.9231254§0.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§0.0§1.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.524979§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§true
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.6181251§0.7625§1.0§0.18500002§1.0
+draw§alpha fade§0.0§255.0
+draw§split§14.9375§100.0
+draw§stroke§0.9231254§0.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§0.0§1.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.524979§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§false
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§0.0§255.0
+draw§split§0.0625§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.524979§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§true
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§0.0§255.0
+draw§split§0.0625§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§13.524979§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§14.062486§10.0
+cross§stitch§true
+cross§pixel size§45.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§13.387503§255.0
+draw§split§0.0625§100.0
+draw§stroke§0.011875425§1.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§0.0§1.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.274976§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§-1.4213845E-5§10.0
+cross§stitch§true
+cross§pixel size§40.0§2000.0
+cross§preview§false
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§9.562498§255.0
+draw§split§72.6875§100.0
+draw§stroke§0.011875425§1.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§1.0§0.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§cross§true
+cross§weight§9.274976§10.0
+cross§stroke§0.99937505§0.0§1.0§1.0§1.0
+cross§margin§0.17498569§10.0
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+cross§preview§true
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§9.562498§255.0
+draw§split§72.6875§100.0
+draw§stroke§0.011875425§1.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§1.0§0.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§9.562498§255.0
+draw§split§72.6875§100.0
+draw§stroke§0.011875425§1.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§1.0§0.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§157.14375§255.0
+draw§split§80.6875§100.0
+draw§stroke§0.6831253§1.0§1.0§1.0§1.0
+draw§fill§0.46875§0.0§0.0§1.0§1.0
+draw§w§38.800003§1000.0
+draw§r§252.53752§30.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§alpha fade§3.8250093§255.0
+draw§split§3.0625002§10.0
+GROUP§planet§true
+planet§stroke§0.61937416§0.95§1.0§1.0§1.0
+planet§weight§5.000011§10.0
+planet§count§200.0§40000.0
+planet§scale§175.84999§3000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+draw§rotate§100.0§-70.14184§104.12121§88.23143
+draw§rotate spd§0.1§-0.015999999§0.023749996§0.020124996
+draw§alpha fade§50.0§255.0
+GROUP§planet§true
+planet§stroke§0.05249946§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§50.0§4000.0
+planet§scale§1188.35§30000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+draw§rotate§100.0§-77.26132§114.690094§97.18765
+draw§rotate spd§0.1§-0.015999999§0.023749996§0.020124996
+draw§alpha fade§50.0§255.0
+GROUP§planet§true
+planet§stroke§0.9868745§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§50.0§4000.0
+planet§scale§1188.35§30000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+draw§rotate§100.0§-77.917274§115.66386§98.01283
+draw§rotate spd§0.1§-0.015999999§0.023749996§0.020124996
+draw§alpha fade§50.0§255.0
+GROUP§planet§true
+planet§stroke§0.9868745§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§50.0§4000.0
+planet§scale§1188.35§30000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+draw§X§true
+draw§Y§true
+draw§Z§true
+GROUP§planet§true
+planet§stroke§0.9868745§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§25.0§400.0
+planet§scale§288.34998§30000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§50.0§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§103.15616§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§false
+draw§filter§0.60874987§0.0§1.0§0.0§1.0
+draw§fade§false
+draw§alpha add§4.100002§255.0
+draw§split§5.0§100.0
+GROUP§cross§true
+cross§stitch§false
+cross§pixel size§38.759686§2000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.0§0.0§0.1§0.0§1.0
+draw§fade§false
+draw§alpha add§50.0§255.0
+draw§split§0.0§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.0§0.0§0.1§0.0§1.0
+draw§fade§false
+draw§alpha add§50.0§255.0
+draw§split§0.0§10.0
+draw§X§true
+draw§Y§true
+draw§Z§true
+GROUP§planet§true
+planet§stroke§0.9868745§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§25.0§400.0
+planet§scale§288.34998§30000.0
+planet§hollow§true
+planet§detail§20.424995§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§draw§true
+draw§filter§0.0§0.0§0.1§1.0§1.0
+draw§fade§false
+draw§fade to white§50.0§255.0
+draw§split§0.0§10.0
+draw§X§true
+draw§Y§true
+draw§Z§true
+GROUP§planet§true
+planet§stroke§0.9868745§1.0§1.0§1.0§1.0
+planet§weight§41.575012§1000.0
+planet§count§25.0§400.0
+planet§scale§288.34998§30000.0
+planet§hollow§true
+planet§detail§21.900002§20.0
+planet§core§4.637501§10.0
+GROUP§cross§true
+cross§stitch§true
+cross§pixel size§10.0§20.0
+STATE_END

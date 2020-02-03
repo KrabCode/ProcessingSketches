@@ -1,0 +1,44 @@
+STATE_BEGIN
+UNDO
+GROUP§SpeedDrawing§true
+SpeedDrawing§clear§
+SpeedDrawing§alpha fade§50.0§255.0
+SpeedDrawing§stroke§0.0§0.0§1.0§1.0§1.0
+SpeedDrawing§weight§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§SpeedDrawing§true
+SpeedDrawing§clear§
+SpeedDrawing§alpha fade§50.0§255.0
+SpeedDrawing§stroke§0.0§0.0§1.0§1.0§1.0
+SpeedDrawing§weight§0.9874996§10.0
+SpeedDrawing§debug§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§SpeedDrawing§true
+SpeedDrawing§clear§
+SpeedDrawing§alpha fade§8.243757§255.0
+SpeedDrawing§stroke§0.0§0.0§1.0§1.0§1.0
+SpeedDrawing§weight§4.012502§10.0
+SpeedDrawing§debug§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§SpeedDrawing§true
+SpeedDrawing§clear§
+SpeedDrawing§alpha fade§8.243757§255.0
+SpeedDrawing§stroke§0.76624924§1.0§1.0§0.89499885§1.0
+SpeedDrawing§weight§10.000002§10.0
+SpeedDrawing§debug§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§SpeedDrawing§true
+SpeedDrawing§clear§
+SpeedDrawing§alpha fade§12.112494§25.5
+SpeedDrawing§stroke§0.55937415§1.0§1.0§0.8149985§1.0
+SpeedDrawing§weight§3.0125005§10.0
+SpeedDrawing§debug§false
+STATE_END
