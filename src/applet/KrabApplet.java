@@ -2293,6 +2293,12 @@ public abstract class KrabApplet extends PApplet {
         }
 
         private void autoDetectConstraints(String name) {
+            if(name.contains("weight")){
+                this.constrained = true;
+                minValue = 0;
+                maxValue = Float.MAX_VALUE;
+                defaultValue = 1;
+            }
             if (name.equals("fill") || name.equals("stroke")) {
                 this.constrained = true;
                 minValue = 0;
