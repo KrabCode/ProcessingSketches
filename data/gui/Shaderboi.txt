@@ -1,0 +1,124 @@
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§split§0.0§10.0
+Shaderboi§base angle§0.0§10.0
+Shaderboi§angle variation§1.0§10.0
+Shaderboi§time speed§1.0§10.0
+Shaderboi§base frequency§0.5§10.0
+Shaderboi§base amplitude§1.0§10.0
+Shaderboi§freq mult§2.0§10.0
+Shaderboi§amp mult§0.5§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§0.0§10.0
+Shaderboi§split§0.0§10.0
+Shaderboi§base angle§0.0§10.0
+Shaderboi§angle variation§1.0§10.0
+Shaderboi§time speed§1.0§10.0
+Shaderboi§base frequency§0.5§10.0
+Shaderboi§base amplitude§1.0§10.0
+Shaderboi§freq mult§2.0§10.0
+Shaderboi§amp mult§0.5§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§0.08249961§1.0
+Shaderboi§split§-1.3125064§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§0.08249961§1.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§0.08249961§1.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§250.64252§1000.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§140.64252§1000.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§140.64252§1000.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§140.64252§1000.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Shaderboi§true
+Shaderboi§alpha§255.01752§100.0
+Shaderboi§split§0.0§10.0
+STATE_END

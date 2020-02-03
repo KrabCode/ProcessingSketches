@@ -1,0 +1,490 @@
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§w§25.000004§100.0
+CrossStitchTemplate§h§25.999996§100.0
+CrossStitchTemplate§pattern§0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§square§true
+CrossStitchTemplate§w§25.000004§100.0
+CrossStitchTemplate§h§25.999996§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§size§35.999992§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§square§true
+CrossStitchTemplate§w§25.000004§100.0
+CrossStitchTemplate§h§25.999996§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§size§81.999985§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§square§true
+CrossStitchTemplate§w§25.000004§100.0
+CrossStitchTemplate§h§25.999996§100.0
+CrossStitchTemplate§pattern§1
+CrossStitchTemplate§size§116.999985§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize§10.000002§300.0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§new image§
+CrossStitchTemplate§w§100.0§300.0
+CrossStitchTemplate§h§100.0§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize§7.9999437§300.0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§new image§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize§7.9999437§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§new image§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§average§false
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§average§true
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§average§true
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§average§true
+CrossStitchTemplate§avg radius§11.1362915§1000.0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§116.999985§300.0
+CrossStitchTemplate§center pixel§false
+CrossStitchTemplate§loadImage(random)§
+CrossStitchTemplate§average radius§7.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§9.374998§300.0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§76.999985§300.0
+CrossStitchTemplate§center pixel§false
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+CrossStitchTemplate§average radius§8.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.000002§300.0
+CrossStitchTemplate§square§true
+CrossStitchTemplate§size§91.000015§300.0
+CrossStitchTemplate§center pixel§false
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+CrossStitchTemplate§average radius§8.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§8.000002§300.0
+CrossStitchTemplate§size§91.000015§300.0
+CrossStitchTemplate§color count§0
+CrossStitchTemplate§average radius§8.0§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§7.000016§300.0
+CrossStitchTemplate§size§45.999992§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§average radius§8.0§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§12.000002§300.0
+CrossStitchTemplate§size§100.999985§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§average radius§10.000378§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§12.000002§300.0
+CrossStitchTemplate§size§100.999985§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§average radius§9.000007§100.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§posterize level§2.0§300.0
+CrossStitchTemplate§size§45.999992§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§11.000007§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§loadImage(random)§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§2.0§300.0
+CrossStitchTemplate§size§45.999992§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§11.000007§300.0
+CrossStitchTemplate§pattern§2
+CrossStitchTemplate§load titan§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§2.0§300.0
+CrossStitchTemplate§size§45.999992§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§27.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.11800019§1.0§1.0§0.0§1.0
+CrossStitchTemplate§load titan§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§15.000002§300.0
+CrossStitchTemplate§size§99.999985§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§13.000002§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.11800019§1.0§1.0§0.0§1.0
+CrossStitchTemplate§load titan§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§15.000002§300.0
+CrossStitchTemplate§size§39.00007§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§13.000002§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.11800019§1.0§1.0§0.0§1.0
+CrossStitchTemplate§load titan§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§size§150.99997§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§10.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.11800019§1.0§1.0§0.0§1.0
+CrossStitchTemplate§load titan§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§size§150.99997§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§10.999998§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.11800019§1.0§1.0§0.0§1.0
+CrossStitchTemplate§load europe§
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§source§true
+source§load europe§
+source§load random§
+source§posterize level§8.0§200.0
+GROUP§pattern§true
+pattern§size§100.0§300.0
+pattern§smooth color§0
+pattern§smooth radius§0.0§300.0
+pattern§pattern§0
+pattern§filter§0.0§0.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§source§true
+source§load europe§
+source§load random§
+GROUP§pattern§true
+pattern§posterize level§16.999996§200.0
+pattern§size§100.0§300.0
+pattern§smooth color§0
+pattern§smooth radius§0.0§300.0
+pattern§pattern§0
+pattern§filter§0.0§0.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load europe§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§8.999998§300.0
+CrossStitchTemplate§size§32.999992§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§17.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.95300025§1.0§0.0§0.027999934§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load europe§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§10.999998§300.0
+CrossStitchTemplate§size§32.999992§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§17.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.95300025§1.0§0.0§0.027999934§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load europe§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§6.999999§300.0
+CrossStitchTemplate§size§32.999992§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§17.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.95300025§1.0§0.0§0.027999934§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load europe§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§7.000001§300.0
+CrossStitchTemplate§size§33.999992§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§4.000001§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load europe§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§6.000001§300.0
+CrossStitchTemplate§size§100.999985§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§16.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load image§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§6.000001§300.0
+CrossStitchTemplate§size§100.999985§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§16.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load image§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§posterize level§4.000001§300.0
+CrossStitchTemplate§size§160.99997§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§16.999996§300.0
+CrossStitchTemplate§pattern§0
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§6.000001§30.0
+CrossStitchTemplate§resolution§100.0§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§16.999996§300.0
+CrossStitchTemplate§source§1
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§17.000134§30.0
+CrossStitchTemplate§resolution§297.99994§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§2.0§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§17.000134§30.0
+CrossStitchTemplate§resolution§297.99994§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§2.0§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§17.000134§30.0
+CrossStitchTemplate§resolution§297.99994§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§2.0§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§7.000001§30.0
+CrossStitchTemplate§resolution§32.000008§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§12.000002§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§7.000001§30.0
+CrossStitchTemplate§resolution§32.000008§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§12.000002§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§7.000001§30.0
+CrossStitchTemplate§resolution§32.000008§300.0
+CrossStitchTemplate§smooth color§0
+CrossStitchTemplate§smooth radius§12.000002§300.0
+CrossStitchTemplate§source§2
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§CrossStitchTemplate§true
+CrossStitchTemplate§load clouds§
+CrossStitchTemplate§load random§
+CrossStitchTemplate§grayscale§
+CrossStitchTemplate§posterize level§18.046474§30.0
+CrossStitchTemplate§resolution§97.795204§300.0
+CrossStitchTemplate§smooth color§1
+CrossStitchTemplate§smooth radius§5.000081§300.0
+CrossStitchTemplate§source§1
+CrossStitchTemplate§filter§0.6844999§1.0§1.0§0.012§1.0
+STATE_END

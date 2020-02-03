@@ -1,0 +1,302 @@
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§text size§39.175003§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§text size§39.175003§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§text size§43.824997§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§68.7§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§alpha§248.75§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§text alpha§369.59998§200.0
+FeedbackClouds§image alpha§238.5§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§text alpha§368.84998§200.0
+FeedbackClouds§image alpha§93.0§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§text alpha§229.59998§200.0
+FeedbackClouds§image alpha§9.0§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§text alpha§229.59998§200.0
+FeedbackClouds§image alpha§1.0§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+FeedbackClouds§text alpha§229.59998§200.0
+FeedbackClouds§image alpha§1.0§200.0
+FeedbackClouds§base angle§0.0§10.0
+FeedbackClouds§angle variation§1.0§10.0
+FeedbackClouds§time speed§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§98.249985§10.0
+GROUP§core§true
+core§text alpha§50.0§20.0
+core§image alpha§50.0§20.0
+GROUP§feedback§true
+feedback§magnitude§0.0§10.0
+feedback§base angle§0.0§10.0
+feedback§angle variation§1.0§10.0
+feedback§time speed§1.0§10.0
+feedback§henrik size§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§FeedbackClouds§true
+FeedbackClouds§henrik size§113.124985§100.0
+GROUP§core§true
+core§text alpha§50.0§20.0
+core§image alpha§50.0§20.0
+GROUP§feedback§true
+feedback§magnitude§0.0§10.0
+feedback§base angle§0.0§10.0
+feedback§angle variation§1.0§10.0
+feedback§time speed§1.0§10.0
+feedback§henrik size§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§272.25§1000.0
+core§text alpha§50.0§20.0
+core§image alpha§50.0§20.0
+GROUP§feedback§true
+feedback§magnitude§0.0§10.0
+feedback§base angle§0.0§10.0
+feedback§angle variation§1.0§10.0
+feedback§time speed§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text alpha§124.80002§200.0
+core§image alpha§13.624994§20.0
+GROUP§feedback§true
+feedback§magnitude§6.587498§10.0
+feedback§base angle§-0.77500004§10.0
+feedback§angle variation§1.8626451E-9§10.0
+feedback§time speed§0.5999995§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text alpha§199.80002§200.0
+core§image alpha§8.625§200.0
+GROUP§feedback§true
+feedback§magnitude§6.0624886§10.0
+feedback§base angle§0.068750486§1.0
+feedback§angle variation§0.11249998§10.0
+feedback§time speed§0.18749999§10.0
+feedback§base frequency§1.4125004§100.0
+feedback§base amplitude§1.0375003§10.0
+feedback§freq mult§2.5500004§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text§0.57624966§0.45§0.0625§0.0§1.0
+core§image alpha§6.125§2000.0
+GROUP§feedback§true
+feedback§magnitude§2.0125036§10.0
+feedback§base angle§0.85750026§10.0
+feedback§angle variation§0.49999994§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.83750045§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text§0.57624966§0.45§0.0625§0.0§1.0
+core§image alpha§6.125§2000.0
+GROUP§feedback§true
+feedback§magnitude§2.0125036§10.0
+feedback§base angle§0.85750026§10.0
+feedback§angle variation§0.49999994§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.83750045§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text§0.57624966§0.45§0.0625§0.0§1.0
+core§image alpha§6.125§2000.0
+GROUP§feedback§true
+feedback§magnitude§2.0125036§10.0
+feedback§base angle§0.85750026§10.0
+feedback§angle variation§0.49999994§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.83750045§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§118.5§1000.0
+core§new image§
+core§text§0.57624966§0.45§0.0625§0.0§1.0
+core§image alpha§12.125§200.0
+GROUP§feedback§true
+feedback§magnitude§2.0125031§10.0
+feedback§base angle§0.7825003§10.0
+feedback§angle variation§0.93750006§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.8750004§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§henrik size§129.875§100.0
+core§new image§
+core§text§0.57624966§0.45§0.0625§1.0§1.0
+core§image alpha§9.875§200.0
+GROUP§feedback§true
+feedback§magnitude§2.0125031§10.0
+feedback§base angle§0.7825003§10.0
+feedback§angle variation§0.93750006§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.8750004§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§new image§
+core§image alpha§9.875§200.0
+GROUP§feedback§true
+feedback§magnitude§2.0125031§10.0
+feedback§base angle§0.7825003§10.0
+feedback§angle variation§0.93750006§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.8750004§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§new image§
+core§image alpha§9.875§200.0
+GROUP§feedback§true
+feedback§magnitude§2.0125031§10.0
+feedback§base angle§0.7825003§10.0
+feedback§angle variation§0.93750006§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.8750004§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§new image§
+core§image alpha§9.875§200.0
+GROUP§feedback§true
+feedback§magnitude§0.0§10.0
+feedback§base angle§0.7825003§10.0
+feedback§angle variation§0.93750006§10.0
+feedback§time speed§0.06249996§10.0
+feedback§base frequency§0.8750004§10.0
+feedback§base amplitude§1.4625013§100.0
+feedback§freq mult§2.800001§10.0
+feedback§amp mult§0.6874984§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§new image§
+core§image alpha§6.875§200.0
+GROUP§feedback§true
+feedback§base angle§-0.91749966§10.0
+feedback§angle variation§0.26250035§10.0
+feedback§time speed§0.5124999§10.0
+feedback§base frequency§0.7625003§10.0
+feedback§base amplitude§3.2125015§100.0
+feedback§freq mult§3.637505§10.0
+feedback§amp mult§0.7124985§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§core§true
+core§new image§
+core§image alpha§6.875§200.0
+GROUP§feedback§true
+feedback§base angle§-0.91749966§10.0
+feedback§angle variation§0.26250035§10.0
+feedback§time speed§0.5124999§10.0
+feedback§base frequency§0.7625003§10.0
+feedback§base amplitude§3.2125015§100.0
+feedback§freq mult§3.637505§10.0
+feedback§amp mult§0.7124985§10.0
+STATE_END

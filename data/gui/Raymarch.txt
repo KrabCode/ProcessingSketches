@@ -1,0 +1,131 @@
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§9.937498§10.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§-24.25§5.625§0.0
+Raymarch§diffuse§-3.3875005§10.0
+Raymarch§specular§1.3000009§10.0
+Raymarch§rotate§0.0§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§1.4499986§10.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§0.0§0.0§0.25
+Raymarch§diffuse§4.7125§10.0
+Raymarch§specular§4.287503§10.0
+Raymarch§rotate§0.0§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§1.4499986§10.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§-5.75§-4.0§14.375
+Raymarch§diffuse§1.1000007§10.0
+Raymarch§specular§0.26250306§10.0
+Raymarch§rotate§-6.325002§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§53.175003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§-5.75§-4.0§14.375
+Raymarch§diffuse§1.2875012§10.0
+Raymarch§specular§0.91250366§10.0
+Raymarch§rotate§-6.325002§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§53.175003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§-5.75§-4.0§14.375
+Raymarch§diffuse§1.2875012§10.0
+Raymarch§specular§0.91250366§10.0
+Raymarch§rotate§-6.325002§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§53.175003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-5.25
+Raymarch§light dir§100.0§-5.75§-4.0§14.375
+Raymarch§diffuse§1.2875012§10.0
+Raymarch§specular§0.91250366§10.0
+Raymarch§rotate§-6.325002§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§24.425003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-3.25
+Raymarch§light dir§100.0§-5.75§-4.0§14.375
+Raymarch§diffuse§0.98750013§10.0
+Raymarch§specular§0.57500476§10.0
+Raymarch§rotate§-6.35§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§24.425003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-3.875
+Raymarch§light dir§100.0§-29.625§-19.75§14.375
+Raymarch§diffuse§0.9875§10.0
+Raymarch§specular§0.73750484§10.0
+Raymarch§rotate§4.037502§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§shininess§24.425003§1000.0
+Raymarch§translate§100.0§0.0§0.0§-3.875
+Raymarch§light dir§100.0§-29.625§-19.75§14.375
+Raymarch§diffuse§0.9875§10.0
+Raymarch§specular§0.73750484§10.0
+Raymarch§rotate§4.037502§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Raymarch§true
+Raymarch§scaledown§1.0§100.0
+Raymarch§translate§100.0§0.0§6.25§-15.5
+Raymarch§speed§100.0§0.0§0.0§0.0
+Raymarch§light dir§100.0§-29.625§-19.75§14.375
+Raymarch§diffuse§0.9875§10.0
+Raymarch§specular§0.73750484§10.0
+Raymarch§shininess§24.425003§1000.0
+Raymarch§rotate§4.037502§10.0
+Raymarch§rotate speed§0.0§10.0
+Raymarch§distFOV§1.0§10.0
+STATE_END

@@ -1,0 +1,206 @@
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§1.0§100.0
+GROUP§level 0§true
+level 0§history size§396.00006§1000.0
+level 0§octaves§0.0§100.0
+level 0§freq§1.35§10.0
+level 0§amp§5.7125§10.0
+level 0§freq mult§0.0§10.0
+level 0§amp mult§0.0§10.0
+level 0§weight§7.2000003§10.0
+level 0§stroke§0.99§0.0§1.0§1.0§1.0
+level 0§fill§0.0§0.0§1.0§1.0§1.0
+level 0§y§61.1375§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§1.0§100.0
+GROUP§level 0§true
+level 0§history size§112.999985§1000.0
+level 0§octaves§3.0000005§100.0
+level 0§freq§1.4625§10.0
+level 0§amp§49.212498§100.0
+level 0§freq mult§0.0§10.0
+level 0§amp mult§0.0§10.0
+level 0§weight§5.325002§10.0
+level 0§stroke§0.99§0.0§0.0§1.0§1.0
+level 0§fill§0.0§0.0§1.0§1.0§1.0
+level 0§y§364.0125§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§1.0§100.0
+GROUP§level 0§true
+level 0§history size§239.99997§1000.0
+level 0§time§0.13750032§1.0
+level 0§octaves§3.0000005§100.0
+level 0§freq§1.5374997§100.0
+level 0§amp§49.212498§100.0
+level 0§freq mult§2.0000014§10.0
+level 0§amp mult§0.5012499§1.0
+level 0§weight§5.325002§10.0
+level 0§stroke§0.99§0.0§0.0§1.0§1.0
+level 0§no stroke§true
+level 0§no fill§false
+level 0§fill§0.0§0.0§0.25625§1.0§1.0
+level 0§y§249.01251§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§2.0000005§100.0
+GROUP§level 0§false
+level 0§history size§5000.001§10000.0
+level 0§time§0.05000033§1.0
+level 0§octaves§3.0000005§100.0
+level 0§freq§1.5374997§100.0
+level 0§amp§49.212498§100.0
+level 0§freq mult§2.0000014§10.0
+level 0§amp mult§0.5012499§1.0
+level 0§weight§5.325002§10.0
+level 0§stroke§0.99§0.0§0.0§1.0§1.0
+level 0§fill§0.0§0.0§0.2375§1.0§1.0
+level 0§no stroke§true
+level 0§no fill§false
+level 0§y§316.5125§1000.0
+GROUP§level 1§true
+level 1§history size§18.000015§100.0
+level 1§time§0.51250035§10.0
+level 1§octaves§1.9999998§100.0
+level 1§freq§0.0§10.0
+level 1§amp§0.0§10.0
+level 1§freq mult§0.0§10.0
+level 1§amp mult§0.0§10.0
+level 1§weight§1.0§10.0
+level 1§stroke§0.0§0.0§0.5§1.0§1.0
+level 1§fill§0.0§0.0§0.5§1.0§1.0
+level 1§no stroke§false
+level 1§no fill§false
+level 1§y§454.4125§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§4.000001§100.0
+GROUP§level 0§false
+level 0§history size§5000.001§10000.0
+level 0§time§0.05000033§1.0
+level 0§octaves§3.0000005§100.0
+level 0§freq§1.5374997§100.0
+level 0§amp§49.212498§100.0
+level 0§freq mult§2.0000014§10.0
+level 0§amp mult§0.4999998§1.0
+level 0§weight§5.325002§10.0
+level 0§stroke§0.99§0.0§0.0§1.0§1.0
+level 0§fill§0.0§0.0§0.2375§1.0§1.0
+level 0§no stroke§true
+level 0§no fill§false
+level 0§y§244.01251§1000.0
+GROUP§level 1§false
+level 1§history size§997.9999§1000.0
+level 1§time§0.4249998§10.0
+level 1§octaves§3.0§100.0
+level 1§freq§0.91250014§10.0
+level 1§amp§28.925§100.0
+level 1§freq mult§2.0§10.0
+level 1§amp mult§0.5§10.0
+level 1§weight§-7.636845E-8§10.0
+level 1§stroke§0.0§0.0§0.5§1.0§1.0
+level 1§fill§0.0§0.0§0.44375§1.0§1.0
+level 1§no stroke§true
+level 1§no fill§false
+level 1§y§335.425§1000.0
+GROUP§level 2§false
+level 2§history size§508.00006§10000.0
+level 2§time§0.24999999§10.0
+level 2§octaves§7.000001§100.0
+level 2§freq§2.162502§10.0
+level 2§amp§81.8§1000.0
+level 2§freq mult§2.0250015§10.0
+level 2§amp mult§0.47124842§1.0
+level 2§weight§1.0§10.0
+level 2§stroke§0.0§0.0§0.5§1.0§1.0
+level 2§fill§0.0§0.0§0.69375§1.0§1.0
+level 2§no stroke§true
+level 2§no fill§false
+level 2§y§433.6875§1000.0
+GROUP§level 3§false
+level 3§history size§231.00003§1000.0
+level 3§time§0.4§10.0
+level 3§octaves§5.000001§100.0
+level 3§freq§1.6875004§10.0
+level 3§amp§101.875§1000.0
+level 3§freq mult§1.9875§10.0
+level 3§amp mult§0.5§10.0
+level 3§weight§1.0§10.0
+level 3§stroke§0.0§0.0§0.0§1.0§1.0
+level 3§fill§0.00125§0.0§1.0§1.0§1.0
+level 3§no stroke§true
+level 3§no fill§false
+level 3§y§583.3125§10000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§level count§4.000001§100.0
+GROUP§level 0§false
+level 0§history size§5000.001§10000.0
+level 0§time§0.05000033§1.0
+level 0§octaves§3.0000005§100.0
+level 0§freq§1.5374997§100.0
+level 0§amp§49.212498§100.0
+level 0§freq mult§2.0000014§10.0
+level 0§amp mult§0.4999998§1.0
+level 0§weight§5.325002§10.0
+level 0§stroke§0.99§0.0§0.0§1.0§1.0
+level 0§fill§0.0§0.0§0.2375§1.0§1.0
+level 0§no stroke§true
+level 0§no fill§false
+level 0§y§244.01251§1000.0
+GROUP§level 1§false
+level 1§history size§997.9999§1000.0
+level 1§time§0.4249998§10.0
+level 1§octaves§3.0§100.0
+level 1§freq§0.91250014§10.0
+level 1§amp§28.925§100.0
+level 1§freq mult§2.0§10.0
+level 1§amp mult§0.5§10.0
+level 1§weight§-7.636845E-8§10.0
+level 1§stroke§0.0§0.0§0.5§1.0§1.0
+level 1§fill§0.0§0.0§0.44375§1.0§1.0
+level 1§no stroke§true
+level 1§no fill§false
+level 1§y§335.425§1000.0
+GROUP§level 2§false
+level 2§history size§508.00006§10000.0
+level 2§time§0.24999999§10.0
+level 2§octaves§7.000001§100.0
+level 2§freq§2.162502§10.0
+level 2§amp§81.8§1000.0
+level 2§freq mult§2.0250015§10.0
+level 2§amp mult§0.47124842§1.0
+level 2§weight§1.0§10.0
+level 2§stroke§0.0§0.0§0.5§1.0§1.0
+level 2§fill§0.0§0.0§0.69375§1.0§1.0
+level 2§no stroke§true
+level 2§no fill§false
+level 2§y§433.6875§1000.0
+GROUP§level 3§false
+level 3§history size§231.00003§1000.0
+level 3§time§0.4§10.0
+level 3§octaves§5.000001§100.0
+level 3§freq§1.6875004§10.0
+level 3§amp§101.875§1000.0
+level 3§freq mult§1.9875§10.0
+level 3§amp mult§0.5§10.0
+level 3§weight§1.0§10.0
+level 3§stroke§0.0§0.0§0.0§1.0§1.0
+level 3§fill§0.00125§0.0§1.0§1.0§1.0
+level 3§no stroke§true
+level 3§no fill§false
+level 3§y§583.3125§10000.0
+STATE_END

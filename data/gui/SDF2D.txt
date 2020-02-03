@@ -1,0 +1,1000 @@
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§slider§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+STATE_END
+STATE_BEGIN
+UNDO
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§false
+test§weight§1.0§10.0
+test§stroke§0.0§0.0§0.5§1.0§1.0
+test§count§1.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+test§amplitude§24.024998§10.0
+test§frequency§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+test§amplitude§23.5875§10.0
+test§frequency§-15.9625§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+test§amplitude§2.7125008§10.0
+test§frequency§0.06250016§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+test§amplitude§-37.425003§100.0
+test§frequency§0.012500002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§test§true
+test§weight§6.812499§10.0
+test§stroke§0.0§0.0§1.0§1.0§1.0
+test§count§40.999992§100.0
+test§margin§-13.8125§300.0
+test§amplitude§-37.425003§100.0
+test§frequency§0.012500002§10.0
+test§distance§0.037499946§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§time speed§-0.7499999§10.0
+DotSpiral§weight§3.000001§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§80.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§6.9124923§10.0
+DotSpiral§frequency§2.0000014§10.0
+DotSpiral§distance§0.04999987§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§time speed§-0.7499999§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§80.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§6.9124923§10.0
+DotSpiral§frequency§2.0000014§10.0
+DotSpiral§distance§0.04999987§10.0
+DotSpiral§weight§1.1194497E-6§10.0
+DotSpiral§weight amp§0.22499964§10.0
+DotSpiral§weight freq§5.0999985§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§time speed§-0.7499999§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§80.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§6.9124923§10.0
+DotSpiral§frequency§2.0000014§10.0
+DotSpiral§distance§0.04999987§10.0
+DotSpiral§weight§3.0750005§10.0
+DotSpiral§weight amp§1.9875001§10.0
+DotSpiral§weight freq§9.850002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§time speed§-2.5§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§80.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§6.9124923§10.0
+DotSpiral§frequency§2.0000014§10.0
+DotSpiral§distance§0.04999987§10.0
+DotSpiral§weight§3.0750005§10.0
+DotSpiral§weight amp§1.5875008§10.0
+DotSpiral§weight freq§1.9875014§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§spiral speed§-1.9999993§10.0
+DotSpiral§weight speed§1.0012493§1.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§80.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§6.9124923§10.0
+DotSpiral§frequency§2.0000017§10.0
+DotSpiral§distance§0.03749987§10.0
+DotSpiral§weight§2.599999§10.0
+DotSpiral§weight amp§2.500002§10.0
+DotSpiral§weight freq§1.100002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§spiral speed§-1.9999993§10.0
+DotSpiral§weight speed§1.0012493§1.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§count§100.000015§100.0
+DotSpiral§margin§100.0§30.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999983§1.0
+DotSpiral§distance§0.11249899§10.0
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.162499§10.0
+DotSpiral§weight amp§1.4625001§10.0
+DotSpiral§weight freq§2.9625018§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§spiral speed§-1.9999993§10.0
+DotSpiral§weight speed§1.0012493§1.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§11.000002§100.0
+DotSpiral§size§1.6375003§10.0
+DotSpiral§step§11.65§20.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999983§1.0
+DotSpiral§distance§0.0§10.0
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.162499§10.0
+DotSpiral§weight amp§1.4625001§10.0
+DotSpiral§weight freq§2.9625018§10.0
+DotSpiral§j distance§1.5000001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§weight speed§1.0012493§1.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§11.000002§100.0
+DotSpiral§size§1.6375003§10.0
+DotSpiral§step§11.65§20.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999983§1.0
+DotSpiral§distance§0.0§10.0
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.162499§10.0
+DotSpiral§weight amp§1.4625001§10.0
+DotSpiral§weight freq§2.9625018§10.0
+DotSpiral§j distance§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§28.000017§100.0
+DotSpiral§weight speed§1.0012493§1.0
+DotSpiral§size§4.025001§1.0
+DotSpiral§step§10.974997§20.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999976§1.0
+DotSpiral§distance§-0.58750004§10.0
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§1.9249985§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+DotSpiral§j distance§0.09999869§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§28.000017§100.0
+DotSpiral§weight speed§0.0§10.0
+DotSpiral§size§4.025001§1.0
+DotSpiral§step§10.974997§20.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999976§1.0
+DotSpiral§distance§-0.43750006§10.0
+DotSpiral§distance power§0.7750002§10.0
+DotSpiral§weight§1.9249985§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+DotSpiral§j distance§20.999996§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§28.000017§100.0
+DotSpiral§spiral speed§-1.9999993§10.0
+DotSpiral§weight speed§0.0§10.0
+DotSpiral§size§4.025001§1.0
+DotSpiral§step§10.974997§20.0
+DotSpiral§amplitude§3.7749908§10.0
+DotSpiral§frequency§1.9999976§1.0
+DotSpiral§distance§-0.43750006§10.0
+DotSpiral§distance power§0.7750002§10.0
+DotSpiral§weight§1.9249985§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+DotSpiral§j distance-0.10471972§0.0§100.0
+DotSpiral§j distance-0.1396263§0.0§100.0
+DotSpiral§j distance-0.17453286§0.0§100.0
+DotSpiral§j distance-0.20943943§0.0§100.0
+DotSpiral§j distance-0.244346§0.0§100.0
+DotSpiral§j distance-0.2792526§0.0§100.0
+DotSpiral§j distance-0.31415915§0.0§100.0
+DotSpiral§j distance-0.34906575§0.0§100.0
+DotSpiral§j distance-0.38397232§0.0§100.0
+DotSpiral§j distance-0.4188789§0.0§100.0
+DotSpiral§j distance-0.4537855§0.0§100.0
+DotSpiral§j distance-0.48869208§0.0§100.0
+DotSpiral§j distance-0.5235987§0.0§100.0
+DotSpiral§j distance-0.55850524§0.0§100.0
+DotSpiral§j distance-0.59341174§0.0§100.0
+DotSpiral§j distance-0.6283183§0.0§100.0
+DotSpiral§j distance-0.6632249§0.0§100.0
+DotSpiral§j distance-0.69813144§0.0§100.0
+DotSpiral§j distance-0.733038§0.0§100.0
+DotSpiral§j distance-0.7679445§0.0§100.0
+DotSpiral§j distance-0.8028511§0.0§100.0
+DotSpiral§j distance-0.83775765§0.0§100.0
+DotSpiral§j distance-0.8726642§0.0§100.0
+DotSpiral§j distance-0.9075708§0.0§100.0
+DotSpiral§j distance-0.9424773§0.0§100.0
+DotSpiral§j distance-0.97738385§0.0§100.0
+DotSpiral§j distance-1.0122905§0.0§100.0
+DotSpiral§j distance-1.0471971§0.0§100.0
+DotSpiral§j distance-1.0821037§0.0§100.0
+DotSpiral§j distance-1.1170104§0.0§100.0
+DotSpiral§j distance-1.151917§0.0§100.0
+DotSpiral§j distance-1.1868235§0.0§100.0
+DotSpiral§j distance-1.2217301§0.0§100.0
+DotSpiral§j distance-1.2566367§0.0§100.0
+DotSpiral§j distance-1.2915434§0.0§100.0
+DotSpiral§j distance-1.32645§0.0§100.0
+DotSpiral§j distance-1.3613566§0.0§100.0
+DotSpiral§j distance-1.3962632§0.0§100.0
+DotSpiral§j distance-1.4311699§0.0§100.0
+DotSpiral§j distance-1.4660765§0.0§100.0
+DotSpiral§j distance-1.500983§0.0§100.0
+DotSpiral§j distance-1.5358896§0.0§100.0
+DotSpiral§j distance-1.5707963§0.0§100.0
+DotSpiral§j distance-1.6057029§0.0§100.0
+DotSpiral§j distance-1.6406095§0.0§100.0
+DotSpiral§j distance-1.6755161§0.0§100.0
+DotSpiral§j distance-1.7104228§0.0§100.0
+DotSpiral§j distance-1.7453294§0.0§100.0
+DotSpiral§j distance-1.780236§0.0§100.0
+DotSpiral§j distance-1.8151426§0.0§100.0
+DotSpiral§j distance-1.8500491§0.0§100.0
+DotSpiral§j distance-1.8849558§0.0§100.0
+DotSpiral§j distance-1.9198624§0.0§100.0
+DotSpiral§j distance-1.954769§0.0§100.0
+DotSpiral§j distance-1.9896756§0.0§100.0
+DotSpiral§j distance-2.0245821§0.0§100.0
+DotSpiral§j distance-2.0594888§0.0§100.0
+DotSpiral§j distance-2.0943954§0.0§100.0
+DotSpiral§j distance-2.129302§0.0§100.0
+DotSpiral§j distance-2.1642087§0.0§100.0
+DotSpiral§j distance-2.1991153§0.0§100.0
+DotSpiral§j distance-2.234022§0.0§100.0
+DotSpiral§j distance-2.2689285§0.0§100.0
+DotSpiral§j distance-2.3038352§0.0§100.0
+DotSpiral§j distance-2.3387415§0.0§100.0
+DotSpiral§j distance-2.3736482§0.0§100.0
+DotSpiral§j distance-2.4085548§0.0§100.0
+DotSpiral§j distance-2.4434614§0.0§100.0
+DotSpiral§j distance-2.478368§0.0§100.0
+DotSpiral§j distance-2.5132747§0.0§100.0
+DotSpiral§j distance-2.5481813§0.0§100.0
+DotSpiral§j distance-2.583088§0.0§100.0
+DotSpiral§j distance-2.6179945§0.0§100.0
+DotSpiral§j distance-2.6529012§0.0§100.0
+DotSpiral§j distance-2.6878078§0.0§100.0
+DotSpiral§j distance-2.7227144§0.0§100.0
+DotSpiral§j distance-2.757621§0.0§100.0
+DotSpiral§j distance-2.7925277§0.0§100.0
+DotSpiral§j distance-2.8274343§0.0§100.0
+DotSpiral§j distance-2.862341§0.0§100.0
+DotSpiral§j distance-2.8972476§0.0§100.0
+DotSpiral§j distance-2.9321542§0.0§100.0
+DotSpiral§j distance-2.9670608§0.0§100.0
+DotSpiral§j distance-3.0019672§0.0§100.0
+DotSpiral§j distance-3.0368738§0.0§100.0
+DotSpiral§j distance-3.0717804§0.0§100.0
+DotSpiral§j distance-3.106687§0.0§100.0
+DotSpiral§j distance-3.1415937§0.0§100.0
+DotSpiral§j distance-3.1765003§0.0§100.0
+DotSpiral§j distance-3.211407§0.0§100.0
+DotSpiral§j distance-3.2463136§0.0§100.0
+DotSpiral§j distance-3.2812202§0.0§100.0
+DotSpiral§j distance-3.3161268§0.0§100.0
+DotSpiral§j distance-3.3510334§0.0§100.0
+DotSpiral§j distance-3.38594§0.0§100.0
+DotSpiral§j distance-3.4208467§0.0§100.0
+DotSpiral§j distance-3.4557533§0.0§100.0
+DotSpiral§j distance-3.49066§0.0§100.0
+DotSpiral§j distance-3.5255666§0.0§100.0
+DotSpiral§j distance-3.5604732§0.0§100.0
+DotSpiral§j distance-3.5953798§0.0§100.0
+DotSpiral§j distance-3.6302865§0.0§100.0
+DotSpiral§j distance-3.665193§0.0§100.0
+DotSpiral§j distance-3.7000995§0.0§100.0
+DotSpiral§j distance-3.735006§0.0§100.0
+DotSpiral§j distance-3.7699127§0.0§100.0
+DotSpiral§j distance-3.8048193§0.0§100.0
+DotSpiral§j distance-3.839726§0.0§100.0
+DotSpiral§j distance-3.8746326§0.0§100.0
+DotSpiral§j distance-3.9095392§0.0§100.0
+DotSpiral§j distance-3.9444458§0.0§100.0
+DotSpiral§j distance-3.9793525§0.0§100.0
+DotSpiral§j distance-4.014259§0.0§100.0
+DotSpiral§j distance-4.0491652§0.0§100.0
+DotSpiral§j distance-4.0840716§0.0§100.0
+DotSpiral§j distance-4.118978§0.0§100.0
+DotSpiral§j distance-4.1538844§0.0§100.0
+DotSpiral§j distance-4.188791§0.0§100.0
+DotSpiral§j distance-4.223697§0.0§100.0
+DotSpiral§j distance-4.2586036§0.0§100.0
+DotSpiral§j distance-4.29351§0.0§100.0
+DotSpiral§j distance-4.3284163§0.0§100.0
+DotSpiral§j distance-4.3633227§0.0§100.0
+DotSpiral§j distance-4.398229§0.0§100.0
+DotSpiral§j distance-4.4331355§0.0§100.0
+DotSpiral§j distance-4.468042§0.0§100.0
+DotSpiral§j distance-4.5029483§0.0§100.0
+DotSpiral§j distance-4.5378547§0.0§100.0
+DotSpiral§j distance-4.572761§0.0§100.0
+DotSpiral§j distance-4.6076674§0.0§100.0
+DotSpiral§j distance-4.642574§0.0§100.0
+DotSpiral§j distance-4.6774797§0.0§100.0
+DotSpiral§j distance-4.712386§0.0§100.0
+DotSpiral§j distance-4.7472925§0.0§100.0
+DotSpiral§j distance-4.782199§0.0§100.0
+DotSpiral§j distance-4.8171053§0.0§100.0
+DotSpiral§j distance-4.8520117§0.0§100.0
+DotSpiral§j distance-4.886918§0.0§100.0
+DotSpiral§j distance-4.9218245§0.0§100.0
+DotSpiral§j distance-4.956731§0.0§100.0
+DotSpiral§j distance-4.991637§0.0§100.0
+DotSpiral§j distance-5.0265436§0.0§100.0
+DotSpiral§j distance-5.06145§0.0§100.0
+DotSpiral§j distance-5.0963564§0.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§30.999996§100.0
+DotSpiral§spiral speed§2.0000002§10.0
+DotSpiral§weight speed§0.0§10.0
+DotSpiral§size§11.801253§10.0
+DotSpiral§step§13.024998§20.0
+DotSpiral§amplitude§20.037508§10.0
+DotSpiral§frequency§1.9999989§10.0
+DotSpiral§distance§8.574993§10.0
+DotSpiral§distance power§0.17500073§10.0
+DotSpiral§weight§1.7749988§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+DotSpiral§j distance§1.0000007§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§30.999996§100.0
+DotSpiral§spiral speed§240.1§1000.0
+DotSpiral§weight speed§0.0§10.0
+DotSpiral§size§11.801253§10.0
+DotSpiral§step§13.024998§20.0
+DotSpiral§amplitude§20.037508§10.0
+DotSpiral§frequency§1.9999989§10.0
+DotSpiral§distance§8.574993§10.0
+DotSpiral§distance power§0.17500073§10.0
+DotSpiral§weight§1.7749988§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§30.999996§100.0
+DotSpiral§spiral speed§0.0§10.0
+DotSpiral§weight speed§0.0§10.0
+DotSpiral§size§11.801253§10.0
+DotSpiral§step§13.024998§20.0
+DotSpiral§amplitude§20.037508§10.0
+DotSpiral§frequency§1.9999989§10.0
+DotSpiral§distance§8.574993§10.0
+DotSpiral§distance power§0.17500073§10.0
+DotSpiral§weight§1.7749988§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§46.000008§100.0
+DotSpiral§spiral speed§2.9999993§10.0
+DotSpiral§weight speed§-0.8999998§10.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§13.024998§20.0
+DotSpiral§amplitude§1.4999994§10.0
+DotSpiral§frequency§1.9999988§10.0
+DotSpiral§distance§0.06249984§10.0
+DotSpiral§distance power§0.5750001§10.0
+DotSpiral§weight§2.3999996§10.0
+DotSpiral§weight amp§1.0249996§10.0
+DotSpiral§weight freq§0.7899999§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§62.999992§100.0
+DotSpiral§spiral speed§1.0012482§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§9.200028§20.0
+DotSpiral§amplitude§24.999975§10.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.031250026§1.0
+DotSpiral§distance power§0.76250076§10.0
+DotSpiral§weight§3.4874997§10.0
+DotSpiral§weight amp§1.9250011§10.0
+DotSpiral§weight freq§0.49500138§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§50.999992§100.0
+DotSpiral§spiral speed§1.0012482§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§9.200028§20.0
+DotSpiral§amplitude§24.999975§10.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.031250026§1.0
+DotSpiral§distance power§0.76250076§10.0
+DotSpiral§weight§1.0§10.0
+DotSpiral§weight amp§0.0§10.0
+DotSpiral§weight freq§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§50.999992§100.0
+DotSpiral§spiral speed§-1.0000024§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§9.200028§20.0
+DotSpiral§amplitude§24.999975§10.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.013750019§1.0
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§weight amp§1.3625004§10.0
+DotSpiral§weight freq§0.017374035§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§50.999992§100.0
+DotSpiral§spiral speed§-1.0000024§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§9.200028§20.0
+DotSpiral§amplitude§21.474983§100.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.019625029§0.1
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§1.9999988§10.0
+DotSpiral§stroke amp§0.99999964§1.0
+DotSpiral§stroke freq§0.63749945§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§50.999992§100.0
+DotSpiral§spiral speed§-1.0000024§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§9.200028§20.0
+DotSpiral§amplitude§21.474983§100.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.019625029§0.1
+DotSpiral§distance power§1.0§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§1.9999988§10.0
+DotSpiral§stroke amp§0.99999964§1.0
+DotSpiral§stroke freq§0.63749945§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987533§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§amplitude§3.1124825§10.0
+DotSpiral§frequency§2.0000038§10.0
+DotSpiral§distance§0.019625029§0.1
+DotSpiral§distance power§0.9125§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§1.9999988§10.0
+DotSpiral§stroke amp§0.99999964§1.0
+DotSpiral§stroke freq§0.63749945§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§21.149994§100.0
+DotSpiral§distance amplitude§1.0§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.0106250355§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§1.0000015§10.0
+DotSpiral§stroke amp§0.86124945§1.0
+DotSpiral§stroke freq§1.4962487§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.849999§0.1
+DotSpiral§stroke freq§1.9999995§1.0
+DotSpiral§stroke sin cutoff§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.849999§0.1
+DotSpiral§stroke freq§1.9999995§1.0
+DotSpiral§stroke sin cutoff§0.0§10.0
+DotSpiral§easing§1.23875§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.38624904§1.0
+DotSpiral§stroke freq§2.2675§1.0
+DotSpiral§stroke sin cutoff§0.0§10.0
+DotSpiral§easing§6.6§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.38624904§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§0.0§10.0
+DotSpiral§easing§0.18749939§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.38624904§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§85.999985§100.0
+DotSpiral§spiral speed§-1.4987563§1.0
+DotSpiral§size§9.5512495§10.0
+DotSpiral§step§7.675029§20.0
+DotSpiral§base amplitude§9.999992§10.0
+DotSpiral§distance amplitude§2.9999962§10.0
+DotSpiral§frequency§2.0000002§10.0
+DotSpiral§distance§0.010750035§0.1
+DotSpiral§distance power§1.1874983§10.0
+DotSpiral§weight§3.5000014§10.0
+DotSpiral§stroke speed§2.0000021§10.0
+DotSpiral§stroke amp§0.38624904§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§pow§129.0625§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§base amplitude§1.0§10.0
+DotSpiral§distance amplitude§4.0912585§10.0
+DotSpiral§frequency§1.9999962§10.0
+DotSpiral§distance§0.014375045§0.1
+DotSpiral§distance power§1.0025012§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§pow§0.85000014§0.1
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§base amplitude§1.0§10.0
+DotSpiral§distance amplitude§4.0912585§10.0
+DotSpiral§frequency§1.9999962§10.0
+DotSpiral§distance§0.014375045§0.1
+DotSpiral§distance power§1.0025012§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§angle pow§1.9987537§1.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§base amplitude§1.0§10.0
+DotSpiral§distance amplitude§4.0912585§10.0
+DotSpiral§frequency§1.9999962§10.0
+DotSpiral§distance§0.0062500467§0.1
+DotSpiral§distance power§1.0025012§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§angle pow§1.0000001§1.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§base amplitude§9.999998§10.0
+DotSpiral§distance amplitude§2.9037595§10.0
+DotSpiral§frequency§1.9999964§10.0
+DotSpiral§distance§0.013125043§0.1
+DotSpiral§distance power§1.1087518§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§stroke sin cutoff§1.1250001§10.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§a§0.38749987§10.0
+DotSpiral§b§-1.5450003§1.0
+DotSpiral§base amplitude§9.999998§10.0
+DotSpiral§distance amplitude§2.9037595§10.0
+DotSpiral§frequency§1.9999964§10.0
+DotSpiral§distance§0.013125043§0.1
+DotSpiral§distance power§1.1087518§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§bands§60.999992§100.0
+DotSpiral§spiral speed§-1.0001314§0.1
+DotSpiral§size§25.001259§10.0
+DotSpiral§step§16.0§200.0
+DotSpiral§a§-0.48749885§10.0
+DotSpiral§b§-0.59987533§0.1
+DotSpiral§distance§0.013125043§0.1
+DotSpiral§distance power§1.1087518§1.0
+DotSpiral§weight§3.999999§1.0
+DotSpiral§stroke speed§1.0000019§1.0
+DotSpiral§stroke amp§0.884998§1.0
+DotSpiral§stroke freq§3.0625002§10.0
+DotSpiral§pow§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§ray count§55.000008§100.0
+DotSpiral§point count§64.000015§100.0
+DotSpiral§point radians§68.0§10000.0
+DotSpiral§a§1.375001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§1.375001§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§point count§64.000015§100.0
+DotSpiral§ray count§5.0000153§100.0
+DotSpiral§taus§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§1.6125016§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§point count§121.999985§1000.0
+DotSpiral§ray count§34.000008§100.0
+DotSpiral§taus§1.3875002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§0.88750154§10.0
+DotSpiral§point count§276.99994§1000.0
+DotSpiral§ray count§50.000008§100.0
+DotSpiral§offset amplitude§20.4375§100.0
+DotSpiral§offset frequency§0.04124998§1.0
+DotSpiral§offset speed§2.8000004§10.0
+DotSpiral§taus§3.6625006§10.0
+DotSpiral§stroke amp§0.0§10.0
+DotSpiral§stroke frequency§0.0§10.0
+DotSpiral§strokeSpeed§0.0§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§weight§2.0374937§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§0.88750154§10.0
+DotSpiral§point count§276.99994§1000.0
+DotSpiral§ray count§50.000008§100.0
+DotSpiral§offset amplitude§20.4375§100.0
+DotSpiral§offset frequency§0.04124998§1.0
+DotSpiral§offset speed§1.5000005§1.0
+DotSpiral§taus§3.6625006§10.0
+DotSpiral§stroke amp§0.0§10.0
+DotSpiral§stroke frequency§0.0§10.0
+DotSpiral§strokeSpeed§0.0§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§weight§2.0374937§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§0.88750154§10.0
+DotSpiral§point count§276.99994§1000.0
+DotSpiral§ray count§50.000008§100.0
+DotSpiral§offset amplitude§20.4375§100.0
+DotSpiral§offset frequency§-0.0012500279§1.0
+DotSpiral§offset speed§1.5000005§1.0
+DotSpiral§taus§2.0250003§10.0
+DotSpiral§stroke amp§0.0§10.0
+DotSpiral§stroke frequency§0.0§10.0
+DotSpiral§strokeSpeed§0.0§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§weight§2.0374937§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DotSpiral§true
+DotSpiral§a§0.88750154§10.0
+DotSpiral§point count§429.00006§1000.0
+DotSpiral§ray count§27.000027§100.0
+DotSpiral§offset amplitude§20.224995§10.0
+DotSpiral§offset frequency§0.003124975§0.1
+DotSpiral§offset speed§1.5000005§1.0
+DotSpiral§taus§2.3875005§10.0
+DotSpiral§inner multiplier§-0.46289062§1000.0
+DotSpiral§stroke amp§2.0249996§10.0
+DotSpiral§stroke frequency§0.0§10.0
+DotSpiral§strokeSpeed§0.0§10.0
+DotSpiral§stroke§0.0031250142§0.0§1.0§1.0§1.0
+DotSpiral§weight§2.0874915§10.0
+STATE_END

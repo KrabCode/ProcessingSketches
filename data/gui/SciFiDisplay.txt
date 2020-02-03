@@ -1,0 +1,207 @@
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§bg fill§0.0§0.0§0.0§0.5§1.0
+global§fg fill§0.0§0.0§1.0§1.0§1.0
+global§rect round§10.0§20.0
+GROUP§parametric§true
+parametric§translate§100.0§0.0§0.0§0.0
+parametric§rotation§100.0§0.0§0.0§0.0
+parametric§z rotation§false
+parametric§u§10.0§400.0
+parametric§v§10.0§400.0
+parametric§radius§10.0§20.0
+parametric§height§0.0§10.0
+parametric§weight§1.0§10.0
+parametric§stroke§0.0§0.0§1.0§1.0§1.0
+parametric§no stroke§false
+parametric§fill§0.0§0.0§0.0§1.0§1.0
+parametric§points§false
+parametric§russian§0
+parametric§easing§1.0§10.0
+GROUP§noise track§true
+noise track§x§20.0§20.0
+noise track§y§20.0§20.0
+noise track§w§200.0§30.0
+noise track§h§200.0§30.0
+noise track§noise§0.0§0.0§0.5§1.0§1.0
+noise track§noise w§0.0§10.0
+noise track§noise history size§1.0§100.0
+noise track§fbm amp§1.0§10.0
+noise track§fbm freq§10.0§20.0
+noise track§fbm amp mult§0.5§10.0
+noise track§fbm freq mult§2.0§10.0
+GROUP§noise bars a§true
+noise bars a§x§20.0§20.0
+noise bars a§y§580.0§30.0
+noise bars a§w§200.0§30.0
+noise bars a§h§200.0§30.0
+noise bars a§i mult§10.0§20.0
+noise bars a§padding§10.0§20.0
+noise bars a§count§2.0§100.0
+GROUP§noise bars b§true
+noise bars b§x§20.0§20.0
+noise bars b§y§580.0§30.0
+noise bars b§w§200.0§30.0
+noise bars b§h§200.0§30.0
+noise bars b§i mult§10.0§20.0
+noise bars b§padding§10.0§20.0
+noise bars b§count§2.0§100.0
+GROUP§noise map§true
+noise map§x§20.0§20.0
+noise map§y§580.0§30.0
+noise map§w§200.0§30.0
+noise map§h§200.0§30.0
+GROUP§lissajous§true
+lissajous§x§20.0§20.0
+lissajous§y§580.0§30.0
+lissajous§r§200.0§30.0
+lissajous§x freq§1.0§10.0
+lissajous§y freq§2.0§10.0
+lissajous§padding§20.0§20.0
+lissajous§count§300.0§30.0
+lissajous§distance§12.0§20.0
+GROUP§bottom shader§true
+bottom shader§x§20.0§20.0
+bottom shader§y§580.0§30.0
+bottom shader§w§200.0§30.0
+bottom shader§h§200.0§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§bg fill§0.0§0.0§0.0§0.5§1.0
+global§fg fill§0.0§0.0§1.0§1.0§1.0
+global§rect round§10.0§20.0
+GROUP§parametric§true
+parametric§translate§100.0§0.0§0.0§0.0
+parametric§rotation§100.0§0.0§0.0§0.0
+parametric§z rotation§false
+parametric§u§10.0§400.0
+parametric§v§10.0§400.0
+parametric§radius§10.0§20.0
+parametric§height§0.0§10.0
+parametric§weight§1.0§10.0
+parametric§stroke§0.0§0.0§1.0§1.0§1.0
+parametric§no stroke§false
+parametric§fill§0.0§0.0§0.0§1.0§1.0
+parametric§points§false
+parametric§russian§0
+parametric§easing§1.0§10.0
+GROUP§noise track§true
+noise track§x§20.0§20.0
+noise track§y§20.0§20.0
+noise track§w§200.0§30.0
+noise track§h§200.0§30.0
+noise track§noise§0.0§0.0§0.5§1.0§1.0
+noise track§noise w§0.0§10.0
+noise track§noise history size§1.0§100.0
+noise track§fbm amp§1.0§10.0
+noise track§fbm freq§10.0§20.0
+noise track§fbm amp mult§0.5§10.0
+noise track§fbm freq mult§2.0§10.0
+GROUP§noise bars a§true
+noise bars a§x§20.0§20.0
+noise bars a§y§580.0§30.0
+noise bars a§w§200.0§30.0
+noise bars a§h§200.0§30.0
+noise bars a§i mult§10.0§20.0
+noise bars a§padding§10.0§20.0
+noise bars a§count§2.0§100.0
+GROUP§noise bars b§true
+noise bars b§x§20.0§20.0
+noise bars b§y§580.0§30.0
+noise bars b§w§200.0§30.0
+noise bars b§h§200.0§30.0
+noise bars b§i mult§10.0§20.0
+noise bars b§padding§10.0§20.0
+noise bars b§count§2.0§100.0
+GROUP§noise map§true
+noise map§x§20.0§20.0
+noise map§y§580.0§30.0
+noise map§w§200.0§30.0
+noise map§h§200.0§30.0
+GROUP§lissajous§true
+lissajous§x§20.0§20.0
+lissajous§y§580.0§30.0
+lissajous§r§200.0§30.0
+lissajous§x freq§1.0§10.0
+lissajous§y freq§2.0§10.0
+lissajous§padding§20.0§20.0
+lissajous§count§300.0§30.0
+lissajous§distance§12.0§20.0
+GROUP§bottom shader§true
+bottom shader§x§20.0§20.0
+bottom shader§y§580.0§30.0
+bottom shader§w§200.0§30.0
+bottom shader§h§200.0§30.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§bg fill§0.0§0.0§0.0§0.5§1.0
+global§fg fill§0.0§0.0§1.0§1.0§1.0
+global§rect round§10.0§20.0
+GROUP§parametric§true
+parametric§translate§100.0§0.0§0.0§0.0
+parametric§rotation§100.0§0.0§0.0§0.0
+parametric§z rotation§true
+parametric§u§10.0§400.0
+parametric§v§10.0§400.0
+parametric§radius§10.0§20.0
+parametric§height§0.0§10.0
+parametric§weight§1.0§10.0
+parametric§stroke§0.0§0.725§1.0§1.0§1.0
+parametric§no stroke§false
+parametric§fill§0.0§0.0§0.0§1.0§1.0
+parametric§points§false
+parametric§russian§0
+parametric§easing§1.0§10.0
+GROUP§noise track§true
+noise track§x§20.0§20.0
+noise track§y§20.0§20.0
+noise track§w§200.0§30.0
+noise track§h§200.0§30.0
+noise track§noise§0.0§0.0§0.5§1.0§1.0
+noise track§noise w§0.0§10.0
+noise track§noise history size§1.0§100.0
+noise track§fbm amp§1.0§10.0
+noise track§fbm freq§10.0§20.0
+noise track§fbm amp mult§0.5§10.0
+noise track§fbm freq mult§2.0§10.0
+GROUP§noise bars a§true
+noise bars a§x§20.0§20.0
+noise bars a§y§580.0§30.0
+noise bars a§w§200.0§30.0
+noise bars a§h§200.0§30.0
+noise bars a§i mult§10.0§20.0
+noise bars a§padding§10.0§20.0
+noise bars a§count§2.0§100.0
+GROUP§noise bars b§true
+noise bars b§x§20.0§20.0
+noise bars b§y§580.0§30.0
+noise bars b§w§200.0§30.0
+noise bars b§h§200.0§30.0
+noise bars b§i mult§10.0§20.0
+noise bars b§padding§10.0§20.0
+noise bars b§count§2.0§100.0
+GROUP§noise map§true
+noise map§x§20.0§20.0
+noise map§y§580.0§30.0
+noise map§w§200.0§30.0
+noise map§h§200.0§30.0
+GROUP§lissajous§true
+lissajous§x§20.0§20.0
+lissajous§y§580.0§30.0
+lissajous§r§200.0§30.0
+lissajous§x freq§1.0§10.0
+lissajous§y freq§2.0§10.0
+lissajous§padding§20.0§20.0
+lissajous§count§300.0§30.0
+lissajous§distance§12.0§20.0
+GROUP§bottom shader§true
+bottom shader§x§20.0§20.0
+bottom shader§y§580.0§30.0
+bottom shader§w§200.0§30.0
+bottom shader§h§200.0§30.0
+STATE_END

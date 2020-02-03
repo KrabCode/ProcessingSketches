@@ -1,0 +1,386 @@
+STATE_BEGIN
+UNDO
+STATE_END
+STATE_BEGIN
+UNDO
+STATE_END
+STATE_BEGIN
+UNDO
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Anemone§true
+Anemone§rotate§100.0§-6.0§11.0§6.5
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§124.32291§68.74999§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§50.000008§100.0
+GROUP§root§true
+root§stroke§0.0§0.0§1.0§1.0§1.0
+root§weight§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§63.999992§100.0
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§3.8875§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§428.99994§1000.0
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§3.8875§10.0
+GROUP§spiral§true
+spiral§radius§0.37500018§10.0
+spiral§angle§0.8124999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§231.00003§1000.0
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§2.1250002§10.0
+GROUP§spiral§true
+spiral§radius§0.73750013§10.0
+spiral§angle§2.45§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§154.99985§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§2.1250002§10.0
+GROUP§spiral§true
+spiral§radius§-0.36250007§10.0
+spiral§size§0.49999988§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§154.99985§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§radius§0.0074999994§0.1
+spiral§size§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§181.00003§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§size§14.587491§10.0
+spiral§radius step§10.949987§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§463.99927§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§size§8.899998§10.0
+spiral§radius step§14.374996§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§463.99927§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§radius start§17.675003§1000.0
+spiral§tentacle size§15.05§10.0
+spiral§radius step§0.27499977§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§463.99927§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§radius start§2.675003§1000.0
+spiral§tentacle size§110.787506§100.0
+spiral§radius step§1.725§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§489.00012§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§radius start§131.425§1000.0
+spiral§theta modifier§0.525§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§489.00012§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§radius start§-1.074997§1000.0
+spiral§theta modifier§2.4625008§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§70.453125§255.0
+main§split§3.0885413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§0.0§0.0§0.0
+GROUP§tentacles§true
+tentacles§count§489.00012§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§1.2250003§10.0
+GROUP§spiral§true
+spiral§tentacle distance§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.518752§255.0
+main§split§1.9010413§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.125§2.375§17.75
+GROUP§tentacles§true
+tentacles§count§352.00006§1000.0
+tentacles§reset§false
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§2.5875006§10.0
+GROUP§spiral§true
+spiral§tentacle distance§5.2375§10.0
+spiral§radius mod§0.3750006§10.0
+spiral§theta mod§4.762502§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§10.518752§255.0
+main§split§4.976039§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-15.0§2.375§186.3469
+main§rotate spd§0.1§0.0§0.0§-0.008125163
+GROUP§tentacles§true
+tentacles§count§757.0001§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§2.5875006§10.0
+GROUP§spiral§true
+spiral§tentacle distance§0.025§10.0
+spiral§radius mod§1.2125002§10.0
+spiral§theta mod§0.3250004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§12.4312525§255.0
+main§split§1.2135386§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.0§2.75§154.34378
+main§rotate spd§0.1§0.0§0.0§-0.008125163
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.912501§10.0
+GROUP§spiral§true
+spiral§tentacle distance§0.42500028§10.0
+spiral§radius mod§0.75§10.0
+spiral§theta mod§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§12.4312525§255.0
+main§split§6.5385375§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§134.62263
+main§rotate spd§0.1§0.0§0.0§-0.0052501657
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.912501§10.0
+GROUP§spiral§true
+spiral§radius mod§0.6625003§10.0
+spiral§theta mod§9.625001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§16.256256§255.0
+main§split§4.526035§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§185.67548
+main§z rotation§0.5000005§1.0
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.67500025§10.0
+spiral§theta mod§9.250012§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§16.256256§255.0
+main§split§4.526035§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§193.89728
+main§z rotation§0.5000005§1.0
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.67500025§10.0
+spiral§theta mod§0.5500136§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§16.256256§255.0
+main§split§4.526035§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§198.53186
+main§z rotation§0.5000005§1.0
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.67500025§10.0
+spiral§theta mod§0.5500136§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§16.256256§255.0
+main§split§4.526035§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§199.42212
+main§z rotation§0.5000005§1.0
+GROUP§tentacles§true
+tentacles§count§1596.9998§1000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.67500025§10.0
+spiral§theta mod§0.5500136§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§16.256256§255.0
+main§split§4.526035§10.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§210.76855
+main§z rotation§0.5000005§1.0
+GROUP§tentacles§true
+tentacles§count§362.99994§10000.0
+tentacles§reset§true
+tentacles§stroke§0.0§0.0§1.0§1.0§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.6250002§10.0
+spiral§theta mod§0.9750136§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§main§true
+main§alpha fade§4.4625053§255.0
+main§split§12.063538§1000.0
+main§translate§100.0§0.0§0.0§0.0
+main§rotate§100.0§-2.625§3.25§255.9593
+main§z rotation§1.0§10.0
+GROUP§tentacles§true
+tentacles§count§362.99994§10000.0
+tentacles§reset§true
+tentacles§stroke§0.00125§0.0§1.0§0.13249998§1.0
+tentacles§weight§4.537502§10.0
+GROUP§spiral§true
+spiral§radius mod§0.62500036§10.0
+spiral§theta mod§1.618034§10.0
+STATE_END
