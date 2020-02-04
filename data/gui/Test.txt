@@ -1,0 +1,13 @@
+STATE_BEGIN
+UNDO
+GROUP§Test§true
+Test§alpha fade§50.0§255.0
+Test§translate§100.0§0.0§0.0§0.0
+Test§rotate§100.0§0.0§0.0§0.0
+Test§rotate speed§100.0§0.0§0.0§0.0
+Test§split§0.0§10.0
+Test§grid size§36.999992§100.0
+Test§grid scale§264.90002§10000.0
+Test§stroke§0.0§0.0§1.0§1.0§1.0
+Test§weight§4.025§10.0
+STATE_END

@@ -1,0 +1,377 @@
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-200.0§40.0
+Ridge§bottom§200.0§30.0
+Ridge§count§21.999996§200.0
+Ridge§clear§
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§weight§1.4625005§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§weight§1.4625005§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.02124994§1.0
+Ridge§ridge amp§19.525002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.02124994§1.0
+Ridge§ridge amp§19.525002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-300.04996§40.0
+Ridge§bottom§299.375§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.02124994§1.0
+Ridge§ridge amp§19.525002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§10.087502§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-153.1§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§62.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.02124994§1.0
+Ridge§ridge amp§19.525002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§1.0§10.0
+Ridge§slope ease§1.4625001§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§10.087502§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-116.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§45.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.018749943§1.0
+Ridge§ridge amp§25.400002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§vertex step§0.88749874§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§10.087502§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-116.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§45.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.018749943§1.0
+Ridge§ridge amp§25.400002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-116.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§45.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.012499944§1.0
+Ridge§ridge amp§21.900002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.5§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-116.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§45.999992§200.0
+Ridge§clear§
+Ridge§ridge freq§0.012499944§1.0
+Ridge§ridge amp§21.900002§100.0
+Ridge§noise freq§0.1§10.0
+Ridge§noise amp§0.62500006§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§39.000008§200.0
+Ridge§clear§
+Ridge§ridge freq§0.028749947§1.0
+Ridge§ridge amp§10.400002§100.0
+Ridge§noise freq§0.021249998§1.0
+Ridge§noise amp§0.8625§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§39.000008§200.0
+Ridge§clear§
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§39.000008§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§light§100.0§0.9570149§0.2900387
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§6.0000005§1.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§vertex speed§0.7250003§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§16.5§100.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§vertex speed§0.7250003§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§8.875§100.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§vertex speed§0.7250003§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§65.000015§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§8.875§100.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§vertex speed§0.7250003§10.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridge§true
+Ridge§top§-125.100006§400.0
+Ridge§bottom§302.0§300.0
+Ridge§count§80.999985§200.0
+Ridge§clear§
+Ridge§ellipse stroke§0.0§0.0§1.0§1.0§1.0
+Ridge§ellipse weight§8.875§100.0
+Ridge§ridge freq§0.004999947§1.0
+Ridge§ridge amp§66.65§100.0
+Ridge§noise freq§0.1333751§0.10000001
+Ridge§noise amp§0.5125001§10.0
+Ridge§vertex speed§1.0174999§1.0
+Ridge§slope ease§2.6625004§10.0
+Ridge§weight§1.9500009§10.0
+Ridge§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END

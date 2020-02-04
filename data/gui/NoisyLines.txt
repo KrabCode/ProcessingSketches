@@ -1,0 +1,74 @@
+STATE_BEGIN
+UNDO
+GROUP§RidgeParticles§true
+RidgeParticles§rayCount§24.0§200.0
+RidgeParticles§max radius§300.0§30.0
+RidgeParticles§margin§9.974998§10.0
+RidgeParticles§stroke§0.0§0.0§1.0§1.0§1.0
+RidgeParticles§weight§2.8250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RidgeParticles§true
+RidgeParticles§time radius§2.0874999§10.0
+RidgeParticles§rayCount§24.0§200.0
+RidgeParticles§max radius§302.09998§30.0
+RidgeParticles§margin§9.974998§10.0
+RidgeParticles§dist mag min§2.7750003§10.0
+RidgeParticles§dist mag max§23.7125§100.0
+RidgeParticles§noise freq§0.02750048§1.0
+RidgeParticles§noise mag§1.375001§10.0
+RidgeParticles§stroke§0.0§0.0§1.0§1.0§1.0
+RidgeParticles§weight§2.8250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RidgeParticles§true
+RidgeParticles§time radius§0.099999644§10.0
+RidgeParticles§rayCount§45.999947§200.0
+RidgeParticles§max radius§284.9249§30.0
+RidgeParticles§margin§9.974998§10.0
+RidgeParticles§dist mag min§1.7375003§10.0
+RidgeParticles§dist mag max§23.587502§100.0
+RidgeParticles§noise freq§0.017500492§1.0
+RidgeParticles§noise mag§0.45000112§10.0
+RidgeParticles§angle variation§5.6000004§100.0
+RidgeParticles§stroke§0.0§0.0§1.0§1.0§1.0
+RidgeParticles§weight§2.8250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RidgeParticles§true
+RidgeParticles§time radius§0.099999644§10.0
+RidgeParticles§rayCount§40.000034§200.0
+RidgeParticles§max radius§237.86237§300.0
+RidgeParticles§margin§4.687508§10.0
+RidgeParticles§radius ease§2.875§10.0
+RidgeParticles§dist amp min§1.075§10.0
+RidgeParticles§dist amp max§4.325001§100.0
+RidgeParticles§dist freq min§0.31250006§10.0
+RidgeParticles§dist freq max§0.31249994§10.0
+RidgeParticles§noise freq§0.03500048§1.0
+RidgeParticles§noise mag§5.862501§10.0
+RidgeParticles§angle variation§9.725§100.0
+RidgeParticles§stroke§0.00125§0.0§1.0§1.0§1.0
+RidgeParticles§weight§1.5625004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§RidgeParticles§true
+RidgeParticles§time radius§0.099999644§10.0
+RidgeParticles§rayCount§40.000034§200.0
+RidgeParticles§max radius§237.86237§300.0
+RidgeParticles§margin§6.9625072§10.0
+RidgeParticles§radius ease§4.3249993§10.0
+RidgeParticles§dist amp min§-0.1625§10.0
+RidgeParticles§dist amp max§1.9500008§100.0
+RidgeParticles§dist freq min§0.68750006§10.0
+RidgeParticles§dist freq max§0.41249993§10.0
+RidgeParticles§noise freq§0.03500048§1.0
+RidgeParticles§noise mag§5.862501§10.0
+RidgeParticles§angle variation§9.725§100.0
+RidgeParticles§stroke§0.00125§0.0§1.0§1.0§1.0
+RidgeParticles§weight§1.9875003§10.0
+STATE_END

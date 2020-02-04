@@ -1,0 +1,502 @@
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§10.0§400.0
+params§v§10.0§400.0
+params§radius§32.550003§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§true
+params§draw shape§false
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§0.54999995§10.0
+multitorus§R3§3.0§100.0
+multitorus§R§5.0§100.0
+multitorus§N§10.0§200.0
+multitorus§N2§4.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§40.999992§400.0
+params§v§50.999992§400.0
+params§radius§36.650005§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§true
+params§draw shape§false
+params§weight§0.6999998§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§0.54999995§10.0
+multitorus§R3§5.999995§100.0
+multitorus§R§26.999996§100.0
+multitorus§N§3.9999995§200.0
+multitorus§N2§3.0000005§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§40.999992§400.0
+params§v§54.000008§400.0
+params§radius§36.650005§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§true
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§1.0002494§0.1
+multitorus§R3§5.000001§100.0
+multitorus§R§27.000004§100.0
+multitorus§N§6.999999§200.0
+multitorus§N2§2.0000005§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§false
+params§u§40.999992§400.0
+params§v§54.000008§400.0
+params§radius§36.650005§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§true
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§1.0002494§0.1
+multitorus§R3§5.000001§100.0
+multitorus§R§27.000004§100.0
+multitorus§N§6.999999§200.0
+multitorus§N2§2.0000005§100.0
+GROUP§particles§true
+particles§particle count§38.0§100.0
+particles§fade in duration§0.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§4.3375§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§false
+params§u§40.999992§400.0
+params§v§54.000008§400.0
+params§radius§36.650005§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§true
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§1.0002494§0.1
+multitorus§R3§5.000001§100.0
+multitorus§R§27.000004§100.0
+multitorus§N§6.999999§200.0
+multitorus§N2§2.0000005§100.0
+GROUP§particles§true
+particles§particle count§136.00003§100.0
+particles§fade in duration§0.0§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§4.3375§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§40.999992§400.0
+params§v§54.000008§400.0
+params§radius§33.29999§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§false
+params§weight§1.6999999§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§false
+multitorus§time§1.0002494§0.1
+multitorus§R3§5.000001§100.0
+multitorus§R§27.000004§100.0
+multitorus§N§6.999999§200.0
+multitorus§N2§2.0000005§100.0
+GROUP§particles§true
+particles§particle count§835.0001§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§to center§4.6845526E-7§1.0
+particles§acc§0.68749994§10.0
+particles§drag§0.24999996§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.9749993§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§false
+params§u§24.999996§400.0
+params§v§37.999992§400.0
+params§radius§33.29999§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§false
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§false
+multitorus§time§1.0002494§0.1
+multitorus§R3§3.0000005§100.0
+multitorus§R§22.000103§100.0
+multitorus§N§3.999999§200.0
+multitorus§N2§2.0000005§100.0
+GROUP§particles§false
+particles§particle count§960.0001§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§to center§5.0046993E-4§0.1
+particles§acc§1.5999985§100.0
+particles§drag§0.8500003§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.5750004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§24.999996§400.0
+params§v§37.999992§400.0
+params§radius§33.29999§20.0
+params§height§0.0§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§false
+params§weight§1.0§10.0
+params§stroke§0.0§0.0§1.0§1.0§1.0
+params§fill§0.0§0.0§0.0§1.0§1.0
+GROUP§multitorus§true
+multitorus§time§1.0002494§0.1
+multitorus§R3§0.9999999§100.0
+multitorus§R§30.999996§100.0
+multitorus§N§6.999999§200.0
+multitorus§N2§8.000002§100.0
+GROUP§particles§true
+particles§particle count§1535.0002§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§acc limit§0.9875001§10.0
+particles§to center§5.0047E-4§0.1
+particles§acc§3.2249985§100.0
+particles§drag§0.72500014§10.0
+particles§stroke§0.0§0.0§1.0§1.0§1.0
+particles§weight§1.975001§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§params§true
+params§u§24.999996§400.0
+params§v§37.999992§400.0
+params§radius§34.899998§20.0
+params§height§1.0125§10.0
+params§points§false
+params§draw forces§false
+params§draw shape§false
+params§weight§2.375§10.0
+params§stroke§0.00125§0.0§0.2125§0.2337501§1.0
+params§fill§0.99875§0.0§0.0§0.0§1.0
+GROUP§multitorus§true
+multitorus§time§1.000999§1.0
+multitorus§R3§3.9999585§100.0
+multitorus§R§6.000001§100.0
+multitorus§N§5.999999§200.0
+multitorus§N2§3.9999979§100.0
+GROUP§particles§true
+particles§particle count§1737.9998§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§acc limit§-1.625001§100.0
+particles§to center§2.5046756E-4§0.1
+particles§acc§4.5999985§100.0
+particles§drag§0.76250076§10.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.012499844§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§1.9875013§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§3000.0005§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§0.68624264§10.0
+particles§acc limit§1.049999§10.0
+particles§to center§0.053500462§0.1
+particles§acc§1.3124993§10.0
+particles§drag§0.5899984§1.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.012499844§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.4750009§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§3000.0005§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§0.68624264§10.0
+particles§acc limit§1.049999§10.0
+particles§to center§0.053500462§0.1
+particles§acc§1.3124993§10.0
+particles§drag§0.5899984§1.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.012499844§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.4750009§10.0
+particles§history size§20.999996§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§3000.0005§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§0.68624264§10.0
+particles§acc limit§1.049999§10.0
+particles§to center§0.053500462§0.1
+particles§acc§1.3124993§10.0
+particles§drag§0.5899984§1.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.012499844§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.4750009§10.0
+particles§history size§5.000001§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§3000.0005§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§0.68624264§10.0
+particles§acc limit§1.049999§10.0
+particles§to center§6.347§10.0
+particles§acc§1.3124993§10.0
+particles§drag§0.5899984§1.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.012499844§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.4750009§10.0
+particles§history size§5.000001§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§1537.9998§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§-0.35125735§10.0
+particles§acc limit§0.5749989§10.0
+particles§to center§63.697§100.0
+particles§acc§1.4749993§10.0
+particles§drag§0.99124855§1.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.54999983§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.950001§10.0
+particles§history size§0.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§1390.0215§1000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§-0.35125735§10.0
+particles§acc limit§0.5749989§10.0
+particles§to center§0.0§10.0
+particles§acc§0.23750001§10.0
+particles§drag§0.5500002§10.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.54999983§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.950001§10.0
+particles§history size§0.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§4300.0§10000.0
+particles§fade in duration§138.2875§1000.0
+particles§freq§0.42374265§10.0
+particles§acc limit§1.499999§10.0
+particles§to center§0.034000013§1.0
+particles§acc§0.71250004§10.0
+particles§drag§0.86250013§10.0
+particles§stroke§0.88374966§0.54375§1.0§1.0§1.0
+particles§hue offset§0.54999983§10.0
+particles§sat offset§0.23750062§10.0
+particles§weight§3.950001§10.0
+particles§history size§1.9999998§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§6075.001§10000.0
+particles§fade in duration§29.537506§1000.0
+particles§freq§0.42373636§1.0
+particles§acc limit§8.112499§100.0
+particles§to center§0.02462499§0.1
+particles§acc§0.8999994§10.0
+particles§spd garbage threshold§0.004999839§1.0
+particles§drag§0.3875001§10.0
+particles§stroke§0.69687444§0.40625§1.0§1.0§1.0
+particles§hue offset§0.0362499§1.0
+particles§sat offset§0.06250061§10.0
+particles§weight§1.6625015§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§10000.002§10000.0
+particles§fade in duration§29.537506§1000.0
+particles§freq§0.47998643§1.0
+particles§acc limit§3.2374992§100.0
+particles§to center§0.02462499§0.1
+particles§acc§1.0249994§10.0
+particles§spd garbage threshold§0.32124972§10.0
+particles§drag§0.4625§10.0
+particles§stroke§0.95249957§1.0§1.0§1.0§1.0
+particles§hue offset§0.16250013§1.0
+particles§sat offset§0.7125006§10.0
+particles§weight§1.6625015§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§particles§true
+particles§particle count§15000.002§1000.0
+particles§fade in duration§29.537506§1000.0
+particles§freq§0.51998645§1.0
+particles§acc limit§3.2374992§100.0
+particles§to center§0.02462499§0.1
+particles§acc§2.1374993§10.0
+particles§spd garbage threshold§0.32124972§10.0
+particles§drag§0.4625§10.0
+particles§stroke§0.95249957§1.0§1.0§1.0§1.0
+particles§hue offset§0.11250014§1.0
+particles§sat offset§0.7125006§10.0
+particles§weight§1.6625015§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§false
+shaders§fade to black§4.737507§255.0
+shaders§split§0.0§10.0
+GROUP§particles§false
+particles§particle count§1662.9998§10000.0
+particles§fade in duration§70.787506§1000.0
+particles§freq§0.632224§1.0
+particles§acc limit§1.7374992§100.0
+particles§to center§0.0016250187§0.1
+particles§acc§0.1062476§1.0
+particles§spd garbage threshold§0.19624974§1.0
+particles§drag§0.8475008§1.0
+particles§stroke§0.6337501§0.25§1.0§0.95000005§1.0
+particles§hue offset§0.011250183§1.0
+particles§sat offset§0.08000169§0.1
+particles§weight§3.0050013§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§false
+shaders§fade to black§4.737507§255.0
+shaders§split§0.0§10.0
+GROUP§particles§true
+particles§particle count§1662.9998§10000.0
+particles§fade in duration§70.787506§1000.0
+particles§freq§0.632224§1.0
+particles§acc limit§1.7374992§100.0
+particles§to center§0.0016250187§0.1
+particles§acc§0.06374763§1.0
+particles§spd garbage threshold§0.19624974§1.0
+particles§drag§0.8662507§1.0
+particles§stroke§0.6337501§0.41875§1.0§0.95000005§1.0
+particles§hue offset§0.046250183§1.0
+particles§sat offset§0.08000169§0.1
+particles§weight§3.0050013§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§false
+shaders§fade to black§4.737507§255.0
+shaders§split§0.0§10.0
+GROUP§particles§true
+particles§particle count§2137.9995§10000.0
+particles§fade in duration§710.7875§1000.0
+particles§freq§0.04222461§1.0
+particles§acc limit§2.2374992§100.0
+particles§to center§3.7502014E-4§0.1
+particles§acc§0.077497646§1.0
+particles§spd garbage threshold§0.14999986§1.0
+particles§drag§0.9550012§1.0
+particles§stroke§0.694375§0.48125§1.0§0.95000005§1.0
+particles§hue offset§0.0025002272§1.0
+particles§sat offset§0.2797515§10.0
+particles§weight§3.3925018§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§false
+shaders§fade to black§4.737507§255.0
+shaders§split§0.0§10.0
+GROUP§particles§true
+particles§particle count§2137.9995§10000.0
+particles§fade in duration§710.7875§1000.0
+particles§freq§0.010974605§1.0
+particles§acc limit§2.2374992§100.0
+particles§to center§3.7502014E-4§0.1
+particles§acc§0.077497646§1.0
+particles§random§0.050000038§1.0
+particles§spd garbage threshold§0.14999986§1.0
+particles§drag§0.9550012§1.0
+particles§stroke§0.694375§0.48125§1.0§0.95000005§1.0
+particles§hue offset§0.0025002272§1.0
+particles§sat offset§0.2797515§10.0
+particles§weight§3.3925018§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§true
+shaders§fade to black§0.0§255.0
+shaders§split§0.35000002§10.0
+GROUP§particles§true
+particles§particle count§5462.999§10000.0
+particles§fade in duration§345.78748§1000.0
+particles§freq§0.8784753§1.0
+particles§acc limit§6.487499§100.0
+particles§to center§0.0060000326§0.1
+particles§acc§3.9374983§10.0
+particles§random§0.001249945§1.0
+particles§spd garbage threshold§0.15624985§1.0
+particles§drag§0.6399993§1.0
+particles§stroke§0.72187483§0.36875§1.0§1.0§1.0
+particles§hue offset§0.047500208§1.0
+particles§sat offset§0.3672517§10.0
+particles§weight§3.3925018§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§shaders§true
+shaders§fade to black§50.0§255.0
+shaders§split§0.0§10.0
+GROUP§particles§true
+particles§particle count§6500.0§10000.0
+particles§fade in duration§345.78748§1000.0
+particles§freq§0.007224965§1.0
+particles§acc limit§5.862499§100.0
+particles§to center§0.01025002§0.1
+particles§acc§0.9124972§10.0
+particles§random§0.037499946§1.0
+particles§spd garbage threshold§0.15624985§1.0
+particles§drag§0.7274994§1.0
+particles§stroke§0.72187483§0.36875§1.0§1.0§1.0
+particles§hue offset§0.047500208§1.0
+particles§sat offset§0.3672517§10.0
+particles§weight§3.3925018§1.0
+STATE_END

@@ -1,0 +1,85 @@
+STATE_BEGIN
+UNDO
+GROUP§Ridges§true
+Ridges§mountain count§16.000004§100.0
+Ridges§top§391.5§4000.0
+Ridges§bottom§803.4125§300.0
+Ridges§count§24.999996§200.0
+Ridges§clear§
+Ridges§ellipse stroke§0.0§0.0§0.5§1.0§1.0
+Ridges§ellipse weight§2.6124997§10.0
+Ridges§ridge freq§0.0§10.0
+Ridges§ridge amp§0.0§10.0
+Ridges§noise freq§0.1§10.0
+Ridges§noise amp§0.5§10.0
+Ridges§vertex speed§1.3375§10.0
+Ridges§collision distance§1.5250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridges§true
+Ridges§mountain count§16.999966§100.0
+Ridges§top§36.5§4000.0
+Ridges§bottom§803.4125§300.0
+Ridges§count§24.999996§200.0
+Ridges§clear§
+Ridges§ellipse stroke§0.0§0.0§0.5§1.0§1.0
+Ridges§ellipse weight§2.6124997§10.0
+Ridges§ridge freq§0.0§10.0
+Ridges§ridge amp§0.0§10.0
+Ridges§noise freq§0.1§10.0
+Ridges§noise amp§0.5§10.0
+Ridges§vertex speed§1.1249999§10.0
+Ridges§collision distance§1.2000003§10.0
+Ridges§slope ease§1.0§10.0
+Ridges§line weight§1.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridges§true
+Ridges§mountain count§13.0§100.0
+Ridges§top§6.5§4000.0
+Ridges§bottom§792.1625§300.0
+Ridges§count§21.999226§200.0
+Ridges§clear§
+Ridges§ridge freq§0.0§10.0
+Ridges§ridge amp§0.0§10.0
+Ridges§noise freq§0.1§10.0
+Ridges§noise amp§0.7625§10.0
+Ridges§vertex speed§1.225§10.0
+Ridges§collision distance§21.5375§100.0
+Ridges§slope ease§1.0375003§10.0
+Ridges§line weight§2.225§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridges§true
+Ridges§mountain count§17.000004§100.0
+Ridges§top§29.600037§400.0
+Ridges§bottom§357.16248§300.0
+Ridges§clear§
+Ridges§count§26.0§200.0
+Ridges§ridge freq§0.65§10.0
+Ridges§ridge amp§0.5375§10.0
+Ridges§noise freq§0.1§10.0
+Ridges§noise amp§0.7625§10.0
+Ridges§vertex speed§1.0§10.0
+Ridges§boundsRadius§24.662498§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ridges§true
+Ridges§mountain count§34.000008§100.0
+Ridges§clear§
+Ridges§line count§5.000001§200.0
+Ridges§ridge freq§0.65§10.0
+Ridges§ridge amp§0.5375§10.0
+Ridges§mountain height§304.68753§30.0
+Ridges§noise freq§0.1§10.0
+Ridges§noise amp§0.7625§10.0
+Ridges§vertex speed§1.7875§10.0
+Ridges§boundsRadius§577.1625§1000.0
+Ridges§slope ease§1.1874995§10.0
+Ridges§line weight§1.7374998§10.0
+Ridges§stroke§0.0§0.0§1.0§1.0§1.0
+STATE_END
