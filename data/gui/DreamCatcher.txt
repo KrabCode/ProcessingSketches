@@ -1,0 +1,158 @@
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§300.0§30.0
+DreamCatcher§weight§1.9375§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§31.999996§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§499.9874§30.0
+DreamCatcher§angle a§0.0§10.0
+DreamCatcher§weight§2.0000057§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§30.999996§100.0
+DreamCatcher§angle b§1.5707964§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§599.9998§30.0
+DreamCatcher§angle a§0.0§10.0
+DreamCatcher§weight§1.9875059§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§15.999998§100.0
+DreamCatcher§detail§300.99994§2000.0
+DreamCatcher§amp§9.887497§100.0
+DreamCatcher§freq§0.062500186§1.0
+DreamCatcher§angle b§1.5707964§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§599.9998§30.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§35.999992§100.0
+DreamCatcher§detail§183.00003§2000.0
+DreamCatcher§amp§14.637497§100.0
+DreamCatcher§freq§0.021250192§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§599.9998§30.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§40.999992§100.0
+DreamCatcher§detail§361.00006§2000.0
+DreamCatcher§amp§14.887497§100.0
+DreamCatcher§freq§0.017500192§1.0
+DreamCatcher§octaves§3.0000005§100.0
+DreamCatcher§speed§100.0§-37.125§66.5
+DreamCatcher§freq mult§1.4124995§10.0
+DreamCatcher§amp mult§0.46249983§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§599.9998§30.0
+DreamCatcher§x rotation§1.2000002§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§40.999992§100.0
+DreamCatcher§detail§361.00006§2000.0
+DreamCatcher§amp§57.012497§100.0
+DreamCatcher§freq§0.005000191§1.0
+DreamCatcher§octaves§3.0000005§100.0
+DreamCatcher§speed§1000.0§11.9375§-127.0
+DreamCatcher§freq mult§1.4124995§10.0
+DreamCatcher§amp mult§0.46249983§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1822.875§30000.0
+DreamCatcher§x rotation§1.3§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§detail§361.00006§2000.0
+DreamCatcher§amp§200.5125§100.0
+DreamCatcher§freq§0.0016251921§0.1
+DreamCatcher§octaves§4.0000005§100.0
+DreamCatcher§speed§1000.0§11.9375§-225.75
+DreamCatcher§freq mult§2.1250007§10.0
+DreamCatcher§amp mult§0.5624998§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1822.875§30000.0
+DreamCatcher§x rotation§1.3§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§detail§361.00006§2000.0
+DreamCatcher§amp§200.5125§100.0
+DreamCatcher§octaves§4.0000005§100.0
+DreamCatcher§freq 2D§100.0§0.25§0.125
+DreamCatcher§speed§100.0§0.0§0.0
+DreamCatcher§freq mult§2.1250007§10.0
+DreamCatcher§amp mult§0.5624998§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1822.875§30000.0
+DreamCatcher§x rotation§1.3§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§detail§361.00006§2000.0
+DreamCatcher§amp§10.0§20.0
+DreamCatcher§octaves§4.0000005§100.0
+DreamCatcher§freq 2D§100.0§0.25§0.125
+DreamCatcher§speed§100.0§0.0§0.0
+DreamCatcher§freq mult§2.1250007§10.0
+DreamCatcher§amp mult§0.5624998§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1822.875§30000.0
+DreamCatcher§x rotation§1.4750001§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§fill§0.0§0.0§0.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§margin§6.4124994§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1822.875§30000.0
+DreamCatcher§x rotation§1.1125§10.0
+DreamCatcher§weight§1.9875069§10.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§fill§0.0§0.0§0.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§margin§6.4124994§10.0
+DreamCatcher§amp§25.337502§100.0
+DreamCatcher§freq§0.014999972§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§DreamCatcher§true
+DreamCatcher§diameter§1185.375§30000.0
+DreamCatcher§x rotation§1.3624998§10.0
+DreamCatcher§weight§1.0000075§1.0
+DreamCatcher§stroke§0.0§0.0§1.0§1.0§1.0
+DreamCatcher§fill§0.0§0.0§0.0§1.0§1.0
+DreamCatcher§count§50.000008§100.0
+DreamCatcher§margin§4.7249985§100.0
+DreamCatcher§amp§29.7875§100.0
+DreamCatcher§freq§0.011387501§0.010000001
+STATE_END
