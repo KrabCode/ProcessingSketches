@@ -1419,9 +1419,17 @@ public abstract class KrabApplet extends PApplet {
 
     // SHADERS
 
+    protected void vignettePass(PGraphics pg){
+        String vignette = "vignette.glsl";
+        uniform(vignette).set("startRadius", slider("start"));
+        uniform(vignette).set("endRadius", slider("end"));
+        hotFilter(vignette, pg);
+    }
+
     protected void feedbackMovePass(PGraphics pg) {
         String fb = "feedback.glsl";
         uniform(fb).set("time", t);
+        uniform(fb).set("mag", slider("mag", .5f));
         uniform(fb).set("baseAngle", slider("base angle", 0));
         uniform(fb).set("angleVariation", slider("angle variation", 1));
         uniform(fb).set("timeSpeed", slider("time speed", 1));
@@ -1512,13 +1520,6 @@ public abstract class KrabApplet extends PApplet {
         uniform(brightnessContractPass).set("brightness", slider("brightness", 1, false));
         uniform(brightnessContractPass).set("contrast", slider("contrast", 2));
         hotFilter(brightnessContractPass, pg);
-    }
-
-    protected void vignettePass(PGraphics pg) {
-        String vignettePass = "postFX/vignetteFrag.glsl";
-        uniform(vignettePass).set("amount", slider("vignette", 5));
-        uniform(vignettePass).set("falloff", slider("falloff"));
-        hotFilter(vignettePass, pg);
     }
 
     public PShader uniform(String fragPath) {

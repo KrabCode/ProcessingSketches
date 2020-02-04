@@ -29,15 +29,16 @@ float sdTorus( vec3 p, vec2 t ){
 }
 
 float sd(vec3 p){
-    //    return length(p-vec3(0,0,3.0))-1.;
-    return sdPyramid(p-vec3(0,-0.5,5), 2.);
+    float sphere = length(p-vec3(0,0,1))-.5;
+    float cutout = 0.2*sin(p.y*40.+time);
+    return max(sphere, cutout);
 }
 
 void main(){
     vec2 uv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     vec3 dir = vec3(uv, 1.0);
-    float stepSize = 0.01;
-    int steps = 1000;
+    float stepSize = 0.02;
+    int steps = 50;
     float closest = 1.;
     vec3 origin = vec3(uv, 0.);
     vec3 p = vec3(0);
@@ -45,6 +46,6 @@ void main(){
         p = origin+dir*i*stepSize;
         closest = min(closest,sd(p));
     }
-    vec3 color = vec3(smoothstep(0.03, 0.0, closest));
+    vec3 color = vec3(smoothstep(0.1, 0.0, closest));
     gl_FragColor = vec4(color, 1.);
 }

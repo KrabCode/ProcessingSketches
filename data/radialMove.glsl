@@ -9,9 +9,10 @@ precision mediump int;
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
-uniform float baseAngle;
-uniform float angleVariation;
 uniform float timeSpeed;
+uniform float baseAngle;
+uniform float pixelMag;
+uniform int octaves;
 uniform float baseFrequency;
 uniform float baseAmp;
 uniform float freqMult;
@@ -156,12 +157,12 @@ float fbm(float x, float y, float z){
     float freq = baseFrequency;
     float amp = baseAmp;
     float sum = 0.;
-    for (int i = 0; i < 8; i++){
+    for (int i = 0; i < octaves; i++){
         float n = noise(vec3(v.x*freq, v.y*freq, v.z*freq));
         sum += n*amp;
         amp *= ampMult;
         freq *= freqMult;
-//        v.xy += vec2(51.212, 12.312);
+        v.xy += vec2(51.212, 12.312);
     }
     return sum;
 }
@@ -176,7 +177,7 @@ float map(float x, float a1, float a2, float b1, float b2){
 
 vec3 move(vec2 uv, float angle){
     vec3 orig = texture(texture, uv).rgb;
-    float texel = .5/resolution.x;
+    float texel = pixelMag/resolution.x;
     vec2 off = vec2(texel*cos(angle), texel*sin(angle));
     return texture(texture, uv+off).rgb;
 }
@@ -184,10 +185,9 @@ vec3 move(vec2 uv, float angle){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-//    float toCenter = atan(cv.y, cv.x)+pi;
-    float t = time;
-    float n = baseAngle+angleVariation*fbm(cv.x, cv.y, t);
-    float angle = n;
+    float toCenter = atan(cv.y, cv.x);
+    float t = time*timeSpeed;
+    float angle = toCenter+baseAngle+fbm(cv.x, cv.y, t);
     vec3 col = move(uv, angle);
     gl_FragColor = vec4(col, 1.);
 }
