@@ -10,7 +10,8 @@ uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
 uniform float timeSpeed;
-uniform float baseAngle;
+uniform float angleOffset;
+uniform float toCenterMag;
 uniform float pixelMag;
 uniform int octaves;
 uniform float baseFrequency;
@@ -184,10 +185,10 @@ vec3 move(vec2 uv, float angle){
 
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    float toCenter = atan(cv.y, cv.x);
+    vec2 cv = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
+    float toCenter = atan(cv.y, cv.x)*toCenterMag;
     float t = time*timeSpeed;
-    float angle = toCenter+baseAngle+fbm(cv.x, cv.y, t);
+    float angle = toCenter+angleOffset+fbm(cv.x, cv.y, t);
     vec3 col = move(uv, angle);
     gl_FragColor = vec4(col, 1.);
 }

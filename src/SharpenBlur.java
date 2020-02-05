@@ -18,7 +18,7 @@ public class SharpenBlur extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 4;
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
@@ -31,7 +31,7 @@ public class SharpenBlur extends KrabApplet {
         }
         group("blur sharpen");
         blurSharpenPass();
-        group("radial move");
+        group("move");
         radialMovePass(pg);
         group("vignette");
         vignettePass(pg);
@@ -42,12 +42,13 @@ public class SharpenBlur extends KrabApplet {
     }
 
     private void radialMovePass(PGraphics pg) {
-        String radialMovePass = "radialMove.glsl";
+        String radialMovePass = "move.glsl";
         uniform(radialMovePass).set("time", t);
-        uniform(radialMovePass).set("baseAngle", slider("base angle", PI));
+        uniform(radialMovePass).set("toCenterMag", toggle("to center")?1f:0f);
+        uniform(radialMovePass).set("angleOffset", slider("angle offset", PI));
         uniform(radialMovePass).set("timeSpeed", slider("time speed"));
         uniform(radialMovePass).set("octaves", sliderInt("octaves", 1));
-        uniform(radialMovePass).set("baseAmp", slider("amp", 1));
+        uniform(radialMovePass).set("baseAmp", slider("amp", 1f));
         uniform(radialMovePass).set("baseFrequency", slider("freq", .1f));
         uniform(radialMovePass).set("ampMult", slider("amp mult", .5f));
         uniform(radialMovePass).set("freqMult", slider("freq mult", 2));
