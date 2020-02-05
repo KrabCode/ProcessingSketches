@@ -14,7 +14,7 @@ public class SharpenBlur extends KrabApplet {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        pg = createGraphics(width, height, P2D);
+        pg = createGraphics(1080,1080, P2D);
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
@@ -27,7 +27,7 @@ public class SharpenBlur extends KrabApplet {
             pg.background(0);
             pg.noStroke();
             pg.fill(255);
-            pg.ellipse(width*.5f, height*.5f, 5, 5);
+            pg.ellipse(pg.width*.5f, pg.height*.5f, 5, 5);
         }
         group("blur sharpen");
         blurSharpenPass();
@@ -36,7 +36,7 @@ public class SharpenBlur extends KrabApplet {
         group("vignette");
         vignettePass(pg);
         pg.endDraw();
-        image(pg, 0, 0);
+        image(pg, 0, 0, width, height);
         rec(pg);
         gui();
     }
