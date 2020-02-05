@@ -9,12 +9,12 @@ public class SharpenBlur extends KrabApplet {
     private PGraphics pg;
 
     public void settings() {
-        size(800, 800, P2D);
+        size(1000,1000, P2D);
     }
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        pg = createGraphics(1080,1080, P2D);
+        pg = createGraphics(3000,3000, P2D);
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
@@ -46,12 +46,12 @@ public class SharpenBlur extends KrabApplet {
         uniform(radialMovePass).set("time", t);
         uniform(radialMovePass).set("baseAngle", slider("base angle", PI));
         uniform(radialMovePass).set("timeSpeed", slider("time speed"));
-        uniform(radialMovePass).set("octaves", sliderInt("octaves"));
-        uniform(radialMovePass).set("baseAmp", slider("amp"));
-        uniform(radialMovePass).set("baseFrequency", slider("freq"));
-        uniform(radialMovePass).set("ampMult", slider("amp mult"));
-        uniform(radialMovePass).set("freqMult", slider("freq mult"));
-        uniform(radialMovePass).set("pixelMag", slider("pixel mag"));
+        uniform(radialMovePass).set("octaves", sliderInt("octaves", 1));
+        uniform(radialMovePass).set("baseAmp", slider("amp", 1));
+        uniform(radialMovePass).set("baseFrequency", slider("freq", .1f));
+        uniform(radialMovePass).set("ampMult", slider("amp mult", .5f));
+        uniform(radialMovePass).set("freqMult", slider("freq mult", 2));
+        uniform(radialMovePass).set("pixelMag", slider("pixel mag", .2f));
         hotFilter(radialMovePass, pg);
     }
 

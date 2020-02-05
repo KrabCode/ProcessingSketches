@@ -88,13 +88,13 @@ void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     float d = length(cv)*2.;
-    float sharpen = map(d, 0, 1, baseSharpen, baseSharpen+offSharpen);
-    float blur = map(d, 0, 1, baseBlur, baseBlur+offBlur);
+    float s = map(d, 0, 1, baseSharpen, baseSharpen+offSharpen);
+    float b = map(d, 0, 1, baseBlur, baseBlur+offBlur);
     vec4 col;
     if (blurOrSharpen){
-        col = blur(texture, uv, resolution, blur);
+        col = blur(texture, uv, resolution, b);
     } else {
-        col = sharpen(texture, uv, resolution, sharpen);
+        col = sharpen(texture, uv, resolution, s);
     }
     gl_FragColor = col;
 }
