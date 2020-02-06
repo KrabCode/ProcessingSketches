@@ -186,9 +186,9 @@ vec3 move(vec2 uv, float angle){
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution.xy) / resolution.y;
-    float toCenter = atan(cv.y, cv.x)*toCenterMag;
+    float toCenter = atan(cv.y, cv.x);
     float t = time*timeSpeed;
-    float angle = toCenter+angleOffset+fbm(cv.x, cv.y, t);
+    float angle = toCenter+pi*.5;
     vec3 col = move(uv, angle);
     gl_FragColor = vec4(col, 1.);
 }
