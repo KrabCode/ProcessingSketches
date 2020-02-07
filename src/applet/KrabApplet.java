@@ -355,7 +355,7 @@ public abstract class KrabApplet extends PApplet {
         popStyle();
         popMatrix();
         pMousePressed = mousePressed;
-        if(frameCount == 1){
+        if (frameCount == 1) {
             trayVisible = elementCount() != 0;
         }
     }
@@ -398,7 +398,7 @@ public abstract class KrabApplet extends PApplet {
 
     // UTILS
 
-    protected void alphaFade(){
+    protected void alphaFade() {
         alphaFade(g);
     }
 
@@ -428,14 +428,14 @@ public abstract class KrabApplet extends PApplet {
         pg.popStyle();
     }
 
-    protected void colorFilter(){
+    protected void colorFilter() {
         colorFilter(g);
     }
 
     protected void colorFilter(PGraphics pg) {
         pg.hint(DISABLE_DEPTH_TEST);
         pg.noStroke();
-        pg.fill(picker("filter", 0.1f,0).clr());
+        pg.fill(picker("filter", 0.1f, 0).clr());
         pg.rect(0, 0, pg.width, pg.height);
         pg.hint(ENABLE_DEPTH_TEST);
     }
@@ -513,17 +513,17 @@ public abstract class KrabApplet extends PApplet {
             return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
-    protected float easeInAndOut(float x, float transitionStart, float transitionLength, float center, float easing){
-        if(x < center){
-            float fadeIn = 1-cnorm(x, center-transitionStart, center-transitionStart+transitionLength);
-            return 1-ease(fadeIn, easing);
-        }else{
-            float fadeOut = cnorm(x, center+transitionStart-transitionLength, center+transitionStart);
-            return 1-ease(fadeOut, easing);
+    protected float easeInAndOut(float x, float transitionStart, float transitionLength, float center, float easing) {
+        if (x < center) {
+            float fadeIn = 1 - cnorm(x, center - transitionStart, center - transitionStart + transitionLength);
+            return 1 - ease(fadeIn, easing);
+        } else {
+            float fadeOut = cnorm(x, center + transitionStart - transitionLength, center + transitionStart);
+            return 1 - ease(fadeOut, easing);
         }
     }
 
-    protected float cnorm(float x, float min, float max){
+    protected float cnorm(float x, float min, float max) {
         return constrain(norm(x, min, max), 0, 1);
     }
 
@@ -625,7 +625,7 @@ public abstract class KrabApplet extends PApplet {
                 undoHoldDuration = 0;
             }
         }
-        if(hide){
+        if (hide) {
             return;
         }
         float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
@@ -655,7 +655,7 @@ public abstract class KrabApplet extends PApplet {
                 redoHoldDuration = 0;
             }
         }
-        if(hide){
+        if (hide) {
             return;
         }
         float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
@@ -684,7 +684,7 @@ public abstract class KrabApplet extends PApplet {
             saveStateToFile();
             println("saved");
         }
-        if(hide){
+        if (hide) {
             return;
         }
         rectMode(CENTER);
@@ -1112,7 +1112,7 @@ public abstract class KrabApplet extends PApplet {
         }
         if (keyboardSelectionIndex < MENU_BUTTON_COUNT) {
             Group lastGroup = getLastGroup();
-            if(lastGroup != null){
+            if (lastGroup != null) {
                 if (!lastGroup.expanded) {
                     keyboardSelectionIndex = keyboardSelectionLength() - lastGroup.elements.size() - 1;
                 } else {
@@ -1206,7 +1206,7 @@ public abstract class KrabApplet extends PApplet {
 
     private int elementCount() {
         int sum = 0;
-        for(Group group : groups){
+        for (Group group : groups) {
             sum += group.elements.size();
         }
         return sum;
@@ -1230,7 +1230,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     private Group getLastGroup() {
-        if(groups.isEmpty()){
+        if (groups.isEmpty()) {
             return null;
         }
         return groups.get(groups.size() - 1);
@@ -1361,9 +1361,9 @@ public abstract class KrabApplet extends PApplet {
 //                    println("element does not exist", splitState[0], splitState[1]);
                     continue;
                 }
-                try{
+                try {
                     el.setState(state);
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     println(ex.getMessage());
                 }
             }
@@ -1433,7 +1433,18 @@ public abstract class KrabApplet extends PApplet {
 
     // SHADERS
 
-    protected void vignettePass(PGraphics pg){
+    protected void displacePass(PGraphics pg) {
+        String displace = "displace.glsl";
+        uniform(displace).set("time", t * slider("time speed"));
+        PVector globalMove = sliderXY("global move");
+        uniform(displace).set("globalMove", globalMove.x, globalMove.y);
+        uniform(displace).set("worleyMove", slider("worley amp", .0f));
+        uniform(displace).set("worleyFreq", slider("worley freq", 5));
+        uniform(displace).set("rotateAmp", slider("rotate amp", 1));
+        hotFilter(displace, pg);
+    }
+
+    protected void vignettePass(PGraphics pg) {
         String vignette = "vignette.glsl";
         uniform(vignette).set("startRadius", slider("start"));
         uniform(vignette).set("endRadius", slider("end"));
@@ -1462,9 +1473,9 @@ public abstract class KrabApplet extends PApplet {
         uniform(raymarch).set("diffuseMag", slider("diffuse"));
         uniform(raymarch).set("specularMag", slider("specular"));
         uniform(raymarch).set("shininess", slider("shininess"));
-        uniform(raymarch).set("rotate", slider("rotate") + radians(frameCount)*slider("rotate speed", 0));
+        uniform(raymarch).set("rotate", slider("rotate") + radians(frameCount) * slider("rotate speed", 0));
         uniform(raymarch).set("distFOV", slider("distFOV", 1));
-        hotFilter(raymarch,pg);
+        hotFilter(raymarch, pg);
     }
 
     protected void radialBlurPass(PGraphics pg) {
@@ -1604,6 +1615,194 @@ public abstract class KrabApplet extends PApplet {
     }
 
 // CLASSES
+
+    protected void drawParametric(PGraphics pg) {
+        pg.pushMatrix();
+        PVector translate = sliderXYZ("translate");
+        pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
+        PVector rot = sliderXYZ("rotation");
+        pg.rotateX(rot.x);
+        pg.rotateY(rot.y);
+        pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
+        int uMax = sliderInt("u", 1, 1000, 10);
+        int vMax = sliderInt("v", 1, 1000, 10);
+        float r = slider("radius", 10);
+        float h = r * (1 + slider("height", 0));
+        pg.strokeWeight(slider("weight", 1));
+        pg.stroke(picker("stroke", 1).clr());
+        if (toggle("no stroke")) {
+            pg.noStroke();
+        }
+        pg.fill(picker("fill", 0).clr());
+        for (int uIndex = 0; uIndex < uMax; uIndex++) {
+            if (toggle("points")) {
+                pg.beginShape(POINTS);
+            } else {
+                pg.beginShape(TRIANGLE_STRIP);
+            }
+            for (int vIndex = 0; vIndex <= vMax; vIndex++) {
+                float u0 = norm(uIndex, 0, uMax);
+                float u1 = norm(uIndex + 1, 0, uMax);
+                float v = norm(vIndex, 0, vMax);
+                PVector a = getVector(u0, v, r, h);
+                pg.vertex(a.x, a.y, a.z);
+                if (!toggle("points")) {
+                    PVector b = getVector(u1, v, r, h);
+                    pg.vertex(b.x, b.y, b.z);
+                }
+            }
+            pg.endShape();
+        }
+        pg.popMatrix();
+    }
+
+    private PVector getVector(float u, float v, float r, float h) {
+        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius",
+                "torus", "multitorus", "helicoidal", "ufo", "sphere");
+        if (option.equals("russian")) {
+            return russianRoof(u, v, r, h);
+        } else if (option.equals("catenoid")) {
+            return catenoid(u, v, r, h);
+        } else if (option.equals("screw")) {
+            return screw(u, v, r, h);
+        } else if (option.equals("hexaedron")) {
+            return hexaedron(u, v, r, h);
+        } else if (option.equals("moebius")) {
+            return moebius(u, v, r, h);
+        } else if (option.equals("torus")) {
+            return torus(u, v, r, h);
+        } else if (option.equals("multitorus")) {
+            return multitorus(u, v, r, h);
+        } else if (option.equals("helicoidal")) {
+            return helicoidal(u, v, r, h);
+        } else if (option.equals("ufo")) {
+            return ufo(u, v, r, h);
+        } else if (option.equals("sphere")) {
+            return sphere(u, v, r, h);
+        }
+        return new PVector();
+    }
+
+    private PVector sphere(float u, float v, float r, float h) {
+        u = -HALF_PI + u * PI;
+        v = v * TWO_PI;
+        return new PVector(
+                r * cos(u) * cos(v),
+                r * cos(u) * sin(v),
+                h * sin(u)
+        );
+    }
+
+    private PVector ufo(float u, float v, float r, float h) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        return new PVector(
+                r * (cos(u) / (sqrt(2) + sin(v))),
+                r * (sin(u) / (sqrt(2) + sin(v))),
+                h * (1 / (sqrt(2) + cos(v)))
+        );
+    }
+
+    private PVector helicoidal(float u, float v, float r, float h) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        return new PVector(
+                r * (sinh(v) * sin(u)),
+                r * (-sinh(v) * cos(u)),
+                h * (3 * u)
+        );
+    }
+
+    private PVector multitorus(float u, float v, float r, float h) {
+        u = -PI + u * TWO_PI;
+        v = -PI + v * TWO_PI;
+        float mtTime = t * slider("time");
+        float R3 = sliderInt("R3", 3);
+        float R = sliderInt("R", 5);
+        float N = sliderInt("N", 10);
+        float N2 = sliderInt("N2", 4);
+        return new PVector(
+                r * (-sin(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
+                r * (cos(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
+                h * (multitorusF2(u - mtTime, v, N, R3, R, N2))
+        );
+    }
+
+    private float multitorusF1(float u, float v, float N, float R3, float R, float N2) {
+        return (R3 + (R / (10 * N)) * cos(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * cos(N2 * u / N + v));
+    }
+
+    private float multitorusF2(float u, float v, float N, float R3, float R, float N2) {
+        return ((R / (10 * N)) * sin(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * sin(N2 * u / N + v));
+    }
+
+    private PVector torus(float u, float v, float r, float h) {
+        u = u * TWO_PI;
+        v = v * TWO_PI;
+        return new PVector(
+                r * ((1 + 0.5f * cos(u)) * cos(v)),
+                r * ((1 + 0.5f * cos(u)) * sin(v)),
+                h * (0.5f * sin(u))
+        );
+    }
+
+    private PVector moebius(float u, float v, float r, float h) {
+        u = -.4f + u * .8f;
+        v = v * TWO_PI;
+        return new PVector(
+                r * (cos(v) + u * cos(v / 2) * cos(v)),
+                r * (sin(v) + u * cos(v / 2) * sin(v)),
+                h * (u * sin(v / 2))
+        );
+    }
+
+    private PVector hexaedron(float u, float v, float r, float h) {
+        u = -1.3f + u * 2.6f;
+        v = v * TWO_PI;
+        return new PVector(
+                r * pow(cos(v), 3) * pow(cos(u), 3),
+                r * pow(sin(v), 3) * pow(cos(u), 3),
+                h * pow(sin(u), 3)
+        );
+    }
+
+    private PVector screw(float u, float v, float r, float h) {
+        u = u * 12.4f;
+        v = v * 2;
+        return new PVector(
+                r * cos(u) * sin(v),
+                r * sin(u) * sin(v),
+                h * ((cos(v) + log(tan(v / 2f))) + 0.2f * u)
+        );
+    }
+
+    private PVector catenoid(float u, float v, float r, float h) {
+        u = PI - u * TWO_PI;
+        v = PI - v * TWO_PI;
+        return new PVector(
+                r * 2 * cosh(v / 2) * cos(u),
+                r * 2 * cosh(v / 2) * sin(u),
+                h * v
+        );
+    }
+
+    private PVector russianRoof(float u, float v, float r, float h) {
+        u = u * TWO_PI;
+        float easing = slider("easing", 1);
+        return new PVector(
+                (r - r * ease(v, easing)) * cos(u),
+                (r - r * ease(v, easing)) * sin(u),
+                (-1 + 2 * v) * h
+        );
+    }
+
+    private float cosh(float n) {
+        return (float) Math.cosh(n);
+    }
+
+    private float sinh(float n) {
+        return (float) Math.sinh(n);
+    }
 
     private class ShaderSnapshot {
         String fragPath;
@@ -1755,14 +1954,14 @@ public abstract class KrabApplet extends PApplet {
             textSize(textSize);
             float animation = easedAnimation(animationStarted, GROUP_TOGGLE_ANIMATION_DURATION,
                     GROUP_TOGGLE_ANIMATION_EASING);
-            if(!expanded){
-                animation = 1-animation;
+            if (!expanded) {
+                animation = 1 - animation;
             }
             elementAlpha = animation;
             pushMatrix();
-            translate(cell*.3f, y-textSize*.55f);
-            rotate(animation*HALF_PI);
-            float size = cell*0.08f;
+            translate(cell * .3f, y - textSize * .55f);
+            rotate(animation * HALF_PI);
+            float size = cell * 0.08f;
             line(-size, size, size, 0);
             line(-size, -size, size, 0);
             popMatrix();
@@ -2205,7 +2404,7 @@ public abstract class KrabApplet extends PApplet {
             float displayValue = moduloValue + value;
             boolean isEdgeValue =
                     (displayValue < minValue + precision * .1 && displayValue > minValue - precision * .1) ||
-                    (displayValue > maxValue - precision * .1 && displayValue < maxValue + precision * .1);
+                            (displayValue > maxValue - precision * .1 && displayValue < maxValue + precision * .1);
             if (!isEdgeValue && (displayValue > maxValue || displayValue < minValue)) {
                 return;
             }
@@ -2308,7 +2507,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         private void autoDetectConstraints(String name) {
-            if(name.contains("weight")){
+            if (name.contains("weight")) {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
@@ -2320,7 +2519,7 @@ public abstract class KrabApplet extends PApplet {
                 maxValue = 255;
             } else if (name.contains("count") || name.contains("size") || name.contains("step")) {
                 this.constrained = true;
-                if(name.contains("count") && defaultValue == 0){
+                if (name.contains("count") && defaultValue == 0) {
                     defaultValue = 1;
                 }
                 minValue = 0;
@@ -2471,11 +2670,11 @@ public abstract class KrabApplet extends PApplet {
         }
 
         protected boolean isMouseOverXSlider() {
-            return isMouseOver(0, height - cell * interactionBufferMultiplier, width, sliderHeight*2);
+            return isMouseOver(0, height - cell * interactionBufferMultiplier, width, sliderHeight * 2);
         }
 
         protected boolean isMouseOverYSlider() {
-            return isMouseOver(width - cell * interactionBufferMultiplier, 0, sliderHeight*2, height);
+            return isMouseOver(width - cell * interactionBufferMultiplier, 0, sliderHeight * 2, height);
         }
 
 
@@ -2822,7 +3021,7 @@ public abstract class KrabApplet extends PApplet {
             textSize(textSize);
             text("alpha", width - sliderHeight * .5f, 15);
             float alphaDelta = updateInfiniteSlider(alphaPrecision, height, false, false, false);
-            boolean isMouseInTopHalf = isMouseOver(width*.5f, 0, width*.5f, height / 2f);
+            boolean isMouseInTopHalf = isMouseOver(width * .5f, 0, width * .5f, height / 2f);
             if (!satChanged && !brChanged && (keyboardActive || isMouseInTopHalf)) {
                 hsba.alpha += alphaDelta;
             }
@@ -2941,194 +3140,5 @@ public abstract class KrabApplet extends PApplet {
         HSBA getHSBA() {
             return hsba;
         }
-    }
-
-
-    protected void drawParametric(PGraphics pg) {
-        pg.pushMatrix();
-        PVector translate = sliderXYZ("translate");
-        pg.translate(translate.x + width * .5f, translate.y + height * .5f, translate.z);
-        PVector rot = sliderXYZ("rotation");
-        pg.rotateX(rot.x);
-        pg.rotateY(rot.y);
-        pg.rotateZ(rot.z + (toggle("z rotation") ? t : 0));
-        int uMax = sliderInt("u", 1, 1000, 10);
-        int vMax = sliderInt("v", 1, 1000, 10);
-        float r = slider("radius", 10);
-        float h = r * (1 + slider("height", 0));
-        pg.strokeWeight(slider("weight", 1));
-        pg.stroke(picker("stroke", 1).clr());
-        if (toggle("no stroke")) {
-            pg.noStroke();
-        }
-        pg.fill(picker("fill", 0).clr());
-        for (int uIndex = 0; uIndex < uMax; uIndex++) {
-            if (toggle("points")) {
-                pg.beginShape(POINTS);
-            } else {
-                pg.beginShape(TRIANGLE_STRIP);
-            }
-            for (int vIndex = 0; vIndex <= vMax; vIndex++) {
-                float u0 = norm(uIndex, 0, uMax);
-                float u1 = norm(uIndex + 1, 0, uMax);
-                float v = norm(vIndex, 0, vMax);
-                PVector a = getVector(u0, v, r, h);
-                pg.vertex(a.x, a.y, a.z);
-                if (!toggle("points")) {
-                    PVector b = getVector(u1, v, r, h);
-                    pg.vertex(b.x, b.y, b.z);
-                }
-            }
-            pg.endShape();
-        }
-        pg.popMatrix();
-    }
-
-    private PVector getVector(float u, float v, float r, float h) {
-        String option = options("russian", "catenoid", "screw", "hexaedron", "moebius",
-                "torus", "multitorus", "helicoidal", "ufo", "sphere");
-        if (option.equals("russian")) {
-            return russianRoof(u, v, r, h);
-        } else if (option.equals("catenoid")) {
-            return catenoid(u, v, r, h);
-        } else if (option.equals("screw")) {
-            return screw(u, v, r, h);
-        } else if (option.equals("hexaedron")) {
-            return hexaedron(u, v, r, h);
-        } else if (option.equals("moebius")) {
-            return moebius(u, v, r, h);
-        } else if (option.equals("torus")) {
-            return torus(u, v, r, h);
-        } else if (option.equals("multitorus")) {
-            return multitorus(u, v, r, h);
-        } else if (option.equals("helicoidal")) {
-            return helicoidal(u, v, r, h);
-        } else if (option.equals("ufo")) {
-            return ufo(u, v, r, h);
-        } else if (option.equals("sphere")) {
-            return sphere(u, v, r, h);
-        }
-        return new PVector();
-    }
-
-    private PVector sphere(float u, float v, float r, float h) {
-        u = -HALF_PI + u * PI;
-        v = v * TWO_PI;
-        return new PVector(
-                r * cos(u) * cos(v),
-                r * cos(u) * sin(v),
-                h * sin(u)
-        );
-    }
-
-    private PVector ufo(float u, float v, float r, float h) {
-        u = -PI + u * TWO_PI;
-        v = -PI + v * TWO_PI;
-        return new PVector(
-                r * (cos(u) / (sqrt(2) + sin(v))),
-                r * (sin(u) / (sqrt(2) + sin(v))),
-                h * (1 / (sqrt(2) + cos(v)))
-        );
-    }
-
-    private PVector helicoidal(float u, float v, float r, float h) {
-        u = -PI + u * TWO_PI;
-        v = -PI + v * TWO_PI;
-        return new PVector(
-                r * (sinh(v) * sin(u)),
-                r * (-sinh(v) * cos(u)),
-                h * (3 * u)
-        );
-    }
-
-    private PVector multitorus(float u, float v, float r, float h) {
-        u = -PI + u * TWO_PI;
-        v = -PI + v * TWO_PI;
-        float mtTime = t * slider("time");
-        float R3 = sliderInt("R3", 3);
-        float R = sliderInt("R", 5);
-        float N = sliderInt("N", 10);
-        float N2 = sliderInt("N2", 4);
-        return new PVector(
-                r * (-sin(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
-                r * (cos(u) * multitorusF1(u - mtTime, v, N, R3, R, N2)),
-                h * (multitorusF2(u - mtTime, v, N, R3, R, N2))
-        );
-    }
-
-    private float multitorusF1(float u, float v, float N, float R3, float R, float N2) {
-        return (R3 + (R / (10 * N)) * cos(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * cos(N2 * u / N + v));
-    }
-
-    private float multitorusF2(float u, float v, float N, float R3, float R, float N2) {
-        return ((R / (10 * N)) * sin(N2 * u / N + ((R / (10 * N)) - R / 10) / (R / (10 * N)) * v) + (R / 10 - (R / (10 * N))) * sin(N2 * u / N + v));
-    }
-
-    private PVector torus(float u, float v, float r, float h) {
-        u = u * TWO_PI;
-        v = v * TWO_PI;
-        return new PVector(
-                r * ((1 + 0.5f * cos(u)) * cos(v)),
-                r * ((1 + 0.5f * cos(u)) * sin(v)),
-                h * (0.5f * sin(u))
-        );
-    }
-
-    private PVector moebius(float u, float v, float r, float h) {
-        u = -.4f + u * .8f;
-        v = v * TWO_PI;
-        return new PVector(
-                r * (cos(v) + u * cos(v / 2) * cos(v)),
-                r * (sin(v) + u * cos(v / 2) * sin(v)),
-                h * (u * sin(v / 2))
-        );
-    }
-
-    private PVector hexaedron(float u, float v, float r, float h) {
-        u = -1.3f + u * 2.6f;
-        v = v * TWO_PI;
-        return new PVector(
-                r * pow(cos(v), 3) * pow(cos(u), 3),
-                r * pow(sin(v), 3) * pow(cos(u), 3),
-                h * pow(sin(u), 3)
-        );
-    }
-
-    private PVector screw(float u, float v, float r, float h) {
-        u = u * 12.4f;
-        v = v * 2;
-        return new PVector(
-                r * cos(u) * sin(v),
-                r * sin(u) * sin(v),
-                h * ((cos(v) + log(tan(v / 2f))) + 0.2f * u)
-        );
-    }
-
-    private PVector catenoid(float u, float v, float r, float h) {
-        u = PI - u * TWO_PI;
-        v = PI - v * TWO_PI;
-        return new PVector(
-                r * 2 * cosh(v / 2) * cos(u),
-                r * 2 * cosh(v / 2) * sin(u),
-                h * v
-        );
-    }
-
-    private PVector russianRoof(float u, float v, float r, float h) {
-        u = u * TWO_PI;
-        float easing = slider("easing", 1);
-        return new PVector(
-                (r - r * ease(v, easing)) * cos(u),
-                (r - r * ease(v, easing)) * sin(u),
-                (-1 + 2 * v) * h
-        );
-    }
-
-    private float cosh(float n) {
-        return (float) Math.cosh(n);
-    }
-
-    private float sinh(float n) {
-        return (float) Math.sinh(n);
     }
 }
