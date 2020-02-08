@@ -6,3 +6,9 @@ http://open-notify.org/
 
 //wrighter's stars
 https://www.shadertoy.com/view/3t3XW7
+
+//beautiful shader planet
+https://www.shadertoy.com/view/tltXWM
+
+//noise
+https://www.shadertoy.com/view/4dS3Wd
