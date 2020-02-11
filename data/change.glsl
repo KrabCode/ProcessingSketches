@@ -130,7 +130,8 @@ float sd(vec3 p){
         float z = p.y;
         float lat = atan(z,sqrt(x*x+y*y));
         float lon = atan(y,x);
-        sphere = length(p)-radius+fbm(lat*50.+lon*50.);
+        float polar = 50. * lat * lon + time;
+        sphere = length(p)-radius+fbm(polar);
     }
     return sphere;
 }
