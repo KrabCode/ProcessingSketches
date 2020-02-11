@@ -148,15 +148,9 @@ mat2 rotate2d(float angle){
 }
 
 float sd(vec3 p){
-    p.x *= 0.03;
-    p.z *= 0.1;
-    if(p.y < 8.){
-        return p.y+(
-            2.*simplex3D(vec3(p.xz, time*.5))
-            +.02*simplex3D(vec3(p.xz*20., time*2.))
-        );
-    }
-    return p.y;
+    vec3 op = p;
+    p.y -= time;
+    return length(op)-3.;
 }
 
 vec3 getNormal(vec3 p){
@@ -196,7 +190,7 @@ float getSpecularLight(vec3 p, vec3 lightDir, vec3 rayDirection, vec3 normal) {
 }
 
 vec3 render(vec2 cv){
-    vec3 origin = vec3(0, 10.0,0.);
+    vec3 origin = vec3(0, 0.0,-10.);
     vec3 direction = normalize(vec3(cv, 1));
     raypath path = raymarch(origin, direction);
     vec3 color = vec3(0);
