@@ -129,12 +129,12 @@ float sdCappedTorus(in vec3 p, in vec2 sc, in float ra, in float rb)
 }
 
 float sd(vec3 p){
-    return sdSphere(p);
+    return p.y+1.;
 }
 
 vec3 getNormal(vec3 p){
     float d = sd(p);
-    vec2 offset = vec2(.1, 0.);
+    vec2 offset = vec2(.00001, 0.);
     float d1 = sd(p-offset.xyy);
     float d2 = sd(p-offset.yxy);
     float d3 = sd(p-offset.yyx);
@@ -146,13 +146,14 @@ raypath raymarch(vec3 origin, vec3 direction){
     vec3 p = origin;
     float distanceTraveled = 0;
     float distanceToScene = sd(origin);
-    int steps = 50;
-    float surfaceDistance = 0.000001;
+    int steps = 3000;
+    float surfaceDistance = 0.00001;
+    float maxDistance = 10000;
     for(int i = 0; i < steps; i++){
         distanceToScene = sd(p);
         distanceTraveled += distanceToScene;
         p = direction*distanceTraveled;
-        if(distanceToScene < surfaceDistance){
+        if(distanceToScene < surfaceDistance || distanceTraveled > maxDistance){
             break;
         }
     }
@@ -173,7 +174,7 @@ float getSpecularLight(vec3 p, vec3 lightDir, vec3 rayDirection, vec3 normal) {
 
 void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 origin = vec3(0, .2, 0);
+    vec3 origin = vec3(0, 0, 0);
     vec3 direction = normalize(vec3(cv, 1));
     raypath path = raymarch(origin, direction);
     vec3 normal = getNormal(path.hit);
