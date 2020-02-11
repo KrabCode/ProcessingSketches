@@ -8,8 +8,9 @@ uniform vec3 lightDir;
 
 const int octaves = 3;
 const int steps = 1000;
-const float surfaceDistance = 0.001;
-const float maxDistance = 1000;
+const float surfaceDistance = 0.01;
+const float normalDistance = 0.01;
+const float maxDistance = 500;
 
 #define pi 3.14159
 
@@ -138,7 +139,6 @@ float noise2D(vec2 P){
     return dot(grad_results, blend2.zxzx * blend2.wwyy);
 }
 
-
 struct raypath{
   vec3 hit;
 };
@@ -148,12 +148,20 @@ mat2 rotate2d(float angle){
 }
 
 float sd(vec3 p){
-   return p.y;
+    p.x *= 0.03;
+    p.z *= 0.1;
+    if(p.y < 8.){
+        return p.y+(
+            2.*simplex3D(vec3(p.xz, time*.5))
+            +.02*simplex3D(vec3(p.xz*20., time*2.))
+        );
+    }
+    return p.y;
 }
 
 vec3 getNormal(vec3 p){
     float d = sd(p);
-    vec2 offset = vec2(.1, 0.);
+    vec2 offset = vec2(normalDistance, 0.);
     float d1 = sd(p-offset.xyy);
     float d2 = sd(p-offset.yxy);
     float d3 = sd(p-offset.yyx);
@@ -187,9 +195,8 @@ float getSpecularLight(vec3 p, vec3 lightDir, vec3 rayDirection, vec3 normal) {
     return pow(specularAngle, shininess);
 }
 
-void main(){
-    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 origin = vec3(0, 10.0,-5.);
+vec3 render(vec2 cv){
+    vec3 origin = vec3(0, 10.0,0.);
     vec3 direction = normalize(vec3(cv, 1));
     raypath path = raymarch(origin, direction);
     vec3 color = vec3(0);
@@ -201,5 +208,20 @@ void main(){
         float lit = clamp(diffuse + specular, 0, 1);
         color = vec3(lit);
     }
-    gl_FragColor = vec4(color, 1.);
+    return color;
+}
+
+vec3 aarender(vec2 cv){
+    float off = (1./resolution.x)/4.;
+    vec3 colA = render(cv+vec2(off, off));
+    vec3 colB = render(cv+vec2(-off, off));
+    vec3 colC = render(cv+vec2(off, -off));
+    vec3 colD = render(cv+vec2(-off, -off));
+    vec3 mixed = (colA+colB+colC+colD)/4.;
+    return mixed;
+}
+
+void main(){
+    vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
+    gl_FragColor = vec4(render(cv), 1.);
 }
