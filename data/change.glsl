@@ -5,99 +5,139 @@ uniform vec2 resolution;
 uniform float shininess;
 uniform float time;
 uniform vec3 lightDir;
-const int octaves = 6;
+
+const int octaves = 3;
+const int steps = 1000;
+const float surfaceDistance = 0.001;
+const float maxDistance = 1000;
 
 #define pi 3.14159
 
-// noise is from here:
-// https://www.shadertoy.com/view/4dS3Wd by Morgan McGuire @morgan3d!
-// Precision-adjusted variations of https://www.shadertoy.com/view/4djSRW
-float hash(float p) { p = fract(p * 0.011); p *= p + 7.5; p *= p + p; return fract(p); }
-float hash(vec2 p) {vec3 p3 = fract(vec3(p.xyx) * 0.13); p3 += dot(p3, p3.yzx + 3.333); return fract((p3.x + p3.y) * p3.z); }
-float noise(float x) {
-    float i = floor(x);
-    float f = fract(x);
-    float u = f * f * (3.0 - 2.0 * f);
-    return mix(hash(i), hash(i + 1.0), u);
-}
-float noise(vec2 x) {
-    vec2 i = floor(x);
-    vec2 f = fract(x);
+float value4D(vec4 P){
+    //  https://github.com/BrianSharpe/Wombat/blob/master/Value4D.glsl
 
-    // Four corners in 2D of a tile
-    float a = hash(i);
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
+    // establish our grid cell and unit position
+    vec4 Pi = floor(P);
+    vec4 Pf = P - Pi;
 
-    // Simple 2D lerp using smoothstep envelope between the values.
-    // return vec3(mix(mix(a, b, smoothstep(0.0, 1.0, f.x)),
-    //			mix(c, d, smoothstep(0.0, 1.0, f.x)),
-    //			smoothstep(0.0, 1.0, f.y)));
+    // clamp the domain
+    Pi = Pi - floor(Pi * (1.0 / 69.0)) * 69.0;
+    vec4 Pi_inc1 = step(Pi, vec4(69.0 - 1.5)) * (Pi + 1.0);
 
-    // Same code, with the clamps in smoothstep and common subexpressions
-    // optimized away.
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
-float noise(vec3 x) {
-    const vec3 step = vec3(110, 241, 171);
+    // calculate the hash
+    const vec4 OFFSET = vec4(16.841230, 18.774548, 16.873274, 13.664607);
+    const vec4 SCALE = vec4(0.102007, 0.114473, 0.139651, 0.084550);
+    Pi = (Pi * SCALE) + OFFSET;
+    Pi_inc1 = (Pi_inc1 * SCALE) + OFFSET;
+    Pi *= Pi;
+    Pi_inc1 *= Pi_inc1;
+    vec4 x0y0_x1y0_x0y1_x1y1 = vec4(Pi.x, Pi_inc1.x, Pi.x, Pi_inc1.x) * vec4(Pi.yy, Pi_inc1.yy);
+    vec4 z0w0_z1w0_z0w1_z1w1 = vec4(Pi.z, Pi_inc1.z, Pi.z, Pi_inc1.z) * vec4(Pi.ww, Pi_inc1.ww) * vec4(1.0 / 56974.746094);
+    vec4 z0w0_hash = fract(x0y0_x1y0_x0y1_x1y1 * z0w0_z1w0_z0w1_z1w1.xxxx);
+    vec4 z1w0_hash = fract(x0y0_x1y0_x0y1_x1y1 * z0w0_z1w0_z0w1_z1w1.yyyy);
+    vec4 z0w1_hash = fract(x0y0_x1y0_x0y1_x1y1 * z0w0_z1w0_z0w1_z1w1.zzzz);
+    vec4 z1w1_hash = fract(x0y0_x1y0_x0y1_x1y1 * z0w0_z1w0_z0w1_z1w1.wwww);
 
-    vec3 i = floor(x);
-    vec3 f = fract(x);
-
-    // For performance, compute the base input to a 1D hash from the integer part of the argument and the
-    // incremental change to the 1D based on the 3D -> 1D wrapping
-    float n = dot(i, step);
-
-    vec3 u = f * f * (3.0 - 2.0 * f);
-    return mix(mix(mix( hash(n + dot(step, vec3(0, 0, 0))), hash(n + dot(step, vec3(1, 0, 0))), u.x),
-    mix( hash(n + dot(step, vec3(0, 1, 0))), hash(n + dot(step, vec3(1, 1, 0))), u.x), u.y),
-    mix(mix( hash(n + dot(step, vec3(0, 0, 1))), hash(n + dot(step, vec3(1, 0, 1))), u.x),
-    mix( hash(n + dot(step, vec3(0, 1, 1))), hash(n + dot(step, vec3(1, 1, 1))), u.x), u.y), u.z);
-}
-float fbm(float x) {
-    float v = 0.0;
-    float a = 0.5;
-    float shift = float(100);
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = x * 2.0 + shift;
-        a *= 0.5;
-    }
-    return v;
+    //	blend the results and return
+    vec4 blend = Pf * Pf * Pf * (Pf * (Pf * 6.0 - 15.0) + 10.0);
+    vec4 res0 = z0w0_hash + (z0w1_hash - z0w0_hash) * blend.wwww;
+    vec4 res1 = z1w0_hash + (z1w1_hash - z1w0_hash) * blend.wwww;
+    res0 = res0 + (res1 - res0) * blend.zzzz;
+    blend.zw = vec2(1.0 - blend.xy);
+    return dot(res0, blend.zxzx * blend.wwyy);
 }
 
-vec3 rgb( in vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
-    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
+float simplex3D(vec3 p){
+    //  https://github.com/BrianSharpe/Wombat/blob/master/SimplexPerlin3D.glsl
+
+    //  simplex math constants
+    const float SKEWFACTOR = 1.0/3.0;
+    const float UNSKEWFACTOR = 1.0/6.0;
+    const float SIMPLEX_CORNER_POS = 0.5;
+    const float SIMPLEX_TETRAHADRON_HEIGHT = 0.70710678118654752440084436210485;// sqrt( 0.5 )
+
+    //  establish our grid cell.
+    p *= SIMPLEX_TETRAHADRON_HEIGHT;// scale space so we can have an approx feature size of 1.0
+    vec3 Pi = floor(p + dot(p, vec3(SKEWFACTOR)));
+
+    //  Find the vectors to the corners of our simplex tetrahedron
+    vec3 x0 = p - Pi + dot(Pi, vec3(UNSKEWFACTOR));
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 Pi_1 = min(g.xyz, l.zxy);
+    vec3 Pi_2 = max(g.xyz, l.zxy);
+    vec3 x1 = x0 - Pi_1 + UNSKEWFACTOR;
+    vec3 x2 = x0 - Pi_2 + SKEWFACTOR;
+    vec3 x3 = x0 - SIMPLEX_CORNER_POS;
+
+    //  pack them into a parallel-friendly arrangement
+    vec4 v1234_x = vec4(x0.x, x1.x, x2.x, x3.x);
+    vec4 v1234_y = vec4(x0.y, x1.y, x2.y, x3.y);
+    vec4 v1234_z = vec4(x0.z, x1.z, x2.z, x3.z);
+
+    // clamp the domain of our grid cell
+    Pi.xyz = Pi.xyz - floor(Pi.xyz * (1.0 / 69.0)) * 69.0;
+    vec3 Pi_inc1 = step(Pi, vec3(69.0 - 1.5)) * (Pi + 1.0);
+
+    //	generate the random vectors
+    vec4 Pt = vec4(Pi.xy, Pi_inc1.xy) + vec2(50.0, 161.0).xyxy;
+    Pt *= Pt;
+    vec4 V1xy_V2xy = mix(Pt.xyxy, Pt.zwzw, vec4(Pi_1.xy, Pi_2.xy));
+    Pt = vec4(Pt.x, V1xy_V2xy.xz, Pt.z) * vec4(Pt.y, V1xy_V2xy.yw, Pt.w);
+    const vec3 SOMELARGEFLOATS = vec3(635.298681, 682.357502, 668.926525);
+    const vec3 ZINC = vec3(48.500388, 65.294118, 63.934599);
+    vec3 lowz_mods = vec3(1.0 / (SOMELARGEFLOATS.xyz + Pi.zzz * ZINC.xyz));
+    vec3 highz_mods = vec3(1.0 / (SOMELARGEFLOATS.xyz + Pi_inc1.zzz * ZINC.xyz));
+    Pi_1 = (Pi_1.z < 0.5) ? lowz_mods : highz_mods;
+    Pi_2 = (Pi_2.z < 0.5) ? lowz_mods : highz_mods;
+    vec4 hash_0 = fract(Pt * vec4(lowz_mods.x, Pi_1.x, Pi_2.x, highz_mods.x)) - 0.49999;
+    vec4 hash_1 = fract(Pt * vec4(lowz_mods.y, Pi_1.y, Pi_2.y, highz_mods.y)) - 0.49999;
+    vec4 hash_2 = fract(Pt * vec4(lowz_mods.z, Pi_1.z, Pi_2.z, highz_mods.z)) - 0.49999;
+
+    //	evaluate gradients
+    vec4 grad_results = inversesqrt(hash_0 * hash_0 + hash_1 * hash_1 + hash_2 * hash_2) * (hash_0 * v1234_x + hash_1 * v1234_y + hash_2 * v1234_z);
+
+    //	Normalization factor to scale the final result to a strict 1.0->-1.0 range
+    //	http://briansharpe.wordpress.com/2012/01/13/simplex-noise/#comment-36
+    const float FINAL_NORMALIZATION = 37.837227241611314102871574478976;
+
+    //  evaulate the kernel weights ( use (0.5-x*x)^3 instead of (0.6-x*x)^4 to fix discontinuities )
+    vec4 kernel_weights = v1234_x * v1234_x + v1234_y * v1234_y + v1234_z * v1234_z;
+    kernel_weights = max(0.5 - kernel_weights, 0.0);
+    kernel_weights = kernel_weights*kernel_weights*kernel_weights;
+
+    //	sum with the kernel and return
+    return dot(kernel_weights, grad_results) * FINAL_NORMALIZATION;
 }
 
-float fbm(vec2 x) {
-    float v = 0.0;
-    float a = 0.5;
-    vec2 shift = vec2(100);
-    // Rotate to reduce axial bias
-    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = rot * x * 2.0 + shift;
-        a *= 0.5;
-    }
-    return v;
+float noise2D(vec2 P){
+    //  https://github.com/BrianSharpe/Wombat/blob/master/Perlin2D.glsl
+
+    // establish our grid cell and unit position
+    vec2 Pi = floor(P);
+    vec4 Pf_Pfmin1 = P.xyxy - vec4(Pi, Pi + 1.0);
+
+    // calculate the hash
+    vec4 Pt = vec4(Pi.xy, Pi.xy + 1.0);
+    Pt = Pt - floor(Pt * (1.0 / 71.0)) * 71.0;
+    Pt += vec2(26.0, 161.0).xyxy;
+    Pt *= Pt;
+    Pt = Pt.xzxz * Pt.yyww;
+    vec4 hash_x = fract(Pt * (1.0 / 951.135664));
+    vec4 hash_y = fract(Pt * (1.0 / 642.949883));
+
+    // calculate the gradient results
+    vec4 grad_x = hash_x - 0.49999;
+    vec4 grad_y = hash_y - 0.49999;
+    vec4 grad_results = inversesqrt(grad_x * grad_x + grad_y * grad_y) * (grad_x * Pf_Pfmin1.xzxz + grad_y * Pf_Pfmin1.yyww);
+
+    // Classic Perlin Interpolation
+    grad_results *= 1.4142135623730950488016887242097;// scale things to a strict -1.0->1.0 range  *= 1.0/sqrt(0.5)
+    vec2 blend = Pf_Pfmin1.xy * Pf_Pfmin1.xy * Pf_Pfmin1.xy * (Pf_Pfmin1.xy * (Pf_Pfmin1.xy * 6.0 - 15.0) + 10.0);
+    vec4 blend2 = vec4(blend, vec2(1.0 - blend));
+    return dot(grad_results, blend2.zxzx * blend2.wwyy);
 }
 
-float fbm(vec3 x) {
-    float v = 0.0;
-    float a = 0.5;
-    vec3 shift = vec3(100);
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = x * 2.0 + shift;
-        a *= 0.5;
-    }
-    return v;
-}
 
 struct raypath{
   vec3 hit;
@@ -107,16 +147,8 @@ mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-
 float sd(vec3 p){
-    vec3 pos = vec3(0,0,0);
-    float radius = 1;
-    float sphere = length(p-pos)-radius;
-
-    if(sphere <= 1.0){
-        return length(p-pos)-(radius);
-    }
-    return sphere;
+   return p.y;
 }
 
 vec3 getNormal(vec3 p){
@@ -133,9 +165,6 @@ raypath raymarch(vec3 origin, vec3 direction){
     vec3 p = origin.xyz;
     float distanceTraveled = 0;
     float distanceToScene = sd(origin);
-    int steps = 1000;
-    float surfaceDistance = 0.001;
-    float maxDistance = 100;
     for(int i = 0; i < steps; i++){
         distanceToScene = sd(p);
         distanceTraveled += distanceToScene;
@@ -160,14 +189,17 @@ float getSpecularLight(vec3 p, vec3 lightDir, vec3 rayDirection, vec3 normal) {
 
 void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    vec3 origin = vec3(0, 0.0,-5.);
+    vec3 origin = vec3(0, 10.0,-5.);
     vec3 direction = normalize(vec3(cv, 1));
     raypath path = raymarch(origin, direction);
-    vec3 normal = getNormal(path.hit);
-    vec3 lightDir = normalize(lightDir);
-    float diffuse = getDiffuseLight(path.hit, lightDir, normal);
-    float specular = getSpecularLight(path.hit, lightDir, direction, normal);
-    float lit = diffuse + specular;
-    vec3 color = vec3(lit);
+    vec3 color = vec3(0);
+    if(length(path.hit) < maxDistance-10.){
+        vec3 normal = getNormal(path.hit);
+        vec3 lightDir = normalize(lightDir);
+        float diffuse = getDiffuseLight(path.hit, lightDir, normal);
+        float specular = getSpecularLight(path.hit, lightDir, direction, normal);
+        float lit = clamp(diffuse + specular, 0, 1);
+        color = vec3(lit);
+    }
     gl_FragColor = vec4(color, 1.);
 }
