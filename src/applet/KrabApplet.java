@@ -513,12 +513,12 @@ public abstract class KrabApplet extends PApplet {
             return 1 - 0.5f * pow(2 * (1 - p), g);
     }
 
-    protected float easeInAndOut(float x, float transitionStart, float transitionLength, float center, float easing) {
+    protected float easeInAndOut(float x, float w, float transition, float center, float easing) {
         if (x < center) {
-            float fadeIn = 1 - cnorm(x, center - transitionStart, center - transitionStart + transitionLength);
+            float fadeIn = 1 - cnorm(x, center - w, center - w + transition);
             return 1 - ease(fadeIn, easing);
         } else {
-            float fadeOut = cnorm(x, center + transitionStart - transitionLength, center + transitionStart);
+            float fadeOut = cnorm(x, center + w - transition, center + w);
             return 1 - ease(fadeOut, easing);
         }
     }
