@@ -531,7 +531,23 @@ public abstract class KrabApplet extends PApplet {
         return atan(2 * (size / (2 * r)));
     }
 
-    // TRAY
+    protected ArrayList<PVector> ngon(float radius, int detail, int sides) {
+        sides = max(1, sides);
+        ArrayList<PVector> corners = new ArrayList<PVector>();
+        for (int i = 0; i <= sides; i++) {
+            float theta = map(i, 0, sides, 0, TAU);
+            corners.add(PVector.fromAngle(theta).mult(radius));
+        }
+        ArrayList<PVector> shape = new ArrayList<PVector>();
+        for (int i = 0; i < detail; i++) {
+            float inorm = cnorm(i, 0, detail);
+            float side = map(inorm, 0, 1, 0, sides);
+            int lastCorner = floor(side);
+            int nextCorner = ceil(side);
+            shape.add(PVector.lerp(corners.get(lastCorner), corners.get(nextCorner), side % 1));
+        }
+        return shape;
+    }
 
     protected void spiralSphere(PGraphics pg) {
         group("planet");
@@ -560,6 +576,7 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
+    // TRAY
     private void updateFps() {
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
         String fps = nonFlickeringFrameRate + " fps";

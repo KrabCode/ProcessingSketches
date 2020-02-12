@@ -20,24 +20,22 @@ public class Change extends KrabApplet {
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);
-        pg.colorMode(HSB,1,1,1,1);
+        pg.colorMode(HSB, 1, 1, 1, 1);
         pg.endDraw();
+        frameRecordingDuration *= 2;
+//        frameRecordingStarted = 1;
     }
 
     public void draw() {
         pg.beginDraw();
-        animation();
+        pg.background(0);
+        pg.translate(width * .5f, height * .5f);
+        pg.rotate(-HALF_PI);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
         gui();
     }
 
-    private void animation() {
-        String change = "raymarch_noise.glsl";
-        uniform(change).set("time", t);
-        uniform(change).set("shininess", slider("shininess"));
-        uniform(change).set("lightDir", sliderXYZ("light dir"));
-        hotFilter(change, pg);
-    }
+
 }
