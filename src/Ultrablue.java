@@ -1,7 +1,6 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import codeanticode.glgraphics.*;
 
 /**
  * Created by Jakub 'Krab' Rak on 2020-02-12
@@ -20,7 +19,7 @@ public class Ultrablue extends KrabApplet {
 
     public void setup() {
         surface.setAlwaysOnTop(true);
-        pg = createGraphics(width, height, GLConstants.GLGRAPHICS);
+        pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
@@ -35,10 +34,6 @@ public class Ultrablue extends KrabApplet {
 //        uniform(raymarch).set("lightDir", sliderXYZ("light dir"));
 //        uniform(raymarch).set("shininess", slider("shininess"));
 //        hotFilter(raymarch, pg);
-
-        GLTextureParameters textureParameters = new GLTextureParameters();
-        textureParameters.wrappingU = REPEAT;
-        textureParameters.wrappingV = REPEAT;
 
         String textureNoise = "noise/textureNoise.glsl";
         uniform(textureNoise).set("rgbNoise", rgbNoise);
