@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by Jakub 'Krab' Rak on 2020-02-06
  */
-public class Change extends KrabApplet {
+public class WaterRipple1D extends KrabApplet {
     ArrayList<Float> waterBufferA = new ArrayList<Float>();
     ArrayList<Float> waterBufferB = new ArrayList<Float>();
     ArrayList<Float> waterBufferTemp = new ArrayList<Float>();
@@ -18,7 +18,7 @@ public class Change extends KrabApplet {
     private PGraphics pg;
 
     public static void main(String[] args) {
-        KrabApplet.main("Change");
+        KrabApplet.main("WaterRipple1D");
     }
 
     public void settings() {
