@@ -32,7 +32,7 @@ public class Change extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        pg.background(0);
+        alphaFade(pg);
         updateParticles();
         pg.endDraw();
         image(pg, 0, 0);
