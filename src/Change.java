@@ -34,7 +34,7 @@ public class Change extends KrabApplet {
     }
 
     private void animation() {
-        String change = "change.glsl";
+        String change = "raymarch_noise.glsl";
         uniform(change).set("time", t);
         uniform(change).set("shininess", slider("shininess"));
         uniform(change).set("lightDir", sliderXYZ("light dir"));
