@@ -21,6 +21,7 @@ public class Ultrablue extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
@@ -30,11 +31,6 @@ public class Ultrablue extends KrabApplet {
         uniform(raymarch).set("lightDir", sliderXYZ("light dir"));
         uniform(raymarch).set("shininess", slider("shininess"));
         hotFilter(raymarch, pg);
-
-//        String textureNoise = "noise/iqNoise.glsl";
-//        uniform(textureNoise).set("time", t);
-//        hotFilter(textureNoise, pg);
-
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);

@@ -8,9 +8,9 @@ uniform vec3 lightDir;
 
 const vec3 specularColor = vec3(1);
 const vec3 diffuseColor = vec3(.4, .6, 1.);
-const vec3 glowColor = diffuseColor;
+const vec3 glowColor = vec3(1);
 
-const int steps = 300;
+const int steps = 100;
 const float surfaceDistance = 0.01;
 const float normalDistance = 0.01;
 const float maxDistance = 500;
@@ -105,41 +105,23 @@ float snoise(vec4 v){
     + dot(m1*m1, vec2(dot(p3, x3), dot(p4, x4))));
 }
 
-
-float fbm (vec4 p) {
-    float sum = 0.;
-    float amp = 1;
-    float freq = 1;
-    // Loop of octaves
-    for (int i = 0; i < 2; i++) {
-        sum += amp*snoise(p*freq);
-        freq *= 2.;
-        amp *= .5;
-        p += vec4(3.123, 2.456, 1.121, 2.4545);
-    }
-    return sum;
-}
-
 struct raypath{
   vec3 hit;
+  float distanceTraveled;
   float closestDistance;
+  vec3 closestPoint;
 };
 
 mat2 rotate2d(float angle){
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-float sdTorus( vec3 p, vec2 t ){
-    vec2 q = vec2(length(p.xz)-t.x,p.y);
-    return length(q)-t.y;
-}
-
 float sd(vec3 p){
-    p.zy *= rotate2d(pi);
-    p.xz *= rotate2d(time*.2);
-    float a = atan(p.x, p.z);
-    float torus = 1.-sdTorus(p, vec2(8., 2.+.1*cos(a*21.)));
-    return torus;
+    p.xz *= rotate2d(time*.5);
+    float sphere = length(p)-3.;
+    float freq = 9.;
+    sphere -= .04 * min(abs(sin(p.x*freq)), min(abs(sin(p.y*freq)), abs(sin(p.z*freq))));
+    return sphere;
 }
 
 vec3 getNormal(vec3 p){
@@ -157,16 +139,20 @@ raypath raymarch(vec3 origin, vec3 direction){
     float distanceTraveled = 0;
     float distanceToScene = sd(origin);
     float closestDistance = maxDistance;
+    vec3 closestPoint = vec3(maxDistance);
     for(int i = 0; i < steps; i++){
         distanceToScene = sd(p);
         distanceTraveled += distanceToScene;
-        closestDistance = min(closestDistance, distanceToScene);
+        if(distanceToScene < closestDistance){
+            closestDistance = distanceToScene;
+            closestPoint = p;
+        }
         p = origin+direction*distanceTraveled;
         if(distanceToScene < surfaceDistance || distanceTraveled > maxDistance){
             break;
         }
     }
-    return raypath(p, closestDistance);
+    return raypath(p, distanceTraveled, closestDistance, closestPoint);
 }
 
 float getDiffuseLight(vec3 p, vec3 lightDir, vec3 normal){
@@ -181,19 +167,19 @@ float getSpecularLight(vec3 lightDir, vec3 rayDirection, vec3 normal) {
 }
 
 vec3 render(vec2 cv){
-    vec3 origin = vec3(0, 0.0,-10.);
+    vec3 origin = vec3(0, 0.0, -10.);
     vec3 direction = normalize(vec3(cv, 1));
-    direction.xz *= rotate2d(pi*.25);
     raypath path = raymarch(origin, direction);
     vec3 color = vec3(0);
-    if(length(path.hit) < maxDistance-10.){
-        vec3 normal = getNormal(path.hit);
-        vec3 lightDir = normalize(lightDir);
-        float diffuse = getDiffuseLight(path.hit, lightDir, normal);
-        float specular = getSpecularLight(lightDir, direction, normal);
-        color = vec3(diffuse*diffuseColor + specular*specularColor);
+    vec3 normal = getNormal(path.hit);
+    vec3 lightDir = normalize(lightDir);
+    float diffuse = getDiffuseLight(path.hit, lightDir, normal);
+    float specular = getSpecularLight(lightDir, direction, normal);
+    vec3 lit = diffuse*diffuseColor + specular*specularColor;
+    color = vec3(lit);
+    if(path.distanceTraveled > maxDistance / 2.){
+        color *= 0.;
     }
-//    color += glowColor*smoothstep(.2, .0, path.closestDistance);
     return color;
 }
 
