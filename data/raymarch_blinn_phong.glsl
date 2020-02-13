@@ -119,8 +119,13 @@ mat2 rotate2d(float angle){
 float sd(vec3 p){
     p.xz *= rotate2d(time*.5);
     float sphere = length(p)-3.;
-    float freq = 9.;
-    sphere -= .04 * min(abs(sin(p.x*freq)), min(abs(sin(p.y*freq)), abs(sin(p.z*freq))));
+    float x = p.x;
+    float y = p.z;
+    float z = p.y;
+    float lat=atan(z,sqrt(x*x+y*y));
+    float lon=atan(y,x); // / (cos(lat));
+    float freq = 20;
+    sphere += .1 * max(abs(sin(lat*freq)), abs(sin(lon*freq)));
     return sphere;
 }
 
