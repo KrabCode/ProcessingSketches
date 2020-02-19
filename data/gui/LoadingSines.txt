@@ -1,0 +1,203 @@
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00018§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§stroke§0.0§0.0§0.5§1.0§1.0
+LoadingSines§weight§3.8250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§3.8250003§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§3.8250003§10.0
+LoadingSines§amp§10.0375§100.0
+LoadingSines§freq§10.999983§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§3.1415927§10.0
+LoadingSines§copies§-6.999999§100.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§1.9000003§10.0
+LoadingSines§amp§10.0375§100.0
+LoadingSines§freq§10.999983§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§6.3415823§10.0
+LoadingSines§copies§4.000001§100.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§1.9000003§10.0
+LoadingSines§amp§13.5375§100.0
+LoadingSines§freq§17.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§6.3415823§10.0
+LoadingSines§copies§26.000004§100.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§1.9625006§10.0
+LoadingSines§amp§81.4125§100.0
+LoadingSines§freq§2.9999995§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§3.0290825§10.0
+LoadingSines§copies§36.000008§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§weight§1.9625006§10.0
+LoadingSines§amp§81.4125§100.0
+LoadingSines§freq§2.9999995§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§404.00006§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§copies§36.000008§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§amp§59.2875§100.0
+LoadingSines§freq§1.0000002§100.0
+LoadingSines§threshold§0.88750035§10.0
+LoadingSines§blur size§14.999715§100.0
+LoadingSines§sigma§3.05§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§730.0001§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§copies§36.000008§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§stroke§0.0§0.0§1.0§1.0§1.0
+LoadingSines§amp§59.2875§100.0
+LoadingSines§freq§1.0000002§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999939§100.0
+LoadingSines§sigma§2.2250004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§730.0001§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§copies§36.000008§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.17500304§10.0
+LoadingSines§fade center§0.4999986§0.010000001
+LoadingSines§fade ease§2.0§10.0
+LoadingSines§amp§59.2875§100.0
+LoadingSines§freq§1.0000002§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999939§100.0
+LoadingSines§sigma§2.2250004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§730.0001§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§4.2915826§10.0
+LoadingSines§copies§36.000008§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.17500304§10.0
+LoadingSines§fade center§0.4999986§0.010000001
+LoadingSines§fade ease§2.0§10.0
+LoadingSines§amp§59.2875§100.0
+LoadingSines§freq§1.0000002§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999939§100.0
+LoadingSines§sigma§2.2250004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§308.99994§1000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§4.766582§10.0
+LoadingSines§copies§27.000004§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.337503§10.0
+LoadingSines§fade center§0.5000011§10000.001
+LoadingSines§fade ease§2.0§10.0
+LoadingSines§amp§51.0375§100.0
+LoadingSines§freq§2.0000005§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999939§100.0
+LoadingSines§sigma§1.8500004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§1306.0§10000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§0.0§10.0
+LoadingSines§end angle§4.766582§10.0
+LoadingSines§copies§16.000004§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.337503§10.0
+LoadingSines§fade center§0.5000011§10000.001
+LoadingSines§fade ease§2.0§10.0
+LoadingSines§amp§51.0375§100.0
+LoadingSines§freq§2.0000005§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999939§100.0
+LoadingSines§sigma§1.8500004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§1306.0§10000.0
+LoadingSines§radius§200.0§30.0
+LoadingSines§start angle§-0.0125§10.0
+LoadingSines§end angle§4.54158§10.0
+LoadingSines§copies§10.999998§100.0
+LoadingSines§angle offset§0.79999983§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.337503§10.0
+LoadingSines§fade center§0.5000011§10000.001
+LoadingSines§fade ease§2.0§10.0
+LoadingSines§amp§51.0375§100.0
+LoadingSines§freq§2.0000005§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999996§100.0
+LoadingSines§sigma§1.8500004§100.0
+STATE_END

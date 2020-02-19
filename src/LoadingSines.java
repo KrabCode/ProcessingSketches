@@ -2,12 +2,12 @@ import applet.KrabApplet;
 import ch.bildspur.postfx.builder.PostFX;
 import processing.core.PGraphics;
 
-public class CircleSines extends KrabApplet {
+public class LoadingSines extends KrabApplet {
     PostFX fx;
     private PGraphics pg;
 
     public static void main(String[] args) {
-        CircleSines.main("CircleSines");
+        LoadingSines.main("LoadingSines");
     }
 
     public void settings() {
