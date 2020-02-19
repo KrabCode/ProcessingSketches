@@ -1,0 +1,38 @@
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§count§40.000008§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§count§24.000004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§count§35.99986§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§count§35.999992§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§fade to black§1.2312526§255.0
+MoveGrid§count§5.999999§100.0
+MoveGrid§global move§100.0§0.0§0.0
+MoveGrid§worley amp§8.899966E-4§0.010000001
+MoveGrid§worley freq§1.3874961§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§MoveGrid§true
+MoveGrid§fade to black§1.2312526§255.0
+MoveGrid§count§5.999999§100.0
+MoveGrid§global move§100.0§0.0§0.0
+MoveGrid§worley amp§4.1499577E-4§0.010000001
+MoveGrid§worley freq§2.824996§10.0
+STATE_END

@@ -1,0 +1,237 @@
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.0399997§10.0
+blur sharpen§sharpen freq§0.0§10.0
+blur sharpen§sharpen amp§0.0§10.0
+blur sharpen§max blur§1.0700017§10.0
+blur sharpen§blur freq§0.0§10.0
+blur sharpen§blur amp§0.0§10.0
+GROUP§move§false
+move§angle offset§3.1415927§10.0
+move§time speed§0.0§10.0
+move§octaves§1.0§100.0
+move§amp§1.0§10.0
+move§freq§0.1§10.0
+move§amp mult§0.5§10.0
+move§freq mult§2.0§10.0
+move§pixel mag§1.0000011§10.0
+GROUP§vignette§true
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.4700004§10.0
+blur sharpen§sharpen freq§0.0§10.0
+blur sharpen§sharpen amp§0.0§10.0
+blur sharpen§max blur§1.1800009§10.0
+blur sharpen§blur freq§0.0§10.0
+blur sharpen§blur amp§0.0§10.0
+GROUP§move§true
+move§time speed§0.0§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§2.8300003E-4§0.001
+move§worley freq§11.660002§10.0
+GROUP§vignette§true
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§2.3000247§100.0
+blur sharpen§max blur§2.5899997§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.85E-4§0.001
+move§worley freq§7.5900073§10.0
+GROUP§vignette§false
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999924§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.800025§100.0
+blur sharpen§max blur§2.23§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.85E-4§0.001
+move§worley freq§2.2600076§10.0
+GROUP§vignette§false
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999924§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.0§1.0
+blur sharpen§max blur§2.6399999§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.9500004E-4§0.001
+move§worley freq§2.2600076§10.0
+move§rotate amp§1.0§10.0
+GROUP§vignette§false
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999924§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§-1.4808029E-7§1.0
+blur sharpen§max blur§2.6399999§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.9500004E-4§0.001
+move§worley freq§2.2600076§10.0
+move§rotate amp§1.0§10.0
+GROUP§vignette§false
+vignette§start§0.24000002§10.0
+vignette§end§0.6900004§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999996§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.0§10.0
+blur sharpen§max blur§1.01§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.9500004E-4§0.001
+move§worley freq§2.2600076§10.0
+move§rotate amp§4.9999933§10.0
+GROUP§vignette§true
+vignette§start§1.6299995§10.0
+vignette§end§1.83§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999996§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.0§10.0
+blur sharpen§max blur§1.01§10.0
+GROUP§move§true
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.9500004E-4§0.001
+move§worley freq§2.2600076§10.0
+move§rotate amp§4.9999933§10.0
+GROUP§vignette§true
+vignette§start§1.6299995§10.0
+vignette§end§1.83§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999996§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.29000014§10.0
+blur sharpen§max blur§1.76§10.0
+GROUP§move§false
+move§time speed§0.5000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.9500004E-4§0.001
+move§worley freq§2.2600076§10.0
+move§rotate amp§4.999993§10.0
+GROUP§vignette§true
+vignette§start§1.6299995§10.0
+vignette§end§1.83§10.0
+vignette§power§1.1699991§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.999996§200.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.19§10.0
+blur sharpen§max blur§0.60999984§10.0
+GROUP§move§true
+move§time speed§0.06000048§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.2000023E-4§0.010000002
+move§worley freq§2.2600076§10.0
+move§rotate amp§1.899993§10.0
+GROUP§vignette§true
+vignette§start§1.6299995§10.0
+vignette§end§1.83§10.0
+vignette§power§1.0799999§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§2.2949986§255.0
+global§count§30.999996§20.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.6199998§10.0
+blur sharpen§max blur§1.4199983§10.0
+GROUP§move§true
+move§time speed§0.2000005§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§1.4700003E-4§0.001
+move§worley freq§1.4300082§10.0
+move§rotate amp§0.6399994§10.0
+GROUP§vignette§true
+vignette§start§0.63000005§10.0
+vignette§end§1.5100006§10.0
+vignette§brighten start§7.4505806E-8§10.0
+vignette§brighten end§0.24000023§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§fade to black§0.0§255.0
+global§count§30.000004§20.0
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§0.7500004§10.0
+blur sharpen§max blur§0.8299983§10.0
+GROUP§move§true
+move§time speed§1.25§10.0
+move§global move§100.0§0.0§0.0
+move§worley amp§4.4999993E-5§0.001
+move§worley freq§39.62001§100.0
+move§rotate amp§0.49999952§10.0
+GROUP§vignette§true
+vignette§start§0.63000005§10.0
+vignette§end§1.5100006§10.0
+vignette§brighten start§7.4505806E-8§10.0
+vignette§brighten end§0.6300001§10.0
+STATE_END

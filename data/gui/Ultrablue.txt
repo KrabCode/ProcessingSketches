@@ -1,0 +1,36 @@
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§-4.125§1.125§6.625
+Ultrablue§shininess§431.5§10000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§-4.125§1.125§6.625
+Ultrablue§shininess§7.75§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§-4.125§1.125§6.625
+Ultrablue§shininess§7.75§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§-4.125§1.125§6.625
+Ultrablue§shininess§7.75§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§0.375§-2.0§-6.5
+Ultrablue§shininess§12.75§1000.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Ultrablue§true
+Ultrablue§light dir§100.0§0.375§-2.0§-6.5
+Ultrablue§shininess§12.75§1000.0
+STATE_END

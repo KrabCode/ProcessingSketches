@@ -1,0 +1,232 @@
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+global§reset rules§
+GROUP§rules§true
+rules§r§200.0§2000.0
+rules§ellipse§0
+rules§sharpen§0.84400004§1.0
+rules§blur§1.0§1.0
+rules§alpha§1.0§1.0
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.7599996§10.0
+blur sharpen§max blur§1.8399999§10.0
+GROUP§move§true
+move§angle offset§3.1415927§10.0
+move§time speed§0.0§10.0
+move§octaves§1.0§100.0
+move§amp§1.0§10.0
+move§freq§0.1§10.0
+move§amp mult§0.5§10.0
+move§freq mult§2.0§10.0
+move§pixel mag§0.2§10.0
+GROUP§vignette§true
+vignette§start§0.0§10.0
+vignette§end§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+global§reset rules§
+GROUP§rules§true
+rules§r§200.0§2000.0
+rules§ellipse§0
+rules§sharpen§0.84400004§1.0
+rules§blur§1.0§1.0
+rules§alpha§1.0§1.0
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§1.7599996§10.0
+blur sharpen§max blur§1.8399999§10.0
+GROUP§move§false
+move§angle offset§3.1415927§10.0
+move§time speed§0.0§10.0
+move§octaves§1.0§100.0
+move§amp§1.0§10.0
+move§freq§0.1§10.0
+move§amp mult§0.5§10.0
+move§freq mult§2.0§10.0
+move§pixel mag§0.2§10.0
+GROUP§vignette§false
+vignette§start§0.0§10.0
+vignette§end§0.0§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+global§reset rules§
+GROUP§rules§true
+rules§radius§50.0§20.0
+rules§ellipse§0
+rules§sharpen§0.84400004§1.0
+rules§blur§1.0§1.0
+rules§alpha§1.0§1.0
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§6.4000006§10.0
+blur sharpen§max blur§1.1200004§10.0
+GROUP§move§false
+move§angle offset§3.1415927§10.0
+move§time speed§0.0§10.0
+move§octaves§1.0§100.0
+move§amp§2.2351742E-8§10.0
+move§freq§0.1§10.0
+move§amp mult§0.5§10.0
+move§freq mult§2.0§10.0
+move§pixel mag§0.2§10.0
+GROUP§vignette§true
+vignette§start§7.630001§1000.0
+vignette§end§8.93§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§rules§true
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§77.69§1000.0
+blur sharpen§max blur§17.190002§10000.0
+GROUP§move§true
+move§angle offset§4.2015934§10.0
+move§time speed§1.1899999§10.0
+move§octaves§1.0180266E-14§100.0
+move§amp§1.2293458E-7§10.0
+move§freq§63.220005§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.55000037§10.0
+GROUP§vignette§false
+vignette§start§7.630001§1000.0
+vignette§end§8.93§10.0
+vignette§load image§
+vignette§image§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§rules§true
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§9.889979§100.0
+blur sharpen§max blur§38.190002§1000.0
+GROUP§move§true
+move§angle offset§4.9415956§10.0
+move§time speed§1.1899999§10.0
+move§octaves§1.0825518E-18§100.0
+move§amp§1.2293458E-7§10.0
+move§freq§63.220005§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.1200006§10.0
+move§load image§
+move§image§false
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§38.88998§100.0
+blur sharpen§max blur§9.190002§1000.0
+GROUP§move§true
+move§angle offset§4.9415956§10.0
+move§time speed§1.1899999§10.0
+move§octaves§1.0825518E-18§100.0
+move§amp§1.2293458E-7§10.0
+move§freq§63.220005§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§6.183982E-7§10.0
+GROUP§vignette§false
+vignette§start§7.630001§1000.0
+vignette§end§8.93§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§2.8699872§100.0
+blur sharpen§max blur§1.0130004§10.0
+GROUP§move§true
+move§angle offset§4.9415956§10.0
+move§time speed§1.1899999§10.0
+move§octaves§1.0825518E-18§100.0
+move§amp§1.2293458E-7§10.0
+move§freq§63.220005§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.25000054§10.0
+GROUP§vignette§false
+vignette§start§7.630001§1000.0
+vignette§end§8.93§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§2.8699872§100.0
+blur sharpen§max blur§1.0130004§10.0
+GROUP§move§true
+move§angle offset§4.9415956§10.0
+move§time speed§1.1899999§10.0
+move§octaves§1.0825518E-18§100.0
+move§amp§1.2293458E-7§10.0
+move§freq§63.220005§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.25000054§10.0
+GROUP§vignette§false
+vignette§start§7.630001§1000.0
+vignette§end§8.93§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§14.469972§100.0
+blur sharpen§sharpen freq§0.5099999§10.0
+blur sharpen§sharpen amp§9.120003§100.0
+blur sharpen§max blur§4.993001§10.0
+blur sharpen§blur freq§0.50000036§10.0
+blur sharpen§blur amp§43.73999§1000.0
+GROUP§move§true
+move§angle offset§3.1415927§10.0
+move§time speed§0.16000175§10.0
+move§octaves§6.999999§100.0
+move§amp§13.019989§100.0
+move§freq§0.72002184§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.100000255§10.0
+GROUP§vignette§true
+vignette§start§0.10000004§10.0
+vignette§end§2.1700013§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§seed§
+GROUP§blur sharpen§true
+blur sharpen§max sharpen§105.269966§1000.0
+blur sharpen§sharpen freq§0.100000106§1.0
+blur sharpen§sharpen amp§71.12006§100.0
+blur sharpen§max blur§25.922995§100.0
+blur sharpen§blur freq§0.100002065§1.0
+blur sharpen§blur amp§45.640015§1000.0
+GROUP§move§true
+move§angle offset§3.1415927§10.0
+move§time speed§0.16000175§10.0
+move§octaves§6.999999§100.0
+move§amp§13.019989§100.0
+move§freq§0.72002184§100.0
+move§amp mult§0.5§10.0
+move§freq mult§2.63§10.0
+move§pixel mag§0.029973758§10.0
+GROUP§vignette§true
+vignette§start§0.10000004§10.0
+vignette§end§2.1700013§10.0
+STATE_END

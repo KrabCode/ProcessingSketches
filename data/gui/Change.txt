@@ -1,0 +1,819 @@
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§r§200.0§30.0
+Change§w§5.0§10.0
+Change§a0§4.712389§10.0
+Change§a1§0.0§10.0
+Change§detail§100.00005§100.0
+Change§fill§0.0§0.0§0.5§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§false
+Change§radius§225.875§300.0
+Change§weight§69.9125§100.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§detail§100.000015§100.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§ease§0.0§10.0
+Change§radius§225.875§300.0
+Change§weight§1.0249997§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§detail§100.000015§100.0
+Change§hairs§20.0§200.0
+Change§r off§15.450001§100.0
+Change§w off§2.2250001§10.0
+Change§a off§-0.03750004§10.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§ease§3.125001§10.0
+Change§radius§225.875§300.0
+Change§weight§1.0249997§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§detail§100.000015§100.0
+Change§hairs§20.0§200.0
+Change§r off§15.450001§100.0
+Change§w off§7.312499§10.0
+Change§a off§-0.03750004§10.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§ease§0.0§10.0
+Change§radius§201.5§300.0
+Change§weight§3.575§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§detail§2025.0002§10000.0
+Change§hairs§20.0§200.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+Change§r off§16.825§100.0
+Change§w off§-2.4749994§10.0
+Change§a off§0.09999992§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§201.5§300.0
+Change§weight§3.575§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§ease§4.8375§10.0
+Change§detail§2025.0002§10000.0
+Change§hairs§20.0§200.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+Change§r off§16.825§100.0
+Change§w off§-2.4749994§10.0
+Change§a off§0.09999992§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§201.5§300.0
+Change§weight§3.575§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§move ease§2.7875§10.0
+Change§detail§2025.0002§10000.0
+Change§hairs§20.0§200.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+Change§fade ease§1.0250003§10.0
+Change§r off§16.825§100.0
+Change§w off§1.1875006§10.0
+Change§a off§0.09999992§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§201.5§300.0
+Change§weight§3.575§10.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§move ease§2.7875§10.0
+Change§detail§2025.0002§10000.0
+Change§hairs§32.003677§200.0
+Change§fill§0.0§0.0§1.0§0.73125005§1.0
+Change§fade ease§1.0250003§10.0
+Change§r off§27.825§100.0
+Change§w off§3.375002§10.0
+Change§a off§0.09999992§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§201.5§300.0
+Change§weight§50.05§100.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§move ease§2.7875§10.0
+Change§detail§2025.0002§10000.0
+Change§hairs§1.9999998§200.0
+Change§fill§0.0§0.0§1.0§1.0§1.0
+Change§alpha w§0.5§10.0
+Change§alpha transition§0.32499993§10.0
+Change§alpha c§0.5§10.0
+Change§alpha ease§3.4499998§10.0
+Change§r off§27.825§100.0
+Change§w off§3.375002§10.0
+Change§a off§0.09999992§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§202.25§300.0
+Change§weight§0.0§100.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.37499997§10.0
+Change§move ease§2.7875§10.0
+Change§detail§562.9999§10000.0
+Change§hairs§101.000015§200.0
+Change§fill§0.0025§0.0§1.0§0.28625§1.0
+Change§alpha w§4.6375§10.0
+Change§alpha transition§0.32499993§10.0
+Change§alpha c§0.5§10.0
+Change§alpha ease§3.4499998§10.0
+Change§r off§28.199997§100.0
+Change§w off§3.325§10.0
+Change§a off§0.012500419§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§241.25§300.0
+Change§weight§3.25§100.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.4125002§10.0
+Change§move ease§3.0125027§10.0
+Change§detail§562.9999§10000.0
+Change§hairs§40.999992§200.0
+Change§fill§0.0025§0.0§1.0§0.28625§1.0
+Change§alpha w§4.6375§10.0
+Change§alpha transition§0.32499993§10.0
+Change§alpha c§0.5§10.0
+Change§alpha ease§3.4499998§10.0
+Change§r off§22.574997§100.0
+Change§w off§4.1874957§10.0
+Change§a off§0.012500002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§background§0.0§0.0§1.0§1.0§1.0
+Change§radius§241.25§300.0
+Change§weight§3.25§100.0
+Change§angle 0§4.729091§10.0
+Change§angle 1§-0.4125002§10.0
+Change§move ease§3.0125027§10.0
+Change§detail§562.9999§10000.0
+Change§hairs§40.999992§200.0
+Change§fill§0.00375§0.0§0.0§0.47500002§1.0
+Change§alpha w§4.6375§10.0
+Change§alpha transition§0.32499993§10.0
+Change§alpha c§0.5§10.0
+Change§alpha ease§3.4499998§10.0
+Change§r off§22.574997§100.0
+Change§w off§5.987492§10.0
+Change§a off§0.025000002§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§4.000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.67375004§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle 0§1.2375001§10.0
+triangle§angle 1§1.1875001§10.0
+triangle§r 0§1.4000001§10.0
+triangle§r 1§8.4625§100.0
+triangle§fill§0.0§0.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§4.000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.67375004§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle 0§5.662504§10.0
+triangle§angle 1§5.0625033§10.0
+triangle§r 0§144.025§100.0
+triangle§r 1§205.3375§100.0
+triangle§fill§0.0§0.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§false
+triangle§angle§-0.97499985§10.0
+triangle§w§0.6§10.0
+triangle§r 0§253.15§100.0
+triangle§r 1§117.462494§100.0
+triangle§fill§0.65312487§1.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle§-0.94999987§10.0
+triangle§w§0.74999994§10.0
+triangle§r 0§259.4§100.0
+triangle§r 1§108.462494§100.0
+triangle§fill§0.65312487§1.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle§-0.97499985§10.0
+triangle§w§-0.65000033§10.0
+triangle§r 0§270.15§100.0
+triangle§r 1§128.4625§100.0
+triangle§fill§0.65312487§1.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle§-0.97499985§10.0
+triangle§w§-0.65000033§10.0
+triangle§r 0§270.15§100.0
+triangle§r 1§129.3375§100.0
+triangle§fill§0.65312487§1.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§false
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§false
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§2000.0§400.0
+arc§hairs§12.999998§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+GROUP§triangle§true
+triangle§angle§-0.97499985§10.0
+triangle§w§-0.6375004§10.0
+triangle§r 0§250.4§100.0
+triangle§r 1§121.712494§100.0
+triangle§fill§0.65312487§1.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§true
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§650.0§4000.0
+arc§hairs§9.000002§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+arc§weight width§197.03752§30.0
+arc§weight transition§64.34985§400.0
+arc§weight easing§1.1875002§10.0
+GROUP§triangle§true
+triangle§angle§-0.97499985§10.0
+triangle§w§-0.6375004§10.0
+triangle§r 0§250.4§100.0
+triangle§r 1§121.712494§100.0
+triangle§fill§0.65312487§0.0§1.0§1.0§0.1
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§global§true
+global§background§0.0§0.0§1.0§1.0§1.0
+GROUP§arc§true
+arc§radius§200.0§30.0
+arc§weight§36.949997§100.0
+arc§angle 0§4.6915927§1.0
+arc§angle 1§-0.2875001§10.0
+arc§move ease§3.5000005§10.0
+arc§detail§650.0§4000.0
+arc§hairs§9.000002§200.0
+arc§fill§0.95625025§1.0§0.0§0.5324999§1.0
+arc§alpha w§0.5§10.0
+arc§alpha transition§0.20000018§10.0
+arc§alpha c§0.5§10.0
+arc§alpha ease§3.5500007§10.0
+arc§r off§16.275002§100.0
+arc§w off§0.21250011§10.0
+arc§a off§-0.062499855§10.0
+arc§weight width§171.5375§30.0
+arc§weight transition§64.34985§400.0
+arc§weight easing§1.1875002§10.0
+GROUP§triangle§true
+triangle§angle§-0.97499985§10.0
+triangle§w§-0.6375004§10.0
+triangle§r 0§250.4§100.0
+triangle§r 1§121.712494§100.0
+triangle§fill§0.65312487§0.0§1.0§1.0§0.1
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§134.1625§100.0
+Change§light dir§100.0§26.75§-24.5§31.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§134.1625§100.0
+Change§light dir§100.0§26.75§-24.5§31.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§148.41248§10000.0
+Change§light dir§100.0§-12.25§-11.5§34.375
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§5.9624996§10.0
+Change§light dir§100.0§0.0§-2.125§-70.75
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§5.9624996§10.0
+Change§light dir§100.0§0.0§-2.25§-209.125
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§5.9624996§10.0
+Change§light dir§10000.0§-23.75§-53.5§33.5
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§5.9624996§10.0
+Change§light dir§10000.0§-48.75§-16.0§33.5
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§38.387497§100.0
+Change§light dir§10000.0§-48.75§-16.0§33.5
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§38.387497§100.0
+Change§light dir§10000.0§-48.75§-16.0§33.5
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§38.387497§100.0
+Change§light dir§10000.0§-1111.25§-991.0§1546.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§43.137497§100.0
+Change§light dir§10000.0§-23.75§-778.5§-8754.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§3.7625§10.0
+Change§light dir§100.0§-8.625§37.375§6.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§3.7625§10.0
+Change§light dir§1000.0§-1.25§14.25§-26.75
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§shininess§38.5375§100.0
+Change§light dir§100.0§-18.25§-35.125§-51.125
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§199.25§300.0
+Change§detail§1312.9998§10000.0
+Change§sides§1.0§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§199.25§300.0
+Change§detail§1312.9998§10000.0
+Change§sides§2.9996285§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§199.25§300.0
+Change§detail§1312.9998§10000.0
+Change§speed§360.0§30.0
+Change§max sides§14.999998§100.0
+Change§ease§1.1124997§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§389.75§300.0
+Change§detail§87.999985§10000.0
+Change§speed§360.0§30.0
+Change§max sides§14.999998§100.0
+Change§ease§1.3500004§10.0
+Change§weight§3.25§100.0
+Change§copies§9.999998§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§389.75§300.0
+Change§detail§87.999985§10000.0
+Change§speed§619.9986§3.0
+Change§max sides§14.999998§100.0
+Change§ease§1.1375004§10.0
+Change§weight§7.5§100.0
+Change§copies§9.999998§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§389.75§300.0
+Change§detail§87.999985§10000.0
+Change§speed§619.9986§3.0
+Change§max sides§14.999998§100.0
+Change§ease§1.1375004§10.0
+Change§weight§7.5§100.0
+Change§copies§9.999998§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§radius§389.75§300.0
+Change§detail§87.999985§10000.0
+Change§speed§719.9952§0.3
+Change§max sides§14.999998§100.0
+Change§ease§1.1375004§10.0
+Change§weight§4.75§100.0
+Change§copies§9.999998§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§496.2§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§100.0§0.0§0.0
+Change§drag§0.9§10.0
+Change§rect size§49.9625§100.0
+Change§repulsion§3.0875§10.0
+Change§weight§4.75§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§334.2§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§100.0§0.0§0.0
+Change§drag§0.36250034§10.0
+Change§repulsion dist§100.3125§100.0
+Change§weight§1.875§100.0
+Change§repulsion mag§5.1499996§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§293.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§10.0§0.21249998§0.0
+Change§drag§0.93749994§10.0
+Change§repulsion dist§100.3125§100.0
+Change§weight§1.875§100.0
+Change§repulsion mag§3.3625016§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§293.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§10.0§0.21249998§0.0
+Change§drag§0.93749994§10.0
+Change§repulsion dist§194.1875§1000.0
+Change§spd limit§10.0§20.0
+Change§weight§1.875§100.0
+Change§repulsion mag§3.05§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§293.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§10.0§0.21249998§0.0
+Change§drag§0.8625§10.0
+Change§repulsion dist§194.1875§1000.0
+Change§spd limit§10.0§20.0
+Change§weight§1.875§100.0
+Change§repulsion mag§3.05§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§384.2§400.0
+Change§reset§
+Change§gravity§10.0§0.0§1.0
+Change§wind§100.0§-10.625§-32.75
+Change§drag§0.8625§10.0
+Change§to center mag§0.0013750007§0.1
+Change§repulsion dist§104.1875§1000.0
+Change§spd limit§10.0§20.0
+Change§weight§3.375§100.0
+Change§repulsion mag§6.9375§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§359.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0375§-0.012499998
+Change§wind§100.0§2.5§59.375
+Change§drag§0.97499996§10.0
+Change§to center mag§6.2500057E-4§0.1
+Change§repulsion dist§45.4375§1000.0
+Change§spd limit§97.275§200.0
+Change§weight§4.5§100.0
+Change§repulsion mag§13.1875§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§count§359.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0375§-0.012499998
+Change§wind§100.0§1.75§60.25
+Change§drag§0.97499996§10.0
+Change§to center mag§6.2500057E-4§0.1
+Change§repulsion dist§45.4375§1000.0
+Change§spd limit§97.275§200.0
+Change§weight§4.5§100.0
+Change§repulsion mag§13.1875§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§2.8249984§255.0
+Change§count§359.7§400.0
+Change§reset§
+Change§gravity§10.0§0.0375§-0.012499998
+Change§wind§100.0§1.0§4.5
+Change§drag§0.97499996§10.0
+Change§to center mag§0.0058750007§0.1
+Change§repulsion dist§45.4375§1000.0
+Change§spd limit§97.275§200.0
+Change§weight§1.375§100.0
+Change§repulsion mag§4.912501§10.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§2.8249984§255.0
+Change§water size§341.99936§300.0
+Change§neighbour divide§2.0§10.0
+Change§damp§0.9§10.0
+Change§weight§1.375§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§67.53124§255.0
+Change§water size§341.99936§300.0
+Change§neighbour divide§2.0§10.0
+Change§damp§0.9§10.0
+Change§weight§9.75§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§67.53124§255.0
+Change§water size§450.00006§300.0
+Change§neighbour divide§1.0078743§0.1
+Change§damp§0.9§10.0
+Change§weight§1.75§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§67.53124§255.0
+Change§water size§450.00006§300.0
+Change§neighbour divide§1.0078743§0.1
+Change§damp§0.9§10.0
+Change§fill ceiling§0.0§0.0§0.65§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§67.53124§255.0
+Change§water size§851.0001§30000.0
+Change§neighbour divide§1.0078743§0.1
+Change§damp§0.8999995§10.0
+Change§fill ceiling§0.0§0.0§0.65§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+Change§particle count§328.99994§1000.0
+Change§speed§10.0§-1.5000001§4.0025015
+Change§radius§3.0§10.0
+Change§impact§5.699999§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§67.53124§255.0
+Change§water size§851.0001§30000.0
+Change§neighbour divide§1.0078743§0.1
+Change§damp§0.8999995§10.0
+Change§fill ceiling§0.0§0.0§1.0§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+Change§particle count§328.99994§1000.0
+Change§reset particles§
+Change§speed§10.0§-1.5000001§4.0025015
+Change§particle weight§0.0§10.0
+Change§impact§10.0§20.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§62.112446§255.0
+Change§water size§1569.9998§3000.0
+Change§neighbour divide§1.0066245§1.0
+Change§damp§0.85374904§1.0
+Change§fill ceiling§0.0§0.0§1.0§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+Change§particle count§90.000015§1000.0
+Change§reset particles§
+Change§speed§10.0§0.52500004§6.5150003
+Change§particle weight§1.7750003§10.0
+Change§impact§96.175§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§62.112446§255.0
+Change§water size§1569.9998§3000.0
+Change§neighbour divide§1.0066245§1.0
+Change§damp§0.85374904§1.0
+Change§fill ceiling§0.0§0.0§1.0§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+Change§particle count§90.000015§1000.0
+Change§reset particles§
+Change§speed§10.0§0.52500004§6.5150003
+Change§particle weight§1.7750003§10.0
+Change§impact§96.175§200.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§Change§true
+Change§fade to black§62.112446§255.0
+Change§water size§1569.9998§3000.0
+Change§neighbour divide§1.0066245§1.0
+Change§damp§0.85374904§1.0
+Change§fill ceiling§0.0§0.0§1.0§1.0§1.0
+Change§fill floor§0.0§0.0§0.0§1.0§1.0
+Change§particle count§90.000015§1000.0
+Change§reset particles§
+Change§speed§10.0§0.52500004§6.5150003
+Change§particle weight§3.9875007§10.0
+Change§impact§143.175§200.0
+STATE_END

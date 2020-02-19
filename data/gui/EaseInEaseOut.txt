@@ -1,0 +1,8 @@
+STATE_BEGIN
+UNDO
+GROUP§utils.EaseInAndOut§true
+utils.EaseInAndOut§amp§100.0§30.0
+utils.EaseInAndOut§w§75.025§100.0
+utils.EaseInAndOut§tw§0.0§10.0
+utils.EaseInAndOut§c§400.0§30.0
+STATE_END

@@ -101,6 +101,7 @@ public abstract class KrabApplet extends PApplet {
     protected boolean mousePressedOutsideGui = false;
     protected int frameRecordingStarted = 0;
     protected int frameRecordingDuration = 360; // assuming t += radians(1) per frame for a perfect loop
+    protected float timeSpeed = 1;
     private float trayWidthWhenExtended = minimumTrayWidth;
     private float trayWidth = minimumTrayWidth;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
@@ -335,7 +336,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected void gui(boolean defaultVisibility) {
-        t += radians(1);
+        t += radians(timeSpeed);
         guiSetup(defaultVisibility);
         updateFps();
         updateKeyboardInput();
