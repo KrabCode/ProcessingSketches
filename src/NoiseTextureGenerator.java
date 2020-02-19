@@ -2,13 +2,13 @@ import applet.KrabApplet;
 import processing.core.PGraphics;
 import utils.OpenSimplexNoise;
 
-public class NoiseTexture extends KrabApplet {
+public class NoiseTextureGenerator extends KrabApplet {
     PGraphics pg;
     private float freq = 0;
     private OpenSimplexNoise noise = new OpenSimplexNoise();
 
     public static void main(String[] args) {
-        KrabApplet.main("NoiseTexture");
+        KrabApplet.main("NoiseTextureGenerator");
     }
 
     public void settings() {

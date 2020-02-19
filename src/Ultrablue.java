@@ -1,11 +1,13 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 
 /**
  * Created by Jakub 'Krab' Rak on 2020-02-12
  */
 public class Ultrablue extends KrabApplet {
     private PGraphics pg;
+    private PImage noise;
 
     public static void main(String[] args) {
         KrabApplet.main("Ultrablue");
@@ -22,6 +24,7 @@ public class Ultrablue extends KrabApplet {
         pg.background(0);
         pg.endDraw();
         frameRecordingDuration *= 2;
+        noise = loadImage("noise/50.jpg");
     }
 
     public void draw() {
@@ -30,6 +33,7 @@ public class Ultrablue extends KrabApplet {
         uniform(raymarch).set("time", t);
         uniform(raymarch).set("lightDir", sliderXYZ("light dir"));
         uniform(raymarch).set("shininess", slider("shininess"));
+        uniform(raymarch).set("noise", noise);
         hotFilter(raymarch, pg);
         pg.endDraw();
         image(pg, 0, 0);
