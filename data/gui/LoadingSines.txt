@@ -201,3 +201,41 @@ LoadingSines§threshold§0.012499809§100.0
 LoadingSines§blur size§26.999996§100.0
 LoadingSines§sigma§1.8500004§100.0
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§1481.0005§10000.0
+LoadingSines§radius§200.825§30.0
+LoadingSines§start angle§-0.0125§10.0
+LoadingSines§end angle§4.54158§10.0
+LoadingSines§copies§20.000004§100.0
+LoadingSines§angle offset§0.3749991§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.337503§10.0
+LoadingSines§fade center§0.5000011§10000.001
+LoadingSines§fade ease§1.4375§100.0
+LoadingSines§amp§48.5375§100.0
+LoadingSines§freq§2.999846§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999996§100.0
+LoadingSines§sigma§1.8500004§100.0
+STATE_END
+STATE_BEGIN
+UNDO
+GROUP§LoadingSines§true
+LoadingSines§detail§593.9999§10000.0
+LoadingSines§radius§200.825§30.0
+LoadingSines§start angle§-0.0125§10.0
+LoadingSines§end angle§4.54158§10.0
+LoadingSines§copies§20.000004§100.0
+LoadingSines§angle offset§1.4499993§10.0
+LoadingSines§fade width§0.5000001§1.0
+LoadingSines§fade trans§0.337503§10.0
+LoadingSines§fade center§0.5000011§10000.001
+LoadingSines§fade ease§1.4375§100.0
+LoadingSines§amp§48.5375§100.0
+LoadingSines§freq§2.999846§100.0
+LoadingSines§threshold§0.012499809§100.0
+LoadingSines§blur size§26.999996§100.0
+LoadingSines§sigma§1.8500004§100.0
+STATE_END

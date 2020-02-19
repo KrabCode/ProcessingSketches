@@ -524,6 +524,10 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
+    protected float transition(float x, float a, float b, float ease){
+        return ease(constrain(norm(x,a,b), 0, 1), ease);
+    }
+
     protected float cnorm(float x, float min, float max) {
         return constrain(norm(x, min, max), 0, 1);
     }
@@ -2525,6 +2529,9 @@ public abstract class KrabApplet extends PApplet {
         }
 
         private void autoDetectConstraints(String name) {
+            if(name.contains("ease")){
+                this.defaultValue = 1;
+            }
             if (name.contains("weight")) {
                 this.constrained = true;
                 minValue = 0;
