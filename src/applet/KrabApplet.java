@@ -508,19 +508,19 @@ public abstract class KrabApplet extends PApplet {
     }
 
     protected float ease(float p, float g) {
-        if (p < 0.5)
-            return 0.5f * pow(2 * p, g);
+        if (p < 0.5f)
+            return 0.5f * pow(2f * p, g);
         else
-            return 1 - 0.5f * pow(2 * (1 - p), g);
+            return 1f - 0.5f * pow(2f * (1f - p), g);
     }
 
     protected float easeInAndOut(float x, float w, float transition, float center, float easing) {
         if (x < center) {
-            float easeIn = 1 - clampNorm(x, center - w, center - w + transition);
-            return 1 - ease(easeIn, easing);
+            float easeIn = 1f - clampNorm(x, center - w, center - w + transition);
+            return 1f - ease(easeIn, easing);
         } else {
             float easeOut = clampNorm(x, center + w - transition, center + w);
-            return 1 - ease(easeOut, easing);
+            return 1f - ease(easeOut, easing);
         }
     }
 
@@ -533,7 +533,7 @@ public abstract class KrabApplet extends PApplet {
     }
 
     public float angularDiameter(float r, float size) {
-        return atan(2 * (size / (2 * r)));
+        return atan(2f * (size / (2f * r)));
     }
 
     protected ArrayList<PVector> ngon(float radius, int detail, int sides) {
