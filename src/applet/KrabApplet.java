@@ -1432,14 +1432,11 @@ public abstract class KrabApplet extends PApplet {
                     runningState.clear();
                 } else if (line.startsWith(STATE_END)) {
                     if (pushingUndo) {
-//                        println("pushing ", concat(runningState));
                         pushStateToUndo(runningState);
-                        runningState.clear();
                     } else {
-//                        println("pushing ", concat(runningState));
                         pushStateToRedo(runningState);
-                        runningState.clear();
                     }
+                    runningState.clear();
                 } else {
                     runningState.add(line);
                 }
