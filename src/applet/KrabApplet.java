@@ -496,11 +496,11 @@ public abstract class KrabApplet extends PApplet {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 
-    private float easedAnimation(float startFrame, float duration, float easingFactor) {
-        return easedAnimation(startFrame, duration, easingFactor, 0, 1);
+    private float frameAnimation(float startFrame, float duration, float easingFactor) {
+        return frameAnimation(startFrame, duration, easingFactor, 0, 1);
     }
 
-    private float easedAnimation(float startFrame, float duration, float easingFactor, float constrainMin,
+    private float frameAnimation(float startFrame, float duration, float easingFactor, float constrainMin,
                                  float constrainMax) {
         float animationNormalized = constrain(norm(frameCount, startFrame,
                 startFrame + duration), constrainMin, constrainMax);
@@ -516,19 +516,19 @@ public abstract class KrabApplet extends PApplet {
 
     protected float easeInAndOut(float x, float w, float transition, float center, float easing) {
         if (x < center) {
-            float fadeIn = 1 - cnorm(x, center - w, center - w + transition);
-            return 1 - ease(fadeIn, easing);
+            float easeIn = 1 - clampNorm(x, center - w, center - w + transition);
+            return 1 - ease(easeIn, easing);
         } else {
-            float fadeOut = cnorm(x, center + w - transition, center + w);
-            return 1 - ease(fadeOut, easing);
+            float easeOut = clampNorm(x, center + w - transition, center + w);
+            return 1 - ease(easeOut, easing);
         }
     }
 
-    protected float transition(float x, float a, float b, float ease){
-        return ease(constrain(norm(x,a,b), 0, 1), ease);
+    protected float easeNorm(float x, float start, float end, float ease){
+        return ease(clampNorm(x,start,end), ease);
     }
 
-    protected float cnorm(float x, float min, float max) {
+    protected float clampNorm(float x, float min, float max) {
         return constrain(norm(x, min, max), 0, 1);
     }
 
@@ -545,7 +545,7 @@ public abstract class KrabApplet extends PApplet {
         }
         ArrayList<PVector> shape = new ArrayList<PVector>();
         for (int i = 0; i < detail; i++) {
-            float inorm = cnorm(i, 0, detail);
+            float inorm = clampNorm(i, 0, detail);
             float side = map(inorm, 0, 1, 0, sides);
             int lastCorner = floor(side);
             int nextCorner = ceil(side);
@@ -616,7 +616,7 @@ public abstract class KrabApplet extends PApplet {
                 GRAYSCALE_TEXT_DARK;
         fill(grayscale);
         stroke(grayscale);
-        float rotation = easedAnimation(hideRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        float rotation = frameAnimation(hideRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
         if (trayVisible) {
             rotation += 1;
         }
@@ -650,7 +650,7 @@ public abstract class KrabApplet extends PApplet {
         if (hide) {
             return;
         }
-        float rotation = easedAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        float rotation = frameAnimation(undoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
         rotation -= constrain(norm(undoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
         displayStateButton(x, y, w, h, rotation * TWO_PI, false, MENU_BUTTON_UNDO, undoStack.size());
     }
@@ -680,7 +680,7 @@ public abstract class KrabApplet extends PApplet {
         if (hide) {
             return;
         }
-        float rotation = easedAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
+        float rotation = frameAnimation(redoRotationStarted, MENU_ROTATION_DURATION, MENU_ROTATION_EASING);
         rotation -= constrain(norm(redoHoldDuration, 0, menuButtonHoldThreshold), 0, 1);
         displayStateButton(x, y, w, h, rotation * TWO_PI, true, MENU_BUTTON_REDO, redoStack.size());
     }
@@ -710,7 +710,7 @@ public abstract class KrabApplet extends PApplet {
             return;
         }
         rectMode(CENTER);
-        float animation = 1 - easedAnimation(saveAnimationStarted, MENU_ROTATION_DURATION, 3);
+        float animation = 1 - frameAnimation(saveAnimationStarted, MENU_ROTATION_DURATION, 3);
         if (animation == 0) {
             animation = 1;
         }
@@ -831,7 +831,7 @@ public abstract class KrabApplet extends PApplet {
             el.lastSelected = frameCount;
             grayScale = GRAYSCALE_TEXT_SELECTED;
         } else {
-            float deselectionFadeout = easedAnimation(el.lastSelected, DESELECTION_FADEOUT_DURATION,
+            float deselectionFadeout = frameAnimation(el.lastSelected, DESELECTION_FADEOUT_DURATION,
                     DESELECTION_FADEOUT_EASING);
             grayScale = lerp(GRAYSCALE_TEXT_DARK, GRAYSCALE_TEXT_SELECTED, 1 - deselectionFadeout);
         }
@@ -1974,7 +1974,7 @@ public abstract class KrabApplet extends PApplet {
                     GRAYSCALE_TEXT_SELECTED : GRAYSCALE_TEXT_DARK);
             textAlign(LEFT, BOTTOM);
             textSize(textSize);
-            float animation = easedAnimation(animationStarted, GROUP_TOGGLE_ANIMATION_DURATION,
+            float animation = frameAnimation(animationStarted, GROUP_TOGGLE_ANIMATION_DURATION,
                     GROUP_TOGGLE_ANIMATION_EASING);
             if (!expanded) {
                 animation = 1 - animation;
@@ -2059,7 +2059,7 @@ public abstract class KrabApplet extends PApplet {
 
         void underlineAnimation(float startFrame, float duration, float x, float y, boolean stayExtended) {
             float fullWidth = textWidth(name);
-            float animation = easedAnimation(startFrame, duration, UNDERLINE_TRAY_ANIMATION_EASING);
+            float animation = frameAnimation(startFrame, duration, UNDERLINE_TRAY_ANIMATION_EASING);
             if (!stayExtended && animation == 1) {
                 animation = 0;
             }
@@ -2199,7 +2199,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         void displayOnTray(float x, float y) {
-            float checkMarkAnimation = easedAnimation(activationStarted, CHECK_ANIMATION_DURATION * 2,
+            float checkMarkAnimation = frameAnimation(activationStarted, CHECK_ANIMATION_DURATION * 2,
                     CHECK_ANIMATION_EASING);
             if (checkMarkAnimation > 0 && checkMarkAnimation < 1) {
                 if (checkMarkAnimation < .5) {
@@ -2239,7 +2239,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         void displayOnTray(float x, float y) {
-            float checkMark = easedAnimation(activationStarted, CHECK_ANIMATION_DURATION, CHECK_ANIMATION_EASING);
+            float checkMark = frameAnimation(activationStarted, CHECK_ANIMATION_DURATION, CHECK_ANIMATION_EASING);
             displayCheckMarkOnTray(x, y, checkMark, checked, true);
             super.displayOnTray(x, y);
         }
@@ -2271,7 +2271,7 @@ public abstract class KrabApplet extends PApplet {
                                                    float horizontalRevealAnimationStarted, boolean alternative,
                                                    float minValue, float maxValue) {
             float deltaX = updateInfiniteSlider(precision, width, true, true, alternative);
-            float horizontalAnimation = easedAnimation(horizontalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+            float horizontalAnimation = frameAnimation(horizontalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
                     SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(x + width * .5f, y, w, h,
                     precision, value, horizontalAnimation, true, true, false, minValue, maxValue);
@@ -2283,7 +2283,7 @@ public abstract class KrabApplet extends PApplet {
                                                        float verticalRevealAnimationStarted, boolean alternative,
                                                        float minValue, float maxValue) {
             float deltaY = updateInfiniteSlider(precision, height, false, true, alternative);
-            float verticalAnimation = easedAnimation(verticalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+            float verticalAnimation = frameAnimation(verticalRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
                     SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(x + height * .5f, y, w, h,
                     precision, value, verticalAnimation, false, true, false, minValue, maxValue);
@@ -2514,7 +2514,6 @@ public abstract class KrabApplet extends PApplet {
         SliderFloat(Group parent, String name, float defaultValue, float precision,
                     boolean constrained, float min, float max, boolean floored) {
             super(parent, name);
-            this.value = defaultValue;
             this.defaultValue = defaultValue;
             this.precision = precision;
             this.defaultPrecision = precision;
@@ -2526,34 +2525,35 @@ public abstract class KrabApplet extends PApplet {
             } else {
                 autoDetectConstraints(name);
             }
+            this.value = defaultValue;
         }
 
         private void autoDetectConstraints(String name) {
-            if(name.contains("ease")){
-                this.defaultValue = 1;
+            if(name.contains("ease") && defaultValue == 0){
+                defaultValue = 1;
             }
             if (name.contains("weight")) {
-                this.constrained = true;
+                constrained = true;
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
                 defaultValue = 1;
             }
             if (name.equals("fill") || name.equals("stroke")) {
-                this.constrained = true;
+                constrained = true;
                 minValue = 0;
                 maxValue = 255;
             } else if (name.contains("count") || name.contains("size") || name.contains("step")) {
-                this.constrained = true;
+                constrained = true;
                 if (name.contains("count") && defaultValue == 0) {
                     defaultValue = 1;
                 }
                 minValue = 0;
                 maxValue = Float.MAX_VALUE;
                 if (value == 0) {
-                    this.value = 1;
+                    value = 1;
                 }
             } else if (name.equals("drag")) {
-                this.constrained = true;
+                constrained = true;
                 minValue = 0;
                 maxValue = 1;
             }
@@ -2617,7 +2617,7 @@ public abstract class KrabApplet extends PApplet {
             if (constrained) {
                 value = constrain(value, minValue, maxValue);
             }
-            float revealAnimation = easedAnimation(sliderRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
+            float revealAnimation = frameAnimation(sliderRevealAnimationStarted - SLIDER_REVEAL_START_SKIP,
                     SLIDER_REVEAL_DURATION,
                     SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(width * .5f, height - cell, width, sliderHeight, precision,
@@ -2779,7 +2779,7 @@ public abstract class KrabApplet extends PApplet {
             value.x += deltaX;
             value.y += deltaY;
             value.z += deltaZ;
-            float zAnimation = easedAnimation(zRevealAnimationStarted, SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
+            float zAnimation = frameAnimation(zRevealAnimationStarted, SLIDER_REVEAL_DURATION, SLIDER_REVEAL_EASING);
             displayInfiniteSliderCenterMode(height - height * .2f, width - sliderHeight * 2, height / 3f,
                     sliderHeight * .8f, precision, value.z, zAnimation, false, false,
                     false, -Float.MAX_VALUE, Float.MAX_VALUE);
@@ -3007,7 +3007,7 @@ public abstract class KrabApplet extends PApplet {
             recordStateForUndo();
             pushStyle();
             colorMode(HSB, 1, 1, 1, 1);
-            float revealAnimation = easedAnimation(pickerRevealStarted - PICKER_REVEAL_START_SKIP,
+            float revealAnimation = frameAnimation(pickerRevealStarted - PICKER_REVEAL_START_SKIP,
                     PICKER_REVEAL_DURATION, PICKER_REVEAL_EASING);
             int tinySliderCount = 2;
             float tinySliderMarginCellFraction = .2f;

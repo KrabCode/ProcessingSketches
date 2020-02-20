@@ -61,7 +61,7 @@ public class LoadingSines extends KrabApplet {
                 float startAngle = baseStartAngle + copyAngleOffset + t;
                 float endAngle = baseEndAngle + copyAngleOffset + t;
                 float angle = map(i, 0, detail - 1, startAngle, endAngle);
-                float angleNorm = cnorm(angle, startAngle, endAngle);
+                float angleNorm = clampNorm(angle, startAngle, endAngle);
                 float fade = easeInAndOut(angleNorm, slider("fade width"),
                         slider("fade trans"),
                         slider("fade center"),
