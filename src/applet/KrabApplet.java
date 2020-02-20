@@ -704,7 +704,7 @@ public abstract class KrabApplet extends PApplet {
         if (activated(MENU_BUTTON_SAVE, x, y, w, h) || actions.contains(ACTION_SAVE)) {
             saveAnimationStarted = frameCount;
             saveStateToFile();
-            println("saved");
+            println("settings saved");
         }
         if (hide) {
             return;
