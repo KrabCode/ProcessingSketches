@@ -2529,7 +2529,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         private void autoDetectConstraints(String name) {
-            if(name.contains("ease")){
+            if(name.contains("ease") || name.contains("easing")){
                 this.defaultValue = 1;
             }
             if (name.contains("weight")) {
