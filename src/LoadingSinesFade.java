@@ -1,6 +1,5 @@
 import applet.KrabApplet;
 import ch.bildspur.postfx.builder.PostFX;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 
 @SuppressWarnings("DuplicatedCode")
@@ -24,8 +23,8 @@ public class LoadingSinesFade extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
-        frameRecordingDuration *= 2;
-        timeSpeed *= .5f;
+//        frameRecordingDuration *= 2;
+//        timeSpeed *= .5f;
     }
 
     public void draw() {
@@ -53,32 +52,33 @@ public class LoadingSinesFade extends KrabApplet {
         float baseRadius = slider("radius", 200);
         float baseStartAngle = slider("start angle");
         float baseEndAngle = slider("end angle", TAU);
-        float angleRollIn = slider("angle in 1", .5f)*transition(t%TAU, 0, QUARTER_PI, slider("angle in ease")) +
-                slider("angle in 2", .5f)*transition(t%TAU, PI,PI+QUARTER_PI, slider("angle in ease 2"));
-        baseEndAngle = lerp(baseStartAngle, baseEndAngle, angleRollIn);
-
+        float bothAngles = slider("both angles");
+        baseStartAngle += bothAngles;
+        baseEndAngle += bothAngles;
+        float angleRollIn = easeNorm(t % TAU, 0, PI, slider("angle in ease"));
+        float angleRollOut = easeNorm(t % TAU, PI, TAU, slider("angle out ease"));
+        if(t%TAU < PI){
+            baseEndAngle = lerp(baseStartAngle, baseEndAngle, angleRollIn);
+        }else{
+            baseStartAngle = lerp(baseStartAngle, baseEndAngle, angleRollOut);
+        }
         int copies = sliderInt("copies", 2);
         for (int copy = 0; copy < copies; copy++) {
-            float copySinOffset = map(copy, 0, copies - 1, 0, TAU);
+            float copySinOffset = map(copy, 0, copies, 0, TAU);
             float copyAngleOffset = slider("angle offset") * randomDeterministic(copy);
             pg.beginShape();
             pg.noFill();
             float startAngle = baseStartAngle + copyAngleOffset;
             float endAngle = baseEndAngle + copyAngleOffset;
             for (int i = 0; i < detail; i++) {
-                float angle = map(i, 0, detail - 1, startAngle, endAngle);
-                float angleNorm = cnorm(angle, startAngle, endAngle);
-                float tips = easeInAndOut(angleNorm, slider("tips width"),
-                        slider("tips transition"),
-                        slider("tips center"),
-                        slider("tips ease"));
-                float radiusOffset = slider("amp") * sin(t+copySinOffset + angle * sliderInt("freq"));
+                float inorm = clampNorm(i, 0, detail - 1);
+                float angle = map(inorm, 0, 1, startAngle, endAngle);
+                float tips = easeInAndOut(inorm, slider("tips width", .5f),
+                        slider("tips transition"),.5f, slider("tips ease"));
+                float radiusOffset = slider("amp") * sin(t + copySinOffset + angle * sliderInt("freq"));
                 float r = baseRadius + radiusOffset;
                 float weight = 1.99f;
-                pg.stroke(255, 255*min(tips, max(transition(t%TAU, 0, QUARTER_PI/2f, slider("fade in ease", 1)),
-                        1-transition(t%TAU, PI,
-                        TAU,
-                        slider("fade out ease")))));
+                pg.stroke(255, 255 * tips);
                 pg.strokeWeight(weight);
                 pg.vertex(r * cos(angle), r * sin(angle));
             }
