@@ -9,12 +9,12 @@ import utils.OpenSimplexNoise;
  * Created by Jakub 'Krab' Rak on 2020-02-21
  */
 @SuppressWarnings("DuplicatedCode")
-public class PipeTerrain extends KrabApplet {
+public class MetalTerrain extends KrabApplet {
     private PGraphics pg;
     private OpenSimplexNoise noise = new OpenSimplexNoise();
 
     public static void main(String[] args) {
-        KrabApplet.main("PipeTerrain");
+        KrabApplet.main("MetalTerrain");
     }
 
     public void settings() {
