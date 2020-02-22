@@ -516,19 +516,19 @@ public abstract class KrabApplet extends PApplet {
 
     protected float easeInAndOut(float x, float w, float transition, float center, float easing) {
         if (x < center) {
-            float fadeIn = 1 - cnorm(x, center - w, center - w + transition);
+            float fadeIn = 1 - clampNorm(x, center - w, center - w + transition);
             return 1 - ease(fadeIn, easing);
         } else {
-            float fadeOut = cnorm(x, center + w - transition, center + w);
+            float fadeOut = clampNorm(x, center + w - transition, center + w);
             return 1 - ease(fadeOut, easing);
         }
     }
 
-    protected float transition(float x, float a, float b, float ease){
+    protected float easeNorm(float x, float a, float b, float ease){
         return ease(constrain(norm(x,a,b), 0, 1), ease);
     }
 
-    protected float cnorm(float x, float min, float max) {
+    protected float clampNorm(float x, float min, float max) {
         return constrain(norm(x, min, max), 0, 1);
     }
 
@@ -545,7 +545,7 @@ public abstract class KrabApplet extends PApplet {
         }
         ArrayList<PVector> shape = new ArrayList<PVector>();
         for (int i = 0; i < detail; i++) {
-            float inorm = cnorm(i, 0, detail);
+            float inorm = clampNorm(i, 0, detail);
             float side = map(inorm, 0, 1, 0, sides);
             int lastCorner = floor(side);
             int nextCorner = ceil(side);
