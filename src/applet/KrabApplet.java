@@ -581,6 +581,21 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
+    protected ArrayList<PVector> spiralSpherePoints(int count) {
+        ArrayList<PVector> points = new ArrayList<PVector>();
+        float s = 3.6f / sqrt(count);
+        float dz = 2.0f / count;
+        float lon = 0;
+        float z = 1 - dz / 2;
+        for (int k = 0; k < count; k++) {
+            float r = sqrt(1 - z * z);
+            points.add(new PVector(cos(lon) * r, sin(lon) * r, z));
+            z = z - dz;
+            lon = lon + s / r;
+        }
+        return points;
+    }
+
     // TRAY
     private void updateFps() {
         int nonFlickeringFrameRate = floor(frameRate > 55 ? 60 : frameRate);
@@ -2542,8 +2557,9 @@ public abstract class KrabApplet extends PApplet {
                 this.constrained = true;
                 minValue = 0;
                 maxValue = 255;
-            } else if (name.contains("count") || name.contains("size") || name.contains("step")) {
-                this.constrained = true;
+            } else if (name.contains("count") || name.contains("size") ||
+                    (name.contains("step") && !name.contains("smoothstep") ) ) {
+                constrained = true;
                 if (name.contains("count") && defaultValue == 0) {
                     defaultValue = 1;
                 }
