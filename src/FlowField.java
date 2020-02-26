@@ -67,7 +67,7 @@ public class FlowField extends KrabApplet {
         float removeBuffer = width / 2f;
 
         Particle() {
-            if (toggle("gaussian spawn")) {
+            if (toggle("gaussian spawn", true)) {
                 pos = getGaussianCenterPos();
             } else {
                 pos = getPosOutsideScreenButInsideBounds();
@@ -76,7 +76,10 @@ public class FlowField extends KrabApplet {
         }
 
         private PVector getGaussianCenterPos() {
-            return new PVector(width * .5f + randomGaussian() * 100, height * .5f + randomGaussian() * 100);
+            float spread = slider("spread");
+            PVector translate = sliderXYZ("gauss translate");
+            return new PVector(width * .5f + translate.x + randomGaussian() * spread,
+                    height * .5f + translate.y + randomGaussian() * spread);
         }
 
         private PVector getPosOutsideScreenButInsideBounds() {
@@ -90,11 +93,12 @@ public class FlowField extends KrabApplet {
         }
 
         void update() {
-            float freq = slider("freq", 1);
-            float noiseAngle = slider("noise angles", TAU) * noise(pos.x * freq, pos.y * freq);
+            float toCenterAngle = atan2(height * .5f - pos.y, width * .5f - pos.x);
+            float sideways = toCenterAngle + HALF_PI;
+            float yNorm = clampNorm(pos.y,0,height);
+            float noiseAngle = HALF_PI+(1.f-yNorm) * slider("noise angles") *
+                    noise(pos.x * slider("x freq"),pos.y * slider("y freq"));
             PVector acc = PVector.fromAngle(noiseAngle).mult(slider("noise acc"));
-            float toCenterAngle = atan2(height*.5f - pos.y, width*.5f-pos.x);
-            float sideways = toCenterAngle+HALF_PI;
             acc.add(PVector.fromAngle(toCenterAngle).mult(slider("to center acc")));
             acc.add(PVector.fromAngle(sideways).mult(slider("sideways acc")));
             spd.add(acc);
@@ -103,14 +107,15 @@ public class FlowField extends KrabApplet {
             HSBA stroke = picker("stroke");
             float fadeInFrames = slider("fade in frames", 10);
             float fadeIn = easeNorm(frameCount, frameBorn, frameBorn + fadeInFrames, slider("fade in ease"));
-
             pg.stroke(hueModulo(stroke.hue() + hueOffset * slider("hue offset")),
                     stroke.sat() + satOffset * slider("sat offset"), stroke.br(),
                     stroke.alpha() * fadeIn);
             pg.strokeWeight(slider("weight", 2));
             pg.point(pos.x, pos.y);
-            if (!isPointInRect(pos.x, pos.y, -removeBuffer, -removeBuffer,
-                    width + removeBuffer * 2, height + removeBuffer * 2)) {
+            boolean isOutsideBounds = !isPointInRect(pos.x, pos.y, -removeBuffer, -removeBuffer,
+                    width + removeBuffer * 2,height + removeBuffer * 2);
+            boolean isInCenter = isPointInRect(pos.x, pos.y, width / 2f - 1, height / 2f - 1, 2, 2);
+            if (isOutsideBounds || isInCenter) {
                 particlesToRemove.add(this);
             }
         }
