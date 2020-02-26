@@ -35,6 +35,15 @@ float map(float x, float a1, float a2, float b1, float b2){
     return b1 + (b2-b1) * (x-a1) / (a2-a1);
 }
 
+float sdCircle( vec2 p, float r ){
+    return length(p) - r;
+}
+
+float sdBox( in vec2 p, in vec2 b ){
+    vec2 d = abs(p)-b;
+    return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
+}
+
 void main(){
     float t = time*.2;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;

@@ -5,12 +5,12 @@ import processing.core.PImage;
 /**
  * Created by Jakub 'Krab' Rak on 2020-02-12
  */
-public class Ultrablue extends KrabApplet {
+public class RaymarchBlinnPhong extends KrabApplet {
     private PGraphics pg;
     private PImage noise;
 
     public static void main(String[] args) {
-        KrabApplet.main("Ultrablue");
+        KrabApplet.main("RaymarchBlinnPhong");
     }
 
     public void settings() {
