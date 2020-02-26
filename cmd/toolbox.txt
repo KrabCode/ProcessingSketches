@@ -1,5 +1,5 @@
 
-If you or a loved one are experiencing a constant need to melt your face off, consider the following techniques:
+In case of a constant need to melt your face off, consider the following techniques:
 
 
 - Fractal Brownian Motion
@@ -28,9 +28,11 @@ If you or a loved one are experiencing a constant need to melt your face off, co
 - Shaders
     - Tiling
     - FBM landscapes
+    - Reaaction - Diffusion
+    - 2D water ripples
 - Shader filters
     - RGB split
-    - noise offset (works wonders with redrawing background with small opacity)
+    - noise offset (works wonders with redrawing background at low opacity)
 
 - Backbuffer
     - Pixel sorting
