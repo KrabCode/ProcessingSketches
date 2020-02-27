@@ -166,19 +166,19 @@ struct raypath{
     vec3 closestPoint;
 };
 
-vec3 getColor(vec3 p){
+vec3 getPlanetColor(vec3 p){
     p.xy *= rotate2d(-0.5);
-    p.xz *= rotate2d(time*.25);
-    p.y += .05*fbm(vec4(p*10, time*.125));
-    vec3 a = vec3(33, 35, 84) / 255.;
-    vec3 b = vec3(62, 84, 232) / 255. ;
-    vec3 c = vec3(62, 102, 249) / 255.;
-    vec3 d = vec3(96, 129, 255) / 255.;
-    vec3 e = vec3(137, 243, 255) / 255.;
-    vec3[5] colors = vec3[5](a,b,c,d,e);
-    float y0 =  0;
-    float y1 =  0.25;
-    float y = clamp(y1-abs(p.y) + .05 * fbm(vec4(p*5, 0.)), y0, y1);
+    p.xz *= rotate2d(-time*.1);
+    p.x += .05*fbm(vec4(3.+p*15, time*.125));
+    p.y += .01*fbm(vec4(p*15, time*.125));
+    vec3 b = vec3(84,36,55) / 255. ;
+    vec3 c = vec3(192,41,66) / 255.;
+    vec3 d = vec3(217,91,67) / 255.;
+    vec3 e = vec3(236,208,120) / 255.;
+    vec3[4] colors = vec3[4](b,c,d,e);
+    float y0 =  .0;
+    float y1 =  0.2;
+    float y = clamp(y1-abs(p.y) + .06 * fbm(vec4(p*5, 0.)), y0, y1);
     float m = map(y, y0, y1, 0., float(colors.length())-1.);
     int index = int(floor(m));
     index = clamp(index, 0, colors.length());
@@ -188,9 +188,8 @@ vec3 getColor(vec3 p){
 }
 
 float sd(vec3 p){
-    float d = length(p)-0.25;
-
-    return d;
+    float planet = length(p)-0.3;
+    return planet;
 }
 
 vec3 getNormal(vec3 p){
@@ -221,7 +220,8 @@ raypath raymarch(vec3 origin, vec3 direction){
             break;
         }
     }
-    return raypath(p, getColor(p), distanceTraveled, closestDistance, closestPoint);
+    vec3 color = getPlanetColor(p);
+    return raypath(p, color, distanceTraveled, closestDistance, closestPoint);
 }
 
 float getDiffuseLight(vec3 p, vec3 lightDir, vec3 normal){
@@ -250,6 +250,7 @@ vec3 render(vec2 cv){
         float freq = 50.;
         color = vec3(dotNoise2D(cv.x*freq, cv.y*freq, 0.3, 0.2));
     }
+
     return color;
 }
 

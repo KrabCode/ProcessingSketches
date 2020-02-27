@@ -14,11 +14,12 @@ public class RaymarchBlinnPhong extends KrabApplet {
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        fullScreen(P2D, 2);
+//        size(800, 800, P2D);
     }
 
     public void setup() {
-        surface.setAlwaysOnTop(true);
+//        surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);
