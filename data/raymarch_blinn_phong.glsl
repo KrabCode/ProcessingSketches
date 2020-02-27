@@ -9,7 +9,7 @@ uniform float time;
 uniform vec3 lightDir;
 
 const vec3 specularColor = vec3(1);
-const vec3 glowColor = vec3(1);
+const vec3 glowColor = vec3(1, .6, .3);
 
 const int steps = 1000;
 const float surfaceDistance = 0.0001;
@@ -167,6 +167,10 @@ struct raypath{
 };
 
 vec3 getPlanetColor(vec3 p){
+    vec3 origP = p;
+    if(length(p)-0.4 > 0){
+        return vec3(1);
+    }
     p.xy *= rotate2d(-0.5);
     p.xz *= rotate2d(-time*.1);
     p.x += .05*fbm(vec4(3.+p*15, time*.125));
@@ -184,12 +188,23 @@ vec3 getPlanetColor(vec3 p){
     index = clamp(index, 0, colors.length());
     float pct = fract(m);
     float transition = 0.5;
-    return mix(colors[index], colors[index+1], smoothstep(.5-transition, .5+transition, pct));
+    vec3 color =  mix(colors[index], colors[index+1], smoothstep(.5-transition, .5+transition, pct));
+    if(length(origP)-0.28 < 0){
+        return vec3(1.-length(origP))*vec3(1., .0, .0);
+    }
+    return color;
+}
+float opSubtraction( float d1, float d2 ) {
+    return max(-d1,d2);
 }
 
 float sd(vec3 p){
+    float cutout = length(p-vec3(0.15, 0.15, -.2))-.2-.01*fbm(vec4(p*10., .1*time));
+    p.xy *= rotate2d(-0.5);
+    p.xz *= rotate2d(-time*.1);
     float planet = length(p)-0.3;
-    return planet;
+
+    return opSubtraction(cutout, planet);
 }
 
 vec3 getNormal(vec3 p){
@@ -250,7 +265,8 @@ vec3 render(vec2 cv){
         float freq = 50.;
         color = vec3(dotNoise2D(cv.x*freq, cv.y*freq, 0.3, 0.2));
     }
-
+    vec3 glow = glowColor * (1.-path.closestDistance) * smoothstep(0.3, 0.2, length(path.closestPoint));
+    color += glow;
     return color;
 }
 
