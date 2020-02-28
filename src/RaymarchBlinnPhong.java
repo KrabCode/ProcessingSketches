@@ -19,7 +19,7 @@ public class RaymarchBlinnPhong extends KrabApplet {
     }
 
     public void setup() {
-//        surface.setAlwaysOnTop(true);
+        surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
         pg.beginDraw();
         pg.background(0);

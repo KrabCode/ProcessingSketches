@@ -17,7 +17,12 @@ const float normalDistance = 0.001;
 const float maxDistance = 1000;
 
 #define pi 3.14159
+#define globalRotation -time*.1
+#define distToTorus sdTorus(p, vec2(.38, .005))
 
+float rand1D(in float co){
+    return fract(sin(co) * 43758.5453);
+}
 float rand2D(in vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
@@ -166,13 +171,29 @@ struct raypath{
     vec3 closestPoint;
 };
 
-vec3 getPlanetColor(vec3 p){
+struct distance{
+    float dist;
+    vec3 localCoord;
+};
+
+float opSubtraction( float d1, float d2 ) {
+    return max(-d1,d2);
+}
+
+float sdTorus( vec3 p, vec2 t )
+{
+    vec2 q = vec2(length(p.xz)-t.x,p.y);
+    return length(q)-t.y;
+}
+
+vec3 getColor(vec3 p){
     vec3 origP = p;
-    if(length(p)-0.4 > 0){
-        return vec3(1);
+    if(length(p)-0.3-surfaceDistance > 0){
+        if(distToTorus < surfaceDistance){
+            return vec3(1);
+        }
+        return vec3(.5+.5*fbm(vec4(p.xyz*80., 1)));
     }
-    p.xy *= rotate2d(-0.5);
-    p.xz *= rotate2d(-time*.1);
     p.x += .05*fbm(vec4(3.+p*15, time*.125));
     p.y += .01*fbm(vec4(p*15, time*.125));
     vec3 b = vec3(84,36,55) / 255. ;
@@ -194,25 +215,35 @@ vec3 getPlanetColor(vec3 p){
     }
     return color;
 }
-float opSubtraction( float d1, float d2 ) {
-    return max(-d1,d2);
-}
 
-float sd(vec3 p){
-    float cutout = length(p-vec3(0.15, 0.15, -.2))-.2-.01*fbm(vec4(p*10., .1*time));
+distance sd(vec3 p){
     p.xy *= rotate2d(-0.5);
-    p.xz *= rotate2d(-time*.1);
+    p.yz *= rotate2d(0.1);
+    p.xz *= rotate2d(globalRotation);
+    vec3 localCoord = p;
     float planet = length(p)-0.3;
+    for(float i = 0; i < 7.; i++){
+        vec3 pos = vec3(.7+.3*rand1D(i), .05*(-1.+2.*rand1D(i*7)), 0);
+        pos.xz *= rotate2d(rand1D(i*.1)*pi*8.);
+        pos *= .8;
+        planet = min(length(p-pos)-(.002+.01*rand1D(i*.1)), planet);
+        localCoord = p;
+    }
 
-    return opSubtraction(cutout, planet);
+    float torus = distToTorus;
+    if(torus < planet){
+        localCoord = p;
+    }
+    planet = min(planet, torus);
+    return distance(planet, localCoord);
 }
 
 vec3 getNormal(vec3 p){
-    float d = sd(p);
+    float d = sd(p).dist;
     vec2 offset = vec2(normalDistance, 0.);
-    float d1 = sd(p-offset.xyy);
-    float d2 = sd(p-offset.yxy);
-    float d3 = sd(p-offset.yyx);
+    float d1 = sd(p-offset.xyy).dist;
+    float d2 = sd(p-offset.yxy).dist;
+    float d3 = sd(p-offset.yyx).dist;
     vec3 normal = d - vec3(d1, d2, d3);
     return normalize(normal);
 }
@@ -220,22 +251,22 @@ vec3 getNormal(vec3 p){
 raypath raymarch(vec3 origin, vec3 direction){
     vec3 p = origin.xyz;
     float distanceTraveled = 0;
-    float distanceToScene = sd(origin);
+    distance distanceToScene = sd(origin);
     float closestDistance = maxDistance;
     vec3 closestPoint = vec3(maxDistance);
     for(int i = 0; i < steps; i++){
         distanceToScene = sd(p);
-        distanceTraveled += distanceToScene;
-        if(distanceToScene < closestDistance){
-            closestDistance = distanceToScene;
+        distanceTraveled += distanceToScene.dist;
+        if(distanceToScene.dist < closestDistance){
+            closestDistance = distanceToScene.dist;
             closestPoint = p;
         }
         p = origin+direction*distanceTraveled;
-        if(distanceToScene < surfaceDistance || distanceTraveled > maxDistance){
+        if(distanceToScene.dist < surfaceDistance || distanceTraveled > maxDistance){
             break;
         }
     }
-    vec3 color = getPlanetColor(p);
+    vec3 color = getColor(distanceToScene.localCoord);
     return raypath(p, color, distanceTraveled, closestDistance, closestPoint);
 }
 
@@ -265,8 +296,8 @@ vec3 render(vec2 cv){
         float freq = 50.;
         color = vec3(dotNoise2D(cv.x*freq, cv.y*freq, 0.3, 0.2));
     }
-    vec3 glow = glowColor * (1.-path.closestDistance) * smoothstep(0.3, 0.2, length(path.closestPoint));
-    color += glow;
+//    vec3 glow = glowColor * (1.-path.closestDistance) * smoothstep(0.3, 0.2, length(path.closestPoint));
+//    color += glow;
     return color;
 }
 
