@@ -31,7 +31,8 @@ public class LoadingSinesFade extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        pg.background(0);
+        pg.colorMode(HSB,1,1,1,1);
+        pg.background(1);
         pg.translate(width * .5f, height * .5f);
         drawCircle();
         pg.endDraw();
@@ -50,7 +51,7 @@ public class LoadingSinesFade extends KrabApplet {
     }
 
     private void drawCircle() {
-        t %= TAU;
+        t %= PI;
         int detail = sliderInt("detail", 100);
         float baseRadius = slider("radius", 200);
         float baseStartAngle = slider("start angle");
@@ -73,18 +74,24 @@ public class LoadingSinesFade extends KrabApplet {
             pg.noFill();
             float startAngle = baseStartAngle + copyAngleOffset;
             float endAngle = baseEndAngle + copyAngleOffset;
+            float colorNorm = randomDeterministic(copy+7);
+            HSBA colorZero = picker("color 0");
+            HSBA colorOne = picker("color 1");
             for (int i = 0; i < detail; i++) {
                 float iNorm = clampNorm(i, 0, detail - 1);
                 float angle = map(iNorm, 0, 1, startAngle, endAngle);
                 float tips = easeInAndOut(iNorm, slider("tips width", .5f),
                         slider("tips transition"),.5f, slider("tips ease"));
-                float animatedOffset = animatedRotation*TAU*sliderInt("rotation count");
-                float radiusOffset = slider("amp") * sin(t +  copySinOffset + animatedOffset + angle * sliderInt(
+                float animatedOffset = animatedRotation*TAU*slider("rotation count");
+                float radiusOffset = slider("amp") * sin(copySinOffset - animatedOffset + angle * sliderInt(
                         "freq"));
                 float r = baseRadius + radiusOffset;
-                float weight = 1.99f;
-
-                pg.stroke(255, 255 * min(tips, fadeout));
+                float weight = slider("weight",1.99f);
+                pg.stroke(
+                        lerp(colorZero.hue(), colorOne.hue(), colorNorm),
+                        lerp(colorZero.sat(), colorOne.sat(), colorNorm),
+                        lerp(colorZero.br(), colorOne.br(), colorNorm)
+                        , min(tips, fadeout));
                 pg.strokeWeight(weight);
                 pg.vertex(r * cos(angle), r * sin(angle));
             }
