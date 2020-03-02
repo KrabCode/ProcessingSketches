@@ -1,28 +1,33 @@
 precision lowp float;
 
 uniform sampler2D texture;
-uniform sampler2D noise;
 
 uniform vec2 resolution;
 uniform float shininess;
 uniform float time;
-uniform vec3 lightDir;
+uniform vec3 lightDirection;
 
-const vec3 specularColor = vec3(1);
 const vec3 glowColor = vec3(1, .6, .3);
+const vec3 specularColor = glowColor;
 
-const int steps = 1000;
-const float surfaceDistance = 0.0001;
+const int steps = 300;
+const float surfaceDistance = 0.001;
 const float normalDistance = 0.001;
-const float maxDistance = 1000;
+const float maxDistance = 100;
 
 #define pi 3.14159
 #define globalRotation -time*.1
-#define distToTorus sdTorus(p, vec2(.38, .005))
 
-float rand1D(in float co){
-    return fract(sin(co) * 43758.5453);
+float rand(float n){
+    return fract(sin(n) * 43758.5453123);
 }
+
+float noise(float p){
+    float fl = floor(p);
+    float fc = fract(p);
+    return mix(rand(fl), rand(fl + 1.0), fc);
+}
+
 float rand2D(in vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
@@ -165,15 +170,19 @@ mat2 rotate2d(float _angle){
 
 struct raypath{
     vec3 hit;
-    vec3 color;
+    vec3 hitLocalCoord;
+    int material;
     float distanceTraveled;
     float closestDistance;
     vec3 closestPoint;
+    float glow;
 };
 
 struct distance{
     float dist;
     vec3 localCoord;
+    float glow;
+    int material; // 0 = planet, 1 = moon, 2 = ring
 };
 
 float opSubtraction( float d1, float d2 ) {
@@ -186,13 +195,13 @@ float sdTorus( vec3 p, vec2 t )
     return length(q)-t.y;
 }
 
-vec3 getColor(vec3 p){
+vec3 getColor(vec3 p, int material){
     vec3 origP = p;
-    if(length(p)-0.3-surfaceDistance > 0){
-        if(distToTorus < surfaceDistance){
-            return vec3(1);
-        }
+    if(material == 1){
         return vec3(.5+.5*fbm(vec4(p.xyz*80., 1)));
+    }
+    if(material == 2){
+        return vec3(1);
     }
     p.x += .05*fbm(vec4(3.+p*15, time*.125));
     p.y += .01*fbm(vec4(p*15, time*.125));
@@ -210,10 +219,12 @@ vec3 getColor(vec3 p){
     float pct = fract(m);
     float transition = 0.5;
     vec3 color =  mix(colors[index], colors[index+1], smoothstep(.5-transition, .5+transition, pct));
-    if(length(origP)-0.28 < 0){
-        return vec3(1.-length(origP))*vec3(1., .0, .0);
-    }
     return color;
+}
+
+float sdCappedCylinder( vec3 p, float radius, float height){
+    vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(radius,height);
+    return min(max(d.x,d.y),0.0) + length(max(d,0.0));
 }
 
 distance sd(vec3 p){
@@ -221,21 +232,38 @@ distance sd(vec3 p){
     p.yz *= rotate2d(0.1);
     p.xz *= rotate2d(globalRotation);
     vec3 localCoord = p;
-    float planet = length(p)-0.3;
-    for(float i = 0; i < 7.; i++){
-        vec3 pos = vec3(.7+.3*rand1D(i), .05*(-1.+2.*rand1D(i*7)), 0);
-        pos.xz *= rotate2d(rand1D(i*.1)*pi*8.);
-        pos *= .8;
-        planet = min(length(p-pos)-(.002+.01*rand1D(i*.1)), planet);
+    int material = 0;
+
+    // planet
+    float dist = length(p)-0.25;
+
+    // moons
+    for(float i = 1; i < 4.; i++){
+        vec3 pos = vec3(.2+.3*rand(i), .2*(1.-2.*rand(4.+i*7)), 0);
+        pos.xz *= rotate2d(rand(i*.2)*pi*4.);
+        float moonDist = length(p-pos)-(.01+.01*rand(i*.1));
+        if(moonDist < dist){
+            material = 1;
+        }
+        dist = min(moonDist, dist);
         localCoord = p;
     }
 
-    float torus = distToTorus;
-    if(torus < planet){
-        localCoord = p;
+    // rings
+    float ringThickness = .0002+.5*(1.-2.*noise(length(p.xz)*150.))*.005;
+    float radius = .4;
+    float width = .08;
+    float ringDist = opSubtraction(
+        sdCappedCylinder(p, radius-width, .1),
+        sdCappedCylinder(p, radius+width, ringThickness)
+    );
+    if(ringDist < dist){
+        material = 2;
     }
-    planet = min(planet, torus);
-    return distance(planet, localCoord);
+    dist = min(dist, ringDist);
+
+    float glow = 0; // exp(-ring * 200.);
+    return distance(dist, localCoord, glow, material);
 }
 
 vec3 getNormal(vec3 p){
@@ -251,23 +279,24 @@ vec3 getNormal(vec3 p){
 raypath raymarch(vec3 origin, vec3 direction){
     vec3 p = origin.xyz;
     float distanceTraveled = 0;
-    distance distanceToScene = sd(origin);
+    distance d = sd(origin);
     float closestDistance = maxDistance;
     vec3 closestPoint = vec3(maxDistance);
+    float glowSum = 0;
     for(int i = 0; i < steps; i++){
-        distanceToScene = sd(p);
-        distanceTraveled += distanceToScene.dist;
-        if(distanceToScene.dist < closestDistance){
-            closestDistance = distanceToScene.dist;
+        d = sd(p);
+        glowSum += d.glow;
+        distanceTraveled += d.dist;
+        if(d.dist < closestDistance){
+            closestDistance = d.dist;
             closestPoint = p;
         }
         p = origin+direction*distanceTraveled;
-        if(distanceToScene.dist < surfaceDistance || distanceTraveled > maxDistance){
+        if(d.dist < surfaceDistance || distanceTraveled > maxDistance){
             break;
         }
     }
-    vec3 color = getColor(distanceToScene.localCoord);
-    return raypath(p, color, distanceTraveled, closestDistance, closestPoint);
+    return raypath(p, d.localCoord, d.material, distanceTraveled, closestDistance, closestPoint, glowSum);
 }
 
 float getDiffuseLight(vec3 p, vec3 lightDir, vec3 normal){
@@ -281,23 +310,43 @@ float getSpecularLight(vec3 lightDir, vec3 rayDirection, vec3 normal) {
     return pow(max(dot(normal, halfVector),0.), shininess);
 }
 
+float getShadow(vec3 p, vec3 lightDir, vec3 normal){
+    vec3 shadowOrigin = vec3(p.xyz)+normal*0.01;
+    vec3 shadowDirection = lightDir * -1;
+    raypath path = raymarch(shadowOrigin, shadowDirection);
+    if(path.distanceTraveled < maxDistance*.9){
+        return 1;
+    }
+    return 0;
+}
+
 vec3 render(vec2 cv){
     vec3 origin = vec3(0., 0., -1.);
-    vec3 direction = normalize(vec3(cv, 1));
-    raypath path = raymarch(origin, direction);
-    vec3 color;
+    vec3 rayDir = normalize(vec3(cv, 1));
+    raypath path = raymarch(origin, rayDir);
     vec3 normal = getNormal(path.hit);
-    vec3 lightDir = normalize(lightDir);
+    vec3 lightDir = normalize(lightDirection);
+    vec3 color = getColor(path.hitLocalCoord, path.material);
     float diffuse = getDiffuseLight(path.hit, lightDir, normal);
-    float specular = 0; // getSpecularLight(lightDir, direction, normal);
-    vec3 lit = diffuse*path.color + specular*specularColor;
+    vec3 lit = diffuse*color;
     color = vec3(lit);
     if(path.distanceTraveled > maxDistance / 2.){
+        // background was hit
         float freq = 50.;
         color = vec3(dotNoise2D(cv.x*freq, cv.y*freq, 0.3, 0.2));
     }
-//    vec3 glow = glowColor * (1.-path.closestDistance) * smoothstep(0.3, 0.2, length(path.closestPoint));
-//    color += glow;
+    if(path.material == 0){
+        // planet was hit
+        vec3 atmosphere = diffuse * glowColor * pow(1.-max(0, dot(normal, -rayDir)), 4.);
+        color += atmosphere;
+        color += specularColor * getSpecularLight(lightDir, rayDir, normal);
+
+    }
+
+    if(path.material == 2 || path.material == 0){
+        color *= 1.-getShadow(path.hit, lightDir, normal);
+    }
+
     return color;
 }
 
@@ -313,5 +362,5 @@ vec3 aarender(vec2 cv){
 
 void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    gl_FragColor = vec4(render(cv), 1.);
+    gl_FragColor = vec4(aarender(cv), 1.);
 }
