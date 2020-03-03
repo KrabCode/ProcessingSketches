@@ -18,6 +18,7 @@ public class GradientMandala extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        frameRecordingDuration *= 4;
     }
 
     public void draw() {

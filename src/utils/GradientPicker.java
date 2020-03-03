@@ -34,7 +34,7 @@ public class GradientPicker extends KrabApplet {
 
     private void colorPalettePass() {
         String colorPaletteShader = "gradient.glsl";
-        int colorCount = sliderInt("color count", 3);
+        int colorCount = sliderInt("color count", 10);
         for (int i = 0; i < colorCount; i++) {
             HSBA color = picker(i + "");
             uniform(colorPaletteShader).set("hsba_" + i, color.hue(), color.sat(), color.br(), color.alpha());

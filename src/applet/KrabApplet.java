@@ -1471,7 +1471,7 @@ public abstract class KrabApplet extends PApplet {
     // SHADERS
 
     protected void uniformColorPalette(String colorPaletteShader) {
-        int colorCount = sliderInt("color count", 3);
+        int colorCount = sliderInt("color count", 10);
         for (int i = 0; i < colorCount; i++) {
             HSBA color = picker(i + "");
             uniform(colorPaletteShader).set("hsba_" + i, color.hue(), color.sat(), color.br(), color.alpha());
