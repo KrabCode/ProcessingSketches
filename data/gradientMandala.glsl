@@ -1,16 +1,42 @@
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
-
 uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
-const int octaves = 3;
-#define pi 3.14159
+uniform int colorCount;
+uniform vec4 hsba_0;
+uniform vec4 hsba_1;
+uniform vec4 hsba_2;
+uniform vec4 hsba_3;
+uniform vec4 hsba_4;
+uniform vec4 hsba_5;
+uniform vec4 hsba_6;
+uniform vec4 hsba_7;
+uniform vec4 hsba_8;
+uniform vec4 hsba_9;
 
-// noise is from here:
-// https://www.shadertoy.com/view/4dS3Wd by Morgan McGuire @morgan3d!
+vec3 rgb(in vec3 hsb){
+    vec3 rgb = clamp(abs(mod(hsb.x*6.0+
+    vec3(0.0, 4.0, 2.0), 6.0)-3.0)-1.0, 0.0, 1.0);
+    rgb = rgb*rgb*(3.0-2.0*rgb);
+    return hsb.z * mix(vec3(1.0), rgb, hsb.y);
+}
+
+float map(float value, float start1, float stop1, float start2, float stop2){
+    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+}
+
+vec4 getColor(float pct){
+//    pct = fract(pct);
+    float colorPct = clamp(map(pct, 0, 1, 0, colorCount-1), 0, colorCount-1);
+    int previousColorIndex = int(floor(colorPct));
+    float lerpAmount = fract(colorPct);
+    vec4[] colors = vec4[](hsba_0, hsba_1, hsba_2, hsba_3, hsba_4, hsba_5, hsba_6, hsba_7, hsba_8, hsba_9);
+    vec4 prevColor = colors[previousColorIndex];
+    vec4 nextColor = colors[previousColorIndex+1];
+    prevColor.rgb = rgb(prevColor.rgb);
+    nextColor.rgb = rgb(nextColor.rgb);
+    return mix(prevColor, nextColor, lerpAmount);
+}
+
 
 // Precision-adjusted variations of https://www.shadertoy.com/view/4djSRW
 float hash(float p) { p = fract(p * 0.011); p *= p + 7.5; p *= p + p; return fract(p); }
@@ -45,7 +71,6 @@ float noise(vec2 x) {
     return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
-
 float noise(vec3 x) {
     const vec3 step = vec3(110, 241, 171);
 
@@ -63,65 +88,26 @@ float noise(vec3 x) {
     mix( hash(n + dot(step, vec3(0, 1, 1))), hash(n + dot(step, vec3(1, 1, 1))), u.x), u.y), u.z);
 }
 
-float fbm(float x) {
-    float v = 0.0;
-    float a = 0.5;
-    float shift = float(100);
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = x * 2.0 + shift;
-        a *= 0.5;
+float fbm(vec3 x){
+    float freq = 1.;
+    float amp = 1.;
+    float sum = 0;
+    for(int i = 0; i < 6; i++){
+        sum += amp*(1.-2.*noise(x*freq));
+        amp *= .4;
+        freq *= 2.;
+        x += 13.124 + freq * amp;
     }
-    return v;
-}
-
-float fbm(vec2 x) {
-    float v = 0.0;
-    float a = 0.5;
-    vec2 shift = vec2(100);
-    // Rotate to reduce axial bias
-    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = rot * x * 2.0 + shift;
-        a *= 0.5;
-    }
-    return v;
-}
-
-
-float fbm(vec3 x) {
-    float v = 0.0;
-    float a = 0.5;
-    vec3 shift = vec3(100);
-    for (int i = 0; i < octaves; ++i) {
-        v += a * noise(x);
-        x = x * 2.0 + shift;
-        a *= 0.5;
-    }
-    return v;
-}
-
-
-vec3 rgb( in vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0, 0.0, 1.0 );
-    rgb = rgb*rgb*(3.0-2.0*rgb);  return c.z * mix(vec3(1.0), rgb, c.y);
+    return .5+.5*sum;
 }
 
 void main(){
-    float t = time*.5;
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
-    cv += 100;
-    float d = smoothstep(0.5, .0, length(cv));
-    float p = 2.*pi*fbm(vec2(cv*15.));
-    float mag = 0.06;
-    cv += vec2(mag*cos(p), mag*sin(p));
-    float n = fbm(cv*4.+t);
-    n = smoothstep(.2, 0.8, n);
-    vec3 white = vec3(0.0);
-    vec3 blue = vec3(1.0);
-    vec3 col = mix(white, blue, n);
-    vec3 prev = texture(texture, gl_FragCoord.xy / resolution.xy).rgb;
-    col = mix(prev, col, .05);
-    gl_FragColor = vec4(col, 1.);
+    float t = time*.25;
+    float d = sin(length(cv)*30.);
+    float a = cos(atan(cv.x, cv.y) * 12.)*(1.-d)+d*0.5+t;
+    float n = fbm(vec3(a, d-t, t));
+    vec4 col = getColor(n);
+    gl_FragColor = col;
 }

@@ -1470,6 +1470,15 @@ public abstract class KrabApplet extends PApplet {
 
     // SHADERS
 
+    protected void uniformColorPalette(String colorPaletteShader) {
+        int colorCount = sliderInt("color count", 3);
+        for (int i = 0; i < colorCount; i++) {
+            HSBA color = picker(i + "");
+            uniform(colorPaletteShader).set("hsba_" + i, color.hue(), color.sat(), color.br(), color.alpha());
+        }
+        uniform(colorPaletteShader).set("colorCount", colorCount);
+    }
+
     protected void displacePass(PGraphics pg) {
         String displace = "displace.glsl";
         uniform(displace).set("time", t * slider("time speed"));
