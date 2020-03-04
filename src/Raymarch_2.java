@@ -25,7 +25,7 @@ public class Raymarch_2 extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        String raymarch2 = "raymarch_blinn_phong.glsl";
+        String raymarch2 = "raymarch_blinn_phong_planet.glsl";
         uniform(raymarch2).set("time", t);
         hotFilter(raymarch2);
         pg.endDraw();

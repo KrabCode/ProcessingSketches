@@ -196,7 +196,30 @@ float sdTorus( vec3 p, vec2 t )
 }
 
 vec3 getColor(vec3 p, int material){
-    return vec3(1);
+    vec3 origP = p;
+    if(material == 1){
+        return vec3(.5+.5*fbm(vec4(p.xyz*80., 1)));
+    }
+    if(material == 2){
+        return vec3(1);
+    }
+    p.x += .05*fbm(vec4(3.+p*15, time*.125));
+    p.y += .01*fbm(vec4(p*15, time*.125));
+    vec3 b = vec3(84,36,55) / 255. ;
+    vec3 c = vec3(192,41,66) / 255.;
+    vec3 d = vec3(217,91,67) / 255.;
+    vec3 e = vec3(236,208,120) / 255.;
+    vec3[4] colors = vec3[4](b,c,d,e);
+    float y0 =  .0;
+    float y1 =  0.2;
+    float y = clamp(y1-abs(p.y) + .06 * fbm(vec4(p*5, 0.)), y0, y1);
+    float m = map(y, y0, y1, 0., float(colors.length())-1.);
+    int index = int(floor(m));
+    index = clamp(index, 0, colors.length());
+    float pct = fract(m);
+    float transition = 0.5;
+    vec3 color =  mix(colors[index], colors[index+1], smoothstep(.5-transition, .5+transition, pct));
+    return color;
 }
 
 float sdCappedCylinder( vec3 p, float radius, float height){
@@ -205,12 +228,42 @@ float sdCappedCylinder( vec3 p, float radius, float height){
 }
 
 distance sd(vec3 p){
-    float dist = p.y;
-    vec2 planeCoord = fract(p.xz);
-    dist -= 0.5*sin(planeCoord.x+planeCoord.y+time);
-    float glow = 0;
+    p.xy *= rotate2d(-0.5);
+    p.yz *= rotate2d(0.1);
+    p.xz *= rotate2d(globalRotation);
+    vec3 localCoord = p;
     int material = 0;
-    return distance(dist, p, glow, material);
+
+    // planet
+    float dist = length(p)-0.25;
+
+    // moons
+    for(float i = 1; i < 4.; i++){
+        vec3 pos = vec3(.2+.3*rand(i), .2*(1.-2.*rand(4.+i*7)), 0);
+        pos.xz *= rotate2d(rand(i*.2)*pi*4.);
+        float moonDist = length(p-pos)-(.01+.01*rand(i*.1));
+        if(moonDist < dist){
+            material = 1;
+        }
+        dist = min(moonDist, dist);
+        localCoord = p;
+    }
+
+    // rings
+    float ringThickness = .0002+.5*(1.-2.*noise(length(p.xz)*150.))*.005;
+    float radius = .4;
+    float width = .08;
+    float ringDist = opSubtraction(
+        sdCappedCylinder(p, radius-width, .1),
+        sdCappedCylinder(p, radius+width, ringThickness)
+    );
+    if(ringDist < dist){
+        material = 2;
+    }
+    dist = min(dist, ringDist);
+
+    float glow = 0; // exp(-ring * 200.);
+    return distance(dist, localCoord, glow, material);
 }
 
 vec3 getNormal(vec3 p){
@@ -268,21 +321,32 @@ float getShadow(vec3 p, vec3 lightDir, vec3 normal){
 }
 
 vec3 render(vec2 cv){
-    vec3 origin = vec3(0., 2., 0.);
+    vec3 origin = vec3(0., 0., -1.);
     vec3 rayDir = normalize(vec3(cv, 1));
     raypath path = raymarch(origin, rayDir);
     vec3 normal = getNormal(path.hit);
     vec3 lightDir = normalize(lightDirection);
     vec3 color = getColor(path.hitLocalCoord, path.material);
     float diffuse = getDiffuseLight(path.hit, lightDir, normal);
-    float specular = getSpecularLight(path.hit, lightDir, normal);
-    vec3 lit = diffuse*color + specular*specularColor;
+    vec3 lit = diffuse*color;
     color = vec3(lit);
     if(path.distanceTraveled > maxDistance / 2.){
         // background was hit
         float freq = 50.;
         color = vec3(dotNoise2D(cv.x*freq, cv.y*freq, 0.3, 0.2));
     }
+    if(path.material == 0){
+        // planet was hit
+        vec3 atmosphere = diffuse * glowColor * pow(1.-max(0, dot(normal, -rayDir)), 4.);
+        color += atmosphere;
+        color += specularColor * getSpecularLight(lightDir, rayDir, normal);
+
+    }
+
+    if(path.material == 2 || path.material == 0){
+        color *= 1.-getShadow(path.hit, lightDir, normal);
+    }
+
     return color;
 }
 

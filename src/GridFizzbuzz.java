@@ -47,6 +47,19 @@ public class GridFizzbuzz extends KrabApplet {
     }
 
     String cellTextBottom(int i){
+//        return fizzbuzz(i);
+        return sumOfAllSmallerOrEqualIntegers(i);
+    }
+
+    private String sumOfAllSmallerOrEqualIntegers(int i) {
+        int sum = 0;
+        for(int j = 1; j <= i; j++){
+            sum += j;
+        }
+        return String.valueOf(sum);
+    }
+
+    private String fizzbuzz(int i) {
         if(i % 6 == 0){
             return "fizzbuzz";
         }
