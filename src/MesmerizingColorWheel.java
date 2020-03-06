@@ -1,15 +1,12 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 
-/**
- * Created by Jakub 'Krab' Rak on 2020-01-31
- */
-public class Raymarch_2 extends KrabApplet {
-    private PGraphics pg;
-
+public class MesmerizingColorWheel extends KrabApplet {
     public static void main(String[] args) {
-        KrabApplet.main("Raymarch_2");
+        MesmerizingColorWheel.main("MesmerizingColorWheel");
     }
+
+    private PGraphics pg;
 
     public void settings() {
         size(800, 800, P2D);
@@ -25,9 +22,10 @@ public class Raymarch_2 extends KrabApplet {
 
     public void draw() {
         pg.beginDraw();
-        String raymarch2 = "raymarch_blinn_phong_planet.glsl";
-        uniform(raymarch2).set("time", t);
-        hotFilter(raymarch2);
+        pg.background(0);
+        String colorWheel = "colorWheel.glsl";
+        uniform(colorWheel).set("time", t);
+        hotFilter(colorWheel, pg);
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);

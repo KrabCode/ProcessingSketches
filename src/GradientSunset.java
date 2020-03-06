@@ -1,14 +1,11 @@
 import applet.KrabApplet;
 import processing.core.PGraphics;
 
-/**
- * Created by Jakub 'Krab' Rak on 2020-01-31
- */
-public class Raymarch_2 extends KrabApplet {
+public class GradientSunset extends KrabApplet {
     private PGraphics pg;
 
     public static void main(String[] args) {
-        KrabApplet.main("Raymarch_2");
+        GradientSunset.main("GradientSunset");
     }
 
     public void settings() {
@@ -21,16 +18,25 @@ public class Raymarch_2 extends KrabApplet {
         pg.beginDraw();
         pg.background(0);
         pg.endDraw();
+        frameRecordingDuration *= 2;
     }
 
     public void draw() {
         pg.beginDraw();
-        String raymarch2 = "raymarch_blinn_phong_planet.glsl";
-        uniform(raymarch2).set("time", t);
-        hotFilter(raymarch2);
+        pg.background(0);
+        mandalaPass();
         pg.endDraw();
         image(pg, 0, 0);
         rec(pg);
         gui();
     }
+
+    private void mandalaPass() {
+        String mandala = "gradientSunset.glsl";
+        uniform(mandala).set("time", t);
+        uniformColorPalette(mandala);
+        hotFilter(mandala, pg);
+    }
+
+
 }
