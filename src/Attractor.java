@@ -1,11 +1,11 @@
 import applet.GuiSketch;
-import peasy.PeasyCam;
+import applet.KrabApplet;
 import processing.core.PVector;
 import utils.OpenSimplexNoise;
 
 import java.util.ArrayList;
 
-public class Attractor extends GuiSketch {
+public class Attractor extends KrabApplet {
     private OpenSimplexNoise noise = new OpenSimplexNoise();
 
     private int frameRecordingEnds = 0;
@@ -20,7 +20,7 @@ public class Attractor extends GuiSketch {
     float range = 0;
 
     public static void main(String[] args) {
-        GuiSketch.main("Attractor");
+        KrabApplet.main("Attractor");
     }
 
     public void settings() {
@@ -29,7 +29,6 @@ public class Attractor extends GuiSketch {
 
     public void setup() {
         colorMode(HSB, 1, 1, 1, 1);
-        new PeasyCam(this, 300);
     }
 
     public void draw() {
@@ -38,9 +37,7 @@ public class Attractor extends GuiSketch {
 
         background(0);
 
-        rotY += slider("rotate y", -.01f,.01f);
-        rotateY(rotY);
-
+        cam();
 
         int pathCount = floor(slider("pathCount", 30));
         if(button("regen")){
@@ -92,7 +89,7 @@ public class Attractor extends GuiSketch {
 
             beginShape();
             noFill();
-            strokeWeight(slider("weight", 0, 3));
+            strokeWeight(slider("weight", 1.9f, 3));
 
             float freq = slider("noise freq", .5f);
             float mag = slider("noise mag", 3);

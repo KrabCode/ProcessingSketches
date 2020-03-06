@@ -1,9 +1,11 @@
 import applet.GuiSketch;
-import peasy.PeasyCam;
+import applet.KrabApplet;
+import processing.core.PGraphics;
+import processing.core.PVector;
 
-public class DotPlane extends GuiSketch {
+public class DotPlane extends KrabApplet {
     public static void main(String[] args) {
-        GuiSketch.main("DotPlane");
+        KrabApplet.main("DotPlane");
     }
 
     public void settings() {
@@ -11,12 +13,11 @@ public class DotPlane extends GuiSketch {
     }
 
     float t = 0;
-    PeasyCam cam;
 
     int recStarted = -1;
     int recDuration = 360;
 
-    int count = 50;
+    int count = 10;
     float[][] weights;
 
     @Override
@@ -25,28 +26,21 @@ public class DotPlane extends GuiSketch {
     }
 
     public void setup() {
-        cam = new PeasyCam(this, 200);
     }
 
     public void draw() {
         t += radians(1);
         background(0);
         updateWeights();
+        cam();
         drawDots();
-        cam.beginHUD();
-        if (toggle("chromatic")) {
-
-        }
-        cam.endHUD();
-        if (recStarted > 0 && frameCount <= recStarted + recDuration) {
-            saveFrame(captureFilename);
-        }
         gui();
+        rec();
     }
 
     private void updateWeights() {
         int oldCount = count;
-        count = floor(slider("count", 400));
+        count = floor(slider("count", 200));
         if (count != oldCount || weights == null) {
             weights = new float[count][count];
             for (int x = 0; x < count; x++) {
@@ -69,7 +63,7 @@ public class DotPlane extends GuiSketch {
                 float a = floor(slider("freq 2", 24)) * atan2(z, x);
                 float outwardWave = sin(d - t);
                 float y = slider("y", 5) * outwardWave + (1 - outwardWave) * slider("y 2", 5) * sin(a);
-                strokeWeight(weights[xIndex][zIndex]);
+                strokeWeight(slider("weight"));
                 point(x, y, z);
             }
         }

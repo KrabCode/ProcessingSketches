@@ -4,7 +4,7 @@ import processing.core.PImage;
 
 public class ImageNoiseOffset extends HotswapGuiSketch {
     PGraphics pg;
-    PImage jesus;
+    PImage image;
     private float t;
 
     public static void main(String[] args) {
@@ -12,18 +12,18 @@ public class ImageNoiseOffset extends HotswapGuiSketch {
     }
 
     public void settings() {
-        size(720,972, P2D);
+        image = loadImage("images\\0.jpg");
+        size(image.width, image.height, P2D);
     }
 
     public void setup() {
         pg = createGraphics(width, height, P2D);
-        jesus = loadImage("images\\jesus.jpg");
     }
 
     public void draw() {
         t += radians(slider("t"));
         tint(255, slider("alpha")*255);
-        image(jesus, 0, 0, width, height);
+        image(image, 0, 0, width, height);
         noiseOffsetPass(g, t);
         rec();
         gui();

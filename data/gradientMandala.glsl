@@ -106,8 +106,8 @@ void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     float t = time*.5;
     float d = sin(length(cv)*30.);
-    float a = cos(atan(cv.x, cv.y) * 8.)+(1.-d);
-    float n = fbm(vec3(pow(d, 8.), d+t, a));
+    float a = cos(atan(cv.x, cv.y) * 10.)+(1.-d);
+    float n = fbm(vec3(pow(abs(d), 8.), d+t, a));
     vec4 col = getColor(n);
     gl_FragColor = col;
 }

@@ -449,6 +449,20 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
+
+    protected void cam(){
+        cam(g);
+    }
+
+    protected void cam(PGraphics pg) {
+        PVector t = sliderXYZ("translate");
+        pg.translate(pg.width/2f+t.x, pg.height/2f+t.y, t.z);
+        PVector r = sliderXYZ("rotate");
+        pg.rotateX(r.x);
+        pg.rotateY(r.y);
+        pg.rotateZ(r.z);
+    }
+
     public void rec() {
         rec(g);
     }
