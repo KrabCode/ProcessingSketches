@@ -1,4 +1,3 @@
-import applet.HotswapGuiSketch;
 import applet.KrabApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -15,13 +14,13 @@ public class ImageFlip extends KrabApplet {
     }
 
     public void settings() {
-        size(800, 800, P2D);
+        size(1000,1000, P2D);
     }
 
     public void setup() {
         surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
-        img = squareify(loadImage("images/film_7_clouds_by_hiura.jpg"));
+        img = squareify(loadImage("images/mountain_hues.jpg"));
     }
 
     public void draw() {

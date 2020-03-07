@@ -19,38 +19,31 @@ vec2 wrapAround(vec2 p){
     return mod(p,x) - x*0.5;
 }
 
-float sdBox( in vec2 p, in vec2 size ){
-    vec2 d = abs(p)-size;
-    return length(max(d,vec2(0))) + min(max(d.x,d.y),0.0);
-}
-
-vec3 render(vec2 uv){
-    uv.y = 1.0 - uv.y;
-    vec2 pos = vec2(0.5);
-    vec2 size = vec2(.3);
-    int count = 10;
-    size.x += .03*sign(sin(uv.y*80.+time))*sin(uv.y*10.-time);
-    size.y += .03*sign(sin(uv.x*80.+time))*sin(uv.x*10.-time);
-    float box = sdBox(uv-pos, size);
-    if(box < .0){
-        uv.x = 1.-uv.x;
-//        uv.y = 1. - uv.y;
-    }
-    vec3 col = texture2D(img, uv).rgb;
-    return col;
-}
-
-vec3 aarender(vec2 uv){
-    float off = (1./resolution.x)/4.;
-    vec3 colA = render(uv+vec2(off, off));
-    vec3 colB = render(uv+vec2(-off, off));
-    vec3 colC = render(uv+vec2(off, -off));
-    vec3 colD = render(uv+vec2(-off, -off));
-    vec3 mixed = (colA+colB+colC+colD)/4.;
-    return mixed;
-}
 
 void main(){
-    vec2 uv = gl_FragCoord.xy / resolution.xy;
-    gl_FragColor = vec4(aarender(uv), 1.);
+    vec2 uv = gl_FragCoord.xy / resolution;
+    vec2 cv = (gl_FragCoord.xy-.5*resolution.xy)/resolution.y;
+    vec3 normtex = vec3(0);
+    vec3 fliptex = vec3(1);
+     normtex = texture2D(img, vec2(uv.x, 1.-uv.y)).rgb;
+     fliptex = texture2D(img, uv).rgb;
+
+    float dist = length(cv);
+    float distSin = sin(dist*25.-time);
+
+    float a = (atan(cv.y, cv.x)*0.6);
+    float spiralDist = length(cv) + a;
+    float spiralSin = sin(spiralDist*10.-time);
+
+    distSin += spiralSin;
+
+    vec3 color = vec3(0);
+    float transition = 0.15;
+
+    if(distSin > 0){
+        color = mix(normtex, fliptex, smoothstep(0., transition, distSin));
+    }else{
+        color = mix(fliptex, normtex, smoothstep(transition, 0., distSin));
+    }
+    gl_FragColor = vec4(color, 1.);
 }
