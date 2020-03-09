@@ -1,0 +1,1 @@
+ffmpeg -i NAME.mp4 NAME/%0d.png
