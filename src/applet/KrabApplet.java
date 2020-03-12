@@ -103,13 +103,14 @@ public abstract class KrabApplet extends PApplet {
     protected int frameRecordingStarted = 0;
     protected int frameRecordingDuration = 360; // assuming t += radians(1) per frame for a perfect loop
     protected float timeSpeed = 1;
+    boolean saveAnimationThreadInitialized = false;
+    ArrayList<AnimationFrame> animationQueue = new ArrayList<>();
     private float trayWidthWhenExtended = minimumTrayWidth;
     private float trayWidth = minimumTrayWidth;
     private ArrayList<ArrayList<String>> undoStack = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<String>> redoStack = new ArrayList<ArrayList<String>>();
     private boolean captureScreenshot = false;
     private int screenshotsAlreadyCaptured = 0;
-
     private ArrayList<Group> groups = new ArrayList<Group>();
     private Group currentGroup = null; // do not assign to nor read directly!
     private ArrayList<Key> keyboardKeys = new ArrayList<Key>();
@@ -136,10 +137,10 @@ public abstract class KrabApplet extends PApplet {
     private int menuButtonHoldThreshold = 60;
     private float trayScrollOffset = 0;
     private ArrayList<Float> scrollOffsetHistory = new ArrayList<Float>();
-    private ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
-    private int shaderRefreshRateInMillis = 36;
 
     // INTERFACE
+    private ArrayList<ShaderSnapshot> snapshots = new ArrayList<ShaderSnapshot>();
+    private int shaderRefreshRateInMillis = 36;
 
     protected int sliderInt() {
         return floor(sliderInt("x"));
@@ -385,6 +386,8 @@ public abstract class KrabApplet extends PApplet {
         return true;
     }
 
+    // UTILS
+
     private void updateMouseState() {
         mousePressedOutsideGui = mousePressed && isMouseOutsideGui() && !overlayVisible;
     }
@@ -397,8 +400,6 @@ public abstract class KrabApplet extends PApplet {
             loadLastStateFromFile(true);
         }
     }
-
-    // UTILS
 
     protected void alphaFade() {
         alphaFade(g);
@@ -450,14 +451,13 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-
-    protected void cam(){
+    protected void cam() {
         cam(g);
     }
 
     protected void cam(PGraphics pg) {
         PVector t = sliderXYZ("translate");
-        pg.translate(pg.width/2f+t.x, pg.height/2f+t.y, t.z);
+        pg.translate(pg.width / 2f + t.x, pg.height / 2f + t.y, t.z);
         PVector r = sliderXYZ("rotate");
         pg.rotateX(r.x);
         pg.rotateY(r.y);
@@ -482,7 +482,7 @@ public abstract class KrabApplet extends PApplet {
         }
         int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
         if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd) {
-            if(!saveAnimationThreadInitialized){
+            if (!saveAnimationThreadInitialized) {
                 thread("saveAnimationBackgroundThread");
                 saveAnimationThreadInitialized = true;
             }
@@ -491,42 +491,27 @@ public abstract class KrabApplet extends PApplet {
             PImage currentSketch = pg.get();
             animationQueue.add(new AnimationFrame(currentSketch, frameNumber));
 
-            if(frameCount == frameRecordingEnd -1){
+            if (frameCount == frameRecordingEnd - 1) {
                 println("capture ended");
             }
         }
     }
 
-    boolean saveAnimationThreadInitialized = false;
-    ArrayList<AnimationFrame> animationQueue = new ArrayList<>();
-
-    public void saveAnimationBackgroundThread(){
-        while(true){
-            if(animationQueue.size() > 0){
+    public void saveAnimationBackgroundThread() {
+        while (true) {
+            if (animationQueue.size() > 0) {
                 AnimationFrame frame = animationQueue.remove(0);
                 frame.img.save(captureDir + frame.frameNumber + ".jpg");
-                if(animationQueue.size() == 0){
+                if (animationQueue.size() == 0) {
                     println("images saved");
                     saveAnimationThreadInitialized = false;
                     break;
                 }
-            }else{
+            } else {
                 delay(500);
             }
         }
     }
-
-    class AnimationFrame {
-        int frameNumber;
-        PImage img;
-
-        AnimationFrame(PImage currentSketch, int frameCount) {
-            img = currentSketch;
-            frameNumber = frameCount;
-        }
-    }
-
-
 
     int numberOfDigitsInFlooredNumber(float inputNumber) {
         return String.valueOf(floor(inputNumber)).length();
@@ -579,8 +564,8 @@ public abstract class KrabApplet extends PApplet {
         }
     }
 
-    protected float easeNorm(float x, float a, float b, float ease){
-        return ease(constrain(norm(x,a,b), 0, 1), ease);
+    protected float easeNorm(float x, float a, float b, float ease) {
+        return ease(constrain(norm(x, a, b), 0, 1), ease);
     }
 
     protected float clampNorm(float x, float min, float max) {
@@ -589,6 +574,8 @@ public abstract class KrabApplet extends PApplet {
 
     public float angularDiameter(float r, float size) {
         return atan(2 * (size / (2 * r)));
+        // wrighter's simpler alternative:
+        // return atan( size /  r);
     }
 
     protected ArrayList<PVector> ngon(float radius, int detail, int sides) {
@@ -947,11 +934,11 @@ public abstract class KrabApplet extends PApplet {
         underlineTrayAnimationStarted = frameCount;
     }
 
-    // INPUT
-
     private boolean hideActivated(float x, float y, float w, float h) {
         return actions.contains(ACTION_HIDE) || mouseJustReleasedHere(x, y, w, h);
     }
+
+    // INPUT
 
     private boolean activated(String query, float x, float y, float w, float h) {
         return mouseJustReleasedHereScrollAware(x, y, w, h) || keyboardActivated(query);
@@ -1253,8 +1240,6 @@ public abstract class KrabApplet extends PApplet {
         return longestNameWidth;
     }
 
-    // GROUP AND ELEMENT HANDLING
-
     private int hiddenElementCount(boolean forwardFacing) {
         Group group = findKeyboardSelectedGroup();
         if (previousActions.contains(ACTION_ALT)) {
@@ -1294,6 +1279,8 @@ public abstract class KrabApplet extends PApplet {
 
         return 0;
     }
+
+    // GROUP AND ELEMENT HANDLING
 
     private int elementCount() {
         int sum = 0;
@@ -1388,11 +1375,11 @@ public abstract class KrabApplet extends PApplet {
         return null;
     }
 
-    // STATE
-
     private void pushCurrentStateToRedo() {
         redoStack.add(getGuiState());
     }
+
+    // STATE
 
     private void pushStateToUndo(ArrayList<String> state) {
         setGuiState(state);
@@ -1522,8 +1509,6 @@ public abstract class KrabApplet extends PApplet {
         return "gui\\" + this.getClass().getSimpleName() + ".txt";
     }
 
-    // SHADERS
-
     protected void uniformColorPalette(String colorPaletteShader) {
         int colorCount = sliderInt("color count", 10);
         for (int i = 0; i < colorCount; i++) {
@@ -1532,6 +1517,8 @@ public abstract class KrabApplet extends PApplet {
         }
         uniform(colorPaletteShader).set("colorCount", colorCount);
     }
+
+    // SHADERS
 
     protected void displacePass(PGraphics pg) {
         String displace = "displace.glsl";
@@ -1714,8 +1701,6 @@ public abstract class KrabApplet extends PApplet {
         return hue;
     }
 
-// CLASSES
-
     protected void drawParametric(PGraphics pg) {
         pg.pushMatrix();
         PVector translate = sliderXYZ("translate");
@@ -1755,6 +1740,8 @@ public abstract class KrabApplet extends PApplet {
         }
         pg.popMatrix();
     }
+
+// CLASSES
 
     private PVector getVector(float u, float v, float r, float h) {
         String option = options("russian", "catenoid", "screw", "hexaedron", "moebius",
@@ -1902,6 +1889,16 @@ public abstract class KrabApplet extends PApplet {
 
     private float sinh(float n) {
         return (float) Math.sinh(n);
+    }
+
+    class AnimationFrame {
+        int frameNumber;
+        PImage img;
+
+        AnimationFrame(PImage currentSketch, int frameCount) {
+            img = currentSketch;
+            frameNumber = frameCount;
+        }
     }
 
     private class ShaderSnapshot {
@@ -2607,7 +2604,7 @@ public abstract class KrabApplet extends PApplet {
         }
 
         private void autoDetectConstraints(String name) {
-            if(name.contains("ease") || name.contains("easing")){
+            if (name.contains("ease") || name.contains("easing")) {
                 this.defaultValue = 1;
             }
             if (name.contains("weight")) {
@@ -2621,7 +2618,7 @@ public abstract class KrabApplet extends PApplet {
                 minValue = 0;
                 maxValue = 255;
             } else if (name.contains("count") || name.contains("size") ||
-                    (name.contains("step") && !name.contains("smoothstep") ) ) {
+                    (name.contains("step") && !name.contains("smoothstep"))) {
                 constrained = true;
                 if (name.contains("count") && defaultValue == 0) {
                     defaultValue = 1;
