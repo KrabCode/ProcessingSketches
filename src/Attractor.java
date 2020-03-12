@@ -1,4 +1,3 @@
-import applet.GuiSketch;
 import applet.KrabApplet;
 import processing.core.PVector;
 import utils.OpenSimplexNoise;
@@ -57,6 +56,7 @@ public class Attractor extends KrabApplet {
             p.update();
         }
 
+        rec();
         gui();
     }
 

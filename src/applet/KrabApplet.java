@@ -2,6 +2,7 @@ package applet;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 import processing.core.PVector;
 import processing.event.MouseEvent;
 import processing.opengl.PShader;
@@ -481,11 +482,51 @@ public abstract class KrabApplet extends PApplet {
         }
         int frameRecordingEnd = frameRecordingStarted + frameRecordingDuration + 1;
         if (frameRecordingStarted > 0 && frameCount < frameRecordingEnd) {
+            if(!saveAnimationThreadInitialized){
+                thread("saveAnimationBackgroundThread");
+                saveAnimationThreadInitialized = true;
+            }
             int frameNumber = frameCount - frameRecordingStarted + 1;
             println(frameNumber, "/", frameRecordingEnd - frameRecordingStarted - 1, "saved");
-            pg.save(captureDir + frameNumber + ".jpg");
+            PImage currentSketch = pg.get();
+            animationQueue.add(new AnimationFrame(currentSketch, frameNumber));
+
+            if(frameCount == frameRecordingEnd -1){
+                println("capture ended");
+            }
         }
     }
+
+    boolean saveAnimationThreadInitialized = false;
+    ArrayList<AnimationFrame> animationQueue = new ArrayList<>();
+
+    public void saveAnimationBackgroundThread(){
+        while(true){
+            if(animationQueue.size() > 0){
+                AnimationFrame frame = animationQueue.remove(0);
+                frame.img.save(captureDir + frame.frameNumber + ".jpg");
+                if(animationQueue.size() == 0){
+                    println("images saved");
+                    saveAnimationThreadInitialized = false;
+                    break;
+                }
+            }else{
+                delay(500);
+            }
+        }
+    }
+
+    class AnimationFrame {
+        int frameNumber;
+        PImage img;
+
+        AnimationFrame(PImage currentSketch, int frameCount) {
+            img = currentSketch;
+            frameNumber = frameCount;
+        }
+    }
+
+
 
     int numberOfDigitsInFlooredNumber(float inputNumber) {
         return String.valueOf(floor(inputNumber)).length();
@@ -1033,7 +1074,6 @@ public abstract class KrabApplet extends PApplet {
             }
         }
         if (key == 'k') {
-            println("replay recording paused");
             frameRecordingStarted = frameCount + 1;
             id = regenIdAndCaptureDir();
         }
