@@ -86,6 +86,6 @@ public class ChaosGame extends KrabApplet {
     }
 
     private void moveTo(PVector target) {
-        p = PVector.lerp(p, target, .5f);
+        p = PVector.lerp(p, target, slider("jump", .5f));
     }
 }

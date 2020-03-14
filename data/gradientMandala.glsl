@@ -94,8 +94,8 @@ float fbm(vec3 x){
     float sum = 0;
     for(int i = 0; i < 6; i++){
         sum += amp*(1.-2.*noise(x*freq));
-        amp *= .2;
-        freq *= 2.;
+        amp *= .4;
+        freq *= 1.5;
         x += 13.124 + freq * amp;
     }
     return .5+.5*sum;
@@ -105,8 +105,8 @@ void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     float t = time*.5;
-    float d = sin(length(cv)*30.);
-    float a = cos(atan(cv.x, cv.y) * 10.)+(1.-d);
+    float d = sin(length(cv)*10.);
+    float a = cos(atan(cv.x, cv.y) * 14.)+(1.-d);
     float n = fbm(vec3(pow(abs(d), 8.), d+t, a));
     vec4 col = getColor(n);
     gl_FragColor = col;

@@ -207,7 +207,7 @@ float sdCappedCylinder( vec3 p, float radius, float height){
 distance sd(vec3 p){
     float dist = p.y;
     vec2 planeCoord = fract(p.xz);
-    dist -= 0.5*sin(planeCoord.x+planeCoord.y+time);
+    dist -= 1.0*sin(planeCoord.x+planeCoord.y+time);
     float glow = 0;
     int material = 0;
     return distance(dist, p, glow, material);

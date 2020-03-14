@@ -20,19 +20,19 @@ void main(){
     uv.y = 1.-uv.y;
 
     float a = atan(cv.y, cv.x);
-    a += pi;
-    a /= pi*2;
-    a += +.5/2.;
-    a = fract(a);
-
-//    a = abs(0.95*sin(a*2.));
+//    a += pi;
+//    a /= pi*2;
+//    a += +.5/2.;
+//    a = fract(a);
+//
+    a = abs(0.5*sin(a*1.));
     float d = max(abs(cv.x), abs(cv.y))*2.;
 
     if(a < .25/2. || a > 1.-.25/2.){
         d = length(cv)*1.41;
     }
 
-//    d = pow(d, 0.9)*1.8;
+    d = pow(d, 0.8)*1.0;
     vec3 col = texture(img, vec2(a,d)).rgb;
     if(d > 1.){
         col *= 0.;

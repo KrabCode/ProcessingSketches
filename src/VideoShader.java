@@ -21,7 +21,7 @@ public class VideoShader extends KrabApplet {
     public void setup() {
         surface.setAlwaysOnTop(true);
         pg = createGraphics(width, height, P2D);
-        movie = new Movie(this, "videos/seaboat.mp4");
+        movie = new Movie(this, "videos/citysea.mp4");
         movie.loop();
     }
 

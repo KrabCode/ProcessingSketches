@@ -117,8 +117,8 @@ void main(){
     vec2 cv = (gl_FragCoord.xy-.5*resolution) / resolution.y;
     float t = time*.5;
     vec4 col = getColor(1.-uv.y);
-    float yScale = 100 + (cv.y) * 95;
-    float n = .5*fbm(vec3(cv.y * yScale + t, cv.x*02., t));
+    float yScale = 103 + (cv.y) *77;
+    float n = .5*fbm(vec3(cv.y * yScale + t, cv.x*.23, t));
     float lit = n*smoothstep(.05, -.05, cv.y);;
     col.r += lit;
     col.g += lit*.5;

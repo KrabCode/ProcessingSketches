@@ -1,26 +1,18 @@
-uniform sampler2D img;
+uniform sampler2D texture;
 uniform vec2 resolution;
 uniform float time;
 
-#define pi 3.14159
-
-float random(float x){
-    return fract(sin(x*35.12145)*345.4861);
-}
-
-vec2 random2(float x){
-    return vec2(random(x-323.151), random(x+412.121));
-}
-
-vec2 wrapAround(vec2 p){
-    vec2 x = vec2(1);
-    return mod(p,x) - x*0.5;
-}
-
-float sdBox( in vec2 p, in vec2 size ){
-    vec2 d = abs(p)-size;
-    return length(max(d,vec2(0))) + min(max(d.x,d.y),0.0);
-}
+uniform int colorCount;
+uniform vec4 hsba_0;
+uniform vec4 hsba_1;
+uniform vec4 hsba_2;
+uniform vec4 hsba_3;
+uniform vec4 hsba_4;
+uniform vec4 hsba_5;
+uniform vec4 hsba_6;
+uniform vec4 hsba_7;
+uniform vec4 hsba_8;
+uniform vec4 hsba_9;
 
 
 vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -117,32 +109,54 @@ float fbm (vec4 p) {
     float amp = 1;
     float freq = 1;
     // Loop of octaves
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
         sum += amp*snoise(p*freq);
-        freq *= 2.;
-        amp *= .5;
+        freq *= 1.5;
+        amp *= .6;
         p += vec4(3.123, 2.456, 1.121, 2.4545);
     }
     return sum;
 }
 
-mat2 rotate2d(float angle){
-    return mat2(cos(angle),-sin(angle), sin(angle),cos(angle));
+
+vec3 rgb(in vec3 hsb){
+    vec3 rgb = clamp(abs(mod(hsb.x*6.0+
+    vec3(0.0, 4.0, 2.0), 6.0)-3.0)-1.0, 0.0, 1.0);
+    rgb = rgb*rgb*(3.0-2.0*rgb);
+    return hsb.z * mix(vec3(1.0), rgb, hsb.y);
 }
+
+float map(float value, float start1, float stop1, float start2, float stop2){
+    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+}
+
+vec4 getColor(float pct){
+    pct = fract(pct);
+    float colorPct = clamp(map(pct, 0, 1, 0, colorCount-1), 0, colorCount-1);
+    int previousColorIndex = int(floor(colorPct));
+    float lerpToNextColor = fract(colorPct);
+    vec4[] colors = vec4[](
+    hsba_0, hsba_1, hsba_2, hsba_3, hsba_4, hsba_5, hsba_6, hsba_7, hsba_8, hsba_9);
+    vec4 prevColor = colors[previousColorIndex];
+    vec4 nextColor = colors[previousColorIndex+1];
+    prevColor.rgb = rgb(prevColor.rgb);
+    nextColor.rgb = rgb(nextColor.rgb);
+    return mix(prevColor, nextColor, lerpToNextColor);
+}
+
 
 void main(){
     vec2 uv = gl_FragCoord.xy / resolution.xy;
-    uv.y = 1.-uv.y;
-    float scl = 800.;
-    vec2 id = (floor(uv*scl)+.5)*(1./scl);
-    float tr = .02;
-    float a = atan(id.y-.5, id.x-.5);
-    float d = length(id-.5);
-    vec2 t = vec2(tr*cos(time), tr*sin(time));
-    float n = pi*fbm(vec4(d*1.8, .02*cos(a*14.), t));
-    float nr = .9;
-    vec2 imgCoord =  vec2(.0, .2+.2*sin(t)) + vec2(nr*cos(n), nr*sin(n));
-    vec3 color = texture2D(img,imgCoord).rgb;
-    color = color*smoothstep(.8, .5, d);
+    vec3 color = texture2D(texture, uv).rgb;
+    uv += 0.5*fbm(vec4(uv.xy*2.1, time*.1, time*.01 ));
+    float n = .2+0.5*fbm(vec4(vec2(uv.x*5., uv.y*5.-time*.1), time*.2, time*.2));
+    n = abs(1.-2.*n);
+    n = clamp(n, 0., 1.)*0.7;
+    if(color.r < abs(.4*sin(time*0.5))){
+        color = getColor(n).brg;
+        color *= 1.;
+    }else{
+        color = getColor(n).rgb;
+    }
     gl_FragColor = vec4(color, 1.);
 }

@@ -39,7 +39,7 @@ vec3 render(vec2 uv){
         vec2 size = vec2(0.0, .25+.1*sin(i*3214.));
         vec2 speed = vec2(0., sin(i*1001.25)*time*0.08);
         int type = 0;
-        float directionCount = 8.;
+        float directionCount = 2.;
         int directionInt = int(floor(directionCount*(.5+.5*(sin(i*1124.))))); // [0, 8]
         float directionNorm = directionInt/directionCount;
         float direction = pi*2*(directionNorm);
@@ -49,7 +49,7 @@ vec3 render(vec2 uv){
         origin = constrain(origin);
         float line = sdRoundedLine(uv, origin, origin+size, abs(.03+0.015*sin(i*1121.2)));
         if(line < 0.){
-            vec3 lineCol = 0.5 + 0.5*cos(.5*sin(time)+directionNorm+uv.xyx+vec3(0,2,4));
+            vec3 lineCol = 0.5 + 0.5*cos(.5*sin(time)+directionNorm+uv.xyx+vec3(10,3,8));
             col = mix(col, lineCol, smoothstep(0., -0.005, line));
         }
     }
