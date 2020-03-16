@@ -1416,3 +1416,39 @@ GROUP§circle§false
 circle§count§30.000004§100.0
 circle§radius§45.125§100.0
 STATE_END
+STATE_BEGIN
+UNDO
+GROUP§seed§false
+seed§new seed§
+seed§new image§
+seed§keep seed§false
+seed§weight§8.225§10.0
+seed§grid§1
+GROUP§rd§true
+rd§gray-scott§0
+rd§passes§20.000004§1000.0
+rd§diffusion a§1.0§1.0
+rd§diffusion b§0.3974997§1.0
+rd§feed§0.16000003§2.0
+rd§kill§0.0§0.2
+rd§distance a§0.25500014§2.0
+rd§distance b§1.0§2.0
+rd§distance feed§0.16250004§0.4
+rd§distance kill§-0.002000002§0.4
+rd§feedback move§true
+rd§keep image§false
+GROUP§feedback§false
+feedback§mag§0.08749977§10.0
+feedback§base angle§0.45§10.0
+feedback§angle variation§2.7§10.0
+feedback§time speed§0.33750013§10.0
+feedback§base frequency§0.60000044§10.0
+feedback§base amplitude§0.08750016§10.0
+feedback§freq mult§2.0§10.0
+feedback§amp mult§0.07500002§10.0
+GROUP§grid§false
+grid§step§5.1124997§10.0
+GROUP§circle§true
+circle§count§57.999992§100.0
+circle§radius§213.82501§1000.0
+STATE_END
